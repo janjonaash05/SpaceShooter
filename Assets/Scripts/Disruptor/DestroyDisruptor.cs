@@ -28,6 +28,12 @@ public class DestroyDisruptor : MonoBehaviour
     }
 
 
+
+    void DisableEmission(ref bool emission_enabled)
+    {
+        emission_enabled = false;
+    }
+
     public void Engage()
     {
 
@@ -50,7 +56,20 @@ public class DestroyDisruptor : MonoBehaviour
 
         ColorChange();
         GetComponent<DisruptorStartEndMovement>().CancelMovingUp();
-        GetComponent<DisruptorStartEndMovement>().MoveDown();
+
+
+
+        Destroy(GetComponent<Renderer>());
+        var system = transform.GetChild(3).GetComponent<ParticleSystem>();
+        var emission = system.emission;
+        emission.enabled = true;
+
+        system.Play();
+        Invoke(nameof(DisableEmission), system.main.duration);
+
+
+
+
 
         Destroy(GetComponent<DisruptorMovement>());
         Destroy(GetComponent<DisruptorColorChange>());

@@ -12,6 +12,13 @@ public class SliderBulletCollision : MonoBehaviour
 
 
 
+    void DisableEmission(ref bool emission_enabled)
+    {
+        emission_enabled = false;
+    }
+
+
+
     private void OnCollisionEnter(Collision other)
     {
 
@@ -21,31 +28,57 @@ public class SliderBulletCollision : MonoBehaviour
 
         Debug.Log(DamagePotential + "dmg");
 
-        switch (other.transform.tag) 
+        switch (other.transform.tag)
         {
             case Tags.DISRUPTOR:
+
+
+
+
+
+
                 other.gameObject.GetComponent<DamageDisruptor>().Damage(DamagePotential);
+
+
+                if (DamagePotential == DifficultyManager.DISRUPTOR_START_HEALTH)
+                {
+                    return;
+                }
+
+                var system = other.transform.GetChild(2).GetComponent<ParticleSystem>();
+                var emission = system.emission;
+                emission.enabled = true;
+
+                system.Play();
+                Invoke(nameof(DisableEmission), system.main.duration);
+
+
+
+
+
+
+
                 break;
             case Tags.STAR:
                 Destroy(other.gameObject.GetComponent<Collider>());
                 other.gameObject.GetComponent<DestroyStar>().Destroy();
                 break;
-            default: break;   
+            default: break;
 
 
 
 
         }
 
-       
 
 
 
 
 
-        
 
-       
+
+
+
 
 
 

@@ -47,6 +47,14 @@ public class DestroyStar : MonoBehaviour
 
         GetComponent<IScoreEnumerable>().DisabledRewards = true;
         ScaleDown();
+
+
+
+        transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission = true;
+        transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+
+        Destroy(gameObject, transform.GetChild(0).GetComponent<ParticleSystem>().main.duration);
+
     }
 
 

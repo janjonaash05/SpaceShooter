@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -37,7 +38,11 @@ public class SliderBulletCollision : MonoBehaviour
 
 
 
-                other.gameObject.GetComponent<DamageDisruptor>().Damage(DamagePotential);
+
+
+                other.gameObject.TryGetComponent(out DamageDisruptor damageDisruptor);
+                damageDisruptor?.Damage(DamagePotential);
+//                other.gameObject.GetComponent<DamageDisruptor>().Damage(DamagePotential);
 
 
                 if (DamagePotential == DifficultyManager.DISRUPTOR_START_HEALTH)
@@ -45,12 +50,32 @@ public class SliderBulletCollision : MonoBehaviour
                     return;
                 }
 
-                var system = other.transform.GetChild(2).GetComponent<ParticleSystem>();
-                var emission = system.emission;
-                emission.enabled = true;
 
-                system.Play();
-                Invoke(nameof(DisableEmission), system.main.duration);
+
+
+                try
+                {
+                    var system = other.transform.GetChild(2).GetComponent<ParticleSystem>();
+                    var emission = system.emission;
+                    emission.enabled = true;
+
+                    system.Play();
+
+                    IEnumerator disableEmission()
+                    {
+                        yield return new WaitForSeconds(system.main.duration);
+                        emission.enabled = false;
+
+                    }
+
+
+                    StartCoroutine(disableEmission());
+
+
+
+                } catch (Exception e) { }
+
+              
 
 
 

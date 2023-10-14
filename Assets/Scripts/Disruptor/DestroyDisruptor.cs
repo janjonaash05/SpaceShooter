@@ -29,9 +29,10 @@ public class DestroyDisruptor : MonoBehaviour
 
 
 
-    void DisableEmission(ref bool emission_enabled)
+    void DestroyObj()
     {
-        emission_enabled = false;
+
+        Destroy(gameObject);
     }
 
     public void Engage()
@@ -44,7 +45,16 @@ public class DestroyDisruptor : MonoBehaviour
         GetComponent<RotateDisruptor>().EngageRotation(target);
         Destroy(GetComponent<RotateDisruptor>());
 
-        ///  ScoreCounter.Increase(GetComponent<IScoreEnumerable>().ScoreReward());
+
+
+        Destroy(transform.GetChild(0).gameObject);
+        Destroy(transform.GetChild(1).gameObject);
+        Destroy(transform.GetChild(2).gameObject);
+
+
+
+
+
         int a;
 
 
@@ -52,30 +62,34 @@ public class DestroyDisruptor : MonoBehaviour
 
 
 
+
+
+
         GetComponent<IScoreEnumerable>().DisabledRewards = true;
 
         ColorChange();
         GetComponent<DisruptorStartEndMovement>().CancelMovingUp();
-
-
-
+        Destroy(GetComponent<DisruptorMovement>());
+        Destroy(GetComponent<DisruptorColorChange>());
         Destroy(GetComponent<Renderer>());
+
+
+
+
         var system = transform.GetChild(3).GetComponent<ParticleSystem>();
         var emission = system.emission;
         emission.enabled = true;
 
         system.Play();
-        Invoke(nameof(DisableEmission), system.main.duration);
+        Invoke(nameof(DestroyObj), system.main.duration);
+
+        
 
 
 
+     
 
-
-        Destroy(GetComponent<DisruptorMovement>());
-        Destroy(GetComponent<DisruptorColorChange>());
-
-
-
+        
 
     }
 

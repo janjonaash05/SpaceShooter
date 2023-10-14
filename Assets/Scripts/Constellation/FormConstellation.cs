@@ -79,7 +79,7 @@ public class FormConstellation : MonoBehaviour
             star.transform.parent = transform;
             star.transform.localPosition = Vector3.zero;
 
-
+            
             star_list.Add(star);
 
             System.Random r = new();
@@ -97,6 +97,11 @@ public class FormConstellation : MonoBehaviour
 
             star.GetComponent<StarChargeUp>().Setup(mats[color_index]);
             _ = star.GetComponent<StarChargeUp>().ChargeUp();
+
+
+            star.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>().material = mats[color_index];
+
+
 
             color_index_pool.Remove(color_index);
             pos_index_pool.Remove(pos_index);

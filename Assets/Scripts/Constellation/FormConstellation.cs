@@ -51,7 +51,10 @@ public class FormConstellation : MonoBehaviour
     {
 
 
-        Form();
+        InvokeRepeating(nameof(Form), 5, 25);
+
+
+     //   Form();
 
 
 

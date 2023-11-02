@@ -22,6 +22,7 @@ TagManager:
   - Spinner
   - Star
   - ConstellationBomb
+  - BackgroundBorder
   layers:
   - Default
   - TransparentFX

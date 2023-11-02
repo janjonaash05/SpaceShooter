@@ -34,7 +34,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
 
 
-        move_speed = new Vector3(Random.Range(min_side, max_side), 0, Random.Range(min_down, max_down));
+        move_speed = new Vector3(Random.Range(min_side, max_side), 0, -Random.Range(min_down, max_down));
 
         rotation_speed = rotation_speed_multiplier * Random.insideUnitSphere;
     }
@@ -57,13 +57,16 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     private void OnCollisionEnter(Collision col)
     {
 
-        if (col.transform.CompareTag(Tags.SPINNER))
+        if (col.transform.CompareTag(Tags.BACKGROUND_BORDER))
         {
 
             Debug.Log(col);
             Destroy(gameObject.GetComponent<BombFall>());
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(false);
             spinner.GetComponent<SpinnerColorChange>().ChangeIndexHolder(0, 1);
+
+
+
         }
     }
 

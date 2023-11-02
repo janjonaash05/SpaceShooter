@@ -8,6 +8,9 @@ public class ConstellationBombFall : MonoBehaviour
 {
     // Start is called before the first frame update
 
+
+
+    [SerializeField] ParticleSystem trail_particle_system_prefab;
     [SerializeField] float move_speed;
     [SerializeField] Vector3 rotation;
     Vector3 target;
@@ -18,26 +21,110 @@ public class ConstellationBombFall : MonoBehaviour
 
 
     bool can_move = false;
+
+
+
+
+    List<Material> trail_colors;
+    List<ParticleSystem> trails;
+
+
+
+    float trail_rate_over_distance;
+
     void Start()
     {
+
+
+        trail_rate_over_distance = trail_particle_system_prefab.emission.rateOverDistanceMultiplier;
+
+
+
+
         rb = GetComponent<Rigidbody>();
         FormConstellation.OnAllStarsGone += () =>can_move = true;
+        FormConstellation.OnAllStarsGone += CreateTrails;
 
 
         spinner = GameObject.FindGameObjectWithTag(Tags.SPINNER);
         target = spinner.transform.position;
+        
     }
 
     // Update is called once per frame
 
 
 
+    private void OnDestroy()
+    {
+        FormConstellation.OnAllStarsGone -= () => can_move = true;
+        FormConstellation.OnAllStarsGone -= CreateTrails;
+    }
+
+
+    void CreateTrails() 
+    {
+        trail_colors = GetComponent<ConstellationBombColorChange>().Colors;
+
+        trails = new();
+
+        foreach(Material trailmat in trail_colors) 
+        {
+            var trail = Instantiate(trail_particle_system_prefab,transform.position, transform.rotation);
+          
+            
+            trail.GetComponent<ParticleSystemRenderer>().material = trailmat;
+
+
+            
+            var em = trail.emission;
+           
+            em.enabled = true;
+
+            var main = trail.main;
+            main.startSize = transform.localScale.x / 10;
+
+
+
+
+            trails.Add(trail);
+
+
+        
+        
+        }
+
+
+    }
+
+    bool initEmissionSetOver = false;
 
     private void FixedUpdate()
     {
 
         if (!can_move) return;
-        rb.MovePosition(rb.position + Time.fixedDeltaTime * move_speed * (target - rb.position));
+
+
+
+
+
+        foreach (ParticleSystem ps in trails) 
+        {
+            ps.transform.position = transform.position;
+            Vector3 rotationDirection = -(target - rb.position);
+            ps.transform.rotation = Quaternion.LookRotation(rotationDirection);
+
+           
+
+
+
+        }
+
+        initEmissionSetOver = true;
+        rb.AddForce(Time.fixedDeltaTime * move_speed * (target - rb.position), ForceMode.VelocityChange);
+        
+      
+        
     }
 
 

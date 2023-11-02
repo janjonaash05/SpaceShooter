@@ -67,11 +67,23 @@ public class DestroyDisruptor : MonoBehaviour
 
         GetComponent<IScoreEnumerable>().DisabledRewards = true;
 
-        ColorChange();
-        GetComponent<DisruptorStartEndMovement>().CancelMovingUp();
-        Destroy(GetComponent<DisruptorMovement>());
-        Destroy(GetComponent<DisruptorColorChange>());
-        Destroy(GetComponent<Renderer>());
+      
+
+
+
+        try
+        {
+
+            ColorChange();
+
+            GetComponent<DisruptorStartEndMovement>().CancelMovingUp();
+            Destroy(GetComponent<DisruptorMovement>());
+            Destroy(GetComponent<DisruptorColorChange>());
+            Destroy(GetComponent<Renderer>());
+
+
+        }
+        catch (Exception) { }
 
 
 

@@ -138,9 +138,9 @@ public class SpinnerColorChange : MonoBehaviour
         newMats[2] = (chargeUpMode) ? changing_mat : secondary;
 
         var copyHolder = new SpinnerIndexHolder(index_holder.parent, index_holder.child);
-        var colorlist = SpinnerIndexHolder.AllIndexesByHolder(copyHolder, true);
+        var colorlist = SpinnerIndexHolder.AllMatIndexesByHolder(copyHolder, true);
         copyHolder.ChangeIndex(0, 1);
-        var offlist = SpinnerIndexHolder.AllIndexesByHolder(copyHolder, false);
+        var offlist = SpinnerIndexHolder.AllMatIndexesByHolder(copyHolder, false);
 
 
 

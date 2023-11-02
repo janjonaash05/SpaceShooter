@@ -40,4 +40,8 @@ public static class Tags
 
 
 
+    public const string BACKGROUND_BORDER = "BackgroundBorder";
+
+
+
 }

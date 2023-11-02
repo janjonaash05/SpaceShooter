@@ -26,6 +26,11 @@ public class ConstellationBombColorChange : BombColorChange
     }
 
 
+    private void OnDestroy()
+    {
+        StarFallIntoBomb.OnStarFallen -= AddColor;
+    }
+
 
 
 
@@ -45,13 +50,13 @@ public class ConstellationBombColorChange : BombColorChange
 
     void AddColor(Material m)
     {
-        colors.Add(m);
+        Colors.Add(m);
         ChangeOnlyColor(m);
     }
 
 
     int color_index;
-    List<Material> colors = new();
+    public List<Material> Colors { get; private set; } = new();
 
     void ColorChange()
     {
@@ -60,12 +65,12 @@ public class ConstellationBombColorChange : BombColorChange
             while (true)
             {
 
-                if (colors.Count == 0) { yield return null; continue; }
-                color_index = color_index == colors.Count - 1 ? 0 : color_index + 1; ;
+                if (Colors.Count == 0) { yield return null; continue; }
+                color_index = color_index == Colors.Count - 1 ? 0 : color_index + 1; ;
 
-                ChangeOnlyColor(colors[color_index]);
+                ChangeOnlyColor(Colors[color_index]);
 
-                yield return new WaitForSeconds(change_delay / colors.Count);
+                yield return new WaitForSeconds(change_delay / Colors.Count);
 
             }
 

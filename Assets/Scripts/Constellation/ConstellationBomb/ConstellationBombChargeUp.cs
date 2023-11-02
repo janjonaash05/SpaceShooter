@@ -48,6 +48,14 @@ public class ConstellationBombChargeUp : MonoBehaviour
     }
 
 
+
+
+    private void OnDestroy()
+    {
+        StarFallIntoBomb.OnStarFallen -= AddSize;
+    }
+
+
     float GenerateRandomRotationAxis()
     {
         return new System.Random().NextDouble() * new System.Random().Next(2) == 0 ? 1 : -1;

@@ -128,34 +128,7 @@ public class TargetBomb : MonoBehaviour
 
 
 
-    public void SetupLaser()
-    {
-
-
-
-        laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        Destroy(laser.GetComponent<Collider>());
-        laser.GetComponent<Renderer>().sharedMaterial = turret_head_charge.GetComponent<Renderer>().material;
-        laser.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-
-        originVector = turret_head_charge.transform.position;
-
-
-        isTargeting = true;
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
+    
 
 
 
@@ -237,6 +210,26 @@ public class TargetBomb : MonoBehaviour
 
 
 
+
+
+
+    public void SetupLaser()
+    {
+
+
+
+        laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        Destroy(laser.GetComponent<Collider>());
+        laser.GetComponent<Renderer>().sharedMaterial = turret_head_charge.GetComponent<Renderer>().material;
+        laser.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+        originVector = turret_head_charge.transform.position;
+
+
+      //  isTargeting = true;
+
+
+    }
 
 
     void Track(Vector3 targetVector, float sizeIncrease)

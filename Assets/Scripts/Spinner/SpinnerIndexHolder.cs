@@ -31,7 +31,7 @@ public class SpinnerIndexHolder : IndexHolder
 
 
 
-    public static List<int> AllIndexesByHolder(SpinnerIndexHolder holder, bool color)
+    public static List<int> AllMatIndexesByHolder(SpinnerIndexHolder holder, bool color)
     {
 
 

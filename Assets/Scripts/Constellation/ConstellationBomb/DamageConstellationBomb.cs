@@ -18,6 +18,8 @@ public class DamageConstellationBomb : DamageBomb
         await GetComponent<ConstellationBombColorChange>().CoverInColor();
 
 
-        ScaleDown(token);
+         ScaleDown(token);
+
+       
     } 
 }

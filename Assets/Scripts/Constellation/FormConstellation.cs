@@ -11,7 +11,8 @@ public class FormConstellation : MonoBehaviour
     // Start is called before the first frame update
 
 
-    [SerializeField] GameObject star_prefab;
+    [SerializeField] GameObject star_prefab, bomb_prefab;
+
     [SerializeField] Material[] mats;
     [SerializeField] float random_distance_factor;
     [SerializeField]
@@ -69,6 +70,18 @@ public class FormConstellation : MonoBehaviour
 
     async void Form()
     {
+
+
+
+
+      var bomb =   Instantiate(bomb_prefab,transform,false);
+        bomb.transform.parent = transform;
+        bomb.transform.localPosition = new Vector3(-86.5f,0,0);
+
+
+
+
+
         star_list = new();
         List<int> color_index_pool = Enumerable.Range(0, STAR_AMOUNT).ToList();
         List<int> pos_index_pool = Enumerable.Range(0, STAR_AMOUNT).ToList();
@@ -138,7 +151,7 @@ public class FormConstellation : MonoBehaviour
             while (true)
             {
 
-              //  Debug.Log("stars: " + star_list.Count);
+             
 
                 bool ready = true;
                 foreach (GameObject star in star_list)
@@ -167,7 +180,7 @@ public class FormConstellation : MonoBehaviour
 
 
     public static event Action OnAllStarsGone;
-    // Update is called once per frame
+    
     void Update()
     {
 

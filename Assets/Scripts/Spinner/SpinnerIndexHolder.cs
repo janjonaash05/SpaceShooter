@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 public class SpinnerIndexHolder : IndexHolder
 {
 
-    const int spinnerMaxParent = 4, spinnerMinParent = 1, spinnerMaxChild = 7, spinnerMinChild = 1;
+    const int spinnerMaxParent = 4, spinnerMinParent = 1, spinnerMaxChild = 4, spinnerMinChild = 1;
    // public int parent;
 
    // public int child;
@@ -83,34 +83,22 @@ public class SpinnerIndexHolder : IndexHolder
     {
         matDict = new Dictionary<string, int>
         {
-            { "11", 25 }, 
-            { "12", 18 },
-            { "13", 26 },
-            { "14", 22 },
-            { "15", 27 },
-            { "16", 15 },
-            { "17", 8 },
-            { "21", 11 },
-            { "22", 19 }, 
-            { "23", 28 },
-            { "24", 23 },
-            { "25", 29 },
-            { "26", 17 },
-            { "27", 4 },
-            { "31", 3 },
-            { "32", 20 },
-            { "33", 30 },
-            { "34", 6 },
-            { "35", 16 },
-            { "36", 10 },
-            { "37", 5 },
-            { "41", 9 },
-            { "42", 21 },
-            { "43", 7 },
-            { "44", 24 },
-            { "45", 13 },
-            { "46", 12 },
-            { "47", 14 }
+            { "11", 17 }, 
+            { "12", 16 },
+            { "13", 15 },
+            { "14", 14 },
+            { "21", 13 },
+            { "22", 11 }, 
+            { "23", 10 },
+            { "24", 8 },
+            { "31", 12 },
+            { "32", 7 },
+            { "33", 6 },
+            { "34", 9 },
+            { "41", 4 },
+            { "42", 3 },
+            { "43", 2 },
+            { "44", 5 },
         };
 
     }

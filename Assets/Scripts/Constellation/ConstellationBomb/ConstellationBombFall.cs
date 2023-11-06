@@ -165,7 +165,7 @@ public class ConstellationBombFall : MonoBehaviour
             (int p, int c) vals = chargeUp.scale_degree switch
             {
                 >= 0 and <=1 => (0,1),
-                >= 2 and <=4 => (0,3),
+                >= 2 and <=4 => (0,2),
                 >=5 and <=7 =>(1,0),
                 8 => (2,0),
                 _ =>(0,0)

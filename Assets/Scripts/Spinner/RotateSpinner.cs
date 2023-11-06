@@ -33,7 +33,7 @@ public class RotateSpinner : MonoBehaviour
 
              };
 
-        chargeUpMode = GetComponent<SpinnerColorChange>().chargeUpMode;
+        chargeUpMode = GetComponent<SpinnerColorChange>().charge_up_mode;
         rotation.x = (chargeUpMode) ? charge_up_rotation_speed : rotation_speed;
        // Debug.Log("ROTX " +rotation.x);
         transform.Rotate(rotation * Time.deltaTime);

@@ -15,23 +15,17 @@ public class SupernovaColorChange : MonoBehaviour
 
 
     Renderer r;
-    const int CPOS_MIN = 1, CPOS_MAX = 4;
+
+
+
+    List<Material> colors;
+    
 
 
 
 
     void InitColorUp()
     {
-
-
-    }
-
-
-
-    void Start()
-    {
-        r = GetComponent<Renderer>();
-
 
         Material[] start_current_mats = new Material[r.materials.Length];
         for (int i = 0; i < r.materials.Length; i++)
@@ -45,6 +39,22 @@ public class SupernovaColorChange : MonoBehaviour
 
 
         r.materials = start_current_mats;
+
+    }
+
+
+
+    void Start()
+    {
+
+        colors = new();
+
+
+        r = GetComponent<Renderer>();
+
+
+        InitColorUp();
+
 
 
 
@@ -63,26 +73,9 @@ public class SupernovaColorChange : MonoBehaviour
 
 
 
-                Material[] current_mats = new Material[r.materials.Length];
-
-
-
-                int index_to_change = color_order_index_dict[i+1];
-                for (int j = 0; j < r.materials.Length; j++)
-                {
-
-               
-
-
-                    current_mats[j] = j == index_to_change ? color_mats[i] : r.materials[j];
-
-
-                }
-
-
-
-
-                r.materials = current_mats;
+                AddColor(color_mats[i]);
+                current_color_index++;
+                    
 
 
                 yield return new WaitForSeconds(0.1f);
@@ -92,40 +85,9 @@ public class SupernovaColorChange : MonoBehaviour
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
         StartCoroutine(change());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -141,6 +103,28 @@ public class SupernovaColorChange : MonoBehaviour
 
 
 
+    int current_color_index = 1 ;
+
+    void AddColor(Material color) 
+    {
+        Material[] new_mats = new Material[r.materials.Length];
+
+
+
+        int index_to_change = color_order_index_dict[current_color_index];
+        for (int j = 0; j < r.materials.Length; j++)
+        {
+
+            new_mats[j] = j == index_to_change ? color: r.materials[j];
+
+        }
+
+
+
+
+        r.materials = new_mats;
+
+    }
 
 
 

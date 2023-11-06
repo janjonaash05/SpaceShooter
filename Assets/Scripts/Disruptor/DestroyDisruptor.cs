@@ -42,20 +42,46 @@ public class DestroyDisruptor : MonoBehaviour
 
         Vector3 target = Camera.main.transform.position;
 
-        GetComponent<RotateDisruptor>().EngageRotation(target);
-        Destroy(GetComponent<RotateDisruptor>());
 
 
 
-        Destroy(transform.GetChild(0).gameObject);
-        Destroy(transform.GetChild(1).gameObject);
-        Destroy(transform.GetChild(2).gameObject);
+        TryGetComponent(out RotateDisruptor rd);
+
+        if(rd!= null )
+        {
+            GetComponent<RotateDisruptor>().EngageRotation(target);
+            Destroy(GetComponent<RotateDisruptor>());
+
+        }
+
+
+        
 
 
 
 
 
-        int a;
+
+        if (transform.GetChild(0) != null) { Destroy(transform.GetChild(0).gameObject); }
+        if (transform.GetChild(1) != null) { Destroy(transform.GetChild(1).gameObject); }
+
+
+
+        Destroy(transform.GetChild(transform.childCount-2).gameObject);
+
+
+
+   
+
+
+
+        GetComponent<DisruptorStartEndMovement>().CancelMovingUp();
+        Destroy(GetComponent<DisruptorMovement>());
+        Destroy(GetComponent<DisruptorColorChange>());
+
+
+
+        Destroy(GetComponent<Renderer>());
 
 
         UICommunicationSO.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ScoreReward());
@@ -70,25 +96,13 @@ public class DestroyDisruptor : MonoBehaviour
       
 
 
-
-        try
-        {
-
-            ColorChange();
-
-            GetComponent<DisruptorStartEndMovement>().CancelMovingUp();
-            Destroy(GetComponent<DisruptorMovement>());
-            Destroy(GetComponent<DisruptorColorChange>());
-            Destroy(GetComponent<Renderer>());
-
-
-        }
-        catch (Exception) { }
+/*
+       
+*/
 
 
 
-
-        var system = transform.GetChild(3).GetComponent<ParticleSystem>();
+        var system = transform.GetChild(transform.childCount - 1).GetComponent<ParticleSystem>();
         var emission = system.emission;
         emission.enabled = true;
 

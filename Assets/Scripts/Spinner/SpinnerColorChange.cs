@@ -12,17 +12,23 @@ public class SpinnerColorChange : MonoBehaviour
 
 
     public Material[] mats_storage;
-    public Material off_material;
-    Material secondary;
 
-    
+    Material secondary, primary;
+
+
 
 
     public SpinnerIndexHolder index_holder;
-    public bool chargeUpMode;
+    public bool charge_up_mode;
 
     public GameObject charge;
     Renderer rend;
+
+
+
+    const int PRIMARY_INDEX = 1, SECONDARY_INDEX = 0, CHARGING_INDEX = 18;
+
+
     void Start()
     {
         LaserTurretCommunicationSO1.OnManualTargeting += (g) => ChangeIndexHolder(0, -1);
@@ -36,18 +42,19 @@ public class SpinnerColorChange : MonoBehaviour
 
         rend = GetComponent<Renderer>();
 
-        secondary = GetComponent<Renderer>().materials[1];
+        secondary = GetComponent<Renderer>().materials[0];
+        primary = GetComponent<Renderer>().materials[1];
 
-        index_holder = new SpinnerIndexHolder(0, 7);
-        chargeUpMode = false;
+        index_holder = new SpinnerIndexHolder(0, 4);
+        charge_up_mode = false;
         SpinnerIndexHolder.LoadMap();
 
         InitialColorSetup();
-        
+
 
         StartCoroutine(colorChange());
 
-       
+
     }
 
     public void ChangeIndexHolder(int parentDelta, int childDelta)
@@ -59,30 +66,32 @@ public class SpinnerColorChange : MonoBehaviour
 
 
         if (changeResult == -1) { InitialColorSetup(); }
-        if (changeResult == 1 && !chargeUpMode) { EngageChargeUp(true); }
+        if (changeResult == 1 && !charge_up_mode) { EngageChargeUp(true); }
 
 
 
     }
 
+    void AssignBasicColors(Material[] newMats) 
+    {
 
+        newMats[PRIMARY_INDEX] = primary;
+        newMats[SECONDARY_INDEX] = secondary;
+        newMats[CHARGING_INDEX] = charge_up_mode ? changing_mat : secondary;
+    }
 
     void InitialColorSetup()
     {
-       // Renderer rend = GetComponent<Renderer>();
+        // Renderer rend = GetComponent<Renderer>();
         Material[] newMats = new Material[rend.materials.Length];
-        for (int i = 0; i < 3; i++)
-        {
-            newMats[i] = rend.materials[i];
-        }
 
-        for (int i = 3; i < rend.materials.Length; i++)
+        for (int i = 0; i < rend.materials.Length; i++)
         {
 
-            newMats[i] = off_material;
+            newMats[i] = secondary;
         }
 
-
+        AssignBasicColors(newMats);
         rend.materials = newMats;
     }
 
@@ -94,13 +103,13 @@ public class SpinnerColorChange : MonoBehaviour
         if (start)
         {
             Debug.Log("Engaging chargeup");
-            chargeUpMode = true;
+            charge_up_mode = true;
             GetComponent<SpinnerChargeUp>().StartCharging();
         }
         else
         {
             Debug.Log("Disengaging chargeup");
-            chargeUpMode = false;
+            charge_up_mode = false;
             GetComponent<SpinnerChargeUp>().EndCharging();
         }
 
@@ -130,12 +139,16 @@ public class SpinnerColorChange : MonoBehaviour
 
         Material[] newMats = new Material[size];
 
-
+        /*
         for (int i = 0; i < 2; i++)
         {
             newMats[i] = rend.materials[i];
         }
-        newMats[2] = (chargeUpMode) ? changing_mat : secondary;
+        newMats[CHARGING_INDEX] = (charge_up_mode) ? changing_mat : secondary;
+        */
+
+        AssignBasicColors(newMats);
+
 
         var copyHolder = new SpinnerIndexHolder(index_holder.parent, index_holder.child);
         var colorlist = SpinnerIndexHolder.AllMatIndexesByHolder(copyHolder, true);
@@ -159,7 +172,7 @@ public class SpinnerColorChange : MonoBehaviour
             foreach (int i in offlist)
             {
 
-                newMats[i] = off_material;
+                newMats[i] = secondary;
             }
         }
 

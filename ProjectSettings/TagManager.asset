@@ -23,6 +23,7 @@ TagManager:
   - Star
   - ConstellationBomb
   - BackgroundBorder
+  - Core
   layers:
   - Default
   - TransparentFX

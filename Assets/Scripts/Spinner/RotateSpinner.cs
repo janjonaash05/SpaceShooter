@@ -11,7 +11,9 @@ public class RotateSpinner : MonoBehaviour
     void Start()
     {
 
-        Vector3 rotationDirection = (Camera.main.transform.position - transform.position).normalized;
+        Vector3 core_pos = GameObject.FindGameObjectWithTag(Tags.CORE).transform.position;
+
+        Vector3 rotationDirection = (core_pos - transform.position).normalized;
         Quaternion rot = Quaternion.LookRotation(rotationDirection);
         transform.rotation = rot;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.z, transform.rotation.eulerAngles.y+90, transform.rotation.eulerAngles.x);

@@ -9,7 +9,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     [SerializeField] Vector3 move_speed;
     Vector3 rotation_speed;
     [SerializeField] float rotation_speed_multiplier;
-    GameObject spinner;
+    GameObject spinner, core_ring;
 
     [SerializeField] float min_down, max_down, min_side, max_side;
 
@@ -25,6 +25,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     {
         rb = GetComponent<Rigidbody>();
         spinner = GameObject.FindWithTag(Tags.SPINNER);
+        core_ring = GameObject.FindWithTag(Tags.CORE_RING);
         Debug.Log(spinner.transform.position + "spinnerpos");
     }
     void Start()
@@ -40,8 +41,11 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     }
 
     // Update is called once per frame
-   
-   
+
+    private void OnDestroy()
+    {rb.constraints=
+        RigidbodyConstraints.FreezeAll;
+    }
 
     void FixedUpdate()
     {
@@ -57,13 +61,21 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     private void OnCollisionEnter(Collision col)
     {
 
-        if (col.transform.CompareTag(Tags.BACKGROUND_BORDER))
+        if (col.transform.CompareTag(Tags.CORE))
         {
 
             Debug.Log(col);
             Destroy(gameObject.GetComponent<BombFall>());
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(false);
+
+
+
             spinner.GetComponent<SpinnerColorChange>().ChangeIndexHolder(0, 1);
+            core_ring.GetComponent<CoreRingColorChange>().DecreaseDegree();
+
+
+
+
 
 
 

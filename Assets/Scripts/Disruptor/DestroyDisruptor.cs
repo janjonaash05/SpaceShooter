@@ -78,19 +78,10 @@ public class DestroyDisruptor : MonoBehaviour
         GetComponent<DisruptorStartEndMovement>().CancelMovingUp();
         Destroy(GetComponent<DisruptorMovement>());
         Destroy(GetComponent<DisruptorColorChange>());
-
-
-
         Destroy(GetComponent<Renderer>());
 
 
         UICommunicationSO.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ScoreReward());
-
-
-
-
-
-
         GetComponent<IScoreEnumerable>().DisabledRewards = true;
 
       
@@ -107,6 +98,9 @@ public class DestroyDisruptor : MonoBehaviour
         emission.enabled = true;
 
         system.Play();
+
+
+
         Invoke(nameof(DestroyObj), system.main.duration);
 
         

@@ -27,7 +27,7 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
 
 
 
-    void StartColorChange(object sender, EventArgs e)
+    void StartColorChange()
     {
 
 

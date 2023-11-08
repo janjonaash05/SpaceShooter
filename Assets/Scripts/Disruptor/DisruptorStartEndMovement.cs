@@ -8,10 +8,10 @@ public class DisruptorStartEndMovement : MonoBehaviour
     // Start is called before the first frame update
 
 
-    public  float down_speed, up_speed;
+    public float down_speed, up_speed;
     public float min_y, max_y;
 
-    public event EventHandler OnMoveDownFinish, OnMoveUpFinish;
+    public event Action OnMoveDownFinish, OnMoveUpFinish;
 
 
 
@@ -24,7 +24,7 @@ public class DisruptorStartEndMovement : MonoBehaviour
     }
 
 
-    void Kill(object sender, EventArgs e) {
+    void Kill() {
 
         Destroy(gameObject);
     
@@ -64,7 +64,7 @@ public class DisruptorStartEndMovement : MonoBehaviour
 
             }
 
-            OnMoveDownFinish?.Invoke(this, EventArgs.Empty);
+            OnMoveDownFinish?.Invoke();
             
        
 
@@ -91,7 +91,7 @@ public class DisruptorStartEndMovement : MonoBehaviour
         }
         if (!cancelMoveUpExternally) 
         {
-            OnMoveUpFinish?.Invoke(this, EventArgs.Empty);
+            OnMoveUpFinish?.Invoke();
 
         }
     }

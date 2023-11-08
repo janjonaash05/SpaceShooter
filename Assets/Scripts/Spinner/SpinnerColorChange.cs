@@ -26,7 +26,7 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
-    const int PRIMARY_INDEX = 1, SECONDARY_INDEX = 0, CHARGING_INDEX = 18;
+    const int PRIMARY_INDEX = 1, SECONDARY_INDEX = 0, CHARGING_INDEX = 2;
 
 
     void Start()
@@ -52,7 +52,7 @@ public class SpinnerColorChange : MonoBehaviour
         InitialColorSetup();
 
 
-        StartCoroutine(colorChange());
+        StartCoroutine(ColorChange());
 
 
     }
@@ -88,7 +88,7 @@ public class SpinnerColorChange : MonoBehaviour
         for (int i = 0; i < rend.materials.Length; i++)
         {
 
-            newMats[i] = secondary;
+            newMats[i] = primary;
         }
 
         AssignBasicColors(newMats);
@@ -147,7 +147,7 @@ public class SpinnerColorChange : MonoBehaviour
         newMats[CHARGING_INDEX] = (charge_up_mode) ? changing_mat : secondary;
         */
 
-        AssignBasicColors(newMats);
+        
 
 
         var copyHolder = new SpinnerIndexHolder(index_holder.parent, index_holder.child);
@@ -172,11 +172,11 @@ public class SpinnerColorChange : MonoBehaviour
             foreach (int i in offlist)
             {
 
-                newMats[i] = secondary;
+                newMats[i] = primary;
             }
         }
 
-
+        AssignBasicColors(newMats);
 
 
         rend.materials = newMats;
@@ -188,7 +188,7 @@ public class SpinnerColorChange : MonoBehaviour
 
 
   
-    IEnumerator colorChange()
+    IEnumerator ColorChange()
     {
 
         while (true)

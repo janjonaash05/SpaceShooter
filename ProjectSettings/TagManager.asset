@@ -24,6 +24,7 @@ TagManager:
   - ConstellationBomb
   - BackgroundBorder
   - Core
+  - CoreRing
   layers:
   - Default
   - TransparentFX

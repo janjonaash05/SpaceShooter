@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class DamageBomb : MonoBehaviour
 {
@@ -51,11 +52,12 @@ public class DamageBomb : MonoBehaviour
 
 
         Destroy(bomb.GetComponent<BombFall>());
+        
 
         await GetComponent<BombColorChange>().CoverInColor();
 
 
-        Action damage = (playerTargeted) ? DamageByPlayer : DamageBySpinner;
+        Action damage = (playerTargeted) ? DamageByPlayer : DamageByCore;
 
         damage();
 
@@ -76,13 +78,43 @@ public class DamageBomb : MonoBehaviour
 
 
 
-     void DamageBySpinner()
+    void DamageByCore()
     {
-        _ = ScaleDown(token);
+
+
+
+        ParticleSystem ps = transform.GetChild(1).GetComponent<ParticleSystem>();
+        
+
+        Vector3 target = GameObject.FindGameObjectWithTag(Tags.CORE).transform.position;
+        Debug.LogWarning(target + "core " + transform.position + " bmb");
+
+
+
+        Vector3 rotationDirection = (target - transform.position);
+
+        Debug.LogWarning(rotationDirection + " rot");
+
+
+        
+       transform.rotation = Quaternion.LookRotation(rotationDirection);
+        
+     
        
 
+        Debug.DrawRay(transform.position, rotationDirection, Color.red, 1f);
 
-    
+
+
+
+
+       ps.enableEmission = true;
+       ps.Play();
+
+        _ = ScaleDown(token);
+        Destroy(gameObject, transform.GetChild(1).GetComponent<ParticleSystem>().main.duration);
+
+        
     }
 
 
@@ -113,7 +145,7 @@ public class DamageBomb : MonoBehaviour
         }
 
 
-        Destroy(gameObject);
+        
 
 
 

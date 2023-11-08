@@ -66,7 +66,7 @@ public class DisruptorMovement : MonoBehaviour
     }
 
 
-    void EnableMovement(object sender, EventArgs e)
+    void EnableMovement()
     {
 
         StartCoroutine(Enable());

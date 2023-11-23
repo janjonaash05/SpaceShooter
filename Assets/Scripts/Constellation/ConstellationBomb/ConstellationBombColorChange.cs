@@ -18,7 +18,7 @@ public class ConstellationBombColorChange : BombColorChange
 
         ColorChange();
 
-        StarFallIntoBomb.OnStarFallen += AddColor;
+     //   StarFallIntoBomb.OnStarFallen += AddColor;
         color_index = 0;
 
 
@@ -28,7 +28,7 @@ public class ConstellationBombColorChange : BombColorChange
 
     private void OnDestroy()
     {
-        StarFallIntoBomb.OnStarFallen -= AddColor;
+       // StarFallIntoBomb.OnStarFallen -= AddColor;
     }
 
 

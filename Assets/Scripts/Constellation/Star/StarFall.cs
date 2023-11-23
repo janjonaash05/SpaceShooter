@@ -1,12 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class StarFallIntoBomb : MonoBehaviour
+public class StarFall : MonoBehaviour
 {
     // Start is called before the first frame update
-
 
     Vector3 target;
 
@@ -14,12 +13,12 @@ public class StarFallIntoBomb : MonoBehaviour
     public static event StarFallEventHandler OnStarFallen;
 
     [SerializeField] float speed;
-   
+
     void Start()
     {
-        target = Vector3.zero + GameObject.FindGameObjectWithTag(Tags.CONSTELLATION_BOMB).transform.localPosition ;
+        target = Vector3.zero + GameObject.FindGameObjectWithTag(Tags.SUPERNOVA).transform.localPosition;
         GetComponent<StarChargeUp>().OnChargeUp += Fall;
-       
+
 
     }
 
@@ -29,12 +28,12 @@ public class StarFallIntoBomb : MonoBehaviour
 
     private void OnDestroy()
     {
-        
+
     }
 
 
 
-    // Update is called once per frame
+    
 
 
 
@@ -44,28 +43,24 @@ public class StarFallIntoBomb : MonoBehaviour
         {
             while (Vector3.Distance(transform.localPosition, target) > 0.1)
             {
-                transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, speed* Time.deltaTime);
-             
+                transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, speed * Time.deltaTime);
+
 
                 yield return null;
-            
+
             }
             OnStarFallen?.Invoke(GetComponent<Renderer>().materials[1]);
             Destroy(gameObject);
-        
-        
-        
+
+
+
         }
 
 
         StartCoroutine(fall());
 
 
-        
+
     }
 
-
-
-
-    
 }

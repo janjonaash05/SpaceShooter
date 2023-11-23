@@ -36,7 +36,8 @@ public static class Tags
     public const string DISRUPTOR = "Disruptor";
 
     public const string STAR = "Star";
-    public const string CONSTELLATION_BOMB = "ConstellationBomb";
+    public const string SUPERNOVA = "Supernova";
+
 
 
 
@@ -44,7 +45,6 @@ public static class Tags
 
 
     public const string CORE = "Core";
-
     public const string CORE_RING = "CoreRing";
 
 

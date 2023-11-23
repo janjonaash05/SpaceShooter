@@ -35,7 +35,7 @@ public class SpinnerColorChange : MonoBehaviour
         LaserTurretCommunicationSO2.OnManualTargeting += (g) => ChangeIndexHolder(0, -1);
 
 
-
+        CoreCommunicationSO.OnValueChangedSpinner += ChangeIndexHolder;
 
 
 
@@ -134,23 +134,17 @@ public class SpinnerColorChange : MonoBehaviour
 
         if (index_holder.parent == 0) { return; }
 
-        //Renderer rend = GetComponent<Renderer>();
         int size = rend.materials.Length;
 
         Material[] newMats = new Material[size];
 
-        /*
-        for (int i = 0; i < 2; i++)
-        {
-            newMats[i] = rend.materials[i];
-        }
-        newMats[CHARGING_INDEX] = (charge_up_mode) ? changing_mat : secondary;
-        */
 
         
 
 
         var copyHolder = new SpinnerIndexHolder(index_holder.parent, index_holder.child);
+
+
         var colorlist = SpinnerIndexHolder.AllMatIndexesByHolder(copyHolder, true);
         copyHolder.ChangeIndex(0, 1);
         var offlist = SpinnerIndexHolder.AllMatIndexesByHolder(copyHolder, false);
@@ -193,15 +187,18 @@ public class SpinnerColorChange : MonoBehaviour
 
         while (true)
         {
+/*
+*/
 
-            for (int i = 0; i < mats_storage.Length; i++)
+
+            foreach (Material m in mats_storage)
             {
 
 
-                
-            
 
-                changing_mat = mats_storage[i];
+
+
+                changing_mat = m;
 
                 ChangeMaterialArray();
 

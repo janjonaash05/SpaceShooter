@@ -35,19 +35,19 @@ public class SpinnerIndexHolder : IndexHolder
     {
 
 
-        int a = (color) ? -1 : 1;
+        int target = (color) ? -1 : 1;
         var list = new List<int>();
 
         var copyHolder = new SpinnerIndexHolder(holder.parent, holder.child);
 
         int changeResult = 0;
-        while (changeResult != a)
+        while (changeResult != target)
         {
 
 
             list.Add(GetMatIndexByHolder(copyHolder));
 
-            changeResult = copyHolder.ChangeIndex(0, a);
+            changeResult = copyHolder.ChangeIndex(0, target);
 
         }
 

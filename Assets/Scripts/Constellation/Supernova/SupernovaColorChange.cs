@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 
 public class SupernovaColorChange : MonoBehaviour
@@ -9,16 +9,25 @@ public class SupernovaColorChange : MonoBehaviour
 
 
 
-    [SerializeField] Material[] color_mats;
+    [SerializeField] List<Material> color_mats;
 
     [SerializeField] Material primary, secondary;
+
+
+    [SerializeField] float color_change_delay;
+
+    [SerializeField] Material white;
 
 
     Renderer r;
 
 
 
-    List<Material> colors;
+
+    public  event Action OnColorUpFinished;
+
+
+   
     
 
 
@@ -44,10 +53,44 @@ public class SupernovaColorChange : MonoBehaviour
 
 
 
+    void OnlyCenterColorUp(Material m) 
+    {
+        Material[] start_current_mats = new Material[r.materials.Length];
+        for (int i = 0; i < r.materials.Length; i++)
+        {
+            start_current_mats[i] = r.materials[i];
+        }
+
+
+
+        start_current_mats[CENTER_INDEX] = m;
+
+        r.materials = start_current_mats;
+
+    }
+
+
+    void SetCentertAndAddColorToList(Material m)
+    {
+        color_mats.Add(m);
+
+        OnlyCenterColorUp(m);
+
+
+
+
+
+    }
+
+
+
+
     void Start()
     {
+        StarFall.OnStarFallen += SetCentertAndAddColorToList;
+        FormConstellation.OnAllStarsGone += AllColorUp;
 
-        colors = new();
+        color_mats = new();
 
 
         r = GetComponent<Renderer>();
@@ -57,41 +100,53 @@ public class SupernovaColorChange : MonoBehaviour
 
 
 
+    }
+
+    private void OnDestroy()
+    {
+        StarFall.OnStarFallen -= SetCentertAndAddColorToList;
+        FormConstellation.OnAllStarsGone -= AllColorUp;
+    }
 
 
 
 
+    void AllColorUp() 
+    {
+        OnlyCenterColorUp(white);
 
-
-
-
-        IEnumerator change()
+        IEnumerator colorUp()
         {
 
-            for (int i = 0; i < color_mats.Length; i++)
+            for (int i = 0; i < color_mats.Count; i++)
             {
 
 
 
                 AddColor(color_mats[i]);
                 current_color_index++;
-                    
 
 
-                yield return new WaitForSeconds(0.1f);
+
+                yield return new WaitForSeconds(color_change_delay);
             }
 
 
 
-
+            OnColorUpFinished?.Invoke();
 
         }
 
-        StartCoroutine(change());
+        StartCoroutine(colorUp());
+
+
 
 
 
     }
+
+
+
 
     // Update is called once per frame
     void Update()
@@ -103,7 +158,7 @@ public class SupernovaColorChange : MonoBehaviour
 
 
 
-    int current_color_index = 1 ;
+    int current_color_index = 1;
 
     void AddColor(Material color) 
     {

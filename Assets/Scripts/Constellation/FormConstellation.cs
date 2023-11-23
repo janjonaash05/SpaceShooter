@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class FormConstellation : MonoBehaviour
@@ -11,7 +10,7 @@ public class FormConstellation : MonoBehaviour
     // Start is called before the first frame update
 
 
-    [SerializeField] GameObject star_prefab, bomb_prefab;
+    [SerializeField] GameObject star_prefab, supernova_prefab;
 
     [SerializeField] Material[] mats;
     [SerializeField] float random_distance_factor;
@@ -74,9 +73,9 @@ public class FormConstellation : MonoBehaviour
 
 
 
-      var bomb =   Instantiate(bomb_prefab,transform,false);
-        bomb.transform.parent = transform;
-        bomb.transform.localPosition = new Vector3(-86.5f,0,0);
+      var nova =   Instantiate(supernova_prefab,transform,false);
+        nova.transform.parent = transform;
+        nova.transform.localPosition = new Vector3(-86.5f,0,0);
 
 
 

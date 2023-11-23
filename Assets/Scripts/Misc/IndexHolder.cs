@@ -35,6 +35,7 @@ public class IndexHolder
     {
 
         child = (childDelta > 0 || parent > minParent - 1) ? child + childDelta : child;
+
         if (child >= maxChild + 1)
         {
             parent++;

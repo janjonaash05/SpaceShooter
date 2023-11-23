@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,20 @@ public class CoreRingColorChange : MonoBehaviour
         r = GetComponent<Renderer>();
         InitColorUp();
         StartCoroutine(Change());
+
+
+
+
+        CoreCommunicationSO.OnValueChangedCore += DecreaseDegree;
+
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 
@@ -49,49 +58,56 @@ public class CoreRingColorChange : MonoBehaviour
 
     }
 
+    const int SECONDARY_INDEX = 0;
 
+
+    const int PRIMARY_INDEX = 3;
     IEnumerator Change()
     {
 
 
-        while (true) 
+        while (true)
         {
-        
-        
-        
-       
 
-                foreach (Material m in color_mats)
+
+
+
+
+            foreach (Material m in color_mats)
+            {
+
+
+
+                Material[] newMats = new Material[r.materials.Length];
+                Array.Fill(newMats, primary);
+
+
+
+                for (int i = 1; i <= color_degree; i++) 
                 {
-
-
-
-                    Material[] newMats = new Material[r.materials.Length];
-                    for (int i = 1; i <= color_degree; i++)
-                    {
-                        newMats[color_order_index_dict[i]] = m;
-                    }
-
-
-                    for (int i = color_degree+1; i < newMats.Length - color_degree; i++) 
-                    {
-                    newMats[color_order_index_dict[i]] = secondary;
-                    }
-
-
-                    newMats[PRIMARY_INDEX] = primary;
-
-                    newMats[SECONDARY_INDEX] = secondary;
+                    newMats[color_order_index_dict[i]] = m;
+                }
 
 
 
 
-                    yield return new WaitForSeconds(1f);
+
+
+
+
+                newMats[PRIMARY_INDEX] = primary;
+
+                newMats[SECONDARY_INDEX] = secondary;
+
+
 
                 r.materials = newMats;
+                yield return new WaitForSeconds(1f);
 
 
-                }
+
+
+            }
 
 
         }
@@ -109,20 +125,16 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-    public void DecreaseDegree() 
+
+    public void DecreaseDegree(int value)
     {
-        color_degree--;
-      
+        color_degree-= value;
+
     }
 
 
 
 
-
-    const int SECONDARY_INDEX = 0;
-
-
-    const int PRIMARY_INDEX = 3;
 
 
     static readonly Dictionary<int, int> color_order_index_dict = new()

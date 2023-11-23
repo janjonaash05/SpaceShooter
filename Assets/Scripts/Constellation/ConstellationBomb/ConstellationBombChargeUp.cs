@@ -28,7 +28,7 @@ public class ConstellationBombChargeUp : MonoBehaviour
     void Start()
     {
         scale_increment = max_scale / 8;
-        StarFallIntoBomb.OnStarFallen += AddSize;
+      //  StarFallIntoBomb.OnStarFallen += AddSize;
         rotation = new Vector3
             (
            GenerateRandomRotationAxis(),
@@ -52,7 +52,7 @@ public class ConstellationBombChargeUp : MonoBehaviour
 
     private void OnDestroy()
     {
-        StarFallIntoBomb.OnStarFallen -= AddSize;
+        // StarFallIntoBomb.OnStarFallen -= AddSize;
     }
 
 

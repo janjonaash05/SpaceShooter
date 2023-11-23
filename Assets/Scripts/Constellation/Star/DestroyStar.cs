@@ -18,7 +18,7 @@ public class DestroyStar : MonoBehaviour
 
     void CoverInWhite()
     {
-        TryGetComponent(out StarFallIntoBomb b);
+       TryGetComponent(out StarFall b);
         Destroy(b);
 
 

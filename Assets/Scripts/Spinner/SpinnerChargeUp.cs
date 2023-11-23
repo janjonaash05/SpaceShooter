@@ -11,7 +11,7 @@ public class SpinnerChargeUp : MonoBehaviour
     public GameObject charge;
     void Start()
     {
-        charge.transform.position = transform.position;
+        
     }
 
 

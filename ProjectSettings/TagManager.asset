@@ -25,6 +25,7 @@ TagManager:
   - BackgroundBorder
   - Core
   - CoreRing
+  - Supernova
   layers:
   - Default
   - TransparentFX

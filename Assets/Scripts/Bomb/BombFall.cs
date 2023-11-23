@@ -70,8 +70,12 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
 
 
-            spinner.GetComponent<SpinnerColorChange>().ChangeIndexHolder(0, 1);
-            core_ring.GetComponent<CoreRingColorChange>().DecreaseDegree();
+          //  spinner.GetComponent<SpinnerColorChange>().ChangeIndexHolder(0, 1);
+        //    core_ring.GetComponent<CoreRingColorChange>().DecreaseDegree();
+
+
+
+            CoreCommunicationSO.Raise_OnValueChanged(1);
 
 
 

@@ -177,7 +177,7 @@ public class ConstellationBombFall : MonoBehaviour
             
 
 
-            spinner.GetComponent<SpinnerColorChange>().ChangeIndexHolder(vals.p, vals.c);
+           // spinner.GetComponent<SpinnerColorChange>().ChangeIndexHolder(vals.p, vals.c);
         }
     }
 }

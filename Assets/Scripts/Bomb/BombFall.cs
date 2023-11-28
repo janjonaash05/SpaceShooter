@@ -75,7 +75,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
 
 
-            CoreCommunicationSO.Raise_OnValueChanged(1);
+            CoreCommunication.Raise_ValueChange(0, 1);
 
 
 

@@ -24,11 +24,11 @@ public class TurretChargeColorChange : MonoBehaviour
         {
 
             case 1:
-                LaserTurretCommunicationSO1.OnTurretChargeColorChange += (mat, turn_off) => { rend.material = (turn_off) ? off_mat : mat; };
+                LaserTurretCommunication1.OnTurretChargeColorChange += (mat, turn_off) => { rend.material = (turn_off) ? off_mat : mat; };
 
                 break;
             case 2:
-                LaserTurretCommunicationSO2.OnTurretChargeColorChange += (mat, turn_off) => rend.material = (turn_off) ? off_mat : mat;
+                LaserTurretCommunication2.OnTurretChargeColorChange += (mat, turn_off) => rend.material = (turn_off) ? off_mat : mat;
                 break;
 
 

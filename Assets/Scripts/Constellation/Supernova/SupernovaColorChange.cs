@@ -124,8 +124,7 @@ public class SupernovaColorChange : MonoBehaviour
 
 
                 AddColor(color_mats[i]);
-                current_color_index++;
-
+                
 
 
                 yield return new WaitForSeconds(color_change_delay);
@@ -162,6 +161,8 @@ public class SupernovaColorChange : MonoBehaviour
 
     void AddColor(Material color) 
     {
+       
+
         Material[] new_mats = new Material[r.materials.Length];
 
 
@@ -178,11 +179,34 @@ public class SupernovaColorChange : MonoBehaviour
 
 
         r.materials = new_mats;
+        current_color_index++;
 
     }
 
 
+   public void RemoveColor() 
+    {
+        current_color_index--;
 
+        Material[] new_mats = new Material[r.materials.Length];
+
+
+
+        int index_to_change = color_order_index_dict[current_color_index];
+        for (int j = 0; j < r.materials.Length; j++)
+        {
+
+            new_mats[j] = j == index_to_change ? secondary : r.materials[j];
+
+        }
+
+
+
+
+        r.materials = new_mats;
+       
+
+    }
 
 
 

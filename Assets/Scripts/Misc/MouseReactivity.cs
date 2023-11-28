@@ -37,36 +37,36 @@ public class MouseReactivity : MonoBehaviour
 
 
 
-        PlayerInputSO.OnLaserTarget1Click += LaserTurretCommunicationSO1.AttemptRaise_ManualTargeting;
-        PlayerInputSO.OnLaserTarget2Click += LaserTurretCommunicationSO2.AttemptRaise_ManualTargeting;
+        PlayerInputCommunication.OnLaserTarget1Click += LaserTurretCommunication1.AttemptRaise_ManualTargeting;
+        PlayerInputCommunication.OnLaserTarget2Click += LaserTurretCommunication2.AttemptRaise_ManualTargeting;
 
-        PlayerInputSO.OnLaserTarget1Click += (hit) => { UICommunicationSO.Raise_ScoreChange( hit.transform.GetComponent<IScoreEnumerable>().ScoreReward()); };
-        PlayerInputSO.OnLaserTarget2Click += (hit) => { UICommunicationSO.Raise_ScoreChange(hit.transform.GetComponent<IScoreEnumerable>().ScoreReward()); };
-
-
-
-
-        PlayerInputSO.OnAutoCollider1Click += (hit) => LaserTurretCommunicationSO1.AttempRaise_AutoTargetingAttempt();
-        PlayerInputSO.OnAutoCollider1Click += (hit) => LaserTurretCommunicationSO1.AttemptRaise_AutoCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
+        PlayerInputCommunication.OnLaserTarget1Click += (hit) => { UICommunication.Raise_ScoreChange( hit.transform.GetComponent<IScoreEnumerable>().ScoreReward()); };
+        PlayerInputCommunication.OnLaserTarget2Click += (hit) => { UICommunication.Raise_ScoreChange(hit.transform.GetComponent<IScoreEnumerable>().ScoreReward()); };
 
 
 
-        PlayerInputSO.OnColorCollider1Click += (hit) => LaserTurretCommunicationSO1.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, false);
-        PlayerInputSO.OnColorCollider1Click += (hit) => LaserTurretCommunicationSO1.AttemptRaise_ColorCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
+
+        PlayerInputCommunication.OnAutoCollider1Click += (hit) => LaserTurretCommunication1.AttempRaise_AutoTargetingAttempt();
+        PlayerInputCommunication.OnAutoCollider1Click += (hit) => LaserTurretCommunication1.AttemptRaise_AutoCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
 
 
+
+        PlayerInputCommunication.OnColorCollider1Click += (hit) => LaserTurretCommunication1.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, false);
+        PlayerInputCommunication.OnColorCollider1Click += (hit) => LaserTurretCommunication1.AttemptRaise_ColorCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
 
 
 
 
 
 
-        PlayerInputSO.OnAutoCollider2Click += (hit) => LaserTurretCommunicationSO2.AttempRaise_AutoTargetingAttempt();
-        PlayerInputSO.OnAutoCollider2Click += (hit) => LaserTurretCommunicationSO2.AttemptRaise_AutoCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
 
 
-        PlayerInputSO.OnColorCollider2Click += (hit) => LaserTurretCommunicationSO2.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, false);
-        PlayerInputSO.OnColorCollider2Click += (hit) => LaserTurretCommunicationSO2.AttemptRaise_ColorCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
+        PlayerInputCommunication.OnAutoCollider2Click += (hit) => LaserTurretCommunication2.AttempRaise_AutoTargetingAttempt();
+        PlayerInputCommunication.OnAutoCollider2Click += (hit) => LaserTurretCommunication2.AttemptRaise_AutoCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
+
+
+        PlayerInputCommunication.OnColorCollider2Click += (hit) => LaserTurretCommunication2.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, false);
+        PlayerInputCommunication.OnColorCollider2Click += (hit) => LaserTurretCommunication2.AttemptRaise_ColorCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
 
 
 
@@ -93,7 +93,7 @@ public class MouseReactivity : MonoBehaviour
 
                 Debug.Log(hit.transform.tag);
 
-                PlayerInputSO.Raise_RaycastClick(hit);
+                PlayerInputCommunication.Raise_RaycastClick(hit);
                
 
 

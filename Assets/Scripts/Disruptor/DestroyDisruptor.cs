@@ -81,7 +81,7 @@ public class DestroyDisruptor : MonoBehaviour
         Destroy(GetComponent<Renderer>());
 
 
-        UICommunicationSO.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ScoreReward());
+        UICommunication.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ScoreReward());
         GetComponent<IScoreEnumerable>().DisabledRewards = true;
 
       

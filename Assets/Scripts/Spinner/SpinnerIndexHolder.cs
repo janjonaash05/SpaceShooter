@@ -30,7 +30,7 @@ public class SpinnerIndexHolder : IndexHolder
      
 
 
-
+    // TODO: MOVE TO CORE SO, rename to CORE HOLDER
     public static List<int> AllMatIndexesByHolder(SpinnerIndexHolder holder, bool color)
     {
 

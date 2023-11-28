@@ -42,7 +42,7 @@ public class DestroyStar : MonoBehaviour
 
         // ScoreCounter.Increase();
 
-        UICommunicationSO.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ScoreReward());
+        UICommunication.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ScoreReward());
 
 
         GetComponent<IScoreEnumerable>().DisabledRewards = true;

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UICommunicationSO : ScriptableObject
+public static class UICommunication
 {
 
     public static int Score { get; private set; } = 0;

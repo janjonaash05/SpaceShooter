@@ -37,7 +37,7 @@ public class PopupDisplay : MonoBehaviour
 
 
 
-        UICommunicationSO.OnDifficultyValueChange += Popup;
+        UICommunication.OnDifficultyValueChange += Popup;
 
 
 
@@ -85,8 +85,8 @@ public class PopupDisplay : MonoBehaviour
             txt.fontSize = font_size_range.x;
 
 
-            UICommunicationSO.CanPopup = true; 
-            UICommunicationSO.Dequeue_PopupCall();
+            UICommunication.CanPopup = true; 
+            UICommunication.Dequeue_PopupCall();
 
 
          
@@ -104,7 +104,7 @@ public class PopupDisplay : MonoBehaviour
 
 
 
-        UICommunicationSO.CanPopup = false;
+        UICommunication.CanPopup = false;
         txt.text = e.Message;
         StartCoroutine(popup());
 

@@ -43,14 +43,14 @@ public class TargetBomb : MonoBehaviour
         {
             case 1:
 
-                LaserTurretCommunicationSO1.OnManualTargeting += (bomb) =>
+                LaserTurretCommunication1.OnManualTargeting += (bomb) =>
                 {
                     _ = StartTargeting(bomb);
                 };
 
 
 
-                LaserTurretCommunicationSO1.OnAutoTargetingAttempt += (tag) =>
+                LaserTurretCommunication1.OnAutoTargetingAttempt += (tag) =>
                 {
                     BarrageStart(tag);
                 };
@@ -58,13 +58,13 @@ public class TargetBomb : MonoBehaviour
 
 
 
-                OnBarrageStart += () => LaserTurretCommunicationSO1.SetBarraging(false);
-                OnBarrageStart += LaserTurretCommunicationSO1.Raise_AutoTargetingSuccess;
+                OnBarrageStart += () => LaserTurretCommunication1.SetBarraging(false);
+                OnBarrageStart += LaserTurretCommunication1.Raise_AutoTargetingSuccess;
 
-                OnBarrageEnd += () => LaserTurretCommunicationSO1.SetBarraging(false);
+                OnBarrageEnd += () => LaserTurretCommunication1.SetBarraging(false);
 
-                OnTargetingStart += () => LaserTurretCommunicationSO1.Raise_TargetingStart();
-                OnTargetingEnd += () => LaserTurretCommunicationSO1.Raise_TargetingEnd();
+                OnTargetingStart += () => LaserTurretCommunication1.Raise_TargetingStart();
+                OnTargetingEnd += () => LaserTurretCommunication1.Raise_TargetingEnd();
 
                 break;
 
@@ -74,14 +74,14 @@ public class TargetBomb : MonoBehaviour
 
 
 
-                LaserTurretCommunicationSO2.OnManualTargeting += (bomb) =>
+                LaserTurretCommunication2.OnManualTargeting += (bomb) =>
                 {
                     _ = StartTargeting(bomb);
                 };
 
 
 
-                LaserTurretCommunicationSO2.OnAutoTargetingAttempt += (tag) =>
+                LaserTurretCommunication2.OnAutoTargetingAttempt += (tag) =>
                 {
                     BarrageStart(tag);
                 };
@@ -89,13 +89,13 @@ public class TargetBomb : MonoBehaviour
 
 
 
-                OnBarrageStart += () => LaserTurretCommunicationSO2.SetBarraging(false);
-                OnBarrageStart += LaserTurretCommunicationSO2.Raise_AutoTargetingSuccess;
+                OnBarrageStart += () => LaserTurretCommunication2.SetBarraging(false);
+                OnBarrageStart += LaserTurretCommunication2.Raise_AutoTargetingSuccess;
 
-                OnBarrageEnd += () => LaserTurretCommunicationSO2.SetBarraging(false);
+                OnBarrageEnd += () => LaserTurretCommunication2.SetBarraging(false);
 
-                OnTargetingStart += () => LaserTurretCommunicationSO2.Raise_TargetingStart();
-                OnTargetingEnd += () => LaserTurretCommunicationSO2.Raise_TargetingEnd();
+                OnTargetingStart += () => LaserTurretCommunication2.Raise_TargetingStart();
+                OnTargetingEnd += () => LaserTurretCommunication2.Raise_TargetingEnd();
 
 
                 break;
@@ -293,7 +293,7 @@ public class TargetBomb : MonoBehaviour
 
 
 
-            UICommunicationSO.Raise_ScoreChange(1);
+            UICommunication.Raise_ScoreChange(1);
 
 
 

@@ -17,8 +17,8 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
 
     void Start()
     {
-        PlayerInputSO.OnSliderBoltClick += (_) => OnActivationInvoke();
-     PlayerInputSO.OnSliderFullAutoClick += (_) => OnDeactivationInvoke();
+        PlayerInputCommunication.OnSliderBoltClick += (_) => OnActivationInvoke();
+     PlayerInputCommunication.OnSliderFullAutoClick += (_) => OnDeactivationInvoke();
 
 
 

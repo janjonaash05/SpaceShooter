@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Runtime.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
@@ -8,7 +10,7 @@ public class SpinnerColorChange : MonoBehaviour
 
 
     Material changing_mat;
-    public float change_time;
+  
 
 
     public Material[] mats_storage;
@@ -18,7 +20,7 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
-    public SpinnerIndexHolder index_holder;
+    public MaterialIndexHolder index_holder;
     public bool charge_up_mode;
 
     public GameObject charge;
@@ -28,14 +30,14 @@ public class SpinnerColorChange : MonoBehaviour
 
     const int PRIMARY_INDEX = 1, SECONDARY_INDEX = 0, CHARGING_INDEX = 2;
 
-
+    /*
     void Start()
     {
-        LaserTurretCommunicationSO1.OnManualTargeting += (g) => ChangeIndexHolder(0, -1);
-        LaserTurretCommunicationSO2.OnManualTargeting += (g) => ChangeIndexHolder(0, -1);
+        LaserTurretCommunication1.OnManualTargeting += (g) => ChangeIndexHolder(0, -1);
+        LaserTurretCommunication2.OnManualTargeting += (g) => ChangeIndexHolder(0, -1);
 
 
-        CoreCommunicationSO.OnValueChangedSpinner += ChangeIndexHolder;
+        CoreCommunication.OnValueChangedSpinner += ChangeIndexHolder;
 
 
 
@@ -56,6 +58,44 @@ public class SpinnerColorChange : MonoBehaviour
 
 
     }
+    */
+
+
+
+    void Start()
+    {
+        //   LaserTurretCommunication1.OnManualTargeting += (g) => ChangeIndexHolder(0, -1);
+        //  LaserTurretCommunication2.OnManualTargeting += (g) => ChangeIndexHolder(0, -1);
+
+
+        CoreCommunication.OnSpinnerChargeUpStart += () => EngageChargeUp(true);
+        CoreCommunication.OnSpinnerChargeUpEnd += () => EngageChargeUp(false);
+        CoreCommunication.OnSpinnerInitialColorUp += InitialColorSetup;
+
+
+
+        rend = GetComponent<Renderer>();
+
+        secondary = GetComponent<Renderer>().materials[0];
+        primary = GetComponent<Renderer>().materials[1];
+
+        index_holder = CoreCommunication.SPINNER_INDEX_HOLDER;
+        charge_up_mode = false;
+        // SpinnerIndexHolder.LoadMap();
+
+        InitialColorSetup();
+
+
+        StartCoroutine(ColorChange());
+
+
+    }
+
+
+
+
+
+    /*
 
     public void ChangeIndexHolder(int parentDelta, int childDelta)
     {
@@ -72,7 +112,9 @@ public class SpinnerColorChange : MonoBehaviour
 
     }
 
-    void AssignBasicColors(Material[] newMats) 
+    */
+
+    void AssignBasicColors(Material[] newMats)
     {
 
         newMats[PRIMARY_INDEX] = primary;
@@ -126,7 +168,7 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
-
+    /*
 
 
     void ChangeMaterialArray()
@@ -174,35 +216,82 @@ public class SpinnerColorChange : MonoBehaviour
 
 
         rend.materials = newMats;
-        charge.GetComponent<Renderer>().material = changing_mat;
+        charge.GetComponent<Renderer>().materials = new[] { changing_mat, changing_mat };
+
+
+
+    }
+    */
+
+    void ChangeMaterialArray()
+    {
+
+        if (index_holder.parent == 0) { return; }
+
+        int size = rend.materials.Length;
+
+        Material[] newMats = new Material[size];
+
+
+
+
+
+        var copyHolder = new MaterialIndexHolder(index_holder.parent, index_holder.child, MaterialIndexHolder.Target.SPINNER);
+        var colorlist = copyHolder.AllMatIndexesByHolder(true);
+
+        copyHolder.ChangeIndex(0, 1);
+        var offlist = copyHolder.AllMatIndexesByHolder(false);
+
+        Debug.Log(colorlist.Count + " C " + offlist.Count + " O");
+
+        Debug.Log(colorlist.ToCommaSeparatedString() + " C," + offlist.ToCommaSeparatedString() + " O");
+
+
+        if (colorlist.Count > 0)
+        {
+            foreach (int i in colorlist)
+            {
+
+
+                newMats[i] = changing_mat;
+
+            }
+        }
+        if (offlist.Count > 0)
+        {
+            foreach (int i in offlist)
+            {
+
+
+                newMats[i] = primary;
+            }
+        }
+
+        AssignBasicColors(newMats);
+
+
+        rend.materials = newMats;
+        charge.GetComponent<Renderer>().materials = new[] { changing_mat, changing_mat };
 
 
 
     }
 
 
-  
     IEnumerator ColorChange()
     {
 
         while (true)
         {
-/*
-*/
-
-
+           
             foreach (Material m in mats_storage)
             {
-
-
-
-
 
                 changing_mat = m;
 
                 ChangeMaterialArray();
 
-                yield return new WaitForSeconds(change_time);
+                yield return new WaitForSeconds(CoreCommunication.CHANGE_TIME);
 
 
 

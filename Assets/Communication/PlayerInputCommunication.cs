@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "PlayerInputSO")]
-public class PlayerInputSO : ScriptableObject
+
+public static class PlayerInputCommunication
 {
 
 
@@ -20,7 +20,7 @@ public class PlayerInputSO : ScriptableObject
 
 
 
-    public event Action OnMouseDown, OnMouseUp;
+    public static event Action OnMouseDown, OnMouseUp;
 
     static Dictionary<string, Action<RaycastHit>> tag_click_dictionary = new()
     {

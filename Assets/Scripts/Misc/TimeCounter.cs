@@ -41,7 +41,7 @@ public class TimeCounter : MonoBehaviour
 
         Hundredths = (int) ( ((Time.time - Secs) * 100) % 99 );
 
-        UICommunicationSO.Assign_TimeValues(Secsf,Secs,Minsf, Mins,Hundredths);
+        UICommunication.Assign_TimeValues(Secsf,Secs,Minsf, Mins,Hundredths);
 
 
         txt.text = string.Format("{0:00}:{1:00}:{2:00}" ,Mins, Secs, Hundredths);

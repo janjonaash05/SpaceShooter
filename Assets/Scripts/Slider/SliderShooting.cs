@@ -37,8 +37,8 @@ public class SliderShooting : MonoBehaviour
 
 
 
-        PlayerInputSO.OnSliderBoltClick += (_) => loader_recharge = pivot_source_bolt_recharge;
-        PlayerInputSO.OnSliderFullAutoClick += (_) => loader_recharge = pivot_source_full_auto_recharge;
+        PlayerInputCommunication.OnSliderBoltClick += (_) => loader_recharge = pivot_source_bolt_recharge;
+        PlayerInputCommunication.OnSliderFullAutoClick += (_) => loader_recharge = pivot_source_full_auto_recharge;
 
 
 

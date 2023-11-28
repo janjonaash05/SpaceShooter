@@ -23,7 +23,7 @@ public class ScoreCounter : MonoBehaviour
 
 
 
-        UICommunicationSO.OnScoreChange += () => txt.text = "Score: " + UICommunicationSO.Score;
+        UICommunication.OnScoreChange += () => txt.text = "Score: " + UICommunication.Score;
     }
 
     // Update is called once per frame

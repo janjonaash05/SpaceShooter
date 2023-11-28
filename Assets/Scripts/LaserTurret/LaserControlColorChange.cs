@@ -34,32 +34,32 @@ public class LaserControlColorChange : ControlColorChange
         switch (ID)
         {
             case 1:
-                LaserTurretCommunicationSO1.OnColorCollider_ControlColorChange += StartChange;
-                LaserTurretCommunicationSO1.OnAutoCollider_ControlColorChange += StartChange;
+                LaserTurretCommunication1.OnColorCollider_ControlColorChange += StartChange;
+                LaserTurretCommunication1.OnAutoCollider_ControlColorChange += StartChange;
 
 
-                LaserTurretCommunicationSO1.OnAutoTargetingDisabled += DisableAutoTargeting;
-                LaserTurretCommunicationSO1.OnAutoTargetingEnabled += EnableAutoTargeting;
+                LaserTurretCommunication1.OnAutoTargetingDisabled += DisableAutoTargeting;
+                LaserTurretCommunication1.OnAutoTargetingEnabled += EnableAutoTargeting;
 
 
-                LaserTurretCommunicationSO1.OnControlDisabled += TurnOff;
-                LaserTurretCommunicationSO1.OnControlEnabled += TurnOn;
+                LaserTurretCommunication1.OnControlDisabled += TurnOff;
+                LaserTurretCommunication1.OnControlEnabled += TurnOn;
 
 
                 break;
 
             case 2:
 
-                LaserTurretCommunicationSO2.OnColorCollider_ControlColorChange += StartChange;
-                LaserTurretCommunicationSO2.OnAutoCollider_ControlColorChange += StartChange;
+                LaserTurretCommunication2.OnColorCollider_ControlColorChange += StartChange;
+                LaserTurretCommunication2.OnAutoCollider_ControlColorChange += StartChange;
 
 
-                LaserTurretCommunicationSO2.OnAutoTargetingDisabled += DisableAutoTargeting;
-                LaserTurretCommunicationSO2.OnAutoTargetingEnabled += EnableAutoTargeting;
+                LaserTurretCommunication2.OnAutoTargetingDisabled += DisableAutoTargeting;
+                LaserTurretCommunication2.OnAutoTargetingEnabled += EnableAutoTargeting;
 
 
-                LaserTurretCommunicationSO2.OnControlDisabled += TurnOff;
-                LaserTurretCommunicationSO2.OnControlEnabled += TurnOn;
+                LaserTurretCommunication2.OnControlDisabled += TurnOff;
+                LaserTurretCommunication2.OnControlEnabled += TurnOn;
 
 
 

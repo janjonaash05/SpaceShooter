@@ -40,8 +40,8 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
     void Start()
     {
-        PlayerInputSO.OnSliderFullAutoClick += (_) => OnActivationInvoke();
-        PlayerInputSO.OnSliderBoltClick += (_) => OnDeactivationInvoke();
+        PlayerInputCommunication.OnSliderFullAutoClick += (_) => OnActivationInvoke();
+        PlayerInputCommunication.OnSliderBoltClick += (_) => OnDeactivationInvoke();
 
 
         charge_grid = new GameObject[y_positions.Length, z_positions.Length];

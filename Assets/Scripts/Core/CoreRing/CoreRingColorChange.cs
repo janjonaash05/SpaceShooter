@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CoreRingColorChange : MonoBehaviour
@@ -11,23 +13,26 @@ public class CoreRingColorChange : MonoBehaviour
 
 
     int color_degree = 16;
-    [SerializeField] List<Material> color_mats;
+    [SerializeField] List<Material> mats_storage;
 
     [SerializeField] Material primary, secondary;
 
 
-    Renderer r;
+    Renderer rend;
+
+
+    MaterialIndexHolder index_holder;
     void Start()
     {
 
-        r = GetComponent<Renderer>();
+        rend = GetComponent<Renderer>();
         InitColorUp();
-        StartCoroutine(Change());
+        StartCoroutine(ColorChange());
 
 
+        index_holder = CoreCommunication.CORE_INDEX_HOLDER;
 
-
-        CoreCommunicationSO.OnValueChangedCore += DecreaseDegree;
+        
 
 
 
@@ -43,8 +48,8 @@ public class CoreRingColorChange : MonoBehaviour
     void InitColorUp()
     {
 
-        Material[] start_current_mats = new Material[r.materials.Length];
-        for (int i = 0; i < r.materials.Length; i++)
+        Material[] start_current_mats = new Material[rend.materials.Length];
+        for (int i = 0; i < rend.materials.Length; i++)
         {
             start_current_mats[i] = secondary;
         }
@@ -54,56 +59,94 @@ public class CoreRingColorChange : MonoBehaviour
         start_current_mats[SECONDARY_INDEX] = secondary;
 
 
-        r.materials = start_current_mats;
+        rend.materials = start_current_mats;
 
     }
+
+
+
+
+
+
+    void AssignBasicColors(Material[] newMats)
+    {
+
+        newMats[PRIMARY_INDEX] = primary;
+        newMats[SECONDARY_INDEX] = secondary;
+    }
+
+
 
     const int SECONDARY_INDEX = 0;
 
 
     const int PRIMARY_INDEX = 3;
-    IEnumerator Change()
+    void ChangeMaterialArray()
     {
 
+        if (index_holder.parent == 0) { return; }
+
+        int size = rend.materials.Length;
+
+        Material[] newMats = new Material[size];
+
+
+
+
+
+        var copyHolder = new MaterialIndexHolder(index_holder.parent, index_holder.child, MaterialIndexHolder.Target.SPINNER);
+        var colorlist = copyHolder.AllMatIndexesByHolder(true);
+
+        copyHolder.ChangeIndex(0, 1);
+        var offlist = copyHolder.AllMatIndexesByHolder(false);
+
+        Debug.Log(colorlist.Count + " C " + offlist.Count + " O");
+
+        Debug.Log(colorlist.ToCommaSeparatedString() + " C," + offlist.ToCommaSeparatedString() + " O");
+
+
+        if (colorlist.Count > 0)
+        {
+            foreach (int i in colorlist)
+            {
+
+
+                newMats[i] = changing_mat;
+
+            }
+        }
+        if (offlist.Count > 0)
+        {
+            foreach (int i in offlist)
+            {
+                newMats[i] = primary;
+            }
+        }
+        AssignBasicColors(newMats);
+
+
+        rend.materials = newMats;
+
+
+
+    }
+
+    Material changing_mat;
+    IEnumerator ColorChange()
+    {
 
         while (true)
         {
 
-
-
-
-
-            foreach (Material m in color_mats)
+            foreach (Material m in mats_storage)
             {
 
 
+                changing_mat = m;
 
-                Material[] newMats = new Material[r.materials.Length];
-                Array.Fill(newMats, primary);
+                ChangeMaterialArray();
 
-
-
-                for (int i = 1; i <= color_degree; i++) 
-                {
-                    newMats[color_order_index_dict[i]] = m;
-                }
-
-
-
-
-
-
-
-
-                newMats[PRIMARY_INDEX] = primary;
-
-                newMats[SECONDARY_INDEX] = secondary;
-
-
-
-                r.materials = newMats;
-                yield return new WaitForSeconds(1f);
-
+                yield return new WaitForSeconds(CoreCommunication.CHANGE_TIME);
 
 
 
@@ -112,11 +155,6 @@ public class CoreRingColorChange : MonoBehaviour
 
         }
 
-
-
-
-
-
     }
 
 
@@ -126,48 +164,13 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-    public void DecreaseDegree(int value)
-    {
-        color_degree-= value;
-
-    }
+  
 
 
 
 
 
 
-    static readonly Dictionary<int, int> color_order_index_dict = new()
-    {
-        {1,1 },
-        {2,12 },
-        {3,7 },
-        {4,11 },
-        {5,10 },
-        {6,6 },
-        {7,4 },
-        {8,8 },
-
-
-        {9,9 },
-        {10,17 },
-        {11,5 },
-        {12,16 },
-        {13,15 },
-        {14,2 },
-        {15,14 },
-        {16,13 },
-
-
-
-
-
-
-
-
-
-
-    };
 
 
 

@@ -60,9 +60,9 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-        if (UICommunicationSO.Secs == 0) { return; }
+        if (UICommunication.Secs == 0) { return; }
 
-        if (UICommunicationSO.Secsf % 5 < Time.deltaTime)
+        if (UICommunication.Secsf % 5 < Time.deltaTime)
         {
 
 
@@ -70,14 +70,14 @@ public class DifficultyManager : MonoBehaviour
             DifficultyEventArgs dif_event_args = new(AffectedFeature.TURRET, AffectedFeatureBehaviour.CAPACITY, "+1", AffectedTarget.FRIENDLY);
 
 
-            if (UICommunicationSO.CanPopup)
+            if (UICommunication.CanPopup)
             {
-                UICommunicationSO.Raise_OnDifficultyValueChange(dif_event_args);
+                UICommunication.Raise_OnDifficultyValueChange(dif_event_args);
 
             }
             else
             {
-                UICommunicationSO.Enqueue_PopupArguments(dif_event_args);
+                UICommunication.Enqueue_PopupArguments(dif_event_args);
 
             }
 

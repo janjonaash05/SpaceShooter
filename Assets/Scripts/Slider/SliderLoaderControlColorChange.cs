@@ -13,7 +13,6 @@ public class SliderLoaderControlColorChange : MonoBehaviour
     [SerializeField] Material on_mat;
     
 
-    [SerializeField] PlayerInputSO player_SO;
 
 
 
@@ -22,11 +21,11 @@ public class SliderLoaderControlColorChange : MonoBehaviour
     void Start()
     {
 
-        PlayerInputSO.OnSliderFullAutoClick += TurnOnFullAuto;
-        PlayerInputSO.OnSliderFullAutoClick += TurnOffBolt;
+        PlayerInputCommunication.OnSliderFullAutoClick += TurnOnFullAuto;
+        PlayerInputCommunication.OnSliderFullAutoClick += TurnOffBolt;
 
-        PlayerInputSO.OnSliderBoltClick += TurnOnBolt;
-        PlayerInputSO.OnSliderBoltClick += TurnOffFullAuto;
+        PlayerInputCommunication.OnSliderBoltClick += TurnOnBolt;
+        PlayerInputCommunication.OnSliderBoltClick += TurnOffFullAuto;
 
 
 

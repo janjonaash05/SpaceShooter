@@ -31,10 +31,19 @@ public class SupernovaChargeUp : MonoBehaviour
 
     List<Material> shoot_mats = new();
 
-    void Start()
+
+
+
+    SupernovaColorChange supernova_color_change;
+
+
+
+
+   
+    void Awake()
     {
 
-
+        supernova_color_change = GetComponent<SupernovaColorChange>();
         float target_speed = 2f;
 
 
@@ -154,11 +163,31 @@ public class SupernovaChargeUp : MonoBehaviour
             ps.GetComponent<ParticleSystemRenderer>().material = m;
             ps.Play();
 
+            CoreCommunication.Raise_ValueChange(0,1);
+
+
+
+
+
+
+            supernova_color_change.RemoveColor();
+
+
+            index--;
+
+            rotation_speed = rotation_speeds[index];
+
+            scale = scales[index];
+
+           
+
             yield return new WaitForSeconds(ps.main.duration / 8);
 
 
+            
 
-             
+
+           
 
 
 
@@ -167,7 +196,7 @@ public class SupernovaChargeUp : MonoBehaviour
 
 
 
-
+        Destroy(gameObject);
 
 
 

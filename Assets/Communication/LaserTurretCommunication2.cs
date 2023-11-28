@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-public class LaserTurretCommunicationSO1 : ScriptableObject
+public static class LaserTurretCommunication2
 {
     public static event Action<GameObject> OnManualTargeting;
 
@@ -159,7 +159,7 @@ public class LaserTurretCommunicationSO1 : ScriptableObject
     }
 
 
-    public static void Raise_DisableControl()
+    private static void Raise_DisableControl()
     {
 
         is_control_disabled = true;
@@ -167,7 +167,7 @@ public class LaserTurretCommunicationSO1 : ScriptableObject
     }
 
 
-    public static void Raise_EnableControl()
+    private static void Raise_EnableControl()
     {
         is_control_disabled = false;
         OnControlEnabled?.Invoke();
@@ -242,7 +242,7 @@ public class LaserTurretCommunicationSO1 : ScriptableObject
         if (is_targeting || is_barraging || is_control_disabled || is_auto_targeting_disabled) { return; }
 
 
-        OnAutoTargetingAttempt?.Invoke(Tags.LASER_TARGET_1);
+        OnAutoTargetingAttempt?.Invoke(Tags.LASER_TARGET_2);
 
 
     }
@@ -257,3 +257,4 @@ public class LaserTurretCommunicationSO1 : ScriptableObject
 
 
 }
+

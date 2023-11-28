@@ -28,7 +28,7 @@ public class SliderControlActivation : MonoBehaviour
     {
 
 
-        PlayerInputSO.OnSliderControlClick += (_) => EngageActivation();
+        PlayerInputCommunication.OnSliderControlClick += (_) => EngageActivation();
 
 
 

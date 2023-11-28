@@ -41,21 +41,21 @@ public class DecreaseStationChargePower : MonoBehaviour
         switch (ID) 
         {
             case 1:
-                LaserTurretCommunicationSO1.OnAutoTargetingSuccess += Decrease;
+                LaserTurretCommunication1.OnAutoTargetingSuccess += Decrease;
 
 
 
-                OnRechargeStart += LaserTurretCommunicationSO1.Raise_DisableAutoTargeting;
-                OnRechargeEnd += LaserTurretCommunicationSO1.Raise_EnableAutoTargeting;
+                OnRechargeStart += LaserTurretCommunication1.Raise_DisableAutoTargeting;
+                OnRechargeEnd += LaserTurretCommunication1.Raise_EnableAutoTargeting;
                 break;
 
             case 2:
-                LaserTurretCommunicationSO2.OnAutoTargetingSuccess += Decrease;
+                LaserTurretCommunication2.OnAutoTargetingSuccess += Decrease;
 
 
 
-                OnRechargeStart += LaserTurretCommunicationSO2.Raise_DisableAutoTargeting;
-                OnRechargeEnd += LaserTurretCommunicationSO2.Raise_EnableAutoTargeting;
+                OnRechargeStart += LaserTurretCommunication2.Raise_DisableAutoTargeting;
+                OnRechargeEnd += LaserTurretCommunication2.Raise_EnableAutoTargeting;
 
                 break;
 

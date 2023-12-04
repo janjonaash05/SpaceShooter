@@ -26,7 +26,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
         rb = GetComponent<Rigidbody>();
         spinner = GameObject.FindWithTag(Tags.SPINNER);
         core_ring = GameObject.FindWithTag(Tags.CORE_RING);
-        Debug.Log(spinner.transform.position + "spinnerpos");
+       
     }
     void Start()
     {
@@ -64,7 +64,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
         if (col.transform.CompareTag(Tags.CORE))
         {
 
-            Debug.Log(col);
+        
             Destroy(gameObject.GetComponent<BombFall>());
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(false);
 

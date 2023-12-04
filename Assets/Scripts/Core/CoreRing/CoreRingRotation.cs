@@ -7,25 +7,49 @@ public class CoreRingRotation : MonoBehaviour
 
 
 
-    [SerializeField ]float star_speed;
 
 
-    float[] speeds;
+
+
+    Dictionary<int, float> speed_parent_dict = new()
+    {
+        {5,125},
+        {4,100 },
+        {3,75 },
+        {2,50},
+        {1,25 },
+        {0,0f }
+    
+    
+    
+    
+    
+    
+    };
+
+
+
+    float speed;
+
+
     void Start()
     {
-        for (int i = 0; i < speeds.Length;) 
-        {
-            
-        
-        
-        
-        
-        }
+
+        speed = speed_parent_dict[5];
+
+        CoreCommunication.OnParentValueChangedCore += () => { speed = speed_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent]; };
+
+
+      
     }
 
-    
+
     void Update()
     {
-        
+        transform.Rotate(0, 0, speed*Time.deltaTime);
     }
+
+
+
+ 
 }

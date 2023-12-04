@@ -87,7 +87,7 @@ public class DamageBomb : MonoBehaviour
         
 
         Vector3 target = GameObject.FindGameObjectWithTag(Tags.CORE).transform.position;
-        Debug.LogWarning(target + "core " + transform.position + " bmb");
+    //    Debug.LogWarning(target + "core " + transform.position + " bmb");
 
 
 

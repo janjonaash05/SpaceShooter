@@ -100,7 +100,7 @@ public class SliderLoaderControlColorChange : MonoBehaviour
 
     void Engage(Material change_mat, SliderLoaderControlType control_type) 
     {
-        Debug.Log("Engaging " + change_mat.name + " " + control_type);
+        //Debug.Log("Engaging " + change_mat.name + " " + control_type);
 
         Material[] mats = new Material[GetComponent<Renderer>().materials.Length];
         for (int i = 0; i < mats.Length; i++)

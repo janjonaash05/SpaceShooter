@@ -81,7 +81,7 @@ public    const int OUTLINE_INDEX = 1;
     {
         Color = color;
 
-        Debug.Log(rend.materials.ToString());
+     
         ChangeOnlyColor(Color);
 
 

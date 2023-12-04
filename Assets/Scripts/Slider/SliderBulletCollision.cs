@@ -27,7 +27,7 @@ public class SliderBulletCollision : MonoBehaviour
         //  Destroy(other.gameObject.GetComponent<DisruptorColorChange>());
 
 
-        Debug.Log(DamagePotential + "dmg");
+       // Debug.Log(DamagePotential + "dmg");
 
         switch (other.transform.tag)
         {

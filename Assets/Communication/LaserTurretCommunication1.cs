@@ -62,12 +62,11 @@ public static class LaserTurretCommunication1
     public static void Awake()
     {
 
-        Debug.LogWarning("LTC1");
+      
 
 
 
 
-        Debug.Log("Validate");
 
 
         is_control_disabled = false;

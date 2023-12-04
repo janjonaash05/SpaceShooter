@@ -7,7 +7,26 @@ public class IndexHolder
     public int minParent, maxParent, minChild, maxChild;
 
 
-    public int child, parent;
+
+    public int Child { get; protected set; }
+
+    public int Parent { get; protected set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public IndexHolder(int minParent, int maxParent, int minChild, int maxChild)
@@ -18,8 +37,8 @@ public class IndexHolder
         this.maxChild = maxChild;
 
 
-        this.parent = minParent;
-        this.child = minChild;
+        this.Parent = minParent;
+        this.Child = minChild;
 
 
 
@@ -28,47 +47,68 @@ public class IndexHolder
 
     public void HardSetValues(int parent, int child)
     {
-        this.parent = parent; this.child = child;
+        this.Parent = parent; this.Child = child;
     }
 
-    public int ChangeIndex(int parentDelta, int childDelta)
+
+
+
+
+    
+
+
+    
+
+
+
+    public virtual int ChangeIndex(int parentDelta, int childDelta)
     {
+        
+        Child = (childDelta > 0 || Parent > minParent - 1) ? Child + childDelta : Child;
 
-        child = (childDelta > 0 || parent > minParent - 1) ? child + childDelta : child;
-
-        if (child >= maxChild + 1)
+        if (Child >= maxChild + 1)
         {
-            parent++;
-            child = minChild;
+            Parent++;
+            Child = minChild;
 
         }
-        else if (child < /*1*/ minChild)
+        else if (Child < minChild)
         {
-            parent--;
-            child = maxChild;
+            Parent--;
+            Child = maxChild;
         }
 
 
 
 
-        parent += parentDelta;
+        Parent += parentDelta;
 
-        if (parent >= maxParent + 1)
+        if (Parent >= maxParent + 1)
         {
-            parent = maxParent;
-            child = maxChild;
+
+
+            Parent = maxParent;
+            Child = maxChild;
 
 
             return 1;
 
         }
 
-        if (parent == minParent - 1)
+        if (Parent == minParent - 1)
         {
+            
+            Parent = minParent;
+            Child = minChild;
+           
+
+
             return -1;
         }
 
 
+
+       
         return 0;
 
 

@@ -45,7 +45,7 @@ public class SliderShooting : MonoBehaviour
 
 
 
-        Debug.Log(laser_target);
+      //  Debug.Log(laser_target);
 
 
 

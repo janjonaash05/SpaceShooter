@@ -132,11 +132,11 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
 
             charge.GetComponent<Renderer>().material = mat;
-            charge_grid[holder.parent, holder.child] = charge;
+            charge_grid[holder.Parent, holder.Child] = charge;
 
             charge.transform.parent = transform;
 
-            charge.transform.localPosition = new Vector3(0, y_positions[holder.parent], z_positions[holder.child]);
+            charge.transform.localPosition = new Vector3(0, y_positions[holder.Parent], z_positions[holder.Child]);
 
 
         }
@@ -151,7 +151,7 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
     void DestroyChargeAtHolder()
     {
-        Destroy(charge_grid?[holder.parent, holder.child]);
+        Destroy(charge_grid?[holder.Parent, holder.Child]);
     }
 
 

@@ -25,7 +25,7 @@ public class RotateSpinner : MonoBehaviour
     void Update()
     {
      //   Debug.Log(index_holder.parent);
-           float rotation_speed = GetComponent<SpinnerColorChange>().index_holder.parent switch
+           float rotation_speed = GetComponent<SpinnerColorChange>().index_holder.Parent switch
              {
                  1 => 25,
                  2 => 50,

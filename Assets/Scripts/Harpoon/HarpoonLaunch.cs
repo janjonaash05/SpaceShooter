@@ -60,7 +60,7 @@ public class HarpoonLaunch : MonoBehaviour
                          
         while (Vector3.Distance(harpoon_head_transform.localPosition, target) > 0.1f)
         {
-            Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
+          //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
 
             //  harpoon_head_transform.Translate( Time.deltaTime* launch_speed*(target - harpoon_head_transform.localPosition) );
 

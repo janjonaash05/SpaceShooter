@@ -108,7 +108,7 @@ public class LaserControlColorChange : ControlColorChange
             {
                 mats[i].SetColor(EMISSION_COLOR, block_material.GetColor(EMISSION_COLOR));
 
-                Debug.Log(mats[i].GetColor(EMISSION_COLOR));
+             
                 continue;
 
             }

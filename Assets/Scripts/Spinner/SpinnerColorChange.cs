@@ -226,7 +226,7 @@ public class SpinnerColorChange : MonoBehaviour
     void ChangeMaterialArray()
     {
 
-        if (index_holder.parent == 0) { return; }
+        if (index_holder.Parent == 0) { return; }
 
         int size = rend.materials.Length;
 
@@ -236,16 +236,20 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
-        var copyHolder = new MaterialIndexHolder(index_holder.parent, index_holder.child, MaterialIndexHolder.Target.SPINNER);
+        var copyHolder = new MaterialIndexHolder(index_holder.Parent, index_holder.Child, MaterialIndexHolder.Target.SPINNER, index_holder.edge);
+        
+
+
         var colorlist = copyHolder.AllMatIndexesByHolder(true);
 
-        copyHolder.ChangeIndex(0, 1);
+        copyHolder.ChangeIndex(0, 1) ;
         var offlist = copyHolder.AllMatIndexesByHolder(false);
 
         Debug.Log(colorlist.Count + " C " + offlist.Count + " O");
 
         Debug.Log(colorlist.ToCommaSeparatedString() + " C," + offlist.ToCommaSeparatedString() + " O");
 
+        
 
         if (colorlist.Count > 0)
         {
@@ -267,6 +271,7 @@ public class SpinnerColorChange : MonoBehaviour
             }
         }
 
+        
         AssignBasicColors(newMats);
 
 

@@ -51,10 +51,10 @@ public class FormConstellation : MonoBehaviour
     {
 
 
-        InvokeRepeating(nameof(Form), 5, 25);
+        InvokeRepeating(nameof(Form), DifficultyManager.CONSTELLATION_SPAWN_RATE, DifficultyManager.CONSTELLATION_SPAWN_RATE);
 
 
-     //   Form();
+   
 
 
 

@@ -12,7 +12,6 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-    int color_degree = 16;
     [SerializeField] List<Material> mats_storage;
 
     [SerializeField] Material primary, secondary;
@@ -22,20 +21,40 @@ public class CoreRingColorChange : MonoBehaviour
 
 
     MaterialIndexHolder index_holder;
+
+
+
+
+    static event Action<Material> OnMaterialChange;
+
+
+
+    
     void Start()
     {
 
-        rend = GetComponent<Renderer>();
-        InitColorUp();
-        StartCoroutine(ColorChange());
 
 
-        index_holder = CoreCommunication.CORE_INDEX_HOLDER;
+        CoreCommunication.OnCommunicationInit += Init;
+        
+
+
+    
 
         
 
 
 
+    }
+
+
+    private void Init()
+    {
+        index_holder = CoreCommunication.CORE_INDEX_HOLDER;
+        
+        rend = GetComponent<Renderer>();
+        ColorUp(mats_storage[0]);
+        StartCoroutine(ColorChange());
     }
 
     // Update is called once per frame
@@ -45,24 +64,43 @@ public class CoreRingColorChange : MonoBehaviour
     }
 
 
-    void InitColorUp()
+    void ColorUp(Material mat)
     {
 
-        Material[] start_current_mats = new Material[rend.materials.Length];
+        Material[] mats = new Material[rend.materials.Length];
         for (int i = 0; i < rend.materials.Length; i++)
         {
-            start_current_mats[i] = secondary;
+            mats[i] = mat;
         }
 
-        start_current_mats[PRIMARY_INDEX] = primary;
+        mats[PRIMARY_INDEX] = primary;
 
-        start_current_mats[SECONDARY_INDEX] = secondary;
+        mats[SECONDARY_INDEX] = secondary;
 
 
-        rend.materials = start_current_mats;
+        rend.materials = mats;
 
     }
 
+
+
+    void ColorUpOff() 
+    {
+
+        Material[] mats = new Material[rend.materials.Length];
+        for (int i = 0; i < rend.materials.Length; i++)
+        {
+            mats[i] = secondary;
+        }
+
+        mats[PRIMARY_INDEX] = primary;
+
+        mats[SECONDARY_INDEX] = secondary;
+
+
+        rend.materials = mats;
+
+    }
 
 
 
@@ -77,33 +115,54 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-    const int SECONDARY_INDEX = 0;
+    const int SECONDARY_INDEX = 1;
 
 
-    const int PRIMARY_INDEX = 3;
+    const int PRIMARY_INDEX = 0;
     void ChangeMaterialArray()
     {
 
-        if (index_holder.parent == 0) { return; }
-
+        if (index_holder.edge ==MaterialIndexHolder.Edge.UPPER) { ColorUp(changing_mat); return; }
+        else if (index_holder.edge == MaterialIndexHolder.Edge.LOWER) { ColorUpOff(); return; }
         int size = rend.materials.Length;
 
         Material[] newMats = new Material[size];
 
 
 
+        
 
-
-        var copyHolder = new MaterialIndexHolder(index_holder.parent, index_holder.child, MaterialIndexHolder.Target.SPINNER);
+        var copyHolder = new MaterialIndexHolder(index_holder.Parent, index_holder.Child, MaterialIndexHolder.Target.CORE, index_holder.edge);
         var colorlist = copyHolder.AllMatIndexesByHolder(true);
 
+
+
+
+        //Debug.Log(copyHolder + " pre");
+
         copyHolder.ChangeIndex(0, 1);
+
+
+
+
+        //  Debug.Log(copyHolder + " post");
+
+
         var offlist = copyHolder.AllMatIndexesByHolder(false);
 
         Debug.Log(colorlist.Count + " C " + offlist.Count + " O");
 
         Debug.Log(colorlist.ToCommaSeparatedString() + " C," + offlist.ToCommaSeparatedString() + " O");
 
+
+
+        if (offlist.Count > 0)
+        {
+            foreach (int i in offlist)
+            {
+                newMats[i] = primary;
+            }
+        }
 
         if (colorlist.Count > 0)
         {
@@ -115,13 +174,7 @@ public class CoreRingColorChange : MonoBehaviour
 
             }
         }
-        if (offlist.Count > 0)
-        {
-            foreach (int i in offlist)
-            {
-                newMats[i] = primary;
-            }
-        }
+     
         AssignBasicColors(newMats);
 
 
@@ -131,7 +184,7 @@ public class CoreRingColorChange : MonoBehaviour
 
     }
 
-    Material changing_mat;
+    public Material changing_mat { get; private set; }
     IEnumerator ColorChange()
     {
 
@@ -143,6 +196,7 @@ public class CoreRingColorChange : MonoBehaviour
 
 
                 changing_mat = m;
+                OnMaterialChange?.Invoke(m);
 
                 ChangeMaterialArray();
 

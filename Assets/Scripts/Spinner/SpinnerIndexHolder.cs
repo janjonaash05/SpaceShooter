@@ -21,8 +21,8 @@ public class SpinnerIndexHolder : IndexHolder
     {
 
        
-        this.parent = parent;
-        this.child = child;
+        this.Parent = parent;
+        this.Child = child;
 
     }
 
@@ -38,7 +38,7 @@ public class SpinnerIndexHolder : IndexHolder
         int target = (color) ? -1 : 1;
         var list = new List<int>();
 
-        var copyHolder = new SpinnerIndexHolder(holder.parent, holder.child);
+        var copyHolder = new SpinnerIndexHolder(holder.Parent, holder.Child);
 
         int changeResult = 0;
         while (changeResult != target)
@@ -67,9 +67,9 @@ public class SpinnerIndexHolder : IndexHolder
     {
 
         // Debug.Log("GetBy " + holder.parent.ToString() + holder.child.ToString());
-        if (holder.parent != 0)
+        if (holder.Parent != 0)
         {
-            return matDict[holder.parent.ToString() + holder.child.ToString()];
+            return matDict[holder.Parent.ToString() + holder.Child.ToString()];
         }
         else
         {

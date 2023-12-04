@@ -62,7 +62,7 @@ public static class LaserTurretCommunication2
     public static void Awake()
     {
 
-        Debug.Log("Validate");
+      
 
 
         is_control_disabled = false;

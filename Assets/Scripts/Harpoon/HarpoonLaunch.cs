@@ -75,6 +75,23 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
+        while (Vector3.Distance(harpoon_head_transform.localPosition, startPoint) > 0.1f)
+        {
+            //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
+
+            //  harpoon_head_transform.Translate( Time.deltaTime* launch_speed*(target - harpoon_head_transform.localPosition) );
+
+
+            harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, startPoint, launch_speed * Time.deltaTime);
+
+
+            Track(harpoon_head_transform.position);
+            yield return new WaitForEndOfFrame();
+
+        }
+
+
+
         Debug.LogWarning("end");
 
     }

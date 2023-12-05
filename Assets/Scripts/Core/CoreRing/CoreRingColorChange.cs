@@ -25,7 +25,7 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-    static event Action<Material> OnMaterialChange;
+    public static event Action<Material> OnMaterialChange;
 
 
 
@@ -90,7 +90,7 @@ public class CoreRingColorChange : MonoBehaviour
         Material[] mats = new Material[rend.materials.Length];
         for (int i = 0; i < rend.materials.Length; i++)
         {
-            mats[i] = secondary;
+            mats[i] = primary;
         }
 
         mats[PRIMARY_INDEX] = primary;

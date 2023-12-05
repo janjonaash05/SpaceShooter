@@ -137,7 +137,7 @@ public class MaterialIndexHolder : IndexHolder
         Child = maxChild;
 
 
-        Debug.Log("Setting to max "+target);
+        Debug.Log("Setting to max " + target);
 
 
     }
@@ -278,7 +278,7 @@ public class MaterialIndexHolder : IndexHolder
 
         var list = new List<int>();
 
-        var copyHolder = new MaterialIndexHolder(Parent, Child, target,edge);
+        var copyHolder = new MaterialIndexHolder(Parent, Child, target, edge);
 
         int changeResult = 0;
         while (changeResult != direction)

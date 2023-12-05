@@ -36,6 +36,16 @@ public class CoreRotation : MonoBehaviour
 
     Renderer rend;
 
+
+
+    Material changing_mat;
+
+
+
+
+
+
+
     void Start()
     {
         speed = speed_parent_dict[5];
@@ -47,7 +57,7 @@ public class CoreRotation : MonoBehaviour
 
             if (CoreCommunication.CORE_INDEX_HOLDER.Parent == 0)
             {
-                rend.materials = new Material[] { GetComponent<CoreRingColorChange>().changing_mat, GetComponent<CoreRingColorChange>().changing_mat};
+                rend.materials = new Material[] { changing_mat,changing_mat};
 
             }
             else { rend.materials = new Material[] { default_color1, default_color2 }; }
@@ -58,7 +68,7 @@ public class CoreRotation : MonoBehaviour
         };
 
 
-
+        CoreRingColorChange.OnMaterialChange += (m) => changing_mat = m;
 
         rend = GetComponent<Renderer>();
 

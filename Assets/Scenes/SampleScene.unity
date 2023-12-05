@@ -2431,8 +2431,8 @@ MonoBehaviour:
   max_size_unit: 0.2
   delta_size_unit: 0.0001
   delay: 0.0001
-  laser_size_increase: 0.1
-  max_laser_size: 1000
+  laser_size_increase: 10
+  max_laser_size: 10
   rotation: {x: -1000, y: -1000, z: 0}
   charge: {fileID: 82781721}
 --- !u!65 &809817906

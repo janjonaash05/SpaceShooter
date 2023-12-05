@@ -9,9 +9,10 @@ public class SpinnerChargeUp : MonoBehaviour
     public Vector3 rotation;
 
     public GameObject charge;
+    Material color;
     void Start()
     {
-        
+        SpinnerColorChange.OnMaterialChange += (m) => {  if(laserRend!=null) laserRend.material = m; };
     }
 
 
@@ -57,13 +58,18 @@ public class SpinnerChargeUp : MonoBehaviour
 
 
 
+
+    GameObject laser;
+    Renderer laserRend;
     IEnumerator Shoot()
     {
-        GameObject laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        if (laser != null) yield break;
+         laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        laserRend = laser.GetComponent<Renderer>();
         laser.transform.position = charge.transform.position;
 
         Vector3 originVector = laser.transform.position;
-        Vector3 targetVector = Camera.main.transform.position + Vector3.forward*0.5f;
+        Vector3 targetVector = GameObject.FindWithTag(Tags.CORE).transform.position + Vector3.forward*0.5f;
 
         laser.transform.localScale = Vector3.zero;
        
@@ -75,7 +81,7 @@ public class SpinnerChargeUp : MonoBehaviour
 
         while (laser.transform.localScale.x < max_laser_size) 
         {
-            laser.GetComponent<Renderer>().material = charge.GetComponent<Renderer>().material;
+          
         laser.transform.localScale = new Vector3(laser.transform.localScale.x + laser_size_increase, distance / 2f, laser.transform.localScale.z + laser_size_increase);
 
         Vector3 middleVector = (originVector + targetVector) / 2f;

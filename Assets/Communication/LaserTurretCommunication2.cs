@@ -82,8 +82,8 @@ public static class LaserTurretCommunication2
 
 
 
-        OnAutoTargetingEnabled += () => is_auto_targeting_disabled = true;
-        OnAutoTargetingDisabled += () => is_auto_targeting_disabled = false;
+        OnAutoTargetingEnabled += () => is_auto_targeting_disabled = false;
+        OnAutoTargetingDisabled += () => is_auto_targeting_disabled = true;
 
 
 
@@ -204,7 +204,7 @@ public static class LaserTurretCommunication2
 
     public static void AttemptRaise_ColorCollider_ControlColorChange(Material mat)
     {
-        if (is_targeting || is_barraging || is_control_disabled) { Console.WriteLine("nuh uh"); return; }
+        if (is_targeting || is_barraging || is_control_disabled) { Debug.Log("nuh uh"); return; }
 
         OnColorCollider_ControlColorChange?.Invoke(mat);
 
@@ -214,7 +214,7 @@ public static class LaserTurretCommunication2
 
     public static void AttemptRaise_AutoCollider_ControlColorChange(Material mat)
     {
-        if (is_targeting || is_control_disabled || is_barraging || is_auto_targeting_disabled) { Console.WriteLine("nuh uh"); return; }
+        if (is_control_disabled || is_auto_targeting_disabled) { Debug.Log("nuh uh"); return; }
         OnAutoCollider_ControlColorChange?.Invoke(mat);
 
 

@@ -309,12 +309,6 @@ public class MaterialIndexHolder : IndexHolder
     int GetCurrentMatIndex(MaterialIndexHolder holder)
     {
 
-        Debug.Log("GetBy " + holder);
-
-
-
-
-        Debug.LogWarning("GCMI " + holder.Parent);
         if (holder.Parent == minParent - 1 || holder.Parent == maxParent + 1) return -1;
 
 

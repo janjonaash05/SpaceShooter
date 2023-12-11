@@ -9,7 +9,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     [SerializeField] Vector3 move_speed;
     Vector3 rotation_speed;
     [SerializeField] float rotation_speed_multiplier;
-    GameObject spinner, core_ring;
+    
 
     [SerializeField] float min_down, max_down, min_side, max_side;
 
@@ -17,6 +17,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
     Rigidbody rb;
 
+    GameObject core;
 
     // Start is called before the first frame update
 
@@ -24,12 +25,24 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        spinner = GameObject.FindWithTag(Tags.SPINNER);
-        core_ring = GameObject.FindWithTag(Tags.CORE_RING);
+
+        core = GameObject.FindWithTag(Tags.CORE);
+
+
+        target = core.transform.position + Random.insideUnitSphere;
        
     }
+
+
+
+    Vector3 target;
     void Start()
     {
+
+
+
+
+
         DisabledRewards = false;
 
 
@@ -51,7 +64,10 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     {
 
 
-        rb.MovePosition(rb.position + Time.fixedDeltaTime *move_speed  );
+        //rb.MovePosition(rb.position + Time.fixedDeltaTime *move_speed  );
+
+
+        rb.MovePosition(rb.position +    (target-rb.position) * Time.fixedDeltaTime*0.1f);
         rb.MoveRotation(rb.rotation * Quaternion.Euler(Time.fixedDeltaTime *rotation_speed));
 
 

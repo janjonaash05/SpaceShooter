@@ -24,7 +24,7 @@ public class DifficultyManager : MonoBehaviour
     public static int DISRUPTOR_SPAWN_CHANCE = 50;
 
 
-    public static int CONSTELLATION_SPAWN_RATE = 20;
+    public static int CONSTELLATION_SPAWN_RATE = 1000;
 
 
     public static int DISRUPTOR_DEFAULT_START_HEALTH = 100, DISRUPTOR_START_HEALTH;

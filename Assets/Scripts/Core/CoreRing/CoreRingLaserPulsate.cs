@@ -108,8 +108,6 @@ public class CoreRingLaserPulsate : MonoBehaviour
         laser2.transform.localScale = newScale;
 
 
-        laser1.transform.rotation = transform.rotation;
-        laser2.transform.rotation = transform.rotation;
 
         laser1.transform.Rotate(0, 0, 90);
 

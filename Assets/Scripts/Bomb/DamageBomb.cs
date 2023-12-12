@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static MaterialIndexHolder;
 using static UnityEngine.GraphicsBuffer;
 
 public class DamageBomb : MonoBehaviour
@@ -51,8 +52,10 @@ public class DamageBomb : MonoBehaviour
         Destroy(GetComponent<Collider>());
 
 
-        Destroy(bomb.GetComponent<BombFall>());
-        
+        Destroy(GetComponent<BombFall>());
+
+
+
 
         await GetComponent<BombColorChange>().CoverInColor();
 
@@ -87,7 +90,12 @@ public class DamageBomb : MonoBehaviour
         
 
         Vector3 target = GameObject.FindGameObjectWithTag(Tags.CORE).transform.position;
-    //    Debug.LogWarning(target + "core " + transform.position + " bmb");
+        //    Debug.LogWarning(target + "core " + transform.position + " bmb");
+
+
+
+        
+
 
 
 
@@ -112,6 +120,9 @@ public class DamageBomb : MonoBehaviour
        ps.Play();
 
         _ = ScaleDown(token);
+        StartCoroutine(DamageByCore_FallIntoCore());
+
+
         Destroy(gameObject, transform.GetChild(1).GetComponent<ParticleSystem>().main.duration);
 
         
@@ -131,6 +142,29 @@ public class DamageBomb : MonoBehaviour
     }
 
 
+
+
+
+
+    IEnumerator DamageByCore_FallIntoCore()
+    {
+
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+        Vector3 target = GameObject.FindGameObjectWithTag(Tags.CORE).transform.position;
+
+
+
+        while (Vector3.Distance(rb.position,target) > 0.1)
+        {
+            rb.MovePosition(rb.position + (target - rb.position) * Time.fixedDeltaTime * 0.1f);
+            yield return new WaitForFixedUpdate();
+
+        }
+    }
+
+
+
     
   protected async Task ScaleDown(CancellationToken token)
     {
@@ -139,6 +173,8 @@ public class DamageBomb : MonoBehaviour
         {
             if (token.IsCancellationRequested) { break; }
             bomb.transform.localScale += (-scale_down_increment * Vector3.one);
+
+
             
             
             await Task.Yield();

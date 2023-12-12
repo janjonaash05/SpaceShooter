@@ -161,9 +161,7 @@ public class MaterialIndexHolder : IndexHolder
 
 
 
-        Debug.Log("IsAtMin " + IsAtMin() + " " + ToString());
-        Debug.Log("IsAtMax " + IsAtMax() + " " + ToString());
-
+        
         if (IsAtMax() && childDelta >= 0) { Debug.Log("max to upper" + target); SetEdge(Edge.UPPER); return 1; }
 
         if (IsAtMin() && childDelta <= 0) { Debug.Log("min to lower" + target); SetEdge(Edge.LOWER); return -1; }
@@ -235,7 +233,6 @@ public class MaterialIndexHolder : IndexHolder
 
 
 
-        Debug.Log("Returning 0, final " + ToString());
         return 0;
 
 

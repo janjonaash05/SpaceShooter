@@ -13,7 +13,7 @@ public class CoreRingRotation : MonoBehaviour
 
     Dictionary<int, float> speed_parent_dict = new()
     {
-        {5,125},
+        {5,200},
         {4,100 },
         {3,75 },
         {2,50},

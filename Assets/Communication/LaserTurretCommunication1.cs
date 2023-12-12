@@ -86,8 +86,8 @@ public static class LaserTurretCommunication1
 
 
 
-        OnAutoTargetingEnabled += () => { is_auto_targeting_disabled = false;   Debug.LogWarning("disabling auto targeting"); };
-        OnAutoTargetingDisabled += () => { is_auto_targeting_disabled = true; Debug.LogWarning("enable auto targeting"); };
+        OnAutoTargetingEnabled += () => { is_auto_targeting_disabled = false;   Debug.LogWarning("enable auto targeting"); };
+        OnAutoTargetingDisabled += () => { is_auto_targeting_disabled = true; Debug.LogWarning("disable auto targeting"); };
 
 
 

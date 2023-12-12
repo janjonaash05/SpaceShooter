@@ -78,16 +78,26 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     {
 
         if (col.transform.CompareTag(Tags.CORE))
-        {
+        { 
 
-        
+
+
+            
+
+
+            
+
             Destroy(gameObject.GetComponent<BombFall>());
+
+            
+            
+
+
+
+
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(false);
 
 
-
-          //  spinner.GetComponent<SpinnerColorChange>().ChangeIndexHolder(0, 1);
-        //    core_ring.GetComponent<CoreRingColorChange>().DecreaseDegree();
 
 
 
@@ -101,6 +111,12 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
         }
     }
+
+
+
+
+
+
 
 
     public int ScoreReward()

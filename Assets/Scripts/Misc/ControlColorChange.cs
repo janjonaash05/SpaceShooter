@@ -28,11 +28,13 @@ public class ControlColorChange : MonoBehaviour
 
 
 
-    [SerializeField][Tooltip("used for emission color only")] protected Material block_material, allow_material;
+    [SerializeField][Tooltip("used for emission material color only")] protected Material block_material, allow_material;
 
 
 
     protected const string EMISSION_COLOR = "_EmissionColor";
+
+
 
 
 
@@ -95,6 +97,10 @@ public class ControlColorChange : MonoBehaviour
 
 
     }
+
+
+
+   
 
     IEnumerator Change(int index)
     {

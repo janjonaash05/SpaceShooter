@@ -9,10 +9,13 @@ public class SpinnerChargeUp : MonoBehaviour
     public Vector3 rotation;
 
     public GameObject charge;
-    Material color;
+    Material changing_mat;
+
+
+
     void Start()
     {
-        SpinnerColorChange.OnMaterialChange += (m) => {  if(laserRend!=null) laserRend.material = m; };
+        SpinnerColorChange.OnMaterialChange += (m) => { if (laserRend != null) changing_mat = m; laserRend.material = m; };
     }
 
 
@@ -66,6 +69,7 @@ public class SpinnerChargeUp : MonoBehaviour
         if (laser != null) yield break;
          laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         laserRend = laser.GetComponent<Renderer>();
+        laserRend.material = changing_mat;
         laser.transform.position = charge.transform.position;
 
         Vector3 originVector = laser.transform.position;

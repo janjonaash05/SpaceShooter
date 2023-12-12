@@ -64,8 +64,8 @@ public class CoreRingLaserPulsate : MonoBehaviour
     Renderer rend1, rend2;
     void Start()
     {
-        CoreCommunication.OnCoreLaserPulsateStart += () => { if (active == false) SetupLasers(); };
-        CoreCommunication.OnCoreLaserPulsateEnd += () => { active = false; Destroy(laser1); Destroy(laser2); };
+        CoreCommunication.OnCoreFullParticlesStart += () => { if (active == false) SetupLasers(); };
+        CoreCommunication.OnCoreFullParticlesEnd += () => { active = false; Destroy(laser1); Destroy(laser2); };
 
 
 

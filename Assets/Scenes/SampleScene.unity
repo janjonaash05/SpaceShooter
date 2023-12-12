@@ -163,7 +163,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 176ee8c1a47a01e47a03924f75cd4674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &32557777
+--- !u!4 &32557780 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0c2e9b7e50fa3134186cb49c6d47bcc1, type: 3}
+  m_PrefabInstance: {fileID: 131529388}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &32557781
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,14 +177,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 32557765}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc2d1af3db85a70479c85b0679e61424, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ebf5a784b71f8c4a8933bf72b348aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &32557780 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0c2e9b7e50fa3134186cb49c6d47bcc1, type: 3}
-  m_PrefabInstance: {fileID: 131529388}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &56673815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -548,7 +548,7 @@ PrefabInstance:
       addedObject: {fileID: 32557773}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0c2e9b7e50fa3134186cb49c6d47bcc1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 32557777}
+      addedObject: {fileID: 32557781}
   m_SourcePrefab: {fileID: 100100000, guid: 0c2e9b7e50fa3134186cb49c6d47bcc1, type: 3}
 --- !u!1001 &147345068
 PrefabInstance:
@@ -5519,7 +5519,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0.1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5572,7 +5572,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: -100
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -6067,7 +6067,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 17
+    type: 10
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}

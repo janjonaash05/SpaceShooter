@@ -26,7 +26,7 @@ public static class CoreCommunication
 
 
     public static event Action OnSpinnerChargeUpStart, OnSpinnerChargeUpEnd, OnSpinnerInitialColorUp;
-    public static event Action OnCoreLaserPulsateStart, OnCoreLaserPulsateEnd, OnCoreBreakdownStart, OnCoreBreakdownEnd;
+    public static event Action OnCoreFullParticlesStart, OnCoreFullParticlesEnd, OnCoreBreakdownStart, OnCoreBreakdownEnd;
 
 
 
@@ -121,13 +121,13 @@ public static class CoreCommunication
 
         switch (result_core) 
         {
-            case 1: OnCoreLaserPulsateStart?.Invoke(); break;
+            case 1: OnCoreFullParticlesStart?.Invoke(); break;
             default: break;
 
 
 
         }
-        if (child >= 0) { OnCoreLaserPulsateEnd?.Invoke(); }
+        if (child >= 0) { OnCoreFullParticlesEnd?.Invoke(); }
 
 
 

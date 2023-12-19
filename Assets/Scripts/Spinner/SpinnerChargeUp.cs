@@ -15,7 +15,12 @@ public class SpinnerChargeUp : MonoBehaviour
 
     void Start()
     {
-        SpinnerColorChange.OnMaterialChange += (m) => { if (laserRend != null) changing_mat = m; laserRend.material = m; };
+        //problematic
+        SpinnerColorChange.OnMaterialChange += (m) => 
+        {
+
+            if (laserRend != null) { changing_mat = m; laserRend.material = m; }
+        };
     }
 
 

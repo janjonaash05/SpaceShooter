@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,9 @@ public class CoreRotation : MonoBehaviour
     };
 
 
+    Dictionary<int, Action> ps_parent_dict;
+
+
     Vector3 speed;
 
 
@@ -41,13 +45,43 @@ public class CoreRotation : MonoBehaviour
     Material changing_mat;
 
 
-
+    ParticleSystem ps;
+    ParticleSystemRenderer ps_rend;
+    ParticleSystem.EmissionModule ps_emission;
 
 
 
 
     void Start()
     {
+
+
+
+
+
+        ps = transform.GetChild(0).GetComponent<ParticleSystem>();
+        ps_rend = ps.GetComponent<ParticleSystemRenderer>();
+        ps_emission = ps.emission;
+
+        ps_parent_dict = new()
+        {
+            {5, () =>ps_emission.enabled = false },
+            {4, ()=> ps_emission.enabled = false },
+            {3, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 10; } },
+            {2, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 50; }  },
+            {1, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 100; }  },
+            {0, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 500; }  }
+
+
+
+
+
+        };
+
+
+
+
+
         speed = speed_parent_dict[5];
 
         CoreCommunication.OnParentValueChangedCore += () =>
@@ -55,18 +89,24 @@ public class CoreRotation : MonoBehaviour
             speed = speed_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent];
 
 
-            if (CoreCommunication.CORE_INDEX_HOLDER.Parent == 0)
-            {
-                rend.materials = new Material[] { changing_mat,changing_mat};
 
-            }
-            else { rend.materials = new Material[] { default_color1, default_color2 }; }
+            
+
+
+           
+
+
+
 
 
 
 
         };
 
+
+
+
+        CoreCommunication.OnParentValueChangedCore += () => { ps_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent](); };
 
         CoreRingColorChange.OnMaterialChange += (m) => changing_mat = m;
 
@@ -85,7 +125,20 @@ public class CoreRotation : MonoBehaviour
     {
         transform.Rotate(-speed * Time.deltaTime);
 
+        rend.materials = CoreCommunication.CORE_INDEX_HOLDER.Parent switch
+        {
+            >= 4 => new Material[] { default_color1, default_color2 },
+            > 0 => new Material[] { default_color1, changing_mat },
+            _ => new Material[] { changing_mat, changing_mat }
 
 
+
+        };
+
+        ps_rend.material = changing_mat;
+        ps_rend.trailMaterial = changing_mat;
+
+
+       
     }
 }

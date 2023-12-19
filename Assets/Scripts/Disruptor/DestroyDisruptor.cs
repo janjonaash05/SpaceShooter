@@ -31,7 +31,7 @@ public class DestroyDisruptor : MonoBehaviour
 
     void DestroyObj()
     {
-
+       
         Destroy(gameObject);
     }
 
@@ -47,7 +47,7 @@ public class DestroyDisruptor : MonoBehaviour
 
         TryGetComponent(out RotateDisruptor rd);
 
-        if(rd!= null )
+        if (rd != null)
         {
             GetComponent<RotateDisruptor>().EngageRotation(target);
             Destroy(GetComponent<RotateDisruptor>());
@@ -55,23 +55,30 @@ public class DestroyDisruptor : MonoBehaviour
         }
 
 
+
+
+
+
+
+
+
+        // if (transform.GetChild(0) != null) { Destroy(transform.GetChild(0).gameObject); }
+        // if (transform.GetChild(1) != null) { Destroy(transform.GetChild(1).gameObject); }
+
+
+        for(int i = 0; i< transform.childCount; i++) 
+        {
+            if (transform.GetChild(i).GetComponent<MoveDisruptorCharge>() != null) { Destroy(transform.GetChild(i).gameObject); }
         
+        }
+
+
+
+        // Destroy(transform.GetChild(transform.childCount-2).gameObject);
 
 
 
 
-
-
-        if (transform.GetChild(0) != null) { Destroy(transform.GetChild(0).gameObject); }
-        if (transform.GetChild(1) != null) { Destroy(transform.GetChild(1).gameObject); }
-
-
-
-        Destroy(transform.GetChild(transform.childCount-2).gameObject);
-
-
-
-   
 
 
 

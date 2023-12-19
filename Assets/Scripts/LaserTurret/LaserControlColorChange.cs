@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LaserControlColorChange : ControlColorChange
@@ -81,7 +82,6 @@ public class LaserControlColorChange : ControlColorChange
 
         foreach (var mat in GetComponent<Renderer>().materials)
         {
-
             pre_turnoff_emission_color_list.Add(mat.GetColor(EMISSION_COLOR));
         }
     }
@@ -116,7 +116,6 @@ public class LaserControlColorChange : ControlColorChange
 
 
         }
-
 
         GetComponent<Renderer>().materials = mats;
 
@@ -153,15 +152,23 @@ public class LaserControlColorChange : ControlColorChange
     void DisableAutoTargeting()
     {
 
+
+
+
+
+
+        StopAllCoroutines();
+
         auto_collider.GetComponent<Renderer>().material = block_material;
 
 
-        Debug.Log("DisableAutoTargeting");
+        Debug.LogWarning("DisableAutoTargeting");
 
 
         Renderer rend = GetComponent<Renderer>();
 
-        Material[] mats = rend.materials;
+        Material[] mats = rend.materials; ;
+
         mats[AUTO_INDEX].SetColor(EMISSION_COLOR, block_material.GetColor(EMISSION_COLOR));
 
 
@@ -183,7 +190,7 @@ public class LaserControlColorChange : ControlColorChange
         auto_collider.GetComponent<Renderer>().material = allow_material;
         if (turned_off) { return; }
 
-        Debug.Log("ableAutoTargeting");
+        Debug.LogWarning("ableAutoTargeting");
 
         Renderer rend = GetComponent<Renderer>();
 

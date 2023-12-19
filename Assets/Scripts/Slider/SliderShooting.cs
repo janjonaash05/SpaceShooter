@@ -65,12 +65,12 @@ public class SliderShooting : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
+            
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
             {
 
                 string tag = hit.transform.tag;
-                if (tag == "SliderControlCollider" || tag == "SliderFullAutoCollider" || tag == "SliderBoltCollider")
+                if (tag == Tags.SLIDER_CONTROL_COLLIDER  || tag == Tags.SLIDER_FULL_AUTO_COLLIDER || tag == Tags.SLIDER_BOLT_COLLIDER)
                 {
                     return;
                 }

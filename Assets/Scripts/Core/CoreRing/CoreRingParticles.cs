@@ -47,5 +47,6 @@ public class CoreRingParticles : MonoBehaviour
     void Update()
     {
         ps_renderer.material = colorChange.changing_mat;
+        ps_renderer.trailMaterial = colorChange.changing_mat;
     }
 }

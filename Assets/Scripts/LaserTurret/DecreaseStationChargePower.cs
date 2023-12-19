@@ -20,6 +20,13 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
+
+    bool paused = false, recharging = false;
+
+
+
+
+
     public event Action OnRechargeStart, OnRechargeEnd;
 
 
@@ -36,6 +43,8 @@ public class DecreaseStationChargePower : MonoBehaviour
         //  target_bomb.GetComponent<TargetBomb>().OnBarrageStart += Decrease;
 
 
+        OnRechargeStart += () => recharging = true;
+        OnRechargeEnd += () => recharging = false;
 
 
         switch (ID) 
@@ -47,6 +56,13 @@ public class DecreaseStationChargePower : MonoBehaviour
 
                 OnRechargeStart += LaserTurretCommunication1.Raise_DisableAutoTargeting;
                 OnRechargeEnd += LaserTurretCommunication1.Raise_EnableAutoTargeting;
+
+                LaserTurretCommunication1.OnControlDisabled += () => paused = true;
+                LaserTurretCommunication1.OnControlEnabled += () => paused = false;
+
+
+
+
                 break;
 
             case 2:
@@ -57,13 +73,25 @@ public class DecreaseStationChargePower : MonoBehaviour
                 OnRechargeStart += LaserTurretCommunication2.Raise_DisableAutoTargeting;
                 OnRechargeEnd += LaserTurretCommunication2.Raise_EnableAutoTargeting;
 
+                LaserTurretCommunication2.OnControlDisabled += () => paused = true;
+                LaserTurretCommunication2.OnControlEnabled += () => paused = false;
+
+
+
+                LaserTurretCommunication2.OnControlDisabled += () =>{ if (paused) { };   }
+
+
+               
+
                 break;
 
 
         }
 
 
-       
+
+         ps = transform.parent.GetChild(1).GetComponent<ParticleSystem>();
+         ps_rend = ps.GetComponent<ParticleSystemRenderer>();
 
 
 
@@ -72,7 +100,28 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
+        OnRechargeStart += StartEmission;
+        OnRechargeEnd += EndEmission;
 
+
+    }
+
+    ParticleSystem ps;
+    ParticleSystemRenderer ps_rend;
+
+    void StartEmission() 
+    {
+        var em = ps.emission;
+        em.enabled = true;
+        ps_rend.material = GetComponent<Renderer>().material;
+        ps_rend.trailMaterial = GetComponent<Renderer>().material;
+    }
+
+
+    void EndEmission() 
+    {
+        var em = ps.emission;
+        em.enabled = false;
     }
 
     // Update is called once per frame
@@ -131,6 +180,8 @@ public class DecreaseStationChargePower : MonoBehaviour
 
         while (size_y < max_size_y)
         {
+
+            if(paused) { yield return null; }
 
             size_y += delta_size_unit;
             transform.localScale = new Vector3(transform.localScale.x, size_y, transform.localScale.z);

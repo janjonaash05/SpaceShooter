@@ -19,6 +19,12 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
     GameObject core;
 
+
+
+    bool scaled_up = false;
+
+    public void SetScaledUp() => scaled_up = true;
+
     // Start is called before the first frame update
 
 
@@ -62,13 +68,17 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
     void FixedUpdate()
     {
-
+        
 
         //rb.MovePosition(rb.position + Time.fixedDeltaTime *move_speed  );
 
 
-        rb.MovePosition(rb.position +    (target-rb.position) * Time.fixedDeltaTime*0.1f);
+        
         rb.MoveRotation(rb.rotation * Quaternion.Euler(Time.fixedDeltaTime *rotation_speed));
+
+
+        if (!scaled_up) return;
+        rb.MovePosition(rb.position + (target - rb.position) * Time.fixedDeltaTime * 0.1f);
 
 
     }

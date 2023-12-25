@@ -180,8 +180,4 @@ public class FormConstellation : MonoBehaviour
 
     public static event Action OnAllStarsGone;
     
-    void Update()
-    {
-
-    }
 }

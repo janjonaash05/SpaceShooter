@@ -86,7 +86,10 @@ public class SupernovaChargeUp : MonoBehaviour
 
         StarFall.OnStarFallen += (m) =>
         {
+            Debug.LogWarning("STARSCALE INDEX " + index);
 
+
+            if (index >= 9) return;
             rotation_speed = rotation_speeds[index];
 
             scale = scales[index];
@@ -94,6 +97,9 @@ public class SupernovaChargeUp : MonoBehaviour
             index++;
 
 
+
+
+        
             shoot_mats.Add(m);
         };
 

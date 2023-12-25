@@ -30,6 +30,10 @@ public class DecreaseStationChargePower : MonoBehaviour
     public event Action OnRechargeStart, OnRechargeEnd;
 
 
+
+    Material before_turnoff;
+
+
     float max_size_y;
     float size_y;
     void Start()
@@ -61,6 +65,9 @@ public class DecreaseStationChargePower : MonoBehaviour
                 LaserTurretCommunication1.OnControlEnabled += () => paused = false;
 
 
+                LaserTurretCommunication1.OnControlDisabled += EndEmission;
+                LaserTurretCommunication1.OnControlEnabled += () => { if (recharging) StartEmission(); };
+
 
 
                 break;
@@ -78,10 +85,12 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
-                LaserTurretCommunication2.OnControlDisabled += () =>{ if (paused) { };   }
+                LaserTurretCommunication2.OnControlDisabled +=  EndEmission;
+                LaserTurretCommunication2.OnControlEnabled += () => { if (recharging) StartEmission(); };
 
 
-               
+
+
 
                 break;
 
@@ -181,7 +190,7 @@ public class DecreaseStationChargePower : MonoBehaviour
         while (size_y < max_size_y)
         {
 
-            if(paused) { yield return null; }
+            if(paused) { yield return null; continue; }
 
             size_y += delta_size_unit;
             transform.localScale = new Vector3(transform.localScale.x, size_y, transform.localScale.z);

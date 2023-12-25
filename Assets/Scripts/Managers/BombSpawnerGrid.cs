@@ -16,8 +16,8 @@ public class BombSpawnerGrid : MonoBehaviour
 
     Vector3[,] positions;
 
-    int size_x = 5;
-    int size_y = 5;
+    int size_x = 6;
+    int size_y = 3;
 
 
 

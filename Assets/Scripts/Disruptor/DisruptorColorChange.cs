@@ -16,6 +16,12 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
 
     Renderer rend;
 
+
+
+
+
+    public static event Action<Material> OnColorChange;
+
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -82,8 +88,11 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
 
                 color_mats[index_order_dict[k+1]] = mats_storage[k];
 
-                charge1_flash_charge.FlashColorThenWhite(mats_storage[k]);
-                charge2_flash_charge.FlashColorThenWhite(mats_storage[k]);
+                //charge1_flash_charge.FlashColorThenWhite(mats_storage[k]);
+                //charge2_flash_charge.FlashColorThenWhite(mats_storage[k]);
+
+
+                OnColorChange?.Invoke(mats_storage[k]);
 
             }
 

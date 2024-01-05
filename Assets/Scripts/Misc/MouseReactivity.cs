@@ -81,30 +81,48 @@ public class MouseReactivity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        bool valid_click = false;
         if (Input.GetButtonDown("Fire1"))
         {
 
 
 
-
+            
 
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
             {
 
                 Debug.Log(hit.transform.tag);
 
-                PlayerInputCommunication.Raise_RaycastClick(hit);
-               
+                 valid_click =  PlayerInputCommunication.Raise_RaycastClick(hit);
+                
 
 
 
             }
 
 
+            if (!valid_click)
+            {
+                PlayerInputCommunication.Raise_MouseDown();
 
 
-
+            }
         }
+       
+
+        if (Input.GetButtonUp("Fire1")) 
+        {
+        
+            PlayerInputCommunication.Raise_MouseUp();
+        }
+
+
+        
+
+
+
     }
 
 

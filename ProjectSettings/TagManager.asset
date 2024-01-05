@@ -26,6 +26,7 @@ TagManager:
   - Core
   - CoreRing
   - Supernova
+  - HarpoonCollider
   layers:
   - Default
   - TransparentFX

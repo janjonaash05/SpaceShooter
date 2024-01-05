@@ -14,6 +14,7 @@ public static class PlayerInputCommunication
         OnAutoCollider1Click, OnAutoCollider2Click,
         OnLaserTarget1Click, OnLaserTarget2Click,
 
+        OnHarpoonColliderClick,
         OnSliderControlClick, OnSliderFullAutoClick, OnSliderBoltClick;
 
 
@@ -40,32 +41,50 @@ public static class PlayerInputCommunication
              { Tags.SLIDER_BOLT_COLLIDER, Raise_OnSliderBoltClick },
 
 
-
+            { Tags.HARPOON_COLLIDER, Raise_OnHarpoonColliderClick }
         };
 
 
 
 
-    public static void Raise_RaycastClick(RaycastHit hit)
+
+    public static void Raise_MouseDown() 
+    {
+        OnMouseDown?.Invoke();
+
+    }
+
+    public static void Raise_MouseUp() 
+    {
+        OnMouseUp?.Invoke();
+    
+    }
+
+    public static bool Raise_RaycastClick(RaycastHit hit)
     {
         Action<RaycastHit> action = (hit) => { };
 
 
 
+        bool valid_click;
+
         try
         {
             action = tag_click_dictionary[hit.transform.tag];
             Debug.Log("action " + hit.transform.tag);
+
+            valid_click = true;
         }
         catch (Exception)
         {
-            action(hit);
+            valid_click = false;
+           // action(hit); 
         }
 
 
         action?.Invoke(hit);
 
-
+        return valid_click;
 
     }
 
@@ -127,6 +146,13 @@ public static class PlayerInputCommunication
 
         OnSliderBoltClick?.Invoke(hit);
     }
+
+
+    static void Raise_OnHarpoonColliderClick(RaycastHit hit)
+    {
+        OnHarpoonColliderClick?.Invoke(hit);
+    }
+
 
 
 

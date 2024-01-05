@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class HarpoonLaunch : MonoBehaviour
 {
-    GameObject harpoon_head;
+    GameObject harpoon_head, harpoon_station_charge;
+
+
     [SerializeField] float launch_distance;
     [SerializeField] float launch_speed;
-    [SerializeField] Material white;
+    [SerializeField] Material white; 
+    Material off_color_head, off_color_charge;
 
 
 
@@ -16,22 +19,29 @@ public class HarpoonLaunch : MonoBehaviour
     Transform harpoon_head_transform;
     Vector3 target;
     Vector3 start;
-    IEnumerator Start()
+    bool readyToLaunch = true;
+
+
+    bool turnedOff = true;
+    IEnumerator Launch()
     {
-        harpoon_head = transform.GetChild(0).gameObject;
-        harpoon_head_transform = harpoon_head.transform;
+        Debug.LogWarning(readyToLaunch);
+        if (!readyToLaunch) yield break;
+
+
+
+        readyToLaunch = false;
+        
 
         target = harpoon_head_transform.localPosition + Vector3.up * launch_distance;
-        start = harpoon_head_transform.localPosition;
-
+        start =  harpoon_head_transform.localPosition;
 
 
         SetupTether();
-        yield return LaunchProcess(false);
-        yield return LaunchProcess(true);
-        Debug.LogWarning(target);
-
-        ;
+        yield return LaunchProcess();
+        
+        readyToLaunch = true;
+        
 
 
     }
@@ -43,29 +53,73 @@ public class HarpoonLaunch : MonoBehaviour
     }
 
 
-
-
-    IEnumerator LaunchProcess(bool backwards)
+    void Start() 
     {
+        
+
+        
+
+
+
+        harpoon_head = transform.GetChild(0).gameObject;
+        harpoon_head_transform = harpoon_head.transform;
+        harpoon_station_charge = transform.GetChild(1).gameObject;
+
+        start = harpoon_head_transform.position; ;
+
+        Debug.Log(start);
+
+        Renderer head_renderer = harpoon_head.GetComponent<Renderer>();
+        off_color_head = head_renderer.materials[1];
+        off_color_charge = head_renderer.materials[0];
+
+        PlayerInputCommunication.OnHarpoonColliderClick += (hit) => 
+        {
+            turnedOff = !turnedOff;
+            Debug.Log(turnedOff + " turned off");
+            harpoon_station_charge.GetComponent<Renderer>().material = (turnedOff) ? off_color_charge : white;
+
+            Material[] head_mats = harpoon_head.GetComponent<Renderer>().materials;
+            head_mats[2]= turnedOff ? off_color_head : white;
+
+            harpoon_head.GetComponent<Renderer>().materials = head_mats;
+        
+        
+        };
+    
+    }
+
+
+
+
+    
+
+
+    IEnumerator LaunchProcess()
+    {
+
+
+        
+
 
         // Vector3 start_point = transform.position;
        
-        Vector3 targetPoint = (backwards) ? start : target;
-        Vector3 startPoint = harpoon_head_transform.localPosition;
+        //Vector3 targetPoint = (backwards) ? start : target;
+        //Vector3 startPoint = harpoon_head_transform.localPosition;
 
 
         //
                           
                           
                          
-        while (Vector3.Distance(harpoon_head_transform.localPosition, target) > 0.1f)
+        while (Vector3.Distance(harpoon_head_transform.localPosition, target) > 0.001f)
         {
           //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
 
             //  harpoon_head_transform.Translate( Time.deltaTime* launch_speed*(target - harpoon_head_transform.localPosition) );
 
 
-            harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, targetPoint, launch_speed * Time.deltaTime);
+            harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, target, launch_speed * Time.deltaTime);
 
 
             Track(harpoon_head_transform.position);
@@ -75,14 +129,14 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
-        while (Vector3.Distance(harpoon_head_transform.localPosition, startPoint) > 0.1f)
+        while (Vector3.Distance(harpoon_head_transform.localPosition, start) > 0.001f)
         {
             //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
 
             //  harpoon_head_transform.Translate( Time.deltaTime* launch_speed*(target - harpoon_head_transform.localPosition) );
 
 
-            harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, startPoint, launch_speed * Time.deltaTime);
+            harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, start, launch_speed * Time.deltaTime);
 
 
             Track(harpoon_head_transform.position);
@@ -93,12 +147,12 @@ public class HarpoonLaunch : MonoBehaviour
 
 
         Debug.LogWarning("end");
-
+        Destroy(laser_tether);
     }
 
 
 
-
+  
 
 
 
@@ -114,8 +168,11 @@ public class HarpoonLaunch : MonoBehaviour
         laser_tether.GetComponent<Renderer>().sharedMaterial = white;
         laser_tether.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-        originVector = transform.position;
+        float angle = 45*180/Mathf.PI;// transform.rotation.eulerAngles.x;
 
+        originVector = transform.position + new Vector3(-Mathf.Cos(angle), Mathf.Sin(angle),0) ;
+
+        
 
         //  isTargeting = true;
 

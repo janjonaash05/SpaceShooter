@@ -14,7 +14,7 @@ public class SliderShooting : MonoBehaviour
     public bool isShooting;
 
     [SerializeField] Material white;
-    
+
     public SliderLoaderRecharge loader_recharge;
 
 
@@ -31,8 +31,13 @@ public class SliderShooting : MonoBehaviour
 
     void Start()
     {
-        OnMouseUp += CancelShooting;
-        OnMouseDown += StartShooting;
+        //  OnMouseUp += CancelShooting;
+        //  OnMouseDown += StartShooting;
+
+
+        PlayerInputCommunication.OnMouseDown += StartShooting;
+        PlayerInputCommunication.OnMouseUp += CancelShooting;
+
         isShooting = false;
 
 
@@ -45,7 +50,7 @@ public class SliderShooting : MonoBehaviour
 
 
 
-      //  Debug.Log(laser_target);
+        //  Debug.Log(laser_target);
 
 
 
@@ -62,34 +67,34 @@ public class SliderShooting : MonoBehaviour
         laser_target = transform.up * -int.MaxValue;
 
 
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
-            {
-
-                string tag = hit.transform.tag;
-                if (tag == Tags.SLIDER_CONTROL_COLLIDER  || tag == Tags.SLIDER_FULL_AUTO_COLLIDER || tag == Tags.SLIDER_BOLT_COLLIDER)
+        /*
+                if (Input.GetButtonDown("Fire1"))
                 {
-                    return;
+
+                    if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
+                    {
+
+                        string tag = hit.transform.tag;
+                        if (tag == Tags.SLIDER_CONTROL_COLLIDER  || tag == Tags.SLIDER_FULL_AUTO_COLLIDER || tag == Tags.SLIDER_BOLT_COLLIDER)
+                        {
+                            return;
+                        }
+                    }
+
+                    if (slider_control_head.GetComponent<SliderControlActivation>().active && !isShooting && !loader_recharge.IsRecharging && loader_recharge.IsActive)
+                    {
+                        OnMouseDown?.Invoke();
+                    }
+
                 }
-            }
 
-            if (slider_control_head.GetComponent<SliderControlActivation>().active && !isShooting && !loader_recharge.IsRecharging && loader_recharge.IsActive)
-            {
-                OnMouseDown?.Invoke();
-            }
 
-        }
-        
+                if (Input.GetButtonUp("Fire1"))
+                {
 
-        if (Input.GetButtonUp("Fire1"))
-        {
-
-            OnMouseUp?.Invoke();
-        }
-
+                    OnMouseUp?.Invoke();
+                }
+        */
 
 
 
@@ -99,6 +104,7 @@ public class SliderShooting : MonoBehaviour
     void CancelShooting()
     {
 
+        Debug.Log("CancelShooting");
         CancelMagazine();
         isShooting = false;
 
@@ -108,6 +114,12 @@ public class SliderShooting : MonoBehaviour
     void StartShooting()
     {
 
+        if (!(slider_control_head.GetComponent<SliderControlActivation>().active && !isShooting && !loader_recharge.IsRecharging && loader_recharge.IsActive)) return;
+
+
+
+
+        Debug.Log("StartShooting");
         Shoot();
         isShooting = true;
 

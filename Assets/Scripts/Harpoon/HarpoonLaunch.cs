@@ -9,7 +9,7 @@ public class HarpoonLaunch : MonoBehaviour
 
     [SerializeField] float launch_distance;
     [SerializeField] float launch_speed;
-    [SerializeField] Material white; 
+    Material charge_color; 
     Material off_color_head, off_color_charge;
 
 
@@ -53,11 +53,11 @@ public class HarpoonLaunch : MonoBehaviour
     }
 
 
-    void Start() 
+    void Start()
     {
-        
 
-        
+        charge_color = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
+
 
 
 
@@ -73,19 +73,24 @@ public class HarpoonLaunch : MonoBehaviour
         off_color_head = head_renderer.materials[1];
         off_color_charge = head_renderer.materials[0];
 
-        PlayerInputCommunication.OnHarpoonColliderClick += (hit) => 
+        PlayerInputCommunication.OnHarpoonColliderClick += (hit) =>
         {
             turnedOff = !turnedOff;
             Debug.Log(turnedOff + " turned off");
-            harpoon_station_charge.GetComponent<Renderer>().material = (turnedOff) ? off_color_charge : white;
+            harpoon_station_charge.GetComponent<Renderer>().material = (turnedOff) ? off_color_charge : charge_color;
 
             Material[] head_mats = harpoon_head.GetComponent<Renderer>().materials;
-            head_mats[2]= turnedOff ? off_color_head : white;
+            head_mats[2] = turnedOff ? off_color_head : charge_color;
 
             harpoon_head.GetComponent<Renderer>().materials = head_mats;
-        
-        
+
+
         };
+
+
+
+
+        PlayerInputCommunication.OnMouseDown += () => { if (!turnedOff) StartCoroutine(Launch()); };
     
     }
 
@@ -165,7 +170,7 @@ public class HarpoonLaunch : MonoBehaviour
 
         laser_tether = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         Destroy(laser_tether.GetComponent<Collider>());
-        laser_tether.GetComponent<Renderer>().sharedMaterial = white;
+        laser_tether.GetComponent<Renderer>().sharedMaterial = charge_color;
         laser_tether.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
         float angle = 45*180/Mathf.PI;// transform.rotation.eulerAngles.x;

@@ -8,7 +8,7 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
     // Start is called before the first frame update
 
 
-    [SerializeField] Material[] mats_storage;
+     Material[] mats_storage;
     [SerializeField] Material white, primary, secondary;
     [SerializeField] float delay;
     [SerializeField] GameObject charge1, charge2;
@@ -24,6 +24,13 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
 
     void Start()
     {
+
+
+        mats_storage = MaterialHolder.Instance().COLOR_SET_WHOLE();
+
+
+
+
         rend = GetComponent<Renderer>();
         index_order_dict = new Dictionary<int, int>() { { 1,8}, { 2, 7 }, { 3, 6 }, { 4, 5 }, { 5, 4 }, { 6, 3 }, { 7, 2 }, { 8,9 } };
 

@@ -16,11 +16,11 @@ public class SpawnBomb : MonoBehaviour
 
     [SerializeField] float spawn_x_offset;
 
-    [SerializeField] Material[] Mats1;
-    [SerializeField] Material[] Mats2;
+     Material[] Mats1;
+     Material[] Mats2;
 
 
-    public Material backgroundMat;
+    
     public GameObject prefab;
 
 
@@ -31,6 +31,13 @@ public class SpawnBomb : MonoBehaviour
     public event Action OnBombSpawnEnd;
 
     // Update is called once per frame
+
+    public void Start()
+    {
+        Mats1 = MaterialHolder.Instance().COLOR_SET_1();
+        Mats2 = MaterialHolder.Instance().COLOR_SET_2();
+    }
+
 
     private void Awake()
     {

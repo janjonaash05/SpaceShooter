@@ -12,7 +12,7 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-    [SerializeField] List<Material> mats_storage;
+     List<Material> mats_storage;
 
     [SerializeField] Material primary, secondary;
 
@@ -33,6 +33,9 @@ public class CoreRingColorChange : MonoBehaviour
     void Start()
     {
 
+
+
+        mats_storage = MaterialHolder.Instance().COLOR_SET_WHOLE().ToList();
 
 
         CoreCommunication.OnCommunicationInit += Init;

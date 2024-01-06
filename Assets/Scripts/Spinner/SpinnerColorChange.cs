@@ -13,7 +13,7 @@ public class SpinnerColorChange : MonoBehaviour
   
 
 
-    public Material[] mats_storage;
+     Material[] mats_storage;
 
     Material secondary, primary;
 
@@ -36,6 +36,9 @@ public class SpinnerColorChange : MonoBehaviour
     void Start()
     {
 
+
+
+        mats_storage = MaterialHolder.Instance().COLOR_SET_WHOLE();
 
         CoreCommunication.OnSpinnerChargeUpStart += () => EngageChargeUp(true);
         CoreCommunication.OnSpinnerChargeUpEnd += () => EngageChargeUp(false);

@@ -103,14 +103,26 @@ public class FlashDisruptorCharge : MonoBehaviour
     {
 
 
+        var emission = ps.emission;
+        if (fullArc)
+        {
+            var burst = emission.GetBurst(0);burst.probability = 0;
 
-        if (fullArc) { var shape = ps.shape; shape.arc = 360; }
+            var shape = ps.shape;
+            var main = ps.main;
+
+
+            main.loop = true;
+
+
+
+            emission.rateOverTime = 2; shape.arc = 360; }
         ps_rend.material = m;
 
 
 
 
-        var emission = ps.emission;
+        
 
         emission.enabled = true;
 

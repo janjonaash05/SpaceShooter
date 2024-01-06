@@ -12,7 +12,7 @@ public class FormConstellation : MonoBehaviour
 
     [SerializeField] GameObject star_prefab, supernova_prefab;
 
-    [SerializeField] Material[] mats;
+     Material[] mats;
     [SerializeField] float random_distance_factor;
     [SerializeField]
 
@@ -49,7 +49,7 @@ public class FormConstellation : MonoBehaviour
 
     void Start()
     {
-
+        mats = MaterialHolder.Instance().COLOR_SET_WHOLE();
 
         InvokeRepeating(nameof(Form), DifficultyManager.CONSTELLATION_SPAWN_RATE, DifficultyManager.CONSTELLATION_SPAWN_RATE);
 

@@ -24,7 +24,7 @@ public class BombSpawnerGrid : MonoBehaviour
     
     float margin = 60;
 
-
+    
     float chance = 33;
 
 
@@ -62,15 +62,20 @@ public class BombSpawnerGrid : MonoBehaviour
                 {
 
 
-                    GameObject placeholder = new Random().Next(  Mathf.RoundToInt(100/chance)-1) == 0?  Instantiate(spawner_prefab, transform, false) : Instantiate(placeholder_prefab, transform, false);
+                    GameObject toSpawn = new Random()
+                    .Next(Mathf.RoundToInt(100/chance)-1) == 0?  
+
+                    Instantiate(spawner_prefab, transform, false) : 
+                    Instantiate(placeholder_prefab, transform, false);
+
                     float y = left_corner.y + margin * j;
 
 
                     
 
                     positions[i, j] = new Vector3(x, y, 0);
-                    placeholder.transform.parent = transform;
-                    placeholder.transform.localPosition = positions[i, j]; 
+                    toSpawn.transform.parent = transform;
+                    toSpawn.transform.localPosition = positions[i, j]; 
                 }
             
             }

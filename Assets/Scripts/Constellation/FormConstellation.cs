@@ -43,7 +43,7 @@ public class FormConstellation : MonoBehaviour
 
     List<GameObject> star_list;
 
-    const int STAR_AMOUNT = 8;
+    int STAR_AMOUNT = 8;
 
     [SerializeField][Tooltip("in ms")] int star_spawn_delay;
 
@@ -69,7 +69,7 @@ public class FormConstellation : MonoBehaviour
 
     async void Form()
     {
-
+        STAR_AMOUNT = new System.Random().Next(8)+1;
 
 
 

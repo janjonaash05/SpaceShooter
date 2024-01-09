@@ -32,8 +32,8 @@ public class Following : MonoBehaviour
         turn.x += Input.GetAxis("Mouse X") * sensitivity;
         turn.y += Input.GetAxis("Mouse Y") * sensitivity;
 
-        turn.y =Mathf.Clamp(turn.y,covY[0],covY[1]);
-        turn.x =Mathf.Clamp(turn.x,covX[0],covX[1]);
+       turn.y =Mathf.Clamp(turn.y,covY[0],covY[1]);
+      //  turn.x =Mathf.Clamp(turn.x,covX[0],covX[1]);
        
         transform.localRotation = Quaternion.Euler(-turn.y, turn.x, 0);
 

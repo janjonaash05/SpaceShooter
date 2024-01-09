@@ -35,7 +35,10 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
         core = GameObject.FindWithTag(Tags.CORE);
 
 
-        target = core.transform.position + Random.insideUnitSphere;
+
+
+
+        target = GameObject.FindWithTag("BombTarget").transform.position + Random.insideUnitSphere; //  core.transform.position + Random.insideUnitSphere;
        
     }
 

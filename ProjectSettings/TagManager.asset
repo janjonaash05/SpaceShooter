@@ -28,6 +28,7 @@ TagManager:
   - Supernova
   - HarpoonCollider
   - MaterialHolder
+  - BombTarget
   layers:
   - Default
   - TransparentFX

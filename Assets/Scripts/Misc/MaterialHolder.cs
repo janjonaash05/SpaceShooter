@@ -9,7 +9,7 @@ public class MaterialHolder : MonoBehaviour
 
 
     [SerializeField] Material[] _COLOR_SET,
-        _TURRET_CONTROL_1_COLOR_SET, _TURRET_CONTROL_2_COLOR_SET;
+        _TURRET_CONTROL_1_COLOR_SET, _TURRET_CONTROL_2_COLOR_SET, _PLAYER_HEALTH_SET;
 
 
 
@@ -25,6 +25,8 @@ public class MaterialHolder : MonoBehaviour
     [SerializeField] Material _ENEMY_SECONDARY;
 
 
+    [SerializeField] Material _PLAYER_HEALTH;
+
 
     public Material[] COLOR_SET_WHOLE() =>  _COLOR_SET;
 
@@ -34,7 +36,7 @@ public class MaterialHolder : MonoBehaviour
     public Material[] COLOR_SET_2() => _TURRET_CONTROL_2_COLOR_SET;
 
 
-
+    public Material[] PLAYER_HEALTH_SET() => _PLAYER_HEALTH_SET;
 
 
 
@@ -67,7 +69,7 @@ public class MaterialHolder : MonoBehaviour
 
 
 
-
+    
 
 
 

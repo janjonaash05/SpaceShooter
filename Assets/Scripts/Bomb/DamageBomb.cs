@@ -19,15 +19,15 @@ public class DamageBomb : MonoBehaviour
 
     public bool DisabledRewards { get; set; }
     CancellationTokenSource cancel_source;
-  protected  CancellationToken token;
+    protected CancellationToken token;
     void Start()
     {
         bomb = gameObject;
 
 
 
-         cancel_source = new();
-         token= cancel_source.Token;
+        cancel_source = new();
+        token = cancel_source.Token;
 
     }
 
@@ -50,86 +50,47 @@ public class DamageBomb : MonoBehaviour
 
 
         Destroy(GetComponent<Collider>());
-
-
         Destroy(GetComponent<BombFall>());
-
-
-
-
         await GetComponent<BombColorChange>().CoverInColor();
 
 
-        Action damage = (playerTargeted) ? DamageByPlayer : DamageByCore;
+        Action damage = (playerTargeted) ? DamageByPlayer : DamageByTarget;
 
         damage();
 
-
-     
-        /*
-        ScaleDown(token);
-
-        
-        transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission = true;
-        transform.GetChild(0).GetComponent<ParticleSystem>().Play();
-
-        Destroy(gameObject, transform.GetChild(0).GetComponent<ParticleSystem>().main.duration);
-        */
     }
 
 
 
 
 
-    void DamageByCore()
+    void DamageByTarget()
     {
 
 
 
-        ParticleSystem ps = transform.GetChild(1).GetComponent<ParticleSystem>();
-        
-
-        Vector3 target = GameObject.FindGameObjectWithTag(Tags.CORE).transform.position;
-        //    Debug.LogWarning(target + "core " + transform.position + " bmb");
 
 
 
-        
-
-
-
+        Vector3 target = GameObject.FindGameObjectWithTag(Tags.BOMB_TARGET).transform.position;
 
         Vector3 rotationDirection = (target - transform.position);
 
-        Debug.LogWarning(rotationDirection + " rot");
+        transform.rotation = Quaternion.LookRotation(rotationDirection);
 
-
-        
-       transform.rotation = Quaternion.LookRotation(rotationDirection);
-        
-     
-       
-
-        Debug.DrawRay(transform.position, rotationDirection, Color.red, 1f);
-
-
-
-
-
-       ps.enableEmission = true;
-       ps.Play();
+        //  Debug.DrawRay(transform.position, rotationDirection, Color.red, 1f);
 
         _ = ScaleDown(token);
-        StartCoroutine(DamageByCore_FallIntoCore());
+        //  StartCoroutine(DamageByCore_FallIntoCore());
 
 
         Destroy(gameObject, transform.GetChild(1).GetComponent<ParticleSystem>().main.duration);
 
-        
+
     }
 
 
-     void DamageByPlayer() 
+    void DamageByPlayer()
     {
 
         Destroy(GetComponent<Renderer>());
@@ -144,7 +105,7 @@ public class DamageBomb : MonoBehaviour
 
 
 
-
+    /*
 
     IEnumerator DamageByCore_FallIntoCore()
     {
@@ -162,11 +123,11 @@ public class DamageBomb : MonoBehaviour
 
         }
     }
+    */
 
 
 
-    
-  protected async Task ScaleDown(CancellationToken token)
+    protected async Task ScaleDown(CancellationToken token)
     {
 
         while (bomb.transform.localScale.x > min_scale_down_size)
@@ -175,13 +136,13 @@ public class DamageBomb : MonoBehaviour
             bomb.transform.localScale += (-scale_down_increment * Vector3.one);
 
 
-            
-            
+
+
             await Task.Yield();
         }
 
 
-        
+
 
 
 

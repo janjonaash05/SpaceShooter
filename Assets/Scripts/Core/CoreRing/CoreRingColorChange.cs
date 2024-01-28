@@ -35,15 +35,30 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-        mats_storage = MaterialHolder.Instance().COLOR_SET_WHOLE().ToList();
+        mats_storage = MaterialHolder.Instance().PLAYER_HEALTH_SET().ToList();
 
 
         CoreCommunication.OnCommunicationInit += Init;
-        
+
+        changing_mat = mats_storage[0];
 
 
-    
+        CoreCommunication.OnParentValueChangedCore += () =>
+        {
 
+            changing_mat = (CoreCommunication.CORE_INDEX_HOLDER.Parent) switch
+            {
+                5 => mats_storage[0],
+                4 => mats_storage[0],
+                3 => mats_storage[1],
+                2 => mats_storage[2],
+                1 => mats_storage[3],
+                0 => mats_storage[3],
+                _ => mats_storage[3]
+
+            };
+
+        };
         
 
 
@@ -194,12 +209,11 @@ public class CoreRingColorChange : MonoBehaviour
         while (true)
         {
 
-            foreach (Material m in mats_storage)
-            {
+            
 
 
-                changing_mat = m;
-                OnMaterialChange?.Invoke(m);
+                
+                OnMaterialChange?.Invoke(changing_mat);
 
                 ChangeMaterialArray();
 
@@ -207,7 +221,7 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-            }
+            
 
 
         }

@@ -32,8 +32,24 @@ public class CoreRingParticles : MonoBehaviour
 
 
 
-        CoreCommunication.OnCoreFullParticlesStart += () => ps.enableEmission = true;
-        CoreCommunication.OnCoreFullParticlesEnd += () => ps.enableEmission = false;
+        CoreCommunication.OnParentValueChangedCore += () =>
+        {
+            ps.emissionRate = CoreCommunication.CORE_INDEX_HOLDER.Parent switch
+            {
+
+              0 => 0,
+              1 => 10,
+              2 => 50,
+              3 => 200,
+              4 => 300,
+              5 => 500,
+
+
+
+            };
+
+
+        };
     }
 
 

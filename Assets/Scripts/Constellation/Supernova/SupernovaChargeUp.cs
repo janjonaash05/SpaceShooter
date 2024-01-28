@@ -86,7 +86,7 @@ public class SupernovaChargeUp : MonoBehaviour
 
         StarFall.OnStarFallen += (m) =>
         {
-            Debug.LogWarning("STARSCALE INDEX " + index);
+           
 
 
             if (index >= 9) return;

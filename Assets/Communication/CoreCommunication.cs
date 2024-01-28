@@ -13,7 +13,7 @@ public static class CoreCommunication
     public static event Action<int> OnValueChangedSpinner;
 
 
-    
+    public static event Action<Material> OnBombFallen;
 
 
     static public  event Action OnCommunicationInit;
@@ -26,7 +26,7 @@ public static class CoreCommunication
 
 
     public static event Action OnSpinnerChargeUpStart, OnSpinnerChargeUpEnd, OnSpinnerInitialColorUp;
-    public static event Action OnCoreFullParticlesStart, OnCoreFullParticlesEnd, OnCoreBreakdownStart, OnCoreBreakdownEnd;
+    
 
 
 
@@ -67,7 +67,10 @@ public static class CoreCommunication
 
 
 
-
+    public static void Raise_OnBombFallen(Material m) 
+    {
+        OnBombFallen?.Invoke(m);
+    }
     
 
 
@@ -119,15 +122,7 @@ public static class CoreCommunication
 
 
 
-        switch (result_core) 
-        {
-            case 1: OnCoreFullParticlesStart?.Invoke(); break;
-            default: break;
-
-
-
-        }
-        if (child >= 0) { OnCoreFullParticlesEnd?.Invoke(); }
+       
 
 
 

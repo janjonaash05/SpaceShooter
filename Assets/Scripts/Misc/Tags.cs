@@ -50,4 +50,5 @@ public static class Tags
 
     public const string HARPOON_COLLIDER = "HarpoonCollider";
 
+    public const string BOMB_TARGET = "BombTarget";
 }

@@ -6,18 +6,18 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 {
 
 
-    [SerializeField] Vector3 move_speed;
+     float move_speed;
     Vector3 rotation_speed;
     [SerializeField] float rotation_speed_multiplier;
-    
 
-    [SerializeField] float min_down, max_down, min_side, max_side;
+
+    [SerializeField] float min_speed, max_speed;
 
     public bool DisabledRewards { get; set; }
 
     Rigidbody rb;
 
-    GameObject core;
+   
 
 
 
@@ -31,14 +31,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
-        core = GameObject.FindWithTag(Tags.CORE);
-
-
-
-
-
-        target = GameObject.FindWithTag("BombTarget").transform.position + Random.insideUnitSphere; //  core.transform.position + Random.insideUnitSphere;
+        target = GameObject.FindWithTag(Tags.BOMB_TARGET).transform.position + Random.insideUnitSphere; //  core.transform.position + Random.insideUnitSphere;
        
     }
 
@@ -47,19 +40,11 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     Vector3 target;
     void Start()
     {
-
-
-
-
-
         DisabledRewards = false;
 
+        move_speed = Random.Range(min_speed, max_speed);
 
-
-
-        move_speed = new Vector3(Random.Range(min_side, max_side), 0, -Random.Range(min_down, max_down));
-
-        rotation_speed = rotation_speed_multiplier * Random.insideUnitSphere;
+        rotation_speed = move_speed * 500 * Random.insideUnitSphere;
     }
 
     // Update is called once per frame
@@ -81,7 +66,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
 
         if (!scaled_up) return;
-        rb.MovePosition(rb.position + (target - rb.position) * Time.fixedDeltaTime * 0.1f);
+        rb.MovePosition(rb.position + move_speed * Time.fixedDeltaTime * (target - rb.position));
 
 
     }
@@ -90,38 +75,15 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     private void OnCollisionEnter(Collision col)
     {
 
-        if (col.transform.CompareTag(Tags.CORE))
+        if (col.transform.CompareTag(Tags.BOMB_TARGET))
         { 
-
-
-
-            
-
-
-            
-
             Destroy(gameObject.GetComponent<BombFall>());
-
-            
-            
-
-
-
-
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(false);
 
 
 
 
-
             CoreCommunication.Raise_ValueChange(0, 1);
-
-
-
-
-
-
-
         }
     }
 
@@ -135,7 +97,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     public int ScoreReward()
     {
         if (DisabledRewards) { return 0; }
-        return Mathf.RoundToInt(transform.localScale.x / 50 + VectorSum(move_speed) / 75 + VectorSum(rotation_speed) / 75);
+        return Mathf.RoundToInt(transform.localScale.x / 50  + VectorSum(rotation_speed) / 75 +  move_speed * 75);
     }
 
 

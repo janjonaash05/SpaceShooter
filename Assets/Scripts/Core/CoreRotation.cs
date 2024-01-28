@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CoreRotation : MonoBehaviour
 {
@@ -10,12 +11,12 @@ public class CoreRotation : MonoBehaviour
 
     Dictionary<int, Vector3> speed_parent_dict = new()
     {
-        {5,new(0,0,0)},
-        {4,new(0,50f,0) },
-        {3,new(0, 100f, 0) },
-        {2,new(0,150f,150f)},
-        {1,new(0,200f,200f) },
-        {0,new(250f,250f,250f) }
+        {0,new(0,0,0)},
+        {1,new(0,50f,0) },
+        {2,new(0, 100f, 0) },
+        {3,new(0,150f,150f)},
+        {4,new(0,200f,200f) },
+        {5,new(250f,250f,250f) }
 
 
 
@@ -52,12 +53,15 @@ public class CoreRotation : MonoBehaviour
 
 
 
+
+    Material[] mats_storage;
+
     void Start()
     {
 
 
 
-
+        mats_storage = MaterialHolder.Instance().PLAYER_HEALTH_SET();
 
         ps = transform.GetChild(0).GetComponent<ParticleSystem>();
         ps_rend = ps.GetComponent<ParticleSystemRenderer>();
@@ -65,12 +69,12 @@ public class CoreRotation : MonoBehaviour
 
         ps_parent_dict = new()
         {
-            {5, () =>ps_emission.enabled = false },
-            {4, ()=> ps_emission.enabled = false },
-            {3, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 10; } },
-            {2, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 50; }  },
-            {1, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 100; }  },
-            {0, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 500; }  }
+            {0, () =>ps_emission.enabled = false },
+            {1, ()=> ps_emission.enabled = false },
+            {2, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 10;  } },
+            {3, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 50; }  },
+            {4, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 100; }  },
+            {5, ()=> {ps_emission.enabled = true; ps_emission.rateOverTime = 500;   }  }
 
 
 
@@ -89,18 +93,6 @@ public class CoreRotation : MonoBehaviour
             speed = speed_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent];
 
 
-
-            
-
-
-           
-
-
-
-
-
-
-
         };
 
 
@@ -109,6 +101,8 @@ public class CoreRotation : MonoBehaviour
         CoreCommunication.OnParentValueChangedCore += () => { ps_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent](); };
 
         CoreRingColorChange.OnMaterialChange += (m) => changing_mat = m;
+
+        changing_mat = MaterialHolder.Instance().PLAYER_HEALTH_SET()[0];
 
         rend = GetComponent<Renderer>();
 
@@ -127,9 +121,9 @@ public class CoreRotation : MonoBehaviour
 
         rend.materials = CoreCommunication.CORE_INDEX_HOLDER.Parent switch
         {
-            >= 4 => new Material[] { default_color1, default_color2 },
+            >= 4 => new Material[] { changing_mat, changing_mat },
             > 0 => new Material[] { default_color1, changing_mat },
-            _ => new Material[] { changing_mat, changing_mat }
+            _ => new Material[] { default_color1, default_color2 }
 
 
 
@@ -139,6 +133,12 @@ public class CoreRotation : MonoBehaviour
         ps_rend.trailMaterial = changing_mat;
 
 
-       
+
     }
+
+
+
+
+
+
 }

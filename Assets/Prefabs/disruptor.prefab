@@ -5002,15 +5002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bae6d7d184f7ae4db6eb985408cc88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mats_storage:
-  - {fileID: 2100000, guid: 62da4a9c2d7788844ada611cbcdbb4d4, type: 2}
-  - {fileID: 2100000, guid: c040bc4f0c2516149bac547b832a9af7, type: 2}
-  - {fileID: 2100000, guid: 30987b3662e99e24788a3b2094600073, type: 2}
-  - {fileID: 2100000, guid: 1c88ecab92f746e4baed6d284a615bfe, type: 2}
-  - {fileID: 2100000, guid: 650e01c36816ce24da3d355f2667f39d, type: 2}
-  - {fileID: 2100000, guid: 7b7955d7959c59b4a83eebb891d483cf, type: 2}
-  - {fileID: 2100000, guid: 221aa746b53e7e7408948d2de3024205, type: 2}
-  - {fileID: 2100000, guid: 32be7422337f62e4086bf0c39cf50c89, type: 2}
   white: {fileID: 2100000, guid: 2d3422a6a953f4945aaebcb8e7fe7871, type: 2}
   primary: {fileID: 2100000, guid: 63bffc11c0b46d546ba228fb1fab0627, type: 2}
   secondary: {fileID: 2100000, guid: 3eb42ab208c796347b45e3f815a15600, type: 2}
@@ -5090,7 +5081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da936351823d0fc42b675afe016ddcb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  down_speed: 20
+  down_speed: 40
   up_speed: 20
   min_y: -20
   max_y: 40

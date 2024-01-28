@@ -4930,22 +4930,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0aac904e3b2c7468d57bd2e80681cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  min_size: 600
-  max_size: 1200
+  min_size: 300
+  max_size: 600
   scale_up_increment: 5
   destoy_delay: 100
   spawn_x_offset: 0
-  Mats1:
-  - {fileID: 2100000, guid: 62da4a9c2d7788844ada611cbcdbb4d4, type: 2}
-  - {fileID: 2100000, guid: 1c88ecab92f746e4baed6d284a615bfe, type: 2}
-  - {fileID: 2100000, guid: 650e01c36816ce24da3d355f2667f39d, type: 2}
-  - {fileID: 2100000, guid: 221aa746b53e7e7408948d2de3024205, type: 2}
-  Mats2:
-  - {fileID: 2100000, guid: c040bc4f0c2516149bac547b832a9af7, type: 2}
-  - {fileID: 2100000, guid: 30987b3662e99e24788a3b2094600073, type: 2}
-  - {fileID: 2100000, guid: 7b7955d7959c59b4a83eebb891d483cf, type: 2}
-  - {fileID: 2100000, guid: 32be7422337f62e4086bf0c39cf50c89, type: 2}
-  backgroundMat: {fileID: 0}
   prefab: {fileID: 8182570917509590457, guid: 64e982f068c237c4e80f4c7c97c0ace5, type: 3}
 --- !u!1001 &644942395774822645
 PrefabInstance:
@@ -4961,15 +4950,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d4a135ce43d825a45a82b87cd8428063, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2000
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d4a135ce43d825a45a82b87cd8428063, type: 3}
       propertyPath: m_LocalScale.y
-      value: 500
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d4a135ce43d825a45a82b87cd8428063, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2000
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d4a135ce43d825a45a82b87cd8428063, type: 3}
       propertyPath: m_LocalPosition.x

@@ -44,8 +44,9 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
 
         if ((loader_recharge is SliderLoaderFullAutoRecharge))
         {
-            turret_head.GetComponent<SliderShooting>().OnMouseDown += SetupLaser;
-            turret_head.GetComponent<SliderShooting>().OnMouseUp += DestroyLaser;
+            
+            PlayerInputCommunication.OnMouseDown += SetupLaser;
+            PlayerInputCommunication.OnMouseUp += DestroyLaser;
         }
 
 

@@ -5084,7 +5084,7 @@ MonoBehaviour:
   down_speed: 40
   up_speed: 20
   min_y: -20
-  max_y: 40
+  max_y: 20
 --- !u!114 &1179934248641496902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5391,7 +5391,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 50
       minScalar: 5
       maxCurve:
         serializedVersion: 2

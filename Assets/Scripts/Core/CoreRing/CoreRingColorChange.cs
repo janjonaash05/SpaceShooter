@@ -49,12 +49,12 @@ public class CoreRingColorChange : MonoBehaviour
             changing_mat = (CoreCommunication.CORE_INDEX_HOLDER.Parent) switch
             {
                 5 => mats_storage[0],
-                4 => mats_storage[0],
-                3 => mats_storage[1],
-                2 => mats_storage[2],
-                1 => mats_storage[3],
-                0 => mats_storage[3],
-                _ => mats_storage[3]
+                4 => mats_storage[1],
+                3 => mats_storage[2],
+                2 => mats_storage[3],
+                1 => mats_storage[4],
+                0 => mats_storage[4],
+                _ => mats_storage[4]
 
             };
 

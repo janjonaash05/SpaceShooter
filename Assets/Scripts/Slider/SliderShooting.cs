@@ -67,34 +67,7 @@ public class SliderShooting : MonoBehaviour
         laser_target = transform.up * -int.MaxValue;
 
 
-        /*
-                if (Input.GetButtonDown("Fire1"))
-                {
 
-                    if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
-                    {
-
-                        string tag = hit.transform.tag;
-                        if (tag == Tags.SLIDER_CONTROL_COLLIDER  || tag == Tags.SLIDER_FULL_AUTO_COLLIDER || tag == Tags.SLIDER_BOLT_COLLIDER)
-                        {
-                            return;
-                        }
-                    }
-
-                    if (slider_control_head.GetComponent<SliderControlActivation>().active && !isShooting && !loader_recharge.IsRecharging && loader_recharge.IsActive)
-                    {
-                        OnMouseDown?.Invoke();
-                    }
-
-                }
-
-
-                if (Input.GetButtonUp("Fire1"))
-                {
-
-                    OnMouseUp?.Invoke();
-                }
-        */
 
 
 
@@ -202,6 +175,8 @@ public class SliderShooting : MonoBehaviour
 
 
         bullet.tag = "SliderBullet";
+        bullet.layer = 2;
+
 
         bullet.AddComponent<Rigidbody>();
         bullet.GetComponent<Rigidbody>().useGravity = false;

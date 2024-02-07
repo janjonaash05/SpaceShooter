@@ -31,7 +31,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        target = GameObject.FindWithTag(Tags.BOMB_TARGET).transform.position + Random.insideUnitSphere; //  core.transform.position + Random.insideUnitSphere;
+        target = GameObject.FindWithTag(Tags.BOMB_TARGET).transform.position;//  core.transform.position + Random.insideUnitSphere;
        
     }
 
@@ -81,9 +81,9 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(false);
 
 
+            CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().Color);
 
-
-            CoreCommunication.Raise_ValueChange(0, 1);
+            
         }
     }
 

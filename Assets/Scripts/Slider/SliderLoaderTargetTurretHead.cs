@@ -9,7 +9,7 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] GameObject turret_head, turret_head_charge, turret_station;
-    [SerializeField] Material white;
+    Material white;
 
 
     SliderLoaderRecharge loader_recharge;
@@ -19,7 +19,10 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
     delegate void OnDepletionAction();
     void Start()
     {
-        
+
+        white = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
+
+
         loader_recharge = turret_station.transform.parent.GetComponent<SliderLoaderRecharge>();
 
 
@@ -42,9 +45,9 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
         transform.Rotate(Vector3.right, -90);
 
 
-        if ((loader_recharge is SliderLoaderFullAutoRecharge))
+        if (loader_recharge is SliderLoaderFullAutoRecharge)
         {
-            
+
             PlayerInputCommunication.OnMouseDown += SetupLaser;
             PlayerInputCommunication.OnMouseUp += DestroyLaser;
         }
@@ -82,7 +85,7 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
 
 
 
-    void ActivateColor() 
+    void ActivateColor()
     {
         GetComponent<Renderer>().materials = new Material[] { GetComponent<Renderer>().materials[0], GetComponent<Renderer>().materials[1], white };
 
@@ -102,9 +105,9 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
     }
     public void SetupLaser()
     {
-        if (loader_recharge.IsRecharging || !loader_recharge.IsActive ) { return; }
+        if (loader_recharge.IsRecharging || !loader_recharge.IsActive || laser != null) { return; }
 
-         laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         Destroy(laser.GetComponent<Collider>());
         laser.GetComponent<Renderer>().sharedMaterial = white;
         laser.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -120,7 +123,7 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
     Vector3 initScale;
     void Aim()
     {
-       
+
 
         float distance = Vector3.Distance(origin, target);
 
@@ -128,20 +131,20 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
         Vector3 middleVector = (origin + target) / 2f;
         Vector3 rotationDirection = (target - origin);
         laser.transform.up = rotationDirection;
-        
+
         laser.transform.position = middleVector;
 
         initScale = laser.transform.localScale;
-      
-        
-        
-        
 
-    } 
-    void Pulsate() 
+
+
+
+
+    }
+    void Pulsate()
     {
 
-        float sizeIncrease = Mathf.Sin(Time.time*pulsate_speed) * 0.075f;
+        float sizeIncrease = Mathf.Sin(Time.time * pulsate_speed) * 0.075f;
         laser.transform.localScale = new Vector3(initScale.x + sizeIncrease, laser.transform.localScale.y, initScale.z + sizeIncrease);
 
 
@@ -153,17 +156,17 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
     void BurstPulsate()
     {
 
-        
+
         IEnumerator Burst()
         {
 
             SetupLaser();
 
 
-            float init_x_scale = laser.transform.localScale.x;
+
             float step_amount = 5;
 
-            for (float i = 0; i < step_amount; i++) 
+            for (float i = 0; i < step_amount; i++)
             {
                 laser.transform.localScale = new Vector3(laser.transform.localScale.x + burst_speed, laser.transform.localScale.y, laser.transform.localScale.z + burst_speed);
                 yield return null;
@@ -172,7 +175,7 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
 
             for (float i = 0; i < step_amount; i++)
             {
-                laser.transform.localScale = new Vector3(laser.transform.localScale.x - burst_speed, laser.transform.localScale.y, laser.transform.localScale.z -burst_speed);
+                laser.transform.localScale = new Vector3(laser.transform.localScale.x - burst_speed, laser.transform.localScale.y, laser.transform.localScale.z - burst_speed);
                 yield return null;
             }
 

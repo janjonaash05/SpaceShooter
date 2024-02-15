@@ -14,7 +14,7 @@ public class SliderControlActivation : MonoBehaviour
 
 
 
-    public Material on_material, off_material;
+     Material on_material, off_material;
 
 
 
@@ -26,7 +26,8 @@ public class SliderControlActivation : MonoBehaviour
 
     void Start()
     {
-
+        on_material = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
+        off_material = GetComponent<Renderer>().materials[1];
 
         PlayerInputCommunication.OnSliderControlClick += (_) => EngageActivation();
 

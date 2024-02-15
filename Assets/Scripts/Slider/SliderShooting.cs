@@ -13,7 +13,7 @@ public class SliderShooting : MonoBehaviour
     public GameObject slider_control_head;
     public bool isShooting;
 
-    [SerializeField] Material white;
+    Material white;
 
     public SliderLoaderRecharge loader_recharge;
 
@@ -34,7 +34,7 @@ public class SliderShooting : MonoBehaviour
         //  OnMouseUp += CancelShooting;
         //  OnMouseDown += StartShooting;
 
-
+        white = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
         PlayerInputCommunication.OnMouseDown += StartShooting;
         PlayerInputCommunication.OnMouseUp += CancelShooting;
 

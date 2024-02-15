@@ -86,7 +86,7 @@ public static class CoreCommunication
     public static void Raise_ShieldRecharged() 
     {
         OnShieldRecharged?.Invoke();
-    
+        SHIELD_CAPACITY = DifficultyManager.SHIELD_DEFAULT_CAPACITY;
     }
 
 

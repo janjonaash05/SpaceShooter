@@ -12,29 +12,29 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
 
 
 
-  
+
 
 
     void Start()
     {
         PlayerInputCommunication.OnSliderBoltClick += (_) => OnActivationInvoke();
-     PlayerInputCommunication.OnSliderFullAutoClick += (_) => OnDeactivationInvoke();
+        PlayerInputCommunication.OnSliderFullAutoClick += (_) => OnDeactivationInvoke();
 
 
 
 
 
 
-        charge =  Instantiate(prefab, transform);
+        charge = Instantiate(prefab, transform);
         OnFullRechargeInvoke();
         charge.GetComponent<Renderer>().material = charge.GetComponent<SliderLoaderChargeColorChange>().Off;
         init_y_scale = charge.transform.localScale.y;
     }
 
-   
 
 
-   public void Use() 
+
+    public void Use()
     {
 
         IEnumerator ExecutionOrder()
@@ -46,7 +46,7 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
         }
 
         StartCoroutine(ExecutionOrder());
-       
+
 
     }
 
@@ -55,19 +55,19 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
     IEnumerator Drain()
     {
 
-        while (charge.transform.localScale.y > 0) 
+        while (charge.transform.localScale.y > 0)
         {
-            charge.transform.localScale = new Vector3(charge.transform.localScale.x,charge.transform.localScale.y-drain_rate, charge.transform.localScale.z );
+            charge.transform.localScale = new Vector3(charge.transform.localScale.x, charge.transform.localScale.y - drain_rate, charge.transform.localScale.z);
             yield return null;
-        
-        
+
+
         }
-        
-    
-    
+
+
+
     }
 
-    IEnumerator Recharge() 
+    IEnumerator Recharge()
     {
         while (charge.transform.localScale.y < init_y_scale)
         {
@@ -84,6 +84,6 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

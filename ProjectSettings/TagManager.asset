@@ -29,6 +29,8 @@ TagManager:
   - HarpoonCollider
   - MaterialHolder
   - BombTarget
+  - TokenTransport
+  - TokenCenter
   layers:
   - Default
   - TransparentFX

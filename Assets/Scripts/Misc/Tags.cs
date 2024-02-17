@@ -54,7 +54,13 @@ public static class Tags
 
 
 
-
+    public const string TOKEN = "Token";
 
     public const string TOKEN_CENTER = "TokenCenter";
+    public const string TOKEN_TRANSPORT_PIVOT_LEFT = "TokenTransportPivotLeft";
+
+    public const string TOKEN_TRANSPORT_PIVOT_RIGHT = "TokenTransportPivotLeft";
+
+
+
 }

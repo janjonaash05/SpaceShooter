@@ -16,6 +16,8 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
 
     [SerializeField] float burst_speed, pulsate_speed;
 
+    bool turret_active;
+
     delegate void OnDepletionAction();
     void Start()
     {
@@ -25,6 +27,8 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
 
         loader_recharge = turret_station.transform.parent.GetComponent<SliderLoaderRecharge>();
 
+
+        SliderControlActivation.OnEngagement += (b) => turret_active = b;
 
         loader_recharge.OnDepletion += (loader_recharge is SliderLoaderFullAutoRecharge) ? DestroyLaser : BurstPulsate;
 
@@ -48,7 +52,7 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
         if (loader_recharge is SliderLoaderFullAutoRecharge)
         {
 
-            PlayerInputCommunication.OnMouseDown += SetupLaser;
+            PlayerInputCommunication.OnMouseDown += () => { if (turret_active) SetupLaser(); };
             PlayerInputCommunication.OnMouseUp += DestroyLaser;
         }
 

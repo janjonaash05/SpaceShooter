@@ -2,53 +2,58 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
-
-public static class LaserTurretCommunication1
+public class LaserTurretChannel
 {
-    public static event Action<GameObject> OnManualTargeting;
 
-    public static event Action<string> OnAutoTargetingAttempt;
-    public static event Action OnAutoTargetingSuccess; // for decrease power
+
+
+    
+
+  
+    
+    public  event Action<GameObject> OnManualTargeting;
+
+    public  event Action<string> OnAutoTargetingAttempt;
+    public   event Action OnAutoTargetingSuccess; // for decrease power
 
 
 
     /// <summary>
     /// used for the color change of the turret head during targeting
     /// </summary>
-    public static event Action OnGeneralTargetingStart, OnGeneralTargetingEnd;
+    public  event Action OnGeneralTargetingStart, OnGeneralTargetingEnd;
 
 
 
 
-    public static event Action<Material> OnColorCollider_ControlColorChange, OnAutoCollider_ControlColorChange;
-    public static event Action<Material, bool> OnTurretChargeColorChange;
+    public  event Action<Material> OnColorCollider_ControlColorChange, OnAutoCollider_ControlColorChange;
+    public  event Action<Material, bool> OnTurretChargeColorChange;
 
 
 
 
-    public static event Action OnControlEnabled, OnControlDisabled;
+    public  event Action OnControlEnabled, OnControlDisabled;
 
 
 
-    public static event Action OnAutoTargetingEnabled, OnAutoTargetingDisabled;
+    public  event Action OnAutoTargetingEnabled, OnAutoTargetingDisabled;
 
 
-    static Material charge_mat;
+     Material charge_mat;
 
-    private static bool is_targeting, is_barraging, is_control_disabled, is_auto_targeting_disabled;
+    private  bool is_targeting, is_barraging, is_control_disabled, is_auto_targeting_disabled;
 
 
-    public static void Awake()
+    public  void Awake()
     {
         is_control_disabled = false;
         is_auto_targeting_disabled = false;
         is_barraging = false;
         is_targeting = false;
 
-        OnAutoTargetingEnabled += () => { is_auto_targeting_disabled = false;   Debug.LogWarning("enable auto targeting"); };
+        OnAutoTargetingEnabled += () => { is_auto_targeting_disabled = false; Debug.LogWarning("enable auto targeting"); };
         OnAutoTargetingDisabled += () => { is_auto_targeting_disabled = true; Debug.LogWarning("disable auto targeting"); };
 
 
@@ -57,21 +62,21 @@ public static class LaserTurretCommunication1
 
 
 
-    public static void SetTargeting(bool targeting)
+    public  void SetTargeting(bool targeting)
     {
         is_targeting = targeting;
 
     }
 
 
-    public static void SetBarraging(bool barraging)
+    public  void SetBarraging(bool barraging)
     {
         is_barraging = barraging;
     }
 
 
 
-    public static void Raise_TargetingStart()
+    public  void Raise_TargetingStart()
     {
 
         SetTargeting(true);
@@ -80,7 +85,7 @@ public static class LaserTurretCommunication1
     }
 
 
-    public static void Raise_TargetingEnd()
+    public  void Raise_TargetingEnd()
     {
         SetTargeting(false);
         OnGeneralTargetingEnd?.Invoke();
@@ -90,7 +95,7 @@ public static class LaserTurretCommunication1
 
 
 
-    public static async void DisableControlFor(float ms)
+    public  async void DisableControlFor(float ms)
     {
 
         AttemptRaise_TurretCharge_ColorChange(new Material(Shader.Find("Specular")), true);
@@ -107,14 +112,14 @@ public static class LaserTurretCommunication1
     }
 
 
-    public static void Raise_DisableAutoTargeting()
+    public  void Raise_DisableAutoTargeting()
     {
         is_auto_targeting_disabled = true;
         OnAutoTargetingDisabled?.Invoke();
     }
 
 
-    public static void Raise_EnableAutoTargeting()
+    public  void Raise_EnableAutoTargeting()
     {
         is_auto_targeting_disabled = false;
         OnAutoTargetingEnabled?.Invoke();
@@ -122,15 +127,19 @@ public static class LaserTurretCommunication1
     }
 
 
-    public static void Raise_DisableControl()
+    public  void Raise_DisableControl()
     {
+
+
+        charge_mat = MaterialHolder.Instance().FRIENDLY_SECONDARY();
+
 
         is_control_disabled = true;
         OnControlDisabled?.Invoke();
     }
 
 
-    public static void Raise_EnableControl()
+    public  void Raise_EnableControl()
     {
         is_control_disabled = false;
         OnControlEnabled?.Invoke();
@@ -139,7 +148,7 @@ public static class LaserTurretCommunication1
 
 
 
-    public static void AttemptRaise_TurretCharge_ColorChange(Material mat, bool turn_off)
+    public  void AttemptRaise_TurretCharge_ColorChange(Material mat, bool turn_off)
     {
 
         if (turn_off)
@@ -165,7 +174,7 @@ public static class LaserTurretCommunication1
 
 
 
-    public static void AttemptRaise_ColorCollider_ControlColorChange(Material mat)
+    public  void AttemptRaise_ColorCollider_ControlColorChange(Material mat)
     {
         if (is_targeting || is_barraging || is_control_disabled) { Debug.Log("nuh uh"); return; }
 
@@ -175,28 +184,49 @@ public static class LaserTurretCommunication1
     }
 
 
-    public static void AttemptRaise_AutoCollider_ControlColorChange(Material mat)
+    public  void AttemptRaise_AutoCollider_ControlColorChange(Material mat)
     {
-        if ( is_control_disabled || is_auto_targeting_disabled) { Debug.Log("nuh uh"); return; }
+        if (is_control_disabled || is_auto_targeting_disabled) { Debug.Log("nuh uh"); return; }
         OnAutoCollider_ControlColorChange?.Invoke(mat);
 
 
 
     }
 
-    public static void AttemptRaise_ManualTargeting(RaycastHit hit)
+    public void AttemptRaise_ManualTargeting(RaycastHit hit)
     {
         if (is_targeting || is_barraging || is_control_disabled) { return; }
 
 
-        if (hit.transform.gameObject.GetComponent<BombColorChange>().Color.color.Equals(charge_mat.color))
+        //if (hit.transform.gameObject.GetComponent<BombColorChange>().Color.color.Equals(charge_mat.color))
+        //{
+        //    OnManualTargeting?.Invoke(hit.transform.gameObject);
+        //}
+
+        //string baseMaterialName = myBaseMaterial.name;
+        //string assignedMaterialName = myRenderer.sharedMaterial.name;
+
+        //if (assignedMaterialName.Contains(baseMaterialName))
+        //{
+        //    // here is your Match
+        //}
+
+
+
+
+
+        if (charge_mat.name.Contains(hit.transform.gameObject.GetComponent<BombColorChange>().Color.name)) 
         {
+
             OnManualTargeting?.Invoke(hit.transform.gameObject);
         }
+
+
+
     }
 
 
-    public static void AttempRaise_AutoTargetingAttempt()
+    public  void AttempRaise_AutoTargetingAttempt()
     {
         if (is_targeting || is_barraging || is_control_disabled || is_auto_targeting_disabled) { return; }
 
@@ -204,11 +234,13 @@ public static class LaserTurretCommunication1
     }
 
 
-    public static void Raise_AutoTargetingSuccess()
+    public  void Raise_AutoTargetingSuccess()
     {
         OnAutoTargetingSuccess?.Invoke();
 
     }
+
+
 
 
 

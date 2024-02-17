@@ -43,14 +43,14 @@ public class TargetBomb : MonoBehaviour
         {
             case 1:
 
-                LaserTurretCommunication1.OnManualTargeting += (bomb) =>
+                LaserTurretCommunicationChannels.Channel1.OnManualTargeting += (bomb) =>
                 {
                     _ = StartTargeting(bomb);
                 };
 
 
 
-                LaserTurretCommunication1.OnAutoTargetingAttempt += (tag) =>
+                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingAttempt += (tag) =>
                 {
                     BarrageStart(tag);
                 };
@@ -58,13 +58,13 @@ public class TargetBomb : MonoBehaviour
 
 
 
-                OnBarrageStart += () => LaserTurretCommunication1.SetBarraging(false);
-                OnBarrageStart += LaserTurretCommunication1.Raise_AutoTargetingSuccess;
+                OnBarrageStart += () => LaserTurretCommunicationChannels.Channel1.SetBarraging(false);
+                OnBarrageStart += LaserTurretCommunicationChannels.Channel1.Raise_AutoTargetingSuccess;
 
-                OnBarrageEnd += () => LaserTurretCommunication1.SetBarraging(false);
+                OnBarrageEnd += () => LaserTurretCommunicationChannels.Channel1.SetBarraging(false);
 
-                OnTargetingStart += () => LaserTurretCommunication1.Raise_TargetingStart();
-                OnTargetingEnd += () => LaserTurretCommunication1.Raise_TargetingEnd();
+                OnTargetingStart += () => LaserTurretCommunicationChannels.Channel1.Raise_TargetingStart();
+                OnTargetingEnd += () => LaserTurretCommunicationChannels.Channel1.Raise_TargetingEnd();
 
                 break;
 
@@ -74,14 +74,14 @@ public class TargetBomb : MonoBehaviour
 
 
 
-                LaserTurretCommunication2.OnManualTargeting += (bomb) =>
+                LaserTurretCommunicationChannels.Channel2.OnManualTargeting += (bomb) =>
                 {
                     _ = StartTargeting(bomb);
                 };
 
 
 
-                LaserTurretCommunication2.OnAutoTargetingAttempt += (tag) =>
+                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingAttempt += (tag) =>
                 {
                     BarrageStart(tag);
                 };
@@ -89,13 +89,13 @@ public class TargetBomb : MonoBehaviour
 
 
 
-                OnBarrageStart += () => LaserTurretCommunication2.SetBarraging(false);
-                OnBarrageStart += LaserTurretCommunication2.Raise_AutoTargetingSuccess;
+                OnBarrageStart += () => LaserTurretCommunicationChannels.Channel2.SetBarraging(false);
+                OnBarrageStart += LaserTurretCommunicationChannels.Channel2.Raise_AutoTargetingSuccess;
 
-                OnBarrageEnd += () => LaserTurretCommunication2.SetBarraging(false);
+                OnBarrageEnd += () => LaserTurretCommunicationChannels.Channel2.SetBarraging(false);
 
-                OnTargetingStart += () => LaserTurretCommunication2.Raise_TargetingStart();
-                OnTargetingEnd += () => LaserTurretCommunication2.Raise_TargetingEnd();
+                OnTargetingStart += () => LaserTurretCommunicationChannels.Channel2.Raise_TargetingStart();
+                OnTargetingEnd += () => LaserTurretCommunicationChannels.Channel2.Raise_TargetingEnd();
 
 
                 break;
@@ -260,20 +260,7 @@ public class TargetBomb : MonoBehaviour
 
 
 
-    /*
-        public void EngageBarrageStart(string tag)
-        {
-
-
-           // Debug.Log("isBarraging " + isBarraging);
-
-            if (!isBarraging)
-            {
-               BarrageStart(tag);
-
-            }
-        }
-    */
+   
     public async void BarrageStart(string tag)
     {
 

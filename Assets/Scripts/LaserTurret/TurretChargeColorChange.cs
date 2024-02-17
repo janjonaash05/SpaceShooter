@@ -11,8 +11,8 @@ public class TurretChargeColorChange : MonoBehaviour
     Renderer rend;
     Material off_mat;
 
-    ParticleSystem? ps;
-    ParticleSystemRenderer? ps_rend;
+    ParticleSystem ps;
+    ParticleSystemRenderer ps_rend;
 
     void Start()
     {
@@ -34,10 +34,10 @@ public class TurretChargeColorChange : MonoBehaviour
         {
 
             case 1:
-                LaserTurretCommunication1.OnTurretChargeColorChange += (mat, turn_off) => { rend.material = (turn_off) ? off_mat : mat; };
+                LaserTurretCommunicationChannels.Channel1.OnTurretChargeColorChange += (mat, turn_off) => { rend.material = (turn_off) ? off_mat : mat; };
 
 
-                if (transform.parent.childCount > 1) LaserTurretCommunication1.OnTurretChargeColorChange += (mat, turn_off) =>
+                if (transform.parent.childCount > 1) LaserTurretCommunicationChannels.Channel1.OnTurretChargeColorChange += (mat, turn_off) =>
                 {
 
                     Debug.Log(transform.parent.childCount);
@@ -52,10 +52,10 @@ public class TurretChargeColorChange : MonoBehaviour
                 };
                 break;
             case 2:
-                LaserTurretCommunication2.OnTurretChargeColorChange += (mat, turn_off) => rend.material = (turn_off) ? off_mat : mat;
+                LaserTurretCommunicationChannels.Channel2.OnTurretChargeColorChange += (mat, turn_off) => rend.material = (turn_off) ? off_mat : mat;
 
 
-                if (transform.parent.childCount > 1) LaserTurretCommunication2.OnTurretChargeColorChange += (mat, turn_off) =>
+                if (transform.parent.childCount > 1) LaserTurretCommunicationChannels.Channel2.OnTurretChargeColorChange += (mat, turn_off) =>
                 {
 
                  

@@ -69,10 +69,10 @@ public class MoveDisruptorCharge : MonoBehaviour
         switch (ID) 
         {
             case 1:
-                LaserTurretCommunication1.DisableControlFor(DifficultyManager.DISRUPTOR_DISABLE_TIME * 1000);
+                LaserTurretCommunicationChannels.Channel1.DisableControlFor(DifficultyManager.DISRUPTOR_DISABLE_TIME * 1000);
                 break;
             case 2:
-                LaserTurretCommunication2.DisableControlFor(DifficultyManager.DISRUPTOR_DISABLE_TIME * 1000);
+                LaserTurretCommunicationChannels.Channel2.DisableControlFor(DifficultyManager.DISRUPTOR_DISABLE_TIME * 1000);
                 break;
         }
       

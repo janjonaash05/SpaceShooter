@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class SliderControlActivation : MonoBehaviour
 
     public GameObject slider_pivot;
 
+
+    public static event Action<bool> OnEngagement;
 
     Transform slider_pivot_transform;
 
@@ -108,6 +111,7 @@ public class SliderControlActivation : MonoBehaviour
     {
 
         active = !active;
+        OnEngagement?.Invoke(active);
 
         if (!active) { slider_pivot.GetComponentInChildren<SliderShooting>().CancelMagazine(); }
 

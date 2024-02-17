@@ -44,18 +44,7 @@ public class ControlColorChange : MonoBehaviour
 
     public virtual void Start()
     {
-        switch (control_type)
-        {
-            case CONTROL_TYPE.SLIDER:
-           //     PlayerInputSO.OnSliderControlClick ;
-
-                break;
-           
-
-
-
-
-        };
+       
 
 
 

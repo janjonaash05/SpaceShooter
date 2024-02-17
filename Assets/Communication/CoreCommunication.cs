@@ -47,8 +47,11 @@ public static class CoreCommunication
         SHIELD_CAPACITY = DifficultyManager.SHIELD_DEFAULT_CAPACITY;
 
 
-        LaserTurretCommunication1.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
-        LaserTurretCommunication2.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
+
+        LaserTurretCommunicationChannels.Channel1.OnManualTargeting += (g) => { };
+
+        LaserTurretCommunicationChannels.Channel1.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
+        LaserTurretCommunicationChannels.Channel2.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
 
         SPINNER_INDEX_HOLDER = new(1, 1, MaterialIndexHolder.Target.SPINNER, MaterialIndexHolder.Edge.LOWER);
 

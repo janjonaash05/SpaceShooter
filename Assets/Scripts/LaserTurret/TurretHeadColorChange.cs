@@ -19,8 +19,8 @@ public class TurretHeadColorChange : MonoBehaviour
         {
             case 1:
 
-                LaserTurretCommunication1.OnGeneralTargetingStart += ActivateColor;
-                LaserTurretCommunication1.OnGeneralTargetingEnd += DeactivateColor;
+                LaserTurretCommunicationChannels.Channel1.OnGeneralTargetingStart += ActivateColor;
+                LaserTurretCommunicationChannels.Channel1.OnGeneralTargetingEnd += DeactivateColor;
 
                 break;
 
@@ -29,8 +29,8 @@ public class TurretHeadColorChange : MonoBehaviour
 
             case 2:
 
-                LaserTurretCommunication2.OnGeneralTargetingStart += ActivateColor;
-                LaserTurretCommunication2.OnGeneralTargetingEnd += DeactivateColor;
+                LaserTurretCommunicationChannels.Channel2.OnGeneralTargetingStart += ActivateColor;
+                LaserTurretCommunicationChannels.Channel2.OnGeneralTargetingEnd += DeactivateColor;
 
                 break;
 

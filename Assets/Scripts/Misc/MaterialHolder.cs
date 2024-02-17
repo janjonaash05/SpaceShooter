@@ -14,7 +14,7 @@ public class MaterialHolder : MonoBehaviour
 
 
 
-    [SerializeField] Material _TURRET_CONTROL_AUTO_COLOR, _SIDE_TOOLS_COLOR;
+    [SerializeField] Material _TURRET_CONTROL_AUTO_COLOR_ON, _TURRET_CONTROL_AUTO_COLOR_OFF, _SIDE_TOOLS_COLOR;
 
 
     [SerializeField] Material _FRIENDLY_PRIMARY;
@@ -58,7 +58,8 @@ public class MaterialHolder : MonoBehaviour
 
 
     public Material SIDE_TOOLS_COLOR() => _SIDE_TOOLS_COLOR;
-    public Material TURRET_CONTROL_AUTO_COLOR() => _TURRET_CONTROL_AUTO_COLOR;
+    public Material TURRET_CONTROL_AUTO_COLOR_ON() => _TURRET_CONTROL_AUTO_COLOR_ON;
+    public Material TURRET_CONTROL_AUTO_COLOR_OFF() => _TURRET_CONTROL_AUTO_COLOR_OFF;
 
     public Material FRIENDLY_PRIMARY() => _FRIENDLY_PRIMARY;
     public Material FRIENDLY_SECONDARY() => _FRIENDLY_SECONDARY;

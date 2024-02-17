@@ -54,39 +54,39 @@ public class DecreaseStationChargePower : MonoBehaviour
         switch (ID) 
         {
             case 1:
-                LaserTurretCommunication1.OnAutoTargetingSuccess += Decrease;
+                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingSuccess += Decrease;
 
 
 
-                OnRechargeStart += LaserTurretCommunication1.Raise_DisableAutoTargeting;
-                OnRechargeEnd += LaserTurretCommunication1.Raise_EnableAutoTargeting;
+                OnRechargeStart += LaserTurretCommunicationChannels.Channel1.Raise_DisableAutoTargeting;
+                OnRechargeEnd += LaserTurretCommunicationChannels.Channel1.Raise_EnableAutoTargeting;
 
-                LaserTurretCommunication1.OnControlDisabled += () => paused = true;
-                LaserTurretCommunication1.OnControlEnabled += () => paused = false;
+                LaserTurretCommunicationChannels.Channel1.OnControlDisabled += () => paused = true;
+                LaserTurretCommunicationChannels.Channel1.OnControlEnabled += () => paused = false;
 
 
-                LaserTurretCommunication1.OnControlDisabled += EndEmission;
-                LaserTurretCommunication1.OnControlEnabled += () => { if (recharging) StartEmission(); };
+                LaserTurretCommunicationChannels.Channel1.OnControlDisabled += EndEmission;
+                LaserTurretCommunicationChannels.Channel1.OnControlEnabled += () => { if (recharging) StartEmission(); };
 
 
 
                 break;
 
             case 2:
-                LaserTurretCommunication2.OnAutoTargetingSuccess += Decrease;
+                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingSuccess += Decrease;
 
 
 
-                OnRechargeStart += LaserTurretCommunication2.Raise_DisableAutoTargeting;
-                OnRechargeEnd += LaserTurretCommunication2.Raise_EnableAutoTargeting;
+                OnRechargeStart += LaserTurretCommunicationChannels.Channel2.Raise_DisableAutoTargeting;
+                OnRechargeEnd += LaserTurretCommunicationChannels.Channel2.Raise_EnableAutoTargeting;
 
-                LaserTurretCommunication2.OnControlDisabled += () => paused = true;
-                LaserTurretCommunication2.OnControlEnabled += () => paused = false;
+                LaserTurretCommunicationChannels.Channel2.OnControlDisabled += () => paused = true;
+                LaserTurretCommunicationChannels.Channel2.OnControlEnabled += () => paused = false;
 
 
 
-                LaserTurretCommunication2.OnControlDisabled +=  EndEmission;
-                LaserTurretCommunication2.OnControlEnabled += () => { if (recharging) StartEmission(); };
+                LaserTurretCommunicationChannels.Channel2.OnControlDisabled +=  EndEmission;
+                LaserTurretCommunicationChannels.Channel2.OnControlEnabled += () => { if (recharging) StartEmission(); };
 
 
 

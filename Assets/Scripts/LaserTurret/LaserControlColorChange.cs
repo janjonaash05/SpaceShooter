@@ -35,32 +35,32 @@ public class LaserControlColorChange : ControlColorChange
         switch (ID)
         {
             case 1:
-                LaserTurretCommunication1.OnColorCollider_ControlColorChange += StartChange;
-                LaserTurretCommunication1.OnAutoCollider_ControlColorChange += StartChange;
+                LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange += StartChange;
+                LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange += StartChange;
 
 
-                LaserTurretCommunication1.OnAutoTargetingDisabled += DisableAutoTargeting;
-                LaserTurretCommunication1.OnAutoTargetingEnabled += EnableAutoTargeting;
+                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingDisabled += DisableAutoTargeting;
+                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingEnabled += EnableAutoTargeting;
 
 
-                LaserTurretCommunication1.OnControlDisabled += TurnOff;
-                LaserTurretCommunication1.OnControlEnabled += TurnOn;
+                LaserTurretCommunicationChannels.Channel1.OnControlDisabled += TurnOff;
+                LaserTurretCommunicationChannels.Channel1.OnControlEnabled += TurnOn;
 
 
                 break;
 
             case 2:
 
-                LaserTurretCommunication2.OnColorCollider_ControlColorChange += StartChange;
-                LaserTurretCommunication2.OnAutoCollider_ControlColorChange += StartChange;
+                LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange += StartChange;
+                LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange += StartChange;
 
 
-                LaserTurretCommunication2.OnAutoTargetingDisabled += DisableAutoTargeting;
-                LaserTurretCommunication2.OnAutoTargetingEnabled += EnableAutoTargeting;
+                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingDisabled += DisableAutoTargeting;
+                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingEnabled += EnableAutoTargeting;
 
 
-                LaserTurretCommunication2.OnControlDisabled += TurnOff;
-                LaserTurretCommunication2.OnControlEnabled += TurnOn;
+                LaserTurretCommunicationChannels.Channel2.OnControlDisabled += TurnOff;
+                LaserTurretCommunicationChannels.Channel2.OnControlEnabled += TurnOn;
 
 
 
@@ -71,9 +71,21 @@ public class LaserControlColorChange : ControlColorChange
 
         }
 
+      
 
+        normal_mats = GetComponent<Renderer>().materials;
 
+        
+        auto_off_mat = MaterialHolder.Instance().TURRET_CONTROL_AUTO_COLOR_OFF();
+        color_off_mat = auto_off_mat;
 
+        off_mats = new Material[] 
+        {
+            normal_mats[0],normal_mats[1],
+            color_off_mat,color_off_mat,
+            color_off_mat,color_off_mat,
+            auto_off_mat
+        };
 
         //      GetComponent<LaserControlDisableManager>().OnDisabled += TurnOff;
         //    GetComponent<LaserControlDisableManager>().OnEnabled += TurnOn;
@@ -87,6 +99,11 @@ public class LaserControlColorChange : ControlColorChange
     }
 
 
+    Material[] normal_mats, off_mats;
+
+    Material color_off_mat;
+    Material auto_off_mat;
+
     void TurnOff()
     {
         turned_off = true;
@@ -97,7 +114,9 @@ public class LaserControlColorChange : ControlColorChange
 
         Material[] mats = new Material[GetComponent<Renderer>().materials.Length];
 
-        for (int i = 0; i < mats.Length; i++)
+        GetComponent<Renderer>().materials = off_mats;
+
+     /*   for (int i = 0; i < mats.Length; i++)
         {
 
 
@@ -119,7 +138,7 @@ public class LaserControlColorChange : ControlColorChange
 
         GetComponent<Renderer>().materials = mats;
 
-
+*/
 
     }
 
@@ -129,6 +148,8 @@ public class LaserControlColorChange : ControlColorChange
         turned_off = false;
         Material[] mats = GetComponent<Renderer>().materials;
 
+        GetComponent<Renderer>().materials = normal_mats;
+        /*
         for (int i = 0; i < mats.Length; i++)
         {
 
@@ -146,7 +167,7 @@ public class LaserControlColorChange : ControlColorChange
         }
 
         GetComponent<Renderer>().materials = mats;
-
+        */
     }
 
     void DisableAutoTargeting()
@@ -169,8 +190,8 @@ public class LaserControlColorChange : ControlColorChange
 
         Material[] mats = rend.materials; ;
 
-        mats[AUTO_INDEX].SetColor(EMISSION_COLOR, block_material.GetColor(EMISSION_COLOR));
-
+        // mats[AUTO_INDEX].SetColor(EMISSION_COLOR, block_material.GetColor(EMISSION_COLOR));
+        mats[AUTO_INDEX] = auto_off_mat;
 
         rend.materials = mats;
 
@@ -196,7 +217,10 @@ public class LaserControlColorChange : ControlColorChange
 
 
         Material[] mats = rend.materials;
-        mats[AUTO_INDEX].SetColor(EMISSION_COLOR, allow_material.GetColor(EMISSION_COLOR));
+        // mats[AUTO_INDEX].SetColor(EMISSION_COLOR, allow_material.GetColor(EMISSION_COLOR));
+
+
+        mats[AUTO_INDEX] = normal_mats[AUTO_INDEX];
 
         rend.materials = mats;
 

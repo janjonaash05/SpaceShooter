@@ -86,7 +86,7 @@ public class SliderShooting : MonoBehaviour
 
     void StartShooting()
     {
-
+        if (loader_recharge == null) return;
         if (!(slider_control_head.GetComponent<SliderControlActivation>().active && !isShooting && !loader_recharge.IsRecharging && loader_recharge.IsActive)) return;
 
 

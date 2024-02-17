@@ -31,6 +31,9 @@ TagManager:
   - BombTarget
   - TokenTransport
   - TokenCenter
+  - TokenTransportPivotLeft
+  - TokenTransportPivotRight
+  - Token
   layers:
   - Default
   - TransparentFX

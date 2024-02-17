@@ -30,8 +30,8 @@ public class LaserControlParticles : MonoBehaviour
         switch (ID)
         {
             case 1:
-                LaserTurretCommunication1.OnControlDisabled += EnableParticles;
-                LaserTurretCommunication1.OnControlEnabled += DisableParticles;
+                LaserTurretCommunicationChannels.Channel1.OnControlDisabled += EnableParticles;
+                LaserTurretCommunicationChannels.Channel1.OnControlEnabled += DisableParticles;
 
                 mats_storage = MaterialHolder.Instance().COLOR_SET_1();
 
@@ -39,8 +39,8 @@ public class LaserControlParticles : MonoBehaviour
 
             case 2:
 
-                LaserTurretCommunication2.OnControlDisabled += EnableParticles;
-                LaserTurretCommunication2.OnControlEnabled += DisableParticles;
+                LaserTurretCommunicationChannels.Channel2.OnControlDisabled += EnableParticles;
+                LaserTurretCommunicationChannels.Channel2.OnControlEnabled += DisableParticles;
 
 
                 mats_storage = MaterialHolder.Instance().COLOR_SET_2();

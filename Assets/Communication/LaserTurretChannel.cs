@@ -45,9 +45,11 @@ public class LaserTurretChannel
 
     private  bool is_targeting, is_barraging, is_control_disabled, is_auto_targeting_disabled;
 
-
-    public  void Awake()
+    string tag;
+    public  void Awake(string tag)
     {
+        this.tag = tag;
+
         is_control_disabled = false;
         is_auto_targeting_disabled = false;
         is_barraging = false;
@@ -230,7 +232,7 @@ public class LaserTurretChannel
     {
         if (is_targeting || is_barraging || is_control_disabled || is_auto_targeting_disabled) { return; }
 
-        OnAutoTargetingAttempt?.Invoke(Tags.LASER_TARGET_1);
+        OnAutoTargetingAttempt?.Invoke(tag);
     }
 
 

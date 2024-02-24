@@ -78,7 +78,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
         if (col.transform.CompareTag(Tags.BOMB_TARGET))
         { 
             Destroy(gameObject.GetComponent<BombFall>());
-            _ = gameObject.GetComponent<DamageBomb>().StartDamage(false);
+            _ = gameObject.GetComponent<DamageBomb>().StartDamage(BombDestructionType.TARGET);
 
 
             CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().Color);
@@ -97,6 +97,9 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     public int ScoreReward()
     {
         if (DisabledRewards) { return 0; }
+
+        DisabledRewards = true;
+
         return Mathf.RoundToInt(transform.localScale.x / 50  + VectorSum(rotation_speed) / 75 +  move_speed * 75);
     }
 

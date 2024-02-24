@@ -1,14 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LaserControlColorChange : ControlColorChange
+public class LaserControlColorChange : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] GameObject auto_collider;
 
-   
+
 
 
 
@@ -22,15 +23,34 @@ public class LaserControlColorChange : ControlColorChange
 
     bool turned_off = false;
 
-    List<Color> pre_turnoff_emission_color_list;
 
 
-    public override void Start()
+
+
+
+
+    public void Start()
     {
-        base.Start();
-      // station_decrease_power.OnRechargeStart += DisableAutoTargeting;
-       // station_decrease_power.OnRechargeEnd += EnableAutoTargeting;
+        current_mats = GetComponent<Renderer>().materials;
 
+
+
+        normal_mats = new Material[GetComponent<Renderer>().materials.Length];
+        for (int i = 0; i < normal_mats.Length; i++)
+        {
+            normal_mats[i] = new Material(GetComponent<Renderer>().materials[i]);
+        }
+
+
+
+        mat_index_dict = new Dictionary<string, int>();
+        for (int i = 0; i < current_mats.Length; i++)
+        {
+
+            try { mat_index_dict.Add(current_mats[i].name, i); } catch (Exception) { };
+
+        }
+      
 
         switch (ID)
         {
@@ -62,47 +82,33 @@ public class LaserControlColorChange : ControlColorChange
                 LaserTurretCommunicationChannels.Channel2.OnControlDisabled += TurnOff;
                 LaserTurretCommunicationChannels.Channel2.OnControlEnabled += TurnOn;
 
-
-
-
-
-
                 break;
 
         }
 
-      
 
-        normal_mats = GetComponent<Renderer>().materials;
 
-        
-        auto_off_mat = MaterialHolder.Instance().TURRET_CONTROL_AUTO_COLOR_OFF();
-        color_off_mat = auto_off_mat;
 
-        off_mats = new Material[] 
+
+       
+
+        off_mat = MaterialHolder.Instance().TURRET_CONTROL_AUTO_COLOR_OFF();
+       
+
+        off_mats = new Material[]
         {
             normal_mats[0],normal_mats[1],
-            color_off_mat,color_off_mat,
-            color_off_mat,color_off_mat,
-            auto_off_mat
+            off_mat,off_mat,
+            off_mat,off_mat,
+            off_mat
         };
 
-        //      GetComponent<LaserControlDisableManager>().OnDisabled += TurnOff;
-        //    GetComponent<LaserControlDisableManager>().OnEnabled += TurnOn;
-
-        pre_turnoff_emission_color_list = new();
-
-        foreach (var mat in GetComponent<Renderer>().materials)
-        {
-            pre_turnoff_emission_color_list.Add(mat.GetColor(EMISSION_COLOR));
-        }
+      
     }
 
 
     Material[] normal_mats, off_mats;
-
-    Material color_off_mat;
-    Material auto_off_mat;
+    Material off_mat;
 
     void TurnOff()
     {
@@ -112,33 +118,8 @@ public class LaserControlColorChange : ControlColorChange
 
         StopAllCoroutines();
 
-        Material[] mats = new Material[GetComponent<Renderer>().materials.Length];
-
         GetComponent<Renderer>().materials = off_mats;
 
-     /*   for (int i = 0; i < mats.Length; i++)
-        {
-
-
-            mats[i] = GetComponent<Renderer>().materials[i];
-
-
-            if (COLOR_INDEXES.Contains(i) || i == AUTO_INDEX)
-            {
-                mats[i].SetColor(EMISSION_COLOR, block_material.GetColor(EMISSION_COLOR));
-
-             
-                continue;
-
-            }
-
-
-
-        }
-
-        GetComponent<Renderer>().materials = mats;
-
-*/
 
     }
 
@@ -146,28 +127,7 @@ public class LaserControlColorChange : ControlColorChange
     {
 
         turned_off = false;
-        Material[] mats = GetComponent<Renderer>().materials;
-
         GetComponent<Renderer>().materials = normal_mats;
-        /*
-        for (int i = 0; i < mats.Length; i++)
-        {
-
-
-
-
-
-            mats[i].SetColor(EMISSION_COLOR, pre_turnoff_emission_color_list[i]);
-
-
-
-
-
-
-        }
-
-        GetComponent<Renderer>().materials = mats;
-        */
     }
 
     void DisableAutoTargeting()
@@ -191,7 +151,7 @@ public class LaserControlColorChange : ControlColorChange
         Material[] mats = rend.materials; ;
 
         // mats[AUTO_INDEX].SetColor(EMISSION_COLOR, block_material.GetColor(EMISSION_COLOR));
-        mats[AUTO_INDEX] = auto_off_mat;
+        mats[AUTO_INDEX] = off_mat;
 
         rend.materials = mats;
 
@@ -226,5 +186,103 @@ public class LaserControlColorChange : ControlColorChange
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public enum CONTROL_TYPE { SLIDER, TURRET_1, TURRET_2 };
+
+
+
+    public static readonly float DARKENING_WAIT_TIME = 0.075f;
+    [SerializeField] float darkening_intensity;
+    [SerializeField] Dictionary<string, int> mat_index_dict;
+
+    [SerializeField] CONTROL_TYPE control_type;
+
+    private Material[] current_mats;
+
+
+    [SerializeField][Tooltip("used for emission material color only")] protected Material block_material, allow_material;
+
+
+
+    protected const string EMISSION_COLOR = "_EmissionColor";
+
+
+
+    public void StartChange(Material mat)
+    {
+        // Material mat = hit.transform.GetComponent<Renderer>().material;
+        current_mats = new Material[GetComponent<Renderer>().materials.Length];
+        for (int i = 0; i < current_mats.Length; i++)
+        {
+            current_mats[i] = GetComponent<Renderer>().materials[i];
+        }
+
+        if (mat_index_dict.ContainsKey(mat.name))
+        {
+            int index = mat_index_dict[mat.name];
+            StartCoroutine(Change(index));
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+  
+
+
+
+
+    
+
+    IEnumerator Change(int index)
+    {
+
+
+        Color old = current_mats[index].GetColor(EMISSION_COLOR);
+
+        current_mats[index].SetColor(EMISSION_COLOR, current_mats[index].color * darkening_intensity);
+
+        GetComponent<Renderer>().materials = current_mats;
+
+        yield return new WaitForSeconds(DARKENING_WAIT_TIME);
+
+        current_mats[index].SetColor(EMISSION_COLOR, old);
+        GetComponent<Renderer>().materials = current_mats;
+
+
+
+
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 }

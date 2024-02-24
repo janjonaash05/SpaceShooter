@@ -49,7 +49,7 @@ public static class Tags
 
 
     public const string HARPOON_COLLIDER = "HarpoonCollider";
-
+    public const string HARPOON_STATION = "HarpoonStation";
     public const string BOMB_TARGET = "BombTarget";
 
 
@@ -61,6 +61,7 @@ public static class Tags
 
     public const string TOKEN_TRANSPORT_PIVOT_RIGHT = "TokenTransportPivotLeft";
 
+    public const string TOKEN_TRANSPORT = "TokenTransport";
 
 
 }

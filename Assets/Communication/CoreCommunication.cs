@@ -48,7 +48,7 @@ public static class CoreCommunication
 
 
 
-        LaserTurretCommunicationChannels.Channel1.OnManualTargeting += (g) => { };
+      
 
         LaserTurretCommunicationChannels.Channel1.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
         LaserTurretCommunicationChannels.Channel2.OnManualTargeting += (g) => Raise_ValueChange(0, -1);

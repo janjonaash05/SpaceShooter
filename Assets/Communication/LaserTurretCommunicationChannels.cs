@@ -16,8 +16,8 @@ public class LaserTurretCommunicationChannels
         Channel1 = new();
         Channel2 = new();
 
-        Channel1.Awake();
-        Channel2.Awake();
+        Channel1.Awake(Tags.LASER_TARGET_1);
+        Channel2.Awake(Tags.LASER_TARGET_2);
     }
 
     

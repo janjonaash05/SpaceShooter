@@ -25,8 +25,12 @@ public class TokenTransportRotation : MonoBehaviour
     }
 
     // Update is called once per frame
+
+
+
+    float speed = 45f;
     void Update()
     {
-        transform.Rotate(15 * Time.deltaTime, 0 , 0, Space.Self);
+        transform.Rotate(speed * Time.deltaTime, 0 , 0, Space.Self);
     }
 }

@@ -8,12 +8,7 @@ public class CommunicationHelper : MonoBehaviour
     void Awake()
     {
         LaserTurretCommunicationChannels.Awake();
-
-
-        LaserTurretCommunicationChannels.Channel1.Awake();
-       
         CoreCommunication.Awake();
-
 
 
 
@@ -23,8 +18,6 @@ public class CommunicationHelper : MonoBehaviour
         PlayerInputCommunication.OnLaserTarget1Click += LaserTurretCommunicationChannels.Channel1.AttemptRaise_ManualTargeting;
         PlayerInputCommunication.OnLaserTarget2Click += LaserTurretCommunicationChannels.Channel2.AttemptRaise_ManualTargeting;
 
-        PlayerInputCommunication.OnLaserTarget1Click += (hit) => { UICommunication.Raise_ScoreChange(hit.transform.GetComponent<IScoreEnumerable>().ScoreReward()); };
-        PlayerInputCommunication.OnLaserTarget2Click += (hit) => { UICommunication.Raise_ScoreChange(hit.transform.GetComponent<IScoreEnumerable>().ScoreReward()); };
 
 
 

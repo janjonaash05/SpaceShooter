@@ -30,7 +30,7 @@ public class CoreRingColorChange : MonoBehaviour
 
 
     
-    void Start()
+    void Awake()
     {
 
 
@@ -69,7 +69,6 @@ public class CoreRingColorChange : MonoBehaviour
     private void Init()
     {
         index_holder = CoreCommunication.CORE_INDEX_HOLDER;
-        
         rend = GetComponent<Renderer>();
         ColorUp(mats_storage[0]);
         StartCoroutine(ColorChange());

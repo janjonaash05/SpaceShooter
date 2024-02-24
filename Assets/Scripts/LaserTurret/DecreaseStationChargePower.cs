@@ -168,7 +168,7 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
-        yield return new WaitForSeconds(ControlColorChange.DARKENING_WAIT_TIME);
+        yield return new WaitForSeconds(LaserControlColorChange.DARKENING_WAIT_TIME);
         OnRechargeStart?.Invoke();
 
         yield return StartCoroutine(Recharge());

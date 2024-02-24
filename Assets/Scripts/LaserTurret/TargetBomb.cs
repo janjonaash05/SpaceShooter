@@ -4,7 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
+
+
+
+
+
 
 public class TargetBomb : MonoBehaviour
 {
@@ -45,7 +51,7 @@ public class TargetBomb : MonoBehaviour
 
                 LaserTurretCommunicationChannels.Channel1.OnManualTargeting += (bomb) =>
                 {
-                    _ = StartTargeting(bomb);
+                    _ = StartTargeting(bomb, BombDestructionType.MANUAL);
                 };
 
 
@@ -76,7 +82,7 @@ public class TargetBomb : MonoBehaviour
 
                 LaserTurretCommunicationChannels.Channel2.OnManualTargeting += (bomb) =>
                 {
-                    _ = StartTargeting(bomb);
+                    _ = StartTargeting(bomb, BombDestructionType.MANUAL);
                 };
 
 
@@ -132,7 +138,7 @@ public class TargetBomb : MonoBehaviour
 
 
 
-    public async Task StartTargeting(GameObject Bomb)
+    public async Task StartTargeting(GameObject Bomb, BombDestructionType bombDestructionType)
     {
         try
         {
@@ -143,7 +149,7 @@ public class TargetBomb : MonoBehaviour
 
             Task t1 = Target(Bomb);
 
-            Task t2 = Bomb.transform.GetComponent<DamageBomb>().StartDamage(true);
+            Task t2 = Bomb.transform.GetComponent<DamageBomb>().StartDamage(bombDestructionType);
 
             await Task.WhenAll(t1, t2);
         }
@@ -276,7 +282,7 @@ public class TargetBomb : MonoBehaviour
     {
         foreach (var target in targets)
         {
-            await StartTargeting(target);
+            await StartTargeting(target, BombDestructionType.AUTO);
 
 
 
@@ -300,14 +306,19 @@ public class TargetBomb : MonoBehaviour
         Material mat = transform.GetChild(0).GetComponent<Renderer>().sharedMaterial;
 
 
+
+
+     
         var coloredTargets = (
             from bomb in allTargets
-            where bomb.GetComponent<BombColorChange>().Color.color == mat.color
+            where mat.name.Contains(bomb.GetComponent<BombColorChange>().Color.name) ||  bomb.GetComponent<BombColorChange>().Color.name.Contains(mat.name)
+
             where bomb.GetComponent<BombColorChange>().IsNotCurrentlyTargeted()
             select bomb
         );
 
 
+        Debug.LogWarning(coloredTargets.Count()+" coloredTargets for "+mat.name);
 
         return coloredTargets.ToArray();
     }

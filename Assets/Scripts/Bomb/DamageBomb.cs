@@ -9,6 +9,10 @@ using UnityEngine.UIElements;
 using static MaterialIndexHolder;
 using static UnityEngine.GraphicsBuffer;
 
+
+
+public enum BombDestructionType {MANUAL, AUTO, TARGET }
+
 public class DamageBomb : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -40,12 +44,23 @@ public class DamageBomb : MonoBehaviour
     }
 
 
-    public virtual async Task StartDamage(bool playerTargeted)
+
+
+
+    public virtual async Task StartDamage( BombDestructionType bombDestructionType)
     {
 
 
 
+        
 
+
+
+        int  score = GetComponent<IScoreEnumerable>().ScoreReward();
+
+        Debug.Log(score + " score");
+
+        UICommunication.Raise_ScoreChange(bombDestructionType switch { BombDestructionType.MANUAL => score, BombDestructionType.AUTO => (score > 0) ? 1:0, BombDestructionType.TARGET => 0 , _ => 0});
 
 
 
@@ -54,7 +69,7 @@ public class DamageBomb : MonoBehaviour
         await GetComponent<BombColorChange>().CoverInColor();
 
 
-        Action damage = (playerTargeted) ? DamageByPlayer : DamageByTarget;
+        Action damage = (bombDestructionType == BombDestructionType.TARGET) ?   DamageByTarget : () => DamageByPlayer(bombDestructionType);
 
         damage();
 
@@ -90,8 +105,10 @@ public class DamageBomb : MonoBehaviour
     }
 
 
-    void DamageByPlayer()
+    void DamageByPlayer(BombDestructionType bombDestructionType)
     {
+
+
 
         Destroy(GetComponent<Renderer>());
 

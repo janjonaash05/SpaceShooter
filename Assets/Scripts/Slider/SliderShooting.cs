@@ -29,10 +29,21 @@ public class SliderShooting : MonoBehaviour
     [SerializeField] float bullet_speed_full_auto, bullet_speed_bolt, firing_delay, bullet_life_time;
     [SerializeField] Vector3 bullet_size_full_auto, bullet_size_bolt;
 
+
+
+
+    ParticleSystem full_auto_ps;
+    ParticleSystem bolt_ps;
+
+    ParticleSystem active_ps;
+
     void Start()
     {
-        //  OnMouseUp += CancelShooting;
-        //  OnMouseDown += StartShooting;
+        
+
+        bolt_ps = transform.parent.GetChild(transform.parent.childCount - 1).GetComponent<ParticleSystem>();
+        full_auto_ps = transform.parent.GetChild(transform.parent.childCount - 2).GetComponent<ParticleSystem>();
+
 
         white = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
         PlayerInputCommunication.OnMouseDown += StartShooting;
@@ -42,8 +53,8 @@ public class SliderShooting : MonoBehaviour
 
 
 
-        PlayerInputCommunication.OnSliderBoltClick += (_) => loader_recharge = pivot_source_bolt_recharge;
-        PlayerInputCommunication.OnSliderFullAutoClick += (_) => loader_recharge = pivot_source_full_auto_recharge;
+        PlayerInputCommunication.OnSliderBoltClick += (_) => { loader_recharge = pivot_source_bolt_recharge; active_ps = bolt_ps; };
+        PlayerInputCommunication.OnSliderFullAutoClick += (_) => { loader_recharge = pivot_source_full_auto_recharge; active_ps = full_auto_ps; };
 
 
 
@@ -66,16 +77,14 @@ public class SliderShooting : MonoBehaviour
     {
         laser_target = transform.up * -int.MaxValue;
 
-
-
-
-
-
     }
 
 
     void CancelShooting()
     {
+
+
+        active_ps.enableEmission  = false;
 
         Debug.Log("CancelShooting");
         CancelMagazine();
@@ -84,6 +93,10 @@ public class SliderShooting : MonoBehaviour
     }
 
 
+    void PlayPS()
+    {
+    }
+
     void StartShooting()
     {
         if (loader_recharge == null) return;
@@ -91,6 +104,8 @@ public class SliderShooting : MonoBehaviour
 
 
 
+        active_ps.enableEmission = true;
+        active_ps.Play();
 
         Debug.Log("StartShooting");
         Shoot();
@@ -100,29 +115,14 @@ public class SliderShooting : MonoBehaviour
     }
 
 
-
-
-
-
-
-
-
-
     GameObject bullet;
     public void Shoot()
     {
-
         StartCoroutine(EmptyMagazine());
-
-
-
     }
 
     IEnumerator EmptyMagazine()
     {
-
-
-
         switch (loader_recharge)
         {
             case SliderLoaderFullAutoRecharge auto:
@@ -138,21 +138,7 @@ public class SliderShooting : MonoBehaviour
                 bolt.Use();
                 CreateBullet();
                 break;
-
-
-
-
-
-
-
         }
-
-
-
-
-
-
-
     }
 
 

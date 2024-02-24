@@ -1,11 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TokenMovement : MonoBehaviour
 {
 
+
+    public enum TokenType {FRIENDLY, ENEMY }
+
+    public static event Action OnEnemyTokenProcedure;
+    public static event Action OnFriendlyTokenProcedure;
+
+    public enum TokenDirection {TRANSPORTER, CENTER, HARPOON_STATION };
 
 
     /// <summary>
@@ -26,7 +34,8 @@ public class TokenMovement : MonoBehaviour
     /// 
     /// </summary>
 
-    bool headingCenter = false;
+
+
 
 
 
@@ -35,11 +44,13 @@ public class TokenMovement : MonoBehaviour
 
     public event Action<int> OnHealthDecrease;
 
-   [SerializeField] Transform[] transporter_transforms;
+    Transform[] transporter_transforms;
+    Transform center_transform;
+    Transform harpoon_station_transform;
 
-   [SerializeField] Transform center_transform;
 
 
+    TokenDirection dir;
 
     Vector3 target;
 
@@ -49,17 +60,76 @@ public class TokenMovement : MonoBehaviour
 
     void Start()
     {
+
+        transporter_transforms = GameObject.FindGameObjectsWithTag(Tags.TOKEN_TRANSPORT).Select(x => x.transform).ToArray();
+
         target = transporter_transforms[UnityEngine.Random.Range(0,4)].position; ;
-        headingCenter = false;
-        
+
+        Debug.LogError(transporter_transforms.Length + " transportLength");
+
+
+        center_transform = GameObject.FindWithTag(Tags.TOKEN_CENTER).transform;
+
+        harpoon_station_transform = GameObject.FindWithTag(Tags.HARPOON_STATION).transform;
+        dir = TokenDirection.TRANSPORTER;
     }
 
     void Update()
     {
 
-        
+
 
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
+
+        float edgeDistance = dir switch
+        {
+            TokenDirection.CENTER => 0.001f,
+            TokenDirection.TRANSPORTER => 1f,
+            TokenDirection.HARPOON_STATION => 1.5f,
+            _ => 0
+        };
+
+
+        if (Vector3.Distance(transform.position, target) < edgeDistance) 
+        {
+            Action toExecute = dir switch
+            {
+                TokenDirection.TRANSPORTER => () => 
+                {
+                    dir = TokenDirection.CENTER;
+                    target = center_transform.position; 
+                    
+                    HP--;
+                    OnHealthDecrease?.Invoke(HP);
+                    if (HP == 0)
+                    {
+                        Destroy(gameObject);
+                    }
+                    transform.position = transporter_transforms[UnityEngine.Random.Range(0, 4)].position;
+                }
+                ,
+                TokenDirection.CENTER => () => 
+                { 
+                    dir = TokenDirection.TRANSPORTER; 
+                    target = transporter_transforms[UnityEngine.Random.Range(0, 4)].position;
+                }
+                ,
+                TokenDirection.HARPOON_STATION => () => 
+                {
+                    Destroy(gameObject);
+                }
+                ,
+                _ => () => { }
+            };
+
+            toExecute();
+        }
+
+       
+        
+
+        /*
 
         float edgeDistance = headingCenter ? 0.001f : 1f;
         if (Vector3.Distance(transform.position, target) < edgeDistance) 
@@ -91,15 +161,18 @@ public class TokenMovement : MonoBehaviour
 
             }
 
-
+        
         }
+        */
     }
 
 
     public void Stop() 
     {
         speed = 0;
-        Destroy(this);
+        dir = TokenDirection.HARPOON_STATION;
+        target = harpoon_station_transform.position;
+        
     
     }
 

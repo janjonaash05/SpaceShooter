@@ -8,12 +8,12 @@ public class TokenMovement : MonoBehaviour
 {
 
 
-    public enum TokenType {FRIENDLY, ENEMY }
+    public enum TokenType { FRIENDLY, ENEMY }
 
     public static event Action OnEnemyTokenProcedure;
     public static event Action OnFriendlyTokenProcedure;
 
-    public enum TokenDirection {TRANSPORTER, CENTER, HARPOON_STATION };
+    public enum TokenDirection { TRANSPORTER, CENTER, HARPOON_STATION };
 
 
     /// <summary>
@@ -35,7 +35,12 @@ public class TokenMovement : MonoBehaviour
     /// </summary>
 
 
+    public enum TokenSpeed
+    {
+        SLOW = 5, MEDIUM = 7, FAST = 9
 
+
+    }
 
 
 
@@ -44,34 +49,36 @@ public class TokenMovement : MonoBehaviour
 
     public event Action<int> OnHealthDecrease;
 
-    Transform[] transporter_transforms;
-    Transform center_transform;
-    Transform harpoon_station_transform;
 
 
 
+    TokenSpeed speed;
+    [SerializeField] TokenType type;
     TokenDirection dir;
 
     Vector3 target;
 
-    [SerializeField] float speed;
 
 
 
-    void Start()
+
+    void Awake()
     {
 
-        transporter_transforms = GameObject.FindGameObjectsWithTag(Tags.TOKEN_TRANSPORT).Select(x => x.transform).ToArray();
-
-        target = transporter_transforms[UnityEngine.Random.Range(0,4)].position; ;
-
-        Debug.LogError(transporter_transforms.Length + " transportLength");
 
 
-        center_transform = GameObject.FindWithTag(Tags.TOKEN_CENTER).transform;
 
-        harpoon_station_transform = GameObject.FindWithTag(Tags.HARPOON_STATION).transform;
-        dir = TokenDirection.TRANSPORTER;
+
+
+
+
+
+
+
+        speed = UnityEngine.Random.Range(0, 3) switch { 0 => TokenSpeed.SLOW, 1 => TokenSpeed.MEDIUM, 2 => TokenSpeed.FAST, _=> TokenSpeed.SLOW};
+
+        dir = TokenDirection.CENTER;
+        target = TokenSpawning.center_transform.position;
     }
 
     void Update()
@@ -79,43 +86,44 @@ public class TokenMovement : MonoBehaviour
 
 
 
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target, (int)speed * Time.deltaTime);
 
 
         float edgeDistance = dir switch
         {
             TokenDirection.CENTER => 0.001f,
             TokenDirection.TRANSPORTER => 1f,
-            TokenDirection.HARPOON_STATION => 1.5f,
+            TokenDirection.HARPOON_STATION => 3.5f,
             _ => 0
         };
 
 
-        if (Vector3.Distance(transform.position, target) < edgeDistance) 
+
+        if (Vector3.Distance(transform.position, target) < edgeDistance)
         {
             Action toExecute = dir switch
             {
-                TokenDirection.TRANSPORTER => () => 
+                TokenDirection.TRANSPORTER => () =>
                 {
                     dir = TokenDirection.CENTER;
-                    target = center_transform.position; 
-                    
+                    target = TokenSpawning.center_transform.position;
+
                     HP--;
                     OnHealthDecrease?.Invoke(HP);
                     if (HP == 0)
                     {
                         Destroy(gameObject);
                     }
-                    transform.position = transporter_transforms[UnityEngine.Random.Range(0, 4)].position;
+                    transform.position = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)].position;
                 }
                 ,
-                TokenDirection.CENTER => () => 
-                { 
-                    dir = TokenDirection.TRANSPORTER; 
-                    target = transporter_transforms[UnityEngine.Random.Range(0, 4)].position;
+                TokenDirection.CENTER => () =>
+                {
+                    dir = TokenDirection.TRANSPORTER;
+                    target = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)].position;
                 }
                 ,
-                TokenDirection.HARPOON_STATION => () => 
+                TokenDirection.HARPOON_STATION => () =>
                 {
                     Destroy(gameObject);
                 }
@@ -126,8 +134,8 @@ public class TokenMovement : MonoBehaviour
             toExecute();
         }
 
-       
-        
+
+
 
         /*
 
@@ -167,15 +175,15 @@ public class TokenMovement : MonoBehaviour
     }
 
 
-    public void Stop() 
+    public void Stop()
     {
         speed = 0;
         dir = TokenDirection.HARPOON_STATION;
-        target = harpoon_station_transform.position;
-        
-    
+        target = TokenSpawning.harpoon_station_transform.position;
+
+
     }
 
- 
+
 
 }

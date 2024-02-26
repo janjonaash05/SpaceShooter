@@ -35,6 +35,7 @@ TagManager:
   - TokenTransportPivotRight
   - Token
   - HarpoonStation
+  - TokenTransportCollider
   layers:
   - Default
   - TransparentFX

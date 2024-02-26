@@ -14,6 +14,11 @@ public class ShieldChargeRecharge : MonoBehaviour
     float max_scale;
 
 
+    float capacity;
+
+
+
+
 
 
     float recharge_delay = 0.2f;

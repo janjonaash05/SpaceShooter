@@ -62,6 +62,6 @@ public static class Tags
     public const string TOKEN_TRANSPORT_PIVOT_RIGHT = "TokenTransportPivotLeft";
 
     public const string TOKEN_TRANSPORT = "TokenTransport";
-
+    public const string TOKEN_TRANSPORT_COLLIDER = "TokenTransportCollider";
 
 }

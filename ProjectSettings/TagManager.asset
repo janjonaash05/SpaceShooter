@@ -36,6 +36,7 @@ TagManager:
   - Token
   - HarpoonStation
   - TokenTransportCollider
+  - ShieldCharge
   layers:
   - Default
   - TransparentFX

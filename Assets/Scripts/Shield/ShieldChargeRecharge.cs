@@ -14,7 +14,6 @@ public class ShieldChargeRecharge : MonoBehaviour
     float max_scale;
 
 
-    float capacity;
 
 
 
@@ -63,7 +62,7 @@ public class ShieldChargeRecharge : MonoBehaviour
 
 
             if (CoreCommunication.SHIELD_CAPACITY == 0) return;
-            transform.localScale -= (scale / DifficultyManager.SHIELD_DEFAULT_CAPACITY) * Vector3.one;
+            transform.localScale -= (scale / DifficultyManager.SHIELD_MAX_CAPACITY) * Vector3.one;
         };
 
 

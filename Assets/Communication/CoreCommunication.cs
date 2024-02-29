@@ -44,7 +44,7 @@ public static class CoreCommunication
 
         mat_holder = MaterialHolder.Instance();
 
-        SHIELD_CAPACITY = DifficultyManager.SHIELD_DEFAULT_CAPACITY;
+        SHIELD_CAPACITY = DifficultyManager.SHIELD_MAX_CAPACITY;
 
 
 
@@ -89,7 +89,7 @@ public static class CoreCommunication
     public static void Raise_ShieldRecharged() 
     {
         OnShieldRecharged?.Invoke();
-        SHIELD_CAPACITY = DifficultyManager.SHIELD_DEFAULT_CAPACITY;
+        SHIELD_CAPACITY = DifficultyManager.SHIELD_MAX_CAPACITY;
     }
 
 

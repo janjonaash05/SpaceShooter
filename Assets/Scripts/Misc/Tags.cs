@@ -52,7 +52,7 @@ public static class Tags
     public const string HARPOON_STATION = "HarpoonStation";
     public const string BOMB_TARGET = "BombTarget";
 
-
+    public const string SHIELD_CHARGE = "ShieldCharge";
 
     public const string TOKEN = "Token";
 

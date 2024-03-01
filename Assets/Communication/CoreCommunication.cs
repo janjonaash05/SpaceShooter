@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -66,18 +67,47 @@ public static class CoreCommunication
     public static void Raise_OnBombFallen(Material m)
     {
 
+
+
+
+
+
         if (SHIELD_CAPACITY > 0)
         {
             SHIELD_CAPACITY--;
             OnBombFallen?.Invoke(mat_holder.SIDE_TOOLS_COLOR());
+
+
+            if (SHIELD_CAPACITY == 0)
+            {
+                Raise_ShieldDepleted();
+            }
+
+        }
+        else 
+        {
+            OnBombFallen?.Invoke(m);
+            Raise_ValueChange(0, 1);
+
+        }
+
+
+
+        /*
+        if (SHIELD_CAPACITY == 0)
+        {
+            
+
+            OnBombFallen?.Invoke(m);
+            
         }
         else
         {
-            Raise_ShieldDepleted();
-            Raise_ValueChange(0, 1);
-            OnBombFallen?.Invoke(m);
+            SHIELD_CAPACITY--;
+            OnBombFallen?.Invoke(mat_holder.SIDE_TOOLS_COLOR());
+            
         }
-
+        */
 
 
     }

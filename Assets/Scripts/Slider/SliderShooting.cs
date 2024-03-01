@@ -83,9 +83,9 @@ public class SliderShooting : MonoBehaviour
     void CancelShooting()
     {
 
-
-        active_ps.enableEmission  = false;
-
+        if (active_ps != null) { 
+            active_ps.enableEmission = false;
+        }
         Debug.Log("CancelShooting");
         CancelMagazine();
         isShooting = false;

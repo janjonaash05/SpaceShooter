@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using Unity.Collections;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -32,18 +34,15 @@ public class ShieldRecharge : MonoBehaviour
 
 
 
-    float recharge_delay = 0.2f;
+    
 
 
     ParticleSystem ps;
 
-
-
     [SerializeField] GameObject shield_emitter, shield_emitter_antenna;
     Renderer emitter_rend, antenna_rend;
 
-
-    Material emitter_on, emitter_off;
+    Material on_mat, off_mat;
     void Start()
     {
 
@@ -52,16 +51,14 @@ public class ShieldRecharge : MonoBehaviour
 
 
         charges = new();
-        
         GenerateCharges();
-
         emitter_rend = shield_emitter.GetComponent<Renderer>();
 
-        emitter_on = emitter_rend.materials[2];
-        emitter_off = emitter_rend.materials[1];
+        on_mat = emitter_rend.materials[2];
+        off_mat = emitter_rend.materials[1];
 
 
-
+        antenna_rend = shield_emitter_antenna.GetComponent<Renderer>();
 
 
         ps = transform.GetComponentInChildren<ParticleSystem>();
@@ -75,9 +72,18 @@ public class ShieldRecharge : MonoBehaviour
 
 
 
-            if (CoreCommunication.SHIELD_CAPACITY == 0 || recharging) return;
-            charges[capacity_index].SetActive(false);
+            if (recharging) return;
+
+            Destroy(charges[capacity_index]);
             capacity_index++;
+            
+
+
+
+
+            
+            Debug.LogError(charges.Count + "oncoll chargeslen, index increased to "+capacity_index + " shield capacity "+ CoreCommunication.SHIELD_CAPACITY);
+
 
 
 
@@ -162,13 +168,12 @@ public class ShieldRecharge : MonoBehaviour
       
      
 
-        Debug.LogError("charges le" + charges.Count);
     }
 
 
 
  
-
+   
    
 
 
@@ -176,13 +181,11 @@ public class ShieldRecharge : MonoBehaviour
 
     void Recharge()
     {
-        foreach (GameObject charge in charges) 
-        {
-            charge.SetActive(true);
-            Destroy(charge);
-        
-        }
+        recharging = true;
+
+
         charges.Clear();
+        capacity_index = 0;
 
 
 
@@ -190,9 +193,7 @@ public class ShieldRecharge : MonoBehaviour
 
 
 
-        Debug.LogError("charges le after clear" + charges.Count);
         GenerateCharges();
-        Debug.LogError("childcount " + transform.childCount);
 
         foreach (GameObject charge in charges)
         {
@@ -203,33 +204,35 @@ public class ShieldRecharge : MonoBehaviour
 
 
 
-
+        ps.enableEmission = true;
+        ChangeEmitterAndAntennaColor(off_mat);
+        StartCoroutine(recharge());
 
 
 
         IEnumerator recharge()
         {
-            recharging = true;
-            foreach (GameObject charge in charges)
+            
+            foreach (GameObject charge in charges.Reverse<GameObject>())
             {
-                float recharge_rate = CoreCommunication.CORE_INDEX_HOLDER.Parent switch
+                float recharge_delay = CoreCommunication.CORE_INDEX_HOLDER.Parent switch
                 {
-                    5 => 0.5f,
-                    4 => 0.35f,
-                    3 => 0.25f,
-                    2 => 0.1f,
-                    1 => 0.075f,
-                    0 => 0f
+                    5 => 0.1f,
+                    4 => 0.5f,
+                    3 => 1f,
+                    2 => 1.5f,
+                    1 => 2f,
+                    0 => float.NaN
                 }; ;
+                
 
+                if (recharge_delay == float.NaN) { yield return null; }
+                yield return new WaitForSeconds(recharge_delay);
                 charge.SetActive(true);
 
 
 
-
-
-
-                yield return new WaitForSeconds(recharge_delay);
+               
             }
 
             recharging = false;
@@ -237,13 +240,11 @@ public class ShieldRecharge : MonoBehaviour
 
 
             ps.enableEmission = false;
-            ChangeEmitterColor(emitter_on);
+            ChangeEmitterAndAntennaColor(on_mat);
         }
 
 
-        ps.enableEmission = true;
-        ChangeEmitterColor(emitter_off);
-        StartCoroutine(recharge());
+        
 
     }
 
@@ -256,13 +257,16 @@ public class ShieldRecharge : MonoBehaviour
     }
 
 
-    void ChangeEmitterColor(Material m)
+    void ChangeEmitterAndAntennaColor(Material m)
     {
-        var mats = emitter_rend.materials;
+        var e_mats = emitter_rend.materials;
+        e_mats[^1] = m;
 
-        mats[^1] = m;
+        var a_mats = antenna_rend.materials;
+        a_mats[^1] = m;
 
-        emitter_rend.materials = mats;
+        emitter_rend.materials = e_mats;
+        antenna_rend.materials = a_mats;
 
     }
 

@@ -16,8 +16,8 @@ public class BombSpawnerGrid : MonoBehaviour
 
     Vector3[,] positions;
 
-    int size_x = 3;
-    int size_y = 3;
+    int size_x = 1;
+    int size_y = 1;
 
 
 
@@ -25,7 +25,7 @@ public class BombSpawnerGrid : MonoBehaviour
     float margin = 30;
 
     
-    float chance = 33;
+    float chance = 100;
 
 
     void Start()

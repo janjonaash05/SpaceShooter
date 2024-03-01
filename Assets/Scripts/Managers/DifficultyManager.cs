@@ -19,7 +19,7 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-    public static float BOMB_SPAWN_DELAY = 20f, DISRUPTOR_SPAWN_DELAY = 20, BOMB_SPEED_MULTIPLIER = 2;
+    public static float BOMB_SPAWN_DELAY = 10f, DISRUPTOR_SPAWN_DELAY = 20, BOMB_SPEED_MULTIPLIER = 20;
     public static float DISRUPTOR_DISABLE_TIME = 10;
     public static int DISRUPTOR_SPAWN_CHANCE = 50;
 

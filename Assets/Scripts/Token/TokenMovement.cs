@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class TokenMovement : MonoBehaviour
@@ -14,6 +15,11 @@ public class TokenMovement : MonoBehaviour
     public static event Action OnFriendlyTokenProcedure;
 
     public enum TokenDirection { TRANSPORTER, CENTER, HARPOON_STATION };
+
+
+
+    ParticleSystem ps_caught, ps_destroyed;
+
 
 
     /// <summary>
@@ -68,7 +74,8 @@ public class TokenMovement : MonoBehaviour
 
 
 
-
+        ps_caught = transform.GetChild(0).GetComponent<ParticleSystem>();
+        ps_destroyed = transform.GetChild(1).GetComponent<ParticleSystem>();
 
 
 
@@ -112,7 +119,7 @@ public class TokenMovement : MonoBehaviour
                     OnHealthDecrease?.Invoke(HP);
                     if (HP == 0)
                     {
-                        Destroy(gameObject);
+                        StartCoroutine(PlayDestroyed());
                     }
                     transform.position = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)].position;
                 }
@@ -125,7 +132,7 @@ public class TokenMovement : MonoBehaviour
                 ,
                 TokenDirection.HARPOON_STATION => () =>
                 {
-                    Destroy(gameObject);
+                    StartCoroutine(PlayCaught());
                 }
                 ,
                 _ => () => { }
@@ -137,41 +144,7 @@ public class TokenMovement : MonoBehaviour
 
 
 
-        /*
-
-        float edgeDistance = headingCenter ? 0.001f : 1f;
-        if (Vector3.Distance(transform.position, target) < edgeDistance) 
-        {
-
-            if (headingCenter)
-            {
-
-                target = transporter_transforms[UnityEngine.Random.Range(0, 4)].position;
-                headingCenter = false;
-
-            }
-            else 
-            {
-                target = center_transform.position;
-                transform.position = transporter_transforms[UnityEngine.Random.Range(0, 4)].position;
-                headingCenter = true;
-
-
-                HP--;
-
-                OnHealthDecrease?.Invoke(HP);
-
-
-                if (HP == 0)
-                {
-                    Destroy(gameObject);
-                }
-
-            }
-
-        
-        }
-        */
+       
     }
 
 
@@ -181,6 +154,66 @@ public class TokenMovement : MonoBehaviour
         dir = TokenDirection.HARPOON_STATION;
         target = TokenSpawning.harpoon_station_transform.position;
 
+
+    }
+
+
+
+
+    IEnumerator PlayPS(ParticleSystem ps) 
+    {
+        if (ps.enableEmission) yield break;
+
+        ps.enableEmission = true;
+        ps.Play();
+
+        yield return new WaitForSeconds(ps.main.duration);
+    
+    
+    
+    }
+
+    IEnumerator PlayCaught() 
+    {
+        yield return StartCoroutine(Shrink());
+        yield return StartCoroutine(PlayPS(ps_caught));
+
+        if(type == TokenType.FRIENDLY) 
+        {
+            UICommunication.Raise_TokenChange(1);
+        }
+
+        Destroy(gameObject);
+    
+    }
+
+
+    IEnumerator PlayDestroyed()
+    {
+
+        yield return StartCoroutine(PlayPS(ps_destroyed));
+
+        if (type == TokenType.ENEMY)
+        {
+         
+         //   DifficultyManager.
+        }
+
+    }
+
+    float min_scale_down_size = 0.0001f;
+    float scale_down_increment_width = 0.1f;
+    float scale_down_increment_length = 0.1f / 5f;
+
+    IEnumerator Shrink() 
+    {
+        while (transform.localScale.x > min_scale_down_size)
+        {
+            transform.localScale += new Vector3 (-scale_down_increment_width, -scale_down_increment_length, -scale_down_increment_width);   
+
+
+            yield return null;
+        }
 
     }
 

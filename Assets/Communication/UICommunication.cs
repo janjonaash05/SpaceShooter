@@ -7,7 +7,7 @@ public static class UICommunication
 {
 
     public static int Score { get; private set; } = 0;
-
+    public static int Tokens { get; private set; } = 0;
 
     public static int Secs { get; private set; } = 0;
     public static int Mins { get; private set; } = 0;
@@ -24,6 +24,7 @@ public static class UICommunication
 
 
     public static event Action OnScoreChange;
+    public static event Action OnTokensChange;
 
 
 
@@ -43,6 +44,13 @@ public static class UICommunication
     {
         Score += change;
         OnScoreChange?.Invoke();
+    }
+
+
+    public static void Raise_TokenChange(int change)
+    {
+        Tokens += change;
+        OnTokensChange?.Invoke();
     }
 
 

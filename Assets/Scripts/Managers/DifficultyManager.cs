@@ -32,12 +32,12 @@ public class DifficultyManager : MonoBehaviour
 
     public static int DISRUPTOR_DEFAULT_START_HEALTH = 100, DISRUPTOR_START_HEALTH;
 
-    
 
 
 
 
 
+    static int bomb_spawner_value = 0;
 
 
 
@@ -48,6 +48,48 @@ public class DifficultyManager : MonoBehaviour
         DISRUPTOR_START_HEALTH = DISRUPTOR_DEFAULT_START_HEALTH;
 
     }
+
+
+
+
+    public void EnemyChange()
+    {
+
+        DifficultyEventArgs dif_event_args = new(AffectedFeature.BOMB_SPAWNER, AffectedFeatureBehaviour.FORM, "", AffectedTarget.ENEMY);
+
+
+
+
+    }
+
+
+/*
+    public Dictionary<AffectedFeature, List<AffectedFeatureBehaviour>> feature_behaviour_dict = new() 
+    {
+        {AffectedFeature.DISRUPTOR},
+        { },
+    
+    
+    
+    };
+*/
+
+
+    public void FriendlyChange() 
+    {
+
+
+
+
+
+
+
+
+        DifficultyEventArgs dif_event_args = new(AffectedFeature.TURRET, AffectedFeatureBehaviour.CAPACITY, "+1", AffectedTarget.ENEMY);
+
+    }
+
+
 
 
 
@@ -65,7 +107,7 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-            DifficultyEventArgs dif_event_args = new(AffectedFeature.TURRET, AffectedFeatureBehaviour.CAPACITY, "+1", AffectedTarget.FRIENDLY);
+            DifficultyEventArgs dif_event_args = new(AffectedFeature.DISRUPTOR, AffectedFeatureBehaviour.CHARGE_UP_SPEED, "6", AffectedTarget.ENEMY);
 
 
             if (UICommunication.CanPopup)
@@ -130,7 +172,7 @@ public class DifficultyEventArgs : EventArgs
 
     public DifficultyEventArgs(AffectedFeature feature, AffectedFeatureBehaviour behaviour, string affectedBehaviourVal, AffectedTarget target)
     {
-        Message = feature.ToString() + " : " + behaviour.ToString()?.Replace("_", " ") + " " + affectedBehaviourVal;
+        Message = feature.ToString()?.Replace("_", " ") + " : " + behaviour.ToString()?.Replace("_", " ") + " " + affectedBehaviourVal;
         Affected = target;
     }
 
@@ -145,13 +187,13 @@ public enum AffectedTarget
 }
 public enum AffectedFeature
 {
-    DISRUPTOR, BOMB, SLIDER, TURRET
+    DISRUPTOR, BOMB_SPAWNER, SLIDER, TURRET, SUPERNOVA
 
 }
 
 public enum AffectedFeatureBehaviour
 {
-    SPAWN_RATE, SPAWN_CHANCE, CAPACITY, RECHARGE
+    SPAWN_RATE, SPAWN_CHANCE, CAPACITY, RECHARGE,FORM, SPEED, CHARGE_UP_SPEED
 
 
 

@@ -212,7 +212,7 @@ public class LaserControlColorChange : MonoBehaviour
     private Material[] current_mats;
 
 
-    [SerializeField][Tooltip("used for emission material color only")] protected Material block_material, allow_material;
+    [SerializeField][Tooltip("used for emission material timer_color only")] protected Material block_material, allow_material;
 
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,17 +24,22 @@ public class TokenColorChange : MonoBehaviour
     Renderer rend;
 
 
+    Material timer_color;
     Material color;
     Material off;
     void Start()
     {
 
-        color = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
+        timer_color = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
         
       
 
         rend = GetComponent<Renderer>();
         off = rend.materials[1];
+
+        color = rend.materials[^1];
+
+
         GetComponent<TokenMovement>().OnHealthDecrease += (HP) => 
         {
             Debug.Log(HP + "TOKEN HP");
@@ -48,7 +54,7 @@ public class TokenColorChange : MonoBehaviour
 
             for (int i = 1; i <= HP; i++) 
             {
-                mats[HP_index_map[i]] = color;
+                mats[HP_index_map[i]] = timer_color;
             
             }
 
@@ -61,8 +67,14 @@ public class TokenColorChange : MonoBehaviour
 
 
 
-    Dictionary<int, int> hp_index = new();
+    public void CoverInColor() 
+    {
+        var mats = new Material[rend.materials.Length];
+        Array.Fill(mats, color);
 
+        rend.materials = mats;
+    
+    }
 
 
     // Update is called once per frame
@@ -72,11 +84,7 @@ public class TokenColorChange : MonoBehaviour
     }
 
 
-    void DecreaseHealth() 
-    {
     
-    
-    }
 
 
 

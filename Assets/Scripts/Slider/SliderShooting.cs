@@ -133,6 +133,7 @@ public class SliderShooting : MonoBehaviour
 
                     yield return new WaitForSeconds(firing_delay);
                 }
+                CancelShooting();
                 break;
             case SliderLoaderBoltRecharge bolt:
                 bolt.Use();

@@ -8,7 +8,7 @@ public class TokenCounter : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    [SerializeField] TextMeshProUGUI txt;
+   TextMeshProUGUI txt;
     void Start()
     {
         GetComponent<RectTransform>().anchoredPosition = new Vector3(122, -80, 0);
@@ -22,7 +22,7 @@ public class TokenCounter : MonoBehaviour
 
 
 
-        UICommunication.OnScoreChange += () => txt.text = "Tokens: " + UICommunication.Tokens;
+        UICommunication.OnTokensChange += () => txt.text = "Tokens: " + UICommunication.Tokens;
     }
 
     // Update is called once per frame

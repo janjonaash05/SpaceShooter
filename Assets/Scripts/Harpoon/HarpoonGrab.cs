@@ -37,6 +37,7 @@ public class HarpoonGrab : MonoBehaviour
 
             collision.transform.parent = gameObject.transform;
             collision.transform.localPosition = new(0, -0.02f, 0);
+            collision.transform.localRotation = Quaternion.Euler(0,180,0);
 
             collision.gameObject.GetComponent<TokenMovement>().Stop();
             collision.gameObject.GetComponent<TokenColorChange>().CoverInColor();

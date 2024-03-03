@@ -99,7 +99,7 @@ public class TokenMovement : MonoBehaviour
         float edgeDistance = dir switch
         {
             TokenDirection.CENTER => 0.001f,
-            TokenDirection.TRANSPORTER => 1f,
+            TokenDirection.TRANSPORTER => 0.5f,
             TokenDirection.HARPOON_STATION => 3.5f,
             _ => 0
         };
@@ -162,11 +162,10 @@ public class TokenMovement : MonoBehaviour
 
     IEnumerator PlayPS(ParticleSystem ps) 
     {
-        if (ps.enableEmission) yield break;
 
         ps.enableEmission = true;
         ps.Play();
-
+        Debug.LogError("PLAYING PS waiting "+ps.main.duration) ;
         yield return new WaitForSeconds(ps.main.duration);
     
     
@@ -175,29 +174,46 @@ public class TokenMovement : MonoBehaviour
 
     IEnumerator PlayCaught() 
     {
-        yield return StartCoroutine(Shrink());
-        yield return StartCoroutine(PlayPS(ps_caught));
 
-        if(type == TokenType.FRIENDLY) 
+        if (ps_caught.emission.enabled) yield break;
+        if (type == TokenType.FRIENDLY)
         {
             UICommunication.Raise_TokenChange(1);
         }
 
+        StartCoroutine(Shrink());
+
+        yield return StartCoroutine( PlayPS(ps_caught));
+        Debug.LogError("DONE PLAYINg");
+
+       
+
         Destroy(gameObject);
+
     
     }
 
 
     IEnumerator PlayDestroyed()
     {
+        speed = 0;
 
-        yield return StartCoroutine(PlayPS(ps_destroyed));
-
+        if (ps_destroyed.emission.enabled) yield break;
         if (type == TokenType.ENEMY)
         {
-         
-         //   DifficultyManager.
+           DifficultyManager.
         }
+
+        StartCoroutine(Shrink());
+
+        yield return StartCoroutine(PlayPS(ps_destroyed));
+        Debug.LogError("DONE PLAYINg");
+
+       
+
+        Destroy(gameObject);
+
+        
 
     }
 
@@ -209,7 +225,7 @@ public class TokenMovement : MonoBehaviour
     {
         while (transform.localScale.x > min_scale_down_size)
         {
-            transform.localScale += new Vector3 (-scale_down_increment_width, -scale_down_increment_length, -scale_down_increment_width);   
+            transform.localScale += new Vector3(-scale_down_increment_width, -scale_down_increment_length, -scale_down_increment_width);
 
 
             yield return null;

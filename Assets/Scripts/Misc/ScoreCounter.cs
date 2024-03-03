@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ScoreCounter : MonoBehaviour
 {
     // Start is called before the first frame update
-   [SerializeField] static TextMeshProUGUI txt;
+     TextMeshProUGUI txt;
     void Start()
     {
 

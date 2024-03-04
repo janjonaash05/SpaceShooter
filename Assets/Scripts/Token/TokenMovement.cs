@@ -201,7 +201,7 @@ public class TokenMovement : MonoBehaviour
         if (ps_destroyed.emission.enabled) yield break;
         if (type == TokenType.ENEMY)
         {
-           DifficultyManager.
+          
         }
 
         StartCoroutine(Shrink());

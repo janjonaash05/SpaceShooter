@@ -74,8 +74,10 @@ public class ShieldRecharge : MonoBehaviour
 
             if (recharging) return;
 
-            Destroy(charges[capacity_index]);
-            capacity_index++;
+            Destroy(charges[CoreCommunication.SHIELD_CAPACITY]);
+            
+            
+
             
 
 
@@ -163,7 +165,7 @@ public class ShieldRecharge : MonoBehaviour
         }
 
 
-        charges = charges.OrderBy(x => x.transform.localPosition.y).ToList();
+        charges = charges.OrderByDescending(x => x.transform.localPosition.y).ToList();
 
       
      
@@ -185,7 +187,7 @@ public class ShieldRecharge : MonoBehaviour
 
 
         charges.Clear();
-        capacity_index = 0;
+        
 
 
 
@@ -213,7 +215,7 @@ public class ShieldRecharge : MonoBehaviour
         IEnumerator recharge()
         {
             
-            foreach (GameObject charge in charges.Reverse<GameObject>())
+            foreach (GameObject charge in charges)
             {
                 float recharge_delay = CoreCommunication.CORE_INDEX_HOLDER.Parent switch
                 {

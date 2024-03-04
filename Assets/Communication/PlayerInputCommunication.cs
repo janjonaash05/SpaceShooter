@@ -15,7 +15,8 @@ public static class PlayerInputCommunication
         OnLaserTarget1Click, OnLaserTarget2Click,
 
         OnHarpoonColliderClick,
-        OnSliderControlClick, OnSliderFullAutoClick, OnSliderBoltClick;
+        OnSliderControlClick, OnSliderFullAutoClick, OnSliderBoltClick,
+        OnUpgradeStationArrowDownClick, OnUpgradeStationArrowUpClick, OnUpgradeStationClick;
 
 
 
@@ -23,7 +24,7 @@ public static class PlayerInputCommunication
 
     public static event Action OnMouseDown, OnMouseUp;
 
-    static Dictionary<string, Action<RaycastHit>> tag_click_dictionary = new()
+    static Dictionary<string, Action<RaycastHit>> TAG_CLICK_DICT = new()
     {
         { Tags.COLOR_COLLIDER_1, Raise_OnColorCollider1Click},
             { Tags.COLOR_COLLIDER_2, Raise_OnColorCollider2Click },
@@ -41,7 +42,12 @@ public static class PlayerInputCommunication
              { Tags.SLIDER_BOLT_COLLIDER, Raise_OnSliderBoltClick },
 
 
-            { Tags.HARPOON_COLLIDER, Raise_OnHarpoonColliderClick }
+            { Tags.HARPOON_COLLIDER, Raise_OnHarpoonColliderClick },
+
+            { Tags.UPGRADE_STATION, Raise_OnUpgradeStationClick },
+
+            { Tags.UPGRADE_STATION_ARROW_UP, Raise_OnUpgradeStationArrowUpClick },
+            { Tags.UPGRADE_STATION_ARROW_DOWN, Raise_OnUpgradeStationArrowDownClick },
         };
 
 
@@ -70,7 +76,7 @@ public static class PlayerInputCommunication
 
         try
         {
-            action = tag_click_dictionary[hit.transform.tag];
+            action = TAG_CLICK_DICT[hit.transform.tag];
             Debug.Log("action " + hit.transform.tag);
 
             valid_click = true;
@@ -153,8 +159,20 @@ public static class PlayerInputCommunication
         OnHarpoonColliderClick?.Invoke(hit);
     }
 
+    static void Raise_OnUpgradeStationClick(RaycastHit hit) 
+    {
+        OnUpgradeStationClick?.Invoke(hit);
+    }
 
+    static void Raise_OnUpgradeStationArrowDownClick(RaycastHit hit)
+    {
+        OnUpgradeStationArrowDownClick?.Invoke(hit);
+    }
 
+    static void Raise_OnUpgradeStationArrowUpClick(RaycastHit hit)
+    {
+        OnUpgradeStationArrowUpClick?.Invoke(hit);
+    }
 
 
 

@@ -37,6 +37,10 @@ TagManager:
   - HarpoonStation
   - TokenTransportCollider
   - ShieldCharge
+  - UpgradeFace
+  - UpgradeStation
+  - UpgradeStationArrowDown
+  - UpgradeStationArrowUp
   layers:
   - Default
   - TransparentFX

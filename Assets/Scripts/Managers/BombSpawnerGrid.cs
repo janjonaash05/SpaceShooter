@@ -16,8 +16,8 @@ public class BombSpawnerGrid : MonoBehaviour
 
     Vector3[,] positions;
 
-    int size_x = 1;
-    int size_y = 1;
+   [SerializeField] int size_x;
+   [SerializeField] int size_y;
 
 
 

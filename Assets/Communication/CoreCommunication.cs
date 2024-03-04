@@ -81,6 +81,7 @@ public static class CoreCommunication
             if (SHIELD_CAPACITY == 0)
             {
                 Raise_ShieldDepleted();
+                return;
             }
 
         }

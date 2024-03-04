@@ -75,16 +75,16 @@ public class ShieldRecharge : MonoBehaviour
             if (recharging) return;
 
             Destroy(charges[CoreCommunication.SHIELD_CAPACITY]);
-            
-            
-
+            Debug.LogError(CoreCommunication.SHIELD_CAPACITY + " shieldCapacity");
             
 
+            
+
 
 
 
             
-            Debug.LogError(charges.Count + "oncoll chargeslen, index increased to "+capacity_index + " shield capacity "+ CoreCommunication.SHIELD_CAPACITY);
+          //  Debug.LogError(charges.Count + "oncoll chargeslen, index increased to "+capacity_index + " shield capacity "+ CoreCommunication.SHIELD_CAPACITY);
 
 
 
@@ -152,7 +152,7 @@ public class ShieldRecharge : MonoBehaviour
         }
 
 
-
+        charges = new();
 
         foreach (Transform child in transform)
         {
@@ -174,9 +174,9 @@ public class ShieldRecharge : MonoBehaviour
 
 
 
- 
-   
-   
+
+
+
 
 
 
@@ -185,8 +185,7 @@ public class ShieldRecharge : MonoBehaviour
     {
         recharging = true;
 
-
-        charges.Clear();
+        
         
 
 
@@ -200,16 +199,23 @@ public class ShieldRecharge : MonoBehaviour
         foreach (GameObject charge in charges)
         {
             charge.SetActive(false);
-
         }
 
+
+        charges.RemoveAt(0); //removes a wrongly delayed deleted charge
 
 
 
         ps.enableEmission = true;
         ChangeEmitterAndAntennaColor(off_mat);
-        StartCoroutine(recharge());
+        
 
+
+   
+
+        
+
+        StartCoroutine(recharge());
 
 
         IEnumerator recharge()
@@ -230,7 +236,7 @@ public class ShieldRecharge : MonoBehaviour
 
                 if (recharge_delay == float.NaN) { yield return null; }
                 yield return new WaitForSeconds(recharge_delay);
-                charge.SetActive(true);
+                charge.SetActive(true); 
 
 
 

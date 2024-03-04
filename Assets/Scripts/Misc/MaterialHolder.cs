@@ -27,6 +27,10 @@ public class MaterialHolder : MonoBehaviour
     [SerializeField] Material _ENEMY_SECONDARY;
 
 
+    [SerializeField] Material _ENEMY_UPGRADE;
+    [SerializeField] Material _FRIENDLY_UPGRADE;
+
+
     [SerializeField] Material _PLAYER_HEALTH;
 
     [SerializeField] float darkening_intensity;
@@ -71,10 +75,12 @@ public class MaterialHolder : MonoBehaviour
     public Material ENEMY_PRIMARY() => _ENEMY_PRIMARY;
     public Material ENEMY_SECONDARY() => _ENEMY_SECONDARY;
 
+    public Material ENEMY_UPGRADE() => _ENEMY_SECONDARY;
+
+    public Material FRIENDLY_UPGRADE() => _ENEMY_SECONDARY;
 
 
 
-   
 
 
 

@@ -58,6 +58,16 @@ public class SliderShooting : MonoBehaviour
 
 
 
+        (bullet_speed_full_auto, bullet_speed_bolt)
+        = UpgradesManager.SLIDER_SPEED_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.SLIDER_SPEED]];
+
+
+        UpgradesManager.OnSliderSpeedValueChange += () => 
+        (bullet_speed_full_auto, bullet_speed_bolt) 
+        = UpgradesManager.SLIDER_SPEED_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.SLIDER_SPEED]];
+
+
+
 
 
 

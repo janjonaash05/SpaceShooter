@@ -120,6 +120,7 @@ public class TokenMovement : MonoBehaviour
                     if (HP == 0)
                     {
                         StartCoroutine(PlayDestroyed());
+                        return;
                     }
                     transform.position = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)].position;
                 }
@@ -217,9 +218,9 @@ public class TokenMovement : MonoBehaviour
 
     }
 
-    float min_scale_down_size = 0.0001f;
-    float scale_down_increment_width = 0.1f;
-    float scale_down_increment_length = 0.1f / 5f;
+    readonly float min_scale_down_size = 0.0001f;
+    readonly float scale_down_increment_width = 0.1f;
+    readonly float scale_down_increment_length = 0.1f / 5f;
 
     IEnumerator Shrink() 
     {

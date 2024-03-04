@@ -16,8 +16,8 @@ public class SpawnBomb : MonoBehaviour
 
     [SerializeField] float spawn_x_offset;
 
-     Material[] Mats1;
-     Material[] Mats2;
+     Material[] mats1;
+     Material[] mats2;
 
 
     
@@ -34,8 +34,8 @@ public class SpawnBomb : MonoBehaviour
 
     public void Start()
     {
-        Mats1 = MaterialHolder.Instance().COLOR_SET_1();
-        Mats2 = MaterialHolder.Instance().COLOR_SET_2();
+        mats1 = MaterialHolder.Instance().COLOR_SET_1();
+        mats2 = MaterialHolder.Instance().COLOR_SET_2();
     }
 
 
@@ -111,10 +111,10 @@ public class SpawnBomb : MonoBehaviour
         {
 
 
-            Tags.LASER_TARGET_1 => Mats1[Random.Range(0, 4)],
+            Tags.LASER_TARGET_1 => mats1[Random.Range(0, 4)],
 
-            Tags.LASER_TARGET_2 => Mats2[Random.Range(0, 4)],
-            _ => Mats1[0]
+            Tags.LASER_TARGET_2 => mats2[Random.Range(0, 4)],
+            _ => mats1[0]
         };
 
         OnBombSpawnStart?.Invoke(colorMat);

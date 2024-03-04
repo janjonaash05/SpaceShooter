@@ -7014,7 +7014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 608553741956472763, guid: 5b2cb5c18404ae64480ba28d8d1d499e, type: 3}
-  recharge_rate: 0.5
+  recharge_rate: 0.25
   drain_rate: 6
 --- !u!1 &494458468
 GameObject:
@@ -7062,6 +7062,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placeholder_prefab: {fileID: 4602797535580527628, guid: 51e4a9a1186b49b4ab4beb42c3a46770, type: 3}
   spawner_prefab: {fileID: 302341923999471012, guid: 87060b20040ddf443a9bec1a5c69e338, type: 3}
+  size_x: 3
+  size_y: 3
 --- !u!4 &496202921 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 38087c3cfba841c42bbbb7db4a0be86b, type: 3}
@@ -23770,6 +23772,8 @@ MonoBehaviour:
   _FRIENDLY_SECONDARY: {fileID: 2100000, guid: 33f039474b80cb7428832a87221f915d, type: 2}
   _ENEMY_PRIMARY: {fileID: 2100000, guid: 63bffc11c0b46d546ba228fb1fab0627, type: 2}
   _ENEMY_SECONDARY: {fileID: 2100000, guid: 3eb42ab208c796347b45e3f815a15600, type: 2}
+  _ENEMY_UPGRADE: {fileID: 2100000, guid: 55409c593fc0cbf4b92b3a8f508c49ec, type: 2}
+  _FRIENDLY_UPGRADE: {fileID: 2100000, guid: ba06efade76e89b4c8c4a7d3697a43d3, type: 2}
   _PLAYER_HEALTH: {fileID: 2100000, guid: 9e8e772070647d94783a1f2a0d74ca80, type: 2}
   darkening_intensity: 0
 --- !u!1001 &1013935731
@@ -49948,7 +49952,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -50697,7 +50701,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
@@ -60594,8 +60598,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   max_power: 100
-  power_levels: 5
-  recharge_delay: 0.1
+  power_levels: 4
+  recharge_delay: 0.2
   delta_size_unit: 0.01
   ID: 2
 --- !u!114 &1670054707
@@ -65922,19 +65926,19 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 7f17bc34b78d0e34f8b49341cd07b448, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
-      objectReference: {fileID: 6151071871934886045, guid: 675094b04dafa0c43a007046325807be, type: 3}
+      objectReference: {fileID: 2100000, guid: e1a96947f0c1d83428bae84090341388, type: 2}
     - target: {fileID: -7511558181221131132, guid: 7f17bc34b78d0e34f8b49341cd07b448, type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 
-      objectReference: {fileID: -7730079208461156751, guid: af3e0b7afb1d6be4eb2c6d7de2d250b8, type: 3}
+      objectReference: {fileID: 2100000, guid: e1a96947f0c1d83428bae84090341388, type: 2}
     - target: {fileID: -7511558181221131132, guid: 7f17bc34b78d0e34f8b49341cd07b448, type: 3}
       propertyPath: m_Materials.Array.data[4]
       value: 
-      objectReference: {fileID: 2079939459439163040, guid: af3e0b7afb1d6be4eb2c6d7de2d250b8, type: 3}
+      objectReference: {fileID: 2100000, guid: e1a96947f0c1d83428bae84090341388, type: 2}
     - target: {fileID: -7511558181221131132, guid: 7f17bc34b78d0e34f8b49341cd07b448, type: 3}
       propertyPath: m_Materials.Array.data[5]
       value: 
-      objectReference: {fileID: -8612975695535684231, guid: 675094b04dafa0c43a007046325807be, type: 3}
+      objectReference: {fileID: 2100000, guid: e1a96947f0c1d83428bae84090341388, type: 2}
     - target: {fileID: -7511558181221131132, guid: 7f17bc34b78d0e34f8b49341cd07b448, type: 3}
       propertyPath: m_Materials.Array.data[6]
       value: 
@@ -65942,6 +65946,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7f17bc34b78d0e34f8b49341cd07b448, type: 3}
       propertyPath: m_Name
       value: harpoon_upgrade_station
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f17bc34b78d0e34f8b49341cd07b448, type: 3}
+      propertyPath: m_TagString
+      value: UpgradeStation
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -66137,7 +66145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   max_power: 100
-  power_levels: 5
+  power_levels: 4
   recharge_delay: 0.1
   delta_size_unit: 0.01
   ID: 1
@@ -66441,7 +66449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charge_prefab: {fileID: 608553741956472763, guid: c3133d92064b5d14280a01b1b6dd28d3, type: 3}
-  recharge_delay: 250
+  recharge_delay: 500
 --- !u!1 &1952957188
 GameObject:
   m_ObjectHideFlags: 0

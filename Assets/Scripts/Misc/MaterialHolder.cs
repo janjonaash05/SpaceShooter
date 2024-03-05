@@ -75,9 +75,9 @@ public class MaterialHolder : MonoBehaviour
     public Material ENEMY_PRIMARY() => _ENEMY_PRIMARY;
     public Material ENEMY_SECONDARY() => _ENEMY_SECONDARY;
 
-    public Material ENEMY_UPGRADE() => _ENEMY_SECONDARY;
+    public Material ENEMY_UPGRADE() => _ENEMY_UPGRADE;
 
-    public Material FRIENDLY_UPGRADE() => _ENEMY_SECONDARY;
+    public Material FRIENDLY_UPGRADE() => _FRIENDLY_UPGRADE;
 
 
 

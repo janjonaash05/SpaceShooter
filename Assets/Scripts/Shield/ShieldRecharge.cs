@@ -11,9 +11,8 @@ using UnityEngine;
 public class ShieldRecharge : MonoBehaviour
 {
 
-    [SerializeField] int max_capacity;
+     int max_capacity;
 
-    int capacity_index = 0;
 
     [SerializeField] GameObject charge_prefab;
 
@@ -47,7 +46,7 @@ public class ShieldRecharge : MonoBehaviour
     {
 
 
-        max_capacity = DifficultyManager.SHIELD_MAX_CAPACITY;
+        max_capacity = UpgradesManager.SHIELD_MAX_CAPACITY;
 
 
         charges = new();
@@ -69,29 +68,10 @@ public class ShieldRecharge : MonoBehaviour
 
         CoreCommunication.OnBombFallen += (m) =>
         {
-
-
-
             if (recharging) return;
-
             Destroy(charges[CoreCommunication.SHIELD_CAPACITY]);
-            Debug.LogError(CoreCommunication.SHIELD_CAPACITY + " shieldCapacity");
-            
-
-            
-
-
-
-
-            
-          //  Debug.LogError(charges.Count + "oncoll chargeslen, index increased to "+capacity_index + " shield capacity "+ CoreCommunication.SHIELD_CAPACITY);
-
-
-
 
         };
-
-
 
 
         CoreCommunication.OnShieldDepleted += () => { if (!recharging) Recharge(); };
@@ -102,7 +82,7 @@ public class ShieldRecharge : MonoBehaviour
     void GenerateCharges()
     {
 
-        max_capacity = DifficultyManager.SHIELD_MAX_CAPACITY;
+        max_capacity = UpgradesManager.SHIELD_MAX_CAPACITY;
 
 
         float startSize = charge_prefab.transform.localScale.x;
@@ -164,34 +144,16 @@ public class ShieldRecharge : MonoBehaviour
 
         }
 
-
         charges = charges.OrderByDescending(x => x.transform.localPosition.y).ToList();
 
-      
-     
 
     }
-
-
-
-
-
-
-
 
 
 
     void Recharge()
     {
         recharging = true;
-
-        
-        
-
-
-
-
-
 
 
         GenerateCharges();
@@ -208,11 +170,6 @@ public class ShieldRecharge : MonoBehaviour
 
         ps.enableEmission = true;
         ChangeEmitterAndAntennaColor(off_mat);
-        
-
-
-   
-
         
 
         StartCoroutine(recharge());
@@ -251,9 +208,6 @@ public class ShieldRecharge : MonoBehaviour
             ChangeEmitterAndAntennaColor(on_mat);
         }
 
-
-        
-
     }
 
 
@@ -277,7 +231,6 @@ public class ShieldRecharge : MonoBehaviour
         antenna_rend.materials = a_mats;
 
     }
-
 
 
 }

@@ -20,7 +20,7 @@ public class UpgradesManager : MonoBehaviour
 
 
 
-
+    public static int SHIELD_MAX_CAPACITY { get; private set; } = 4;
 
 
 
@@ -92,6 +92,9 @@ public class UpgradesManager : MonoBehaviour
 
 
         UPGRADE_VALUE_DICT[type]++;
+        if (UPGRADE_VALUE_DICT[type] == MAX_VALUE) { SHIELD_MAX_CAPACITY++; }
+
+
 
         Action toExecute = type switch
         {

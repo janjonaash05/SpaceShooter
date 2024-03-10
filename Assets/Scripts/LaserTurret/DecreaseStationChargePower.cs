@@ -6,10 +6,14 @@ using UnityEngine;
 public class DecreaseStationChargePower : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float max_power;
+    [SerializeField] float max_power;
     float power;
-    public float power_levels;
-    public float recharge_delay;
+     int power_levels;
+
+
+
+    float current_iteration_power_levels;
+    [SerializeField] float recharge_delay;
     //public GameObject turret_control_head;
     //public GameObject AutoCollider;
 
@@ -31,27 +35,34 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
-    Material before_turnoff;
 
 
     float max_size_y;
     float size_y;
     void Start()
     {
+
+
+        power_levels = UpgradesManager.TURRET_CAPACITY_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.TURRET_RECHARGE]];
+
+
+
         max_size_y = transform.localScale.y;
         size_y = max_size_y;
 
         power = max_power;
 
+        current_iteration_power_levels = power_levels;
 
-        //  target_bomb.GetComponent<TargetBomb>().OnBarrageStart += Decrease;
+
+
 
 
         OnRechargeStart += () => recharging = true;
         OnRechargeEnd += () => recharging = false;
 
 
-        switch (ID) 
+        switch (ID)
         {
             case 1:
                 LaserTurretCommunicationChannels.Channel1.OnAutoTargetingSuccess += Decrease;
@@ -85,12 +96,8 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
-                LaserTurretCommunicationChannels.Channel2.OnControlDisabled +=  EndEmission;
+                LaserTurretCommunicationChannels.Channel2.OnControlDisabled += EndEmission;
                 LaserTurretCommunicationChannels.Channel2.OnControlEnabled += () => { if (recharging) StartEmission(); };
-
-
-
-
 
                 break;
 
@@ -99,10 +106,12 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
-         ps = transform.parent.GetChild(1).GetComponent<ParticleSystem>();
-         ps_rend = ps.GetComponent<ParticleSystemRenderer>();
+        ps = transform.parent.GetChild(1).GetComponent<ParticleSystem>();
+        ps_rend = ps.GetComponent<ParticleSystemRenderer>();
 
 
+
+        UpgradesManager.OnTurretCapacityValueChange += () => power_levels = UpgradesManager.TURRET_CAPACITY_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.TURRET_RECHARGE]];
 
 
 
@@ -147,8 +156,8 @@ public class DecreaseStationChargePower : MonoBehaviour
     public void Decrease()
     {
 
-        power -= max_power / power_levels;
-        size_y -= max_size_y / power_levels;
+        power -= max_power / current_iteration_power_levels;
+        size_y -= max_size_y / current_iteration_power_levels;
         transform.localScale = new Vector3(transform.localScale.x, size_y, transform.localScale.z);
 
 
@@ -200,6 +209,7 @@ public class DecreaseStationChargePower : MonoBehaviour
 
         transform.localScale = new Vector3(transform.localScale.x, max_size_y, transform.localScale.z);
         power = max_power;
+        current_iteration_power_levels = power_levels;
 
 
 

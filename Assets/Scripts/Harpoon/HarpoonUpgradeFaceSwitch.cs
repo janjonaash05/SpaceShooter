@@ -92,7 +92,7 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
         int degree = UpgradesManager.UPGRADE_VALUE_DICT[current_upgrade];
 
 
-        Material on = degree == 4 ? MaterialHolder.Instance().FRIENDLY_UPGRADE() : on_mat;
+        Material on = degree == UpgradesManager.MAX_VALUE ? MaterialHolder.Instance().FRIENDLY_UPGRADE() : on_mat;
 
 
 

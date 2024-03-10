@@ -24,7 +24,7 @@ public class DifficultyManager : MonoBehaviour
     public static int DISRUPTOR_SPAWN_CHANCE = 50;
 
 
-    public const int SHIELD_MAX_CAPACITY = 3;
+    
 
 
     public static int CONSTELLATION_SPAWN_RATE = 20;

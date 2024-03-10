@@ -45,7 +45,7 @@ public static class CoreCommunication
 
         mat_holder = MaterialHolder.Instance();
 
-        SHIELD_CAPACITY = DifficultyManager.SHIELD_MAX_CAPACITY;
+        SHIELD_CAPACITY = UpgradesManager.SHIELD_MAX_CAPACITY;
 
 
 
@@ -66,12 +66,6 @@ public static class CoreCommunication
 
     public static void Raise_OnBombFallen(Material m)
     {
-
-
-
-
-
-
         if (SHIELD_CAPACITY > 0)
         {
             SHIELD_CAPACITY--;
@@ -94,22 +88,6 @@ public static class CoreCommunication
 
 
 
-        /*
-        if (SHIELD_CAPACITY == 0)
-        {
-            
-
-            OnBombFallen?.Invoke(m);
-            
-        }
-        else
-        {
-            SHIELD_CAPACITY--;
-            OnBombFallen?.Invoke(mat_holder.SIDE_TOOLS_COLOR());
-            
-        }
-        */
-
 
     }
 
@@ -120,7 +98,7 @@ public static class CoreCommunication
     public static void Raise_ShieldRecharged() 
     {
         OnShieldRecharged?.Invoke();
-        SHIELD_CAPACITY = DifficultyManager.SHIELD_MAX_CAPACITY;
+        SHIELD_CAPACITY = UpgradesManager.SHIELD_MAX_CAPACITY;
     }
 
 

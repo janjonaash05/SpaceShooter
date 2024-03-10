@@ -8,11 +8,11 @@ public class LaserTurretChannel
 {
 
 
+    public int MAX_TURRET_CAPACITY { get; private set; }
 
-    
+    public int TURRET_CAPACITY { get; private set; }
 
-  
-    
+
     public  event Action<GameObject> OnManualTargeting;
 
     public  event Action<string> OnAutoTargetingAttempt;
@@ -41,9 +41,14 @@ public class LaserTurretChannel
     public  event Action OnAutoTargetingEnabled, OnAutoTargetingDisabled;
 
 
-     Material charge_mat;
+    public event Action OnTurretCapacityChanged;
+    public event Action OnTurretCapacityDepleted, OnTurretCapacityRecharged;
+
+    Material charge_mat;
 
     private  bool is_targeting, is_barraging, is_control_disabled, is_auto_targeting_disabled;
+
+
 
     string tag;
     public  void Awake(string tag)
@@ -55,6 +60,40 @@ public class LaserTurretChannel
         is_barraging = false;
         is_targeting = false;
 
+
+        MAX_TURRET_CAPACITY = UpgradesManager.TURRET_CAPACITY_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.TURRET_CAPACITY]];
+        TURRET_CAPACITY = MAX_TURRET_CAPACITY;
+
+
+        OnAutoTargetingSuccess += () =>
+        {
+            if (TURRET_CAPACITY > 0)
+            {
+                TURRET_CAPACITY--;
+                OnTurretCapacityChanged?.Invoke();
+
+
+                if (TURRET_CAPACITY == 0)
+                {
+
+
+                   // MAX_TURRET_CAPACITY = UpgradesManager.TURRET_CAPACITY_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.TURRET_CAPACITY]];
+                    OnTurretCapacityDepleted?.Invoke();
+                    return;
+                }
+
+            }
+            else
+            {
+                OnTurretCapacityChanged?.Invoke();
+
+            }
+
+        };
+
+
+
+
         OnAutoTargetingEnabled += () => { is_auto_targeting_disabled = false; Debug.LogWarning("enable auto targeting"); };
         OnAutoTargetingDisabled += () => { is_auto_targeting_disabled = true; Debug.LogWarning("disable auto targeting"); };
 
@@ -64,7 +103,19 @@ public class LaserTurretChannel
 
 
 
-    public  void SetTargeting(bool targeting)
+
+    public void Raise_TurretCapacityRecharged()
+    {
+        OnTurretCapacityRecharged?.Invoke();
+        TURRET_CAPACITY = MAX_TURRET_CAPACITY;
+    }
+
+
+
+
+
+
+    public void SetTargeting(bool targeting)
     {
         is_targeting = targeting;
 

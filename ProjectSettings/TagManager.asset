@@ -41,6 +41,10 @@ TagManager:
   - UpgradeStation
   - UpgradeStationArrowDown
   - UpgradeStationArrowUp
+  - TurretHeadCharge1
+  - TurretHeadCharge2
+  - TurretCharge1
+  - TurretCharge2
   layers:
   - Default
   - TransparentFX

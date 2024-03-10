@@ -21,7 +21,11 @@ public static class Tags
     public const string TURRET_HEAD_1 = "TurretHead1";
     public const string TURRET_HEAD_2 = "TurretHead2";
 
+    public const string TURRET_CHARGE_1 = "TurretCharge1";
+    public const string TURRET_CHARGE_2 = "TurretCharge2";
 
+    public const string TURRET_HEAD_CHARGE_1 = "TurretHeadCharge1";
+    public const string TURRET_HEAD_CHARGE_2 = "TurretHeadCharge2";
 
     public const string TURRET_CONTROL_1 = "TurretControl1";
     public const string TURRET_CONTROL_2 = "TurretControl2";

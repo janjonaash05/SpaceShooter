@@ -191,7 +191,7 @@ public class ShieldRecharge : MonoBehaviour
                 }; ;
                 
 
-                if (recharge_delay == float.NaN) { yield return null; }
+                if (recharge_delay == float.NaN) { continue; }
                 yield return new WaitForSeconds(recharge_delay);
                 charge.SetActive(true); 
 

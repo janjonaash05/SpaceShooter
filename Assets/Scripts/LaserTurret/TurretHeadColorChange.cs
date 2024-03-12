@@ -44,7 +44,6 @@ public class TurretHeadColorChange : MonoBehaviour
 
     Material off_mat;
 
-    // Update is called once per frame
 
 
     void ActivateColor()

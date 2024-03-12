@@ -24,6 +24,36 @@ public class UpgradesManager : MonoBehaviour
 
 
 
+    public static int GetCurrentTurretCapacityValue() 
+    {
+        return TURRET_CAPACITY_DEGREE_VALUE_DICT[UPGRADE_VALUE_DICT[UpgradeType.TURRET_CAPACITY]];
+    }
+
+    public static float GetCurrentTurretRechargeValue()
+    {
+        return TURRET_RECHARGE_DEGREE_VALUE_DICT[UPGRADE_VALUE_DICT[UpgradeType.TURRET_RECHARGE]];
+    }
+
+
+
+
+    public static (float full_auto, float bolt) GetCurrentSliderRechargeValue() 
+    {
+
+        return SLIDER_RECHARGE_DEGREE_VALUE_DICT[UPGRADE_VALUE_DICT[UpgradeType.SLIDER_RECHARGE]];
+    }
+
+
+    public static (float full_auto, float bolt) GetCurrentSliderSpeedValue()
+    {
+
+        return SLIDER_SPEED_DEGREE_VALUE_DICT[UPGRADE_VALUE_DICT[UpgradeType.SLIDER_SPEED]];
+    }
+
+
+
+
+
 
     public static readonly Dictionary<int, int> TURRET_CAPACITY_DEGREE_VALUE_DICT = new()
     {
@@ -38,11 +68,11 @@ public class UpgradesManager : MonoBehaviour
 
     public static readonly Dictionary<int, float> TURRET_RECHARGE_DEGREE_VALUE_DICT = new()
     {
-        {0,0.2f},
-        {1,0.175f },
-        {2,0.15f },
-        {3,0.1f },
-        {4,8.0075f }
+        {0,1f},
+        {1,0.8f},
+        {2,0.6f },
+        {3,0.4f },
+        {4,0.2f }
 
 
     };

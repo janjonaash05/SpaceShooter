@@ -35,13 +35,34 @@ public class TurretChargeColorChange : MonoBehaviour
 
     private void Awake()
     {
+
+        rend = GetComponent<Renderer>();
+        off_mat = rend.material;
+
+
+
+        switch (ID)
+        {
+            case 1:
+                LaserTurretCommunicationChannels.Channel1.OnTurretChargeColorChange += AssignMats;
+                break;
+            case 2:
+                LaserTurretCommunicationChannels.Channel2.OnTurretChargeColorChange += AssignMats;
+                break;
+        }
+
+
+
+
+
+
         try
         {
             rend.material = GameObject.FindWithTag((ID == 1) ? Tags.TURRET_HEAD_CHARGE_1 : Tags.TURRET_HEAD_CHARGE_2).GetComponent<Renderer>().material;
         }
-        catch
+        catch(Exception e)
         {
-
+            Debug.LogError(e);
         }
 
     }
@@ -50,24 +71,7 @@ public class TurretChargeColorChange : MonoBehaviour
     void Start()
     {
 
-        rend = GetComponent<Renderer>();
-        off_mat = rend.material;
-
-
-        /*TODO*/
-
-        switch (ID)
-        {
-
-            case 1:
-                LaserTurretCommunicationChannels.Channel1.OnTurretChargeColorChange += AssignMats;
-                break;
-            case 2:
-                LaserTurretCommunicationChannels.Channel2.OnTurretChargeColorChange += AssignMats;
-                break;
-
-        }
-
+      
 
 
 

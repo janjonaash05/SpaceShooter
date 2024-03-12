@@ -69,8 +69,8 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
-                OnRechargeStart += LaserTurretCommunicationChannels.Channel1.Raise_DisableAutoTargeting;
-                OnRechargeEnd += LaserTurretCommunicationChannels.Channel1.Raise_EnableAutoTargeting;
+             //   OnRechargeStart += LaserTurretCommunicationChannels.Channel1.Raise_DisableAutoTargeting;
+              //  OnRechargeEnd += LaserTurretCommunicationChannels.Channel1.Raise_EnableAutoTargeting;
 
                 LaserTurretCommunicationChannels.Channel1.OnControlDisabled += () => paused = true;
                 LaserTurretCommunicationChannels.Channel1.OnControlEnabled += () => paused = false;
@@ -88,8 +88,8 @@ public class DecreaseStationChargePower : MonoBehaviour
 
 
 
-                OnRechargeStart += LaserTurretCommunicationChannels.Channel2.Raise_DisableAutoTargeting;
-                OnRechargeEnd += LaserTurretCommunicationChannels.Channel2.Raise_EnableAutoTargeting;
+             //   OnRechargeStart += LaserTurretCommunicationChannels.Channel2.Raise_DisableAutoTargeting;
+             //   OnRechargeEnd += LaserTurretCommunicationChannels.Channel2.Raise_EnableAutoTargeting;
 
                 LaserTurretCommunicationChannels.Channel2.OnControlDisabled += () => paused = true;
                 LaserTurretCommunicationChannels.Channel2.OnControlEnabled += () => paused = false;

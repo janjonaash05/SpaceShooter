@@ -81,8 +81,8 @@ public class TokenSpawning : MonoBehaviour
 
 
 
-        (GameObject prefab, Material mat) = UnityEngine.Random.Range(0, 2) switch { 0 => (friendly_prefab, friendly_mat), _ => (enemy_prefab, enemy_mat) };
-
+        //(GameObject prefab, Material mat) = UnityEngine.Random.Range(0, 2) switch { 0 => (friendly_prefab, friendly_mat), _ => (enemy_prefab, enemy_mat) };
+        (GameObject prefab, Material mat) = UnityEngine.Random.Range(0, 2) switch { 0 => (friendly_prefab, friendly_mat), _ => (friendly_prefab, friendly_mat) };
 
         int index = UnityEngine.Random.Range(0, 4);
 

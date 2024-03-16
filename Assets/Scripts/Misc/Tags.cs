@@ -76,4 +76,11 @@ public static class Tags
     public const string UPGRADE_STATION_ARROW_DOWN = "UpgradeStationArrowDown";
 
 
+
+
+    public const string SHIELD_HEMISPHERE_PS = "ShieldHemispherePS";
+    public const string EMITTER_PS = "EmitterPS";
+
+
+
 }

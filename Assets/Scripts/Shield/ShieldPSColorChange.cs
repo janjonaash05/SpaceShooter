@@ -14,27 +14,8 @@ public class ShieldPSColorChange : MonoBehaviour
 
 
 
-        CoreCommunication.OnBombFallen += (m) =>
-        {
-            ParticleSystem ps = GetComponent<ParticleSystem>();
-
-            ParticleSystemRenderer ps_rend = ps.GetComponent<ParticleSystemRenderer>();
-
-            ps_rend.material = m;
-            ps_rend.trailMaterial = m;
-
-            var emission = ps.emission;
-
-            emission.enabled = true;
-
-            ps.Play();
-
-
-
-
-
-
-        };
+        CoreCommunication.OnBombFallen += (m) => StartCoroutine(Play(m));
+        
 
 
 
@@ -42,6 +23,40 @@ public class ShieldPSColorChange : MonoBehaviour
 
 
     }
+
+
+
+
+
+    IEnumerator Play(Material m) 
+    {
+        float waitTime = transform.CompareTag(Tags.SHIELD_HEMISPHERE_PS) ? 0 : 0;
+
+        ParticleSystem ps = GetComponent<ParticleSystem>();
+
+        ParticleSystemRenderer ps_rend = ps.GetComponent<ParticleSystemRenderer>();
+
+        ps_rend.material = m;
+        ps_rend.trailMaterial = m;
+
+        var emission = ps.emission;
+
+        emission.enabled = true;
+
+        yield return new WaitForSeconds(waitTime);
+
+        ps.Play();
+
+
+    }
+
+
+
+
+
+
+
+
 
     // Update is called once per frame
     void Update()

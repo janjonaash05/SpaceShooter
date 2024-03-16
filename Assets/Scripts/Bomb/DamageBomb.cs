@@ -95,6 +95,11 @@ public class DamageBomb : MonoBehaviour
 
         //  Debug.DrawRay(transform.position, rotationDirection, Color.red, 1f);
 
+
+
+        transform.GetChild(1).GetComponent<ParticleSystem>().enableEmission = true;
+        transform.GetChild(1).GetComponent<ParticleSystem>().Play();
+
         _ = ScaleDown(token);
         //  StartCoroutine(DamageByCore_FallIntoCore());
 
@@ -107,9 +112,7 @@ public class DamageBomb : MonoBehaviour
 
     void DamageByPlayer(BombDestructionType bombDestructionType)
     {
-
-
-
+        
         Destroy(GetComponent<Renderer>());
 
         transform.GetChild(0).GetComponent<ParticleSystem>().enableEmission = true;

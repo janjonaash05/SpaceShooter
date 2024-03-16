@@ -8,11 +8,18 @@ public class BombColorChange : MonoBehaviour
 {
     // Start is called before the first frame update
     // Start is called before the first frame update
-   public const int COLOR_INDEX = 9;
-public    const int OUTLINE_INDEX = 1;
+
+
+
+    BombFall bf;
+
+
+
+    public const int COLOR_INDEX = 9;
+    public const int OUTLINE_INDEX = 1;
 
     [SerializeField] protected Material primary, secondary;
-    public Material Color { get; private set; }
+    public Material bomb_color { get; private set; }
 
     [Tooltip("in ms")] public int cover_in_color_delay;
 
@@ -34,12 +41,22 @@ public    const int OUTLINE_INDEX = 1;
 
 
     protected Renderer rend;
+    float move_speed;
 
-
-    void Awake() //fucking ChangeColor executed earlier than Start for some reason
+    void Awake()
     {
         rend = GetComponent<Renderer>();
-      //  Debug.Log(rend.materials);
+
+        //  Debug.Log(rend.materials);
+
+
+        GetComponent<BombFall>().OnMoveSpeedSet += (m) => move_speed = m;
+
+
+
+
+
+
 
     }
 
@@ -49,6 +66,8 @@ public    const int OUTLINE_INDEX = 1;
         Material[] mats = rend.materials;
 
 
+
+        /*
 
         for (int i = 0; i < mats.Length; i++)
         {
@@ -69,40 +88,141 @@ public    const int OUTLINE_INDEX = 1;
 
         }
 
-        Color = color;
+        */
+
+        //this.bomb_color = color;
         mats[COLOR_INDEX] = color;
-        mats[OUTLINE_INDEX] = secondary;
+
+        //  mats[OUTLINE_INDEX] = secondary;
         rend.materials = mats;
     }
 
 
 
-    public virtual void InitialColorUp(Material color)
+    public virtual void Init(Material color)
     {
-        Color = color;
 
-     
-        ChangeOnlyColor(Color);
+
+
+
+
+        this.bomb_color = color;
+
+        Material[] mats = rend.materials;
+
+
+        for (int i = 0; i < mats.Length; i++)
+        {
+
+
+            if (primary_order_index_dict.ContainsKey(i))
+            {
+                mats[primary_order_index_dict[i]] = primary;
+
+            }
+            if (secondary_order_index_dict.ContainsKey(i))
+            {
+                mats[secondary_order_index_dict[i]] = secondary;
+
+            }
+
+
+
+        }
+        rend.materials = mats;
+
+
+
+
+
+        ChangeOnlyColor(this.bomb_color);
+
+        StartCoroutine(FluctuateIntensity());
+    }
+
+
+
+
+    
+
+    double intensity;
+    IEnumerator FluctuateIntensity()
+    {
+
+
+
+      
+
+
+
+        Material newMat = new(bomb_color);
+        while (true)
+        {
+
+
+
+
+
+
+
+            // float lerp = Mathf.PingPong(Time.time, move_speed / 2) / (move_speed / 2);
+
+
+
+            float mult = float.IsNaN(move_speed) ?0 : move_speed*25;
+
+            float lerp = (Mathf.Sin(Time.time * mult)+1)/2;
+
+
+
+            var lerpedEmission = Color.Lerp(bomb_color.GetColor("_EmissionColor"), secondary.GetColor("_EmissionColor"), lerp);
+            var lerpedNormal = Color.Lerp(bomb_color.GetColor("_Color"), secondary.GetColor("_Color"), lerp);
+            newMat.SetColor("_EmissionColor", lerpedEmission);
+            newMat.SetColor("_Color", lerpedNormal);
+
+
+
+
+            ChangeOnlyColor(newMat);
+
+
+
+
+
+
+            yield return null;
+
+
+
+
+
+        }
+
+
 
 
     }
 
 
+
+
+
+
     protected const int ORDER_LENGTH = 8;
 
 
-   protected int coverage_degree = 0;
+    protected int coverage_degree = 0;
 
     public async Task CoverInColor()
     {
 
-
+        StopAllCoroutines();
         for (int i = 0; i <= ORDER_LENGTH; i++)
         {
             coverage_degree = i;
             Material[] mats = rend.materials;
 
-         //   Color = rend.materials[COLOR_INDEX];
+            //   Color = rend.materials[COLOR_INDEX];
 
             try
             {
@@ -111,12 +231,12 @@ public    const int OUTLINE_INDEX = 1;
                 {
                     if (primary_order_index_dict.ContainsKey(i))
                     {
-                        mats[primary_order_index_dict[i]] = Color;
+                        mats[primary_order_index_dict[i]] = bomb_color;
 
                     }
                     if (secondary_order_index_dict.ContainsKey(i))
                     {
-                        mats[secondary_order_index_dict[i]] = Color;
+                        mats[secondary_order_index_dict[i]] = bomb_color;
 
                     }
                 }
@@ -127,12 +247,12 @@ public    const int OUTLINE_INDEX = 1;
 
             if (primary_order_index_dict.ContainsKey(i))
             {
-                mats[primary_order_index_dict[i]] = Color;
+                mats[primary_order_index_dict[i]] = bomb_color;
 
             }
             else if (secondary_order_index_dict.ContainsKey(i)) //recently added else if
             {
-                mats[secondary_order_index_dict[i]] = Color;
+                mats[secondary_order_index_dict[i]] = bomb_color;
 
             }
 
@@ -146,12 +266,12 @@ public    const int OUTLINE_INDEX = 1;
 
                     if (primary_order_index_dict.ContainsKey(i))
                     {
-                        mats[primary_order_index_dict[i]] = Color;
+                        mats[primary_order_index_dict[i]] = bomb_color;
 
                     }
                     if (secondary_order_index_dict.ContainsKey(i))
                     {
-                        mats[secondary_order_index_dict[i]] = Color;
+                        mats[secondary_order_index_dict[i]] = bomb_color;
 
                     }
 
@@ -160,8 +280,8 @@ public    const int OUTLINE_INDEX = 1;
             }
             catch (Exception) { }
 
-            mats[COLOR_INDEX] = Color;
-            mats[OUTLINE_INDEX] = (i == ORDER_LENGTH) ? Color : secondary;
+            mats[COLOR_INDEX] = bomb_color;
+            mats[OUTLINE_INDEX] = (i == ORDER_LENGTH) ? bomb_color : secondary;
 
             rend.materials = mats;
             await Task.Delay(cover_in_color_delay);

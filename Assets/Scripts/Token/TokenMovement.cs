@@ -96,15 +96,19 @@ public class TokenMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, target, (int)speed * Time.deltaTime);
 
 
+
         float edgeDistance = dir switch
         {
             TokenDirection.CENTER => 0.001f,
             TokenDirection.TRANSPORTER => 0.5f,
-            TokenDirection.HARPOON_STATION => 4f,
+            TokenDirection.HARPOON_STATION => 4.5f,
             _ => 0
         };
 
 
+
+
+        Debug.Log(Vector3.Distance(transform.position, target) + " "+dir);
 
         if (Vector3.Distance(transform.position, target) < edgeDistance)
         {

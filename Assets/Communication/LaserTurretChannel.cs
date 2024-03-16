@@ -266,7 +266,7 @@ public class LaserTurretChannel
 
 
 
-        if (charge_mat.name.Contains(hit.transform.gameObject.GetComponent<BombColorChange>().Color.name)) 
+        if (charge_mat.name.Contains(hit.transform.gameObject.GetComponent<BombColorChange>().bomb_color.name)) 
         {
 
             OnManualTargeting?.Invoke(hit.transform.gameObject);

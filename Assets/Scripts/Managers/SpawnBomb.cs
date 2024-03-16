@@ -142,19 +142,16 @@ public class SpawnBomb : MonoBehaviour
 
         ParticleSystem destroy_ps = bomb.transform.GetChild(0).GetComponent<ParticleSystem>();
         ParticleSystem dissolve_ps = bomb.transform.GetChild(1).GetComponent<ParticleSystem>();
-        
 
 
 
         var destroy_main = destroy_ps.main;
         var dissolve_main = dissolve_ps.main;
-     
 
 
 
-        destroy_main.startSize = size;
-        dissolve_main.startSize = size;
-        
+        destroy_main.startSize = size ;
+        dissolve_main.startSize = size/2;
 
 
 
@@ -162,7 +159,9 @@ public class SpawnBomb : MonoBehaviour
 
         destroy_ps.GetComponent<ParticleSystemRenderer>().material = colorMat;
         dissolve_ps.GetComponent<ParticleSystemRenderer>().material = colorMat;
-        bomb.GetComponent<BombColorChange>().InitialColorUp(colorMat);
+
+
+        bomb.GetComponent<BombColorChange>().Init(colorMat);
        
 
 

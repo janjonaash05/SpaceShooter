@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 {
 
 
-     float move_speed;
+    public float MoveSpeed { get; private set; }
     Vector3 rotation_speed;
     [SerializeField] float rotation_speed_multiplier;
 
@@ -17,8 +18,8 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
     Rigidbody rb;
 
-   
 
+    public event Action<float> OnMoveSpeedSet;
 
 
     bool scaled_up = false;
@@ -42,9 +43,11 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     {
         DisabledRewards = false;
 
-        move_speed = Random.Range(min_speed, max_speed);
+        MoveSpeed = UnityEngine.Random.Range(min_speed, max_speed);
+        OnMoveSpeedSet?.Invoke(MoveSpeed);
 
-        rotation_speed = move_speed * 500 * Random.insideUnitSphere;
+
+        rotation_speed = MoveSpeed * 500 * UnityEngine.Random.insideUnitSphere;
     }
 
     // Update is called once per frame
@@ -66,7 +69,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
 
         if (!scaled_up) return;
-        rb.MovePosition(rb.position + move_speed * Time.fixedDeltaTime * (target - rb.position));
+        rb.MovePosition(rb.position + MoveSpeed * Time.fixedDeltaTime * (target - rb.position));
 
 
     }
@@ -81,7 +84,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(BombDestructionType.TARGET);
 
 
-            CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().Color);
+            CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().bomb_color);
 
             
         }
@@ -100,7 +103,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
         DisabledRewards = true;
 
-        return Mathf.RoundToInt(transform.localScale.x / 50  + VectorSum(rotation_speed) / 75 +  move_speed * 75);
+        return Mathf.RoundToInt(transform.localScale.x / 50  + VectorSum(rotation_speed) / 75 +  MoveSpeed * 75);
     }
 
 

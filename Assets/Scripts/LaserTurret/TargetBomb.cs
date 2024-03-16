@@ -311,7 +311,7 @@ public class TargetBomb : MonoBehaviour
      
         var coloredTargets = (
             from bomb in allTargets
-            where mat.name.Contains(bomb.GetComponent<BombColorChange>().Color.name) ||  bomb.GetComponent<BombColorChange>().Color.name.Contains(mat.name)
+            where mat.name.Contains(bomb.GetComponent<BombColorChange>().bomb_color.name) ||  bomb.GetComponent<BombColorChange>().bomb_color.name.Contains(mat.name)
 
             where bomb.GetComponent<BombColorChange>().IsNotCurrentlyTargeted()
             select bomb

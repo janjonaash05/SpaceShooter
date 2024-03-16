@@ -189,7 +189,7 @@ public static class LaserTurretCommunication1
         if (is_targeting || is_barraging || is_control_disabled) { return; }
 
 
-        if (hit.transform.gameObject.GetComponent<BombColorChange>().Color.color.Equals(charge_mat.color))
+        if (hit.transform.gameObject.GetComponent<BombColorChange>().bomb_color.color.Equals(charge_mat.color))
         {
             OnManualTargeting?.Invoke(hit.transform.gameObject);
         }

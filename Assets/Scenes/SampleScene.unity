@@ -7055,7 +7055,7 @@ GameObject:
   - component: {fileID: 525768636}
   m_Layer: 0
   m_Name: ShieldToEmitter Particle System
-  m_TagString: Untagged
+  m_TagString: EmitterPS
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7216,7 +7216,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.125
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -7269,7 +7269,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 50
+      scalar: 200
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -7965,7 +7965,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
@@ -11881,14 +11881,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 525768632}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 20.5, z: 37}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 20.5, z: 11.000046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 43
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &525768636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49760,7 +49760,7 @@ GameObject:
   - component: {fileID: 1431058401}
   m_Layer: 0
   m_Name: Shield Particle System
-  m_TagString: Untagged
+  m_TagString: ShieldHemispherePS
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49861,7 +49861,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0
+    scalar: 0.3
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -66274,7 +66274,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charge_prefab: {fileID: 608553741956472763, guid: c3133d92064b5d14280a01b1b6dd28d3, type: 3}
-  recharge_delay: 500
 --- !u!1 &1952957188
 GameObject:
   m_ObjectHideFlags: 0

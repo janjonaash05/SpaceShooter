@@ -8,7 +8,7 @@ public class LaserTurretChannel
 {
 
 
-    public int MAX_TURRET_CAPACITY { get; private set; }
+    public static int MAX_TURRET_CAPACITY { get; private set; }
 
     public int TURRET_CAPACITY { get; private set; }
 

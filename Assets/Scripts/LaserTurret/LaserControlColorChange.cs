@@ -143,7 +143,7 @@ public class LaserControlColorChange : MonoBehaviour
         auto_collider.GetComponent<Renderer>().material = block_material;
 
 
-        Debug.LogWarning("DisableAutoTargeting");
+       // Debug.LogWarning("DisableAutoTargeting");
 
 
         Renderer rend = GetComponent<Renderer>();

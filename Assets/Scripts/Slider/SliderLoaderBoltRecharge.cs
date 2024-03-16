@@ -20,6 +20,7 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
         PlayerInputCommunication.OnSliderBoltClick += (_) => OnActivationInvoke();
         PlayerInputCommunication.OnSliderFullAutoClick += (_) => OnDeactivationInvoke();
 
+        recharge_rate = UpgradesManager.GetCurrentSliderRechargeValue().bolt;
 
 
 
@@ -71,6 +72,8 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
     {
         while (charge.transform.localScale.y < init_y_scale)
         {
+
+            recharge_rate = UpgradesManager.GetCurrentSliderRechargeValue().bolt;
             charge.transform.localScale = new Vector3(charge.transform.localScale.x, charge.transform.localScale.y + recharge_rate, charge.transform.localScale.z);
             yield return null;
 

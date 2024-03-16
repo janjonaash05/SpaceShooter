@@ -21,13 +21,13 @@ public class DifficultyManager : MonoBehaviour
 
     public static float BOMB_SPAWN_DELAY = 20f, DISRUPTOR_SPAWN_DELAY = 20, BOMB_SPEED_MULTIPLIER = 20;
     public static float DISRUPTOR_DISABLE_TIME = 10;
-    public static int DISRUPTOR_SPAWN_CHANCE = 50;
+    public static int DISRUPTOR_SPAWN_CHANCE = 100;
 
 
     
 
 
-    public static int CONSTELLATION_SPAWN_RATE = 20;
+    public static int CONSTELLATION_SPAWN_RATE = 200;
 
 
     public static int DISRUPTOR_DEFAULT_START_HEALTH = 100, DISRUPTOR_START_HEALTH;

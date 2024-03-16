@@ -13,7 +13,7 @@ public class TokenTransportRotation : MonoBehaviour
 
         int mult = transform.CompareTag(Tags.TOKEN_TRANSPORT_PIVOT_RIGHT) ? -1:1;
 
-        Debug.Log(mult);
+      
         
         Vector3 rotationDirection = (GameObject.FindWithTag(Tags.TOKEN_CENTER).transform.position - transform.position).normalized;
         Quaternion rot = Quaternion.LookRotation(rotationDirection);

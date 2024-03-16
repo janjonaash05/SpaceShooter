@@ -25,7 +25,6 @@ public class HarpoonLaunch : MonoBehaviour
     bool turnedOff = true;
     IEnumerator Launch()
     {
-        Debug.LogWarning(readyToLaunch);
         if (!readyToLaunch) yield break;
 
 

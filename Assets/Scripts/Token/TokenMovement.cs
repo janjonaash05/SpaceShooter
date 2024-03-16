@@ -100,7 +100,7 @@ public class TokenMovement : MonoBehaviour
         {
             TokenDirection.CENTER => 0.001f,
             TokenDirection.TRANSPORTER => 0.5f,
-            TokenDirection.HARPOON_STATION => 3.5f,
+            TokenDirection.HARPOON_STATION => 4f,
             _ => 0
         };
 
@@ -166,7 +166,7 @@ public class TokenMovement : MonoBehaviour
 
         ps.enableEmission = true;
         ps.Play();
-        Debug.LogError("PLAYING PS waiting "+ps.main.duration) ;
+     //   Debug.LogError("PLAYING PS waiting "+ps.main.duration) ;
         yield return new WaitForSeconds(ps.main.duration);
     
     
@@ -176,7 +176,11 @@ public class TokenMovement : MonoBehaviour
     IEnumerator PlayCaught() 
     {
 
-        if (ps_caught.emission.enabled) yield break;
+
+
+
+        Debug.LogError("CAUGHT, ACTIVE PS "+ ps_caught.emission.enabled);
+        if (ps_caught.emission.enabled) { yield break; }
         if (type == TokenType.FRIENDLY)
         {
             UICommunication.Raise_TokenChange(1);
@@ -185,7 +189,6 @@ public class TokenMovement : MonoBehaviour
         StartCoroutine(Shrink());
 
         yield return StartCoroutine( PlayPS(ps_caught));
-        Debug.LogError("DONE PLAYINg");
 
        
 
@@ -208,7 +211,7 @@ public class TokenMovement : MonoBehaviour
         StartCoroutine(Shrink());
 
         yield return StartCoroutine(PlayPS(ps_destroyed));
-        Debug.LogError("DONE PLAYINg");
+
 
        
 

@@ -14,7 +14,7 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
     Material on_mat, off_mat;
 
 
-    List<UpgradesManager.UpgradeType> upgrades_list = new() 
+    List<UpgradesManager.UpgradeType> upgrades_list = new()
     {UpgradesManager.UpgradeType.TURRET_CAPACITY, UpgradesManager.UpgradeType.TURRET_RECHARGE, UpgradesManager.UpgradeType.SLIDER_RECHARGE,UpgradesManager.UpgradeType.SLIDER_SPEED };
 
 
@@ -23,7 +23,7 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
 
 
 
-    Dictionary<int, int> order_index_dict = new() { {1,2 }, { 2, 5 },{ 3, 3 },{ 4, 4 } };
+    Dictionary<int, int> order_index_dict = new() { { 1, 2 }, { 2, 5 }, { 3, 3 }, { 4, 4 } };
 
     void Start()
     {
@@ -40,9 +40,9 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
 
 
         PlayerInputCommunication.OnUpgradeStationArrowDownClick += (_) => { index -= (index == 0) ? 0 : 1; ShowFace(); ShowUpgradeDegree(); };
-        PlayerInputCommunication.OnUpgradeStationArrowUpClick += (_) => { index += (index == faces_rend.Count-1) ? 0 : 1; ShowFace(); ShowUpgradeDegree(); };
+        PlayerInputCommunication.OnUpgradeStationArrowUpClick += (_) => { index += (index == faces_rend.Count - 1) ? 0 : 1; ShowFace(); ShowUpgradeDegree(); };
 
-        PlayerInputCommunication.OnUpgradeStationClick += (_) => 
+        PlayerInputCommunication.OnUpgradeStationClick += (_) =>
         {
             if (UICommunication.Tokens > 0 && UpgradesManager.UPGRADE_VALUE_DICT[current_upgrade] < UpgradesManager.MAX_VALUE)
             {
@@ -53,11 +53,11 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
                 UICommunication.Raise_TokenChange(-1);
                 ShowUpgradeDegree();
             }
-        
-        
-        
-        
-        
+
+
+
+
+
         };
 
 
@@ -83,7 +83,7 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
 
 
 
-        
+
 
 
         current_upgrade = upgrades_list[index];
@@ -96,7 +96,7 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
 
 
 
-        Material[] mats = transform.GetChild(0). GetComponent<Renderer>().materials;
+        Material[] mats = transform.GetChild(0).GetComponent<Renderer>().materials;
 
 
 
@@ -110,7 +110,7 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
 
 
 
-        for (int i = 1; i <= degree; i++) 
+        for (int i = 1; i <= degree; i++)
         {
 
             mats[order_index_dict[i]] = on;
@@ -129,15 +129,15 @@ public class HarpoonUpgradeFaceSwitch : MonoBehaviour
 
     void ShowFace()
     {
-        foreach (Renderer r in faces_rend) 
+        foreach (Renderer r in faces_rend)
         {
             r.enabled = false;
-        
+
         }
 
 
         faces_rend[index].enabled = true;
-    
+
     }
 
     // Update is called once per frame

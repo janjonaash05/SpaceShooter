@@ -19,6 +19,8 @@ public class UpgradesManager : MonoBehaviour
     public static event Action OnSliderSpeedValueChange;
 
 
+    public static event Action OnShieldMaxCapacityValueChange;
+
 
     public static int SHIELD_MAX_CAPACITY { get; private set; } = 4;
 
@@ -37,7 +39,7 @@ public class UpgradesManager : MonoBehaviour
 
 
 
-    public static (float full_auto, float bolt) GetCurrentSliderRechargeValue() 
+    public static (int full_auto, float bolt) GetCurrentSliderRechargeValue() 
     {
 
         return SLIDER_RECHARGE_DEGREE_VALUE_DICT[UPGRADE_VALUE_DICT[UpgradeType.SLIDER_RECHARGE]];
@@ -78,7 +80,7 @@ public class UpgradesManager : MonoBehaviour
     };
 
 
-    public static readonly Dictionary<int, (float full_auto, float bolt)> SLIDER_RECHARGE_DEGREE_VALUE_DICT = new()
+    public static readonly Dictionary<int, (int full_auto, float bolt)> SLIDER_RECHARGE_DEGREE_VALUE_DICT = new()
     {
         {0, (500,0.25f) },
         {1,(375,0.375f) },
@@ -122,7 +124,7 @@ public class UpgradesManager : MonoBehaviour
 
 
         UPGRADE_VALUE_DICT[type]++;
-        if (UPGRADE_VALUE_DICT[type] == MAX_VALUE) { SHIELD_MAX_CAPACITY++; }
+        if (UPGRADE_VALUE_DICT[type] == MAX_VALUE) { SHIELD_MAX_CAPACITY++; OnShieldMaxCapacityValueChange?.Invoke(); }
 
 
 

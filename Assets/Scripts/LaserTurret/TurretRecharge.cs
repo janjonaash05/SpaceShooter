@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
@@ -16,38 +18,18 @@ public class TurretRecharge : MonoBehaviour
 
     List<GameObject> charges;
 
-
     [SerializeField]
     int ID;
 
+    int ARBITRARY_TURRET_RECHARGED_CAPACITY;
 
-
-
-
-
-
+    Coroutine current_recharge_coroutine;
 
     const float POSITION_FOR_SIZE_DIVIDER = 75;
 
-
-
-
-
-
-
-    bool paused = false, recharging = false;
-
-
-
-
+    bool recharging = false;
 
     public event Action OnRechargeStart, OnRechargeEnd;
-
-
-
-
-
-
 
     ParticleSystem ps;
 
@@ -55,34 +37,23 @@ public class TurretRecharge : MonoBehaviour
     {
 
 
-        max_capacity = UpgradesManager.SHIELD_MAX_CAPACITY;
-
-
+        max_capacity =
+             LaserTurretChannel.MAX_TURRET_CAPACITY;
         charges = new();
         StartCoroutine(GenerateCharges());
 
-
-
-
-
         ps = transform.GetChild(0).GetComponent<ParticleSystem>();
-
-
-
 
 
         switch (ID)
         {
             case 1:
 
-               // OnRechargeStart += LaserTurretCommunicationChannels.Channel1.Raise_DisableAutoTargeting;
-               // OnRechargeEnd += LaserTurretCommunicationChannels.Channel1.Raise_EnableAutoTargeting;
+                // OnRechargeStart += LaserTurretCommunicationChannels.Channel1.Raise_DisableAutoTargeting;
+                // OnRechargeEnd += LaserTurretCommunicationChannels.Channel1.Raise_EnableAutoTargeting;
 
-                LaserTurretCommunicationChannels.Channel1.OnControlDisabled += () => paused = true;
-                LaserTurretCommunicationChannels.Channel1.OnControlEnabled += () => paused = false;
+         
 
-
-                
 
 
                 LaserTurretCommunicationChannels.Channel1.OnTurretCapacityChanged += () =>
@@ -94,23 +65,13 @@ public class TurretRecharge : MonoBehaviour
                 };
 
 
-                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityDepleted += () => { if (!recharging) Recharge(0); };
-
-
-
-
-
-
+                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityDepleted += () => RechargeOnDepletion();
 
                 break;
 
             case 2:
 
-                LaserTurretCommunicationChannels.Channel2.OnControlDisabled += () => paused = true;
-                LaserTurretCommunicationChannels.Channel2.OnControlEnabled += () => paused = false;
-
-               
-
+     
                 LaserTurretCommunicationChannels.Channel2.OnTurretCapacityChanged += () =>
                 {
                     if (recharging) return;
@@ -119,7 +80,7 @@ public class TurretRecharge : MonoBehaviour
                 };
 
 
-                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityDepleted += () => { if (!recharging) Recharge(0); };
+                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityDepleted += () => RechargeOnDepletion();
                 break;
         }
 
@@ -129,22 +90,14 @@ public class TurretRecharge : MonoBehaviour
         {
 
 
-            if (!recharging) 
+            if (recharging)
             {
-                StartCoroutine(Upgrade());
+                StartCoroutine(UpgradeRecharging());
                 return;
             }
 
 
-            StopAllCoroutines();
-
-            StartCoroutine(GenerateCharges());
-
-
-            
-            Recharge(ID == 1 ? LaserTurretCommunicationChannels.Channel1.TURRET_CAPACITY : LaserTurretCommunicationChannels.Channel2.TURRET_CAPACITY);
-
-
+            StartCoroutine(Upgrade());
 
 
 
@@ -153,31 +106,38 @@ public class TurretRecharge : MonoBehaviour
     }
 
 
+    void RechargeOnDepletion()
+    {
+        if (!recharging) current_recharge_coroutine = StartCoroutine(Recharge(0));
+    }
 
+
+
+    IEnumerator UpgradeRecharging()
+    {
+
+
+        StopCoroutine(current_recharge_coroutine);
+
+        yield return StartCoroutine(GenerateCharges());
+
+        yield return current_recharge_coroutine = StartCoroutine(Recharge(ARBITRARY_TURRET_RECHARGED_CAPACITY));
+    }
 
 
     IEnumerator Upgrade()
     {
         yield return StartCoroutine(GenerateCharges());
-
-
         int capacity = ID == 1 ? LaserTurretCommunicationChannels.Channel1.TURRET_CAPACITY : LaserTurretCommunicationChannels.Channel2.TURRET_CAPACITY;
 
-        Debug.Log("capacity "+ capacity);
-        
-        for (int i = UpgradesManager.GetCurrentTurretCapacityValue()-1; i >= capacity; i--)
-        {
 
-            Debug.LogError(i);
-            
+        for (int i = UpgradesManager.GetCurrentTurretCapacityValue() - 1; i >= capacity; i--)
+        {
             charges[i].GetComponent<Renderer>().enabled = false;
 
         }
 
-
     }
-
-
 
 
 
@@ -185,24 +145,19 @@ public class TurretRecharge : MonoBehaviour
     {
         foreach (GameObject charge in charges)
         {
-            Destroy(charge);
-            yield return null;
+            try
+            {
+                Destroy(charge);
+            }
+            catch { }
             
+            yield return null;
+
         }
 
 
-
-
-
-
-
-
-        max_capacity = (ID == 1) ? 
-            LaserTurretCommunicationChannels.Channel1.MAX_TURRET_CAPACITY : 
-            LaserTurretCommunicationChannels.Channel2.MAX_TURRET_CAPACITY;
-
-        Debug.LogError(max_capacity + " maxcapacity");
-
+        max_capacity = LaserTurretChannel.MAX_TURRET_CAPACITY;
+ 
         float start_size = charge_prefab.transform.localScale.z;
         float size = start_size / max_capacity;
         float positionUnit = size / (POSITION_FOR_SIZE_DIVIDER);
@@ -257,99 +212,74 @@ public class TurretRecharge : MonoBehaviour
 
         foreach (Transform child in transform)
         {
+
             if (child.CompareTag(charge_tag))
             {
                 charges.Add(child.gameObject);
+                yield return null;
 
             }
 
         }
-
         charges = charges.OrderBy(x => x.transform.localPosition.z).ToList();
-
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    void Recharge(int skips_amount)
+    IEnumerator Recharge(int skips_amount)
     {
+        ARBITRARY_TURRET_RECHARGED_CAPACITY = 0;
         recharging = true;
-        
 
         foreach (GameObject charge in charges)
         {
-            charge.GetComponent<Renderer>().enabled = false;
+            try
+            {
+                charge.GetComponent<Renderer>().enabled = false;
+
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
         }
+
 
 
         ps.enableEmission = true;
 
-        StartCoroutine(recharge());
-
-        
-        IEnumerator recharge()
+        int i = 0;
+        foreach (GameObject charge in charges)
         {
-            int i = 0;
 
-            foreach (GameObject charge in charges)
+
+
+            ARBITRARY_TURRET_RECHARGED_CAPACITY++;
+
+            i++;
+            float recharge_delay = (i <= skips_amount) ? 0 : UpgradesManager.GetCurrentTurretRechargeValue();
+
+
+            yield return new WaitForSeconds(recharge_delay);
+
+            try
             {
-                i++;
-                float recharge_delay = (i <= skips_amount) ? 0 : UpgradesManager.GetCurrentTurretRechargeValue() ;
+                charge.GetComponent<Renderer>().enabled = true;
 
-                if(recharge_delay == 0) Debug.LogError("Skipped!");
-
-
-                yield return new WaitForSeconds(recharge_delay);
-
-                try
-                {
-                    charge.GetComponent<Renderer>().enabled = true;
-
-                }
-                catch
-                {
-
-                }
             }
-
-            recharging = false;
-
-            Action toExecute = ((ID == 1) ? LaserTurretCommunicationChannels.Channel1.Raise_TurretCapacityRecharged : LaserTurretCommunicationChannels.Channel2.Raise_TurretCapacityRecharged);
-            toExecute();
-
-            ps.enableEmission = false;
-            OnRechargeEnd?.Invoke();
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
         }
 
+        recharging = false;
+
+        Action toExecute = ((ID == 1) ? LaserTurretCommunicationChannels.Channel1.Raise_TurretCapacityRecharged : LaserTurretCommunicationChannels.Channel2.Raise_TurretCapacityRecharged);
+        toExecute();
+
+
+        ARBITRARY_TURRET_RECHARGED_CAPACITY = LaserTurretChannel.MAX_TURRET_CAPACITY;
+        ps.enableEmission = false;
     }
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

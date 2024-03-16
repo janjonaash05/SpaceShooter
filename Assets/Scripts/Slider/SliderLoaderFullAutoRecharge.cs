@@ -14,12 +14,12 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
 
     GameObject[,] charge_grid;
-    [SerializeField] int recharge_delay;
+  //  [SerializeField] int recharge_delay;
 
 
 
 
-
+    
 
     //float margin = 0.25f; // for size 10x10x10
 
@@ -86,7 +86,7 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
         
             while (ChangeIndex(1) != 1)
             {
-            await Task.Delay(recharge_delay);
+            await Task.Delay(UpgradesManager.GetCurrentSliderRechargeValue().full_auto);
             }
 
 

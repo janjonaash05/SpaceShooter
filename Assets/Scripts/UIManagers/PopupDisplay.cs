@@ -66,7 +66,7 @@ public class PopupDisplay : MonoBehaviour
             txt.fontSize = font_size_range.y;
 
 
-            Color alert_color = (e.Affected == AffectedTarget.ENEMY) ? alert_color_enemy : alert_color_friendly;
+            Color alert_color = (e.Target == AffectedTarget.ENEMY) ? alert_color_enemy : alert_color_friendly;
             for (int i = 0; i < 9; i++)
             {
                 txt.color = (i % 2 == 0) ? alert_color : default_color;

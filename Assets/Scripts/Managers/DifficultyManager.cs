@@ -7,6 +7,76 @@ public class DifficultyManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    public enum AffectedFeatureCircumstance
+    {
+        TOKEN, TIME
+    }
+    public enum AffectedFeature
+    {
+        DISRUPTORxSPAWN_CHANCE, DISRUPTORxSPEED,
+        BOMB_SPAWNERxSPAWN_RATE, BOMB_SPAWNERxFORM,
+        SUPERNOVAxSPAWN_RATE, SUPERNOVAxCHARGE_UP_SPEED
+    }
+
+
+
+    public static Dictionary<AffectedFeature, int> FEATURE_VALUE_DICT = new()
+    {
+        {AffectedFeature.DISRUPTORxSPAWN_CHANCE,0 },
+        {AffectedFeature.DISRUPTORxSPEED,0 },
+        {AffectedFeature.BOMB_SPAWNERxSPAWN_RATE,0 },
+        {AffectedFeature.BOMB_SPAWNERxFORM,0 },
+        {AffectedFeature.SUPERNOVAxSPAWN_RATE,0 },
+        {AffectedFeature.SUPERNOVAxCHARGE_UP_SPEED,0 },
+
+
+    };
+
+
+    public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.SUPERNOVAxCHARGE_UP_SPEED };
+
+    public static List<AffectedFeature> TIME_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPAWN_CHANCE, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.SUPERNOVAxCHARGE_UP_SPEED };
+
+
+
+    public static Dictionary<int, int> DISRUPTOR_SPAWN_CHANCE_DEGREE_VALUE_DICT = new()
+    {
+        {0, 15 },
+        {1, 30 },
+        {2, 45 },
+        {3, 60 },
+        {4, 75 },
+
+    };
+
+
+    //TODO
+    public static Dictionary<int, (int min, int max)> DISRUPTOR_SPEED_DEGREE_VALUE_DICT = new()
+    {
+      /*  {0, 15 },
+        {1, 30 },
+        {2, 45 },
+        {3, 60 },
+        {4, 75 },
+      */
+    };
+
+
+    public static Dictionary<int, float> BOMB_SPAWNER_SPAWN_RATE_DEGREE_VALUE_DICT = new()
+    {
+        {0, 20f },
+        {1, 17.5f },
+        {2, 15f },
+        {3, 12.5f },
+        {4, 10f },
+
+    };
+
+
+
+
+
+
 
 
     public delegate void DifficultyChangeEvent(DifficultyEventArgs dea);
@@ -24,7 +94,7 @@ public class DifficultyManager : MonoBehaviour
     public static int DISRUPTOR_SPAWN_CHANCE = 100;
 
 
-    
+
 
 
     public static int CONSTELLATION_SPAWN_RATE = 200;
@@ -55,7 +125,7 @@ public class DifficultyManager : MonoBehaviour
     public void EnemyChange()
     {
 
-        DifficultyEventArgs dif_event_args = new(AffectedFeature.BOMB_SPAWNER, AffectedFeatureBehaviour.FORM, "", AffectedTarget.ENEMY);
+        DifficultyEventArgs dif_event_args = new(AffectedFeature.BOMB_SPAWNER, AffectedFeatureBehaviour.FORM, "", AffectedFeatureCircumstance.ENEMY);
 
 
 
@@ -63,20 +133,35 @@ public class DifficultyManager : MonoBehaviour
     }
 
 
-/*
-    public Dictionary<AffectedFeature, List<AffectedFeatureBehaviour>> feature_behaviour_dict = new() 
+    /*
+        public Dictionary<AffectedFeature, List<AffectedFeatureBehaviour>> feature_behaviour_dict = new() 
+        {
+            {AffectedFeature.DISRUPTOR},
+            { },
+
+
+
+        };
+    */
+
+
+    public void FriendlyChange()
     {
-        {AffectedFeature.DISRUPTOR},
-        { },
-    
-    
-    
-    };
-*/
 
 
-    public void FriendlyChange() 
-    {
+        DifficultyEventArgs dif_event_args = new(AffectedFeature.DISRUPTOR, AffectedFeatureBehaviour.CHARGE_UP_SPEED, "6", AffectedFeatureCircumstance.ENEMY);
+
+
+        if (UICommunication.CanPopup)
+        {
+            UICommunication.Raise_OnDifficultyValueChange(dif_event_args);
+
+        }
+        else
+        {
+            UICommunication.Enqueue_PopupArguments(dif_event_args);
+
+        }
 
 
 
@@ -85,7 +170,7 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-        DifficultyEventArgs dif_event_args = new(AffectedFeature.TURRET, AffectedFeatureBehaviour.CAPACITY, "+1", AffectedTarget.ENEMY);
+
 
     }
 
@@ -107,7 +192,7 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-            DifficultyEventArgs dif_event_args = new(AffectedFeature.DISRUPTOR, AffectedFeatureBehaviour.CHARGE_UP_SPEED, "6", AffectedTarget.ENEMY);
+            DifficultyEventArgs dif_event_args = new(AffectedFeature.DISRUPTOR, AffectedFeatureBehaviour.CHARGE_UP_SPEED, "6", AffectedFeatureCircumstance.ENEMY);
 
 
             if (UICommunication.CanPopup)
@@ -120,18 +205,6 @@ public class DifficultyManager : MonoBehaviour
                 UICommunication.Enqueue_PopupArguments(dif_event_args);
 
             }
-
-            /*
-                        if (popup_display.CanPopup)
-                        {
-                            OnDifficultyValueChange?.Invoke(dif_event_args);
-
-                        }
-                        else
-                        {
-                            popup_queue.Enqueue(dif_event_args);
-                        }
-            */
 
 
 
@@ -164,39 +237,25 @@ public class DifficultyEventArgs : EventArgs
 {
 
 
+
+
+
+
+
+
+
+
     public string Message { get; private set; }
 
 
-    public AffectedTarget Affected { get; private set; }
+    public DifficultyManager.AffectedFeatureCircumstance Target { get; private set; }
 
-
-    public DifficultyEventArgs(AffectedFeature feature, AffectedFeatureBehaviour behaviour, string affectedBehaviourVal, AffectedTarget target)
+    //TODO
+    public DifficultyEventArgs(DifficultyManager.AffectedFeature feature, string affectedBehaviourVal, DifficultyManager.AffectedFeatureCircumstance target)
     {
-        Message = feature.ToString()?.Replace("_", " ") + " : " + behaviour.ToString()?.Replace("_", " ") + " " + affectedBehaviourVal;
-        Affected = target;
+       // Message = feature.ToString()?.Replace("_", " ") + " : " + behaviour.ToString()?.Replace("_", " ") + " " + affectedBehaviourVal;
+        Target = target;
     }
-
-
-
-
-}
-public enum AffectedTarget
-{
-    FRIENDLY, ENEMY
-
-}
-public enum AffectedFeature
-{
-    DISRUPTOR, BOMB_SPAWNER, SLIDER, TURRET, SUPERNOVA
-
-}
-
-public enum AffectedFeatureBehaviour
-{
-    SPAWN_RATE, SPAWN_CHANCE, CAPACITY, RECHARGE,FORM, SPEED, CHARGE_UP_SPEED
-
-
-
 
 
 

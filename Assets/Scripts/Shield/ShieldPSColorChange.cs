@@ -8,14 +8,14 @@ public class ShieldPSColorChange : MonoBehaviour
 
 
 
-    
+
     void Start()
     {
 
 
 
-        CoreCommunication.OnBombFallen += (m) => StartCoroutine(Play(m));
-        
+        CoreCommunication.OnBombFallen += Play;
+
 
 
 
@@ -28,9 +28,8 @@ public class ShieldPSColorChange : MonoBehaviour
 
 
 
-    IEnumerator Play(Material m) 
+    void Play(Material m)
     {
-        float waitTime = transform.CompareTag(Tags.SHIELD_HEMISPHERE_PS) ? 0 : 0;
 
         ParticleSystem ps = GetComponent<ParticleSystem>();
 
@@ -43,7 +42,6 @@ public class ShieldPSColorChange : MonoBehaviour
 
         emission.enabled = true;
 
-        yield return new WaitForSeconds(waitTime);
 
         ps.Play();
 
@@ -61,6 +59,6 @@ public class ShieldPSColorChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

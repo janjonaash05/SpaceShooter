@@ -5021,7 +5021,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude_interval: {x: 10, y: 20}
-  period_interval: {x: 0.25, y: 5}
+  period_interval: {x: 2, y: 5}
 --- !u!65 &5035965593154880076
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5084,7 +5084,7 @@ MonoBehaviour:
   down_speed: 40
   up_speed: 20
   min_y: -20
-  max_y: 20
+  max_y: 40
 --- !u!114 &1179934248641496902
 MonoBehaviour:
   m_ObjectHideFlags: 0

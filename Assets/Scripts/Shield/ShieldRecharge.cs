@@ -331,10 +331,13 @@ public class ShieldRecharge : MonoBehaviour
             4 => 1f,
             3 => 1.25f,
             2 => 1.5f,
-            1 => 1.75f
+            1 => 1.75f,
+            0 => float.PositiveInfinity
             
             };
 
+
+            if (float.IsPositiveInfinity(recharge_delay)) { continue; }
 
             yield return new WaitForSeconds(recharge_delay);
 

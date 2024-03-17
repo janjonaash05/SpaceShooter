@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UpgradesManager;
 
 public class DifficultyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
 
     public enum AffectedFeatureCircumstance
     {
@@ -15,7 +15,7 @@ public class DifficultyManager : MonoBehaviour
     {
         DISRUPTORxSPAWN_CHANCE, DISRUPTORxSPEED,
         BOMB_SPAWNERxSPAWN_RATE, BOMB_SPAWNERxFORM,
-        SUPERNOVAxSPAWN_RATE, SUPERNOVAxCHARGE_UP_SPEED
+        CONSTELLATIONxSPAWN_RATE, CONSTELLATIONxMAX_STARS
     }
 
 
@@ -24,19 +24,26 @@ public class DifficultyManager : MonoBehaviour
     {
         {AffectedFeature.DISRUPTORxSPAWN_CHANCE,0 },
         {AffectedFeature.DISRUPTORxSPEED,0 },
-        {AffectedFeature.BOMB_SPAWNERxSPAWN_RATE,0 },
-        {AffectedFeature.BOMB_SPAWNERxFORM,0 },
-        {AffectedFeature.SUPERNOVAxSPAWN_RATE,0 },
-        {AffectedFeature.SUPERNOVAxCHARGE_UP_SPEED,0 },
 
+        {AffectedFeature.BOMB_SPAWNERxSPAWN_RATE,0 },
+        {AffectedFeature.BOMB_SPAWNERxFORM, 0},
+
+        {AffectedFeature.CONSTELLATIONxSPAWN_RATE,0 },
+        {AffectedFeature.CONSTELLATIONxMAX_STARS,0 },
 
     };
 
 
-    public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.SUPERNOVAxCHARGE_UP_SPEED };
+    public const int MAX_FEATURE_VALUE = 4;
 
-    public static List<AffectedFeature> TIME_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPAWN_CHANCE, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.SUPERNOVAxCHARGE_UP_SPEED };
+    public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxMAX_STARS };
 
+    public static List<AffectedFeature> TIME_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPAWN_CHANCE, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxSPAWN_RATE };
+
+    public static int GetCurrentBombSpawnerFormValue()
+    {
+        return FEATURE_VALUE_DICT[AffectedFeature.BOMB_SPAWNERxFORM];
+    }
 
 
     public static Dictionary<int, int> DISRUPTOR_SPAWN_CHANCE_DEGREE_VALUE_DICT = new()
@@ -50,16 +57,26 @@ public class DifficultyManager : MonoBehaviour
     };
 
 
-    //TODO
-    public static Dictionary<int, (int min, int max)> DISRUPTOR_SPEED_DEGREE_VALUE_DICT = new()
+    public static int GetCurrentDisruptorSpawnChanceValue()
     {
-      /*  {0, 15 },
-        {1, 30 },
-        {2, 45 },
-        {3, 60 },
-        {4, 75 },
-      */
+        return DISRUPTOR_SPAWN_CHANCE_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.DISRUPTORxSPAWN_CHANCE]];
+    }
+
+
+    public static Dictionary<int, (float min, float max)> DISRUPTOR_SPEED_DEGREE_VALUE_DICT = new()
+    {
+        {0, (2.5f,5) },
+        {1, (1.9375f,3.875f) },
+        {2, (1.375f,2.75f) },
+        {3, (0.8125f,1.625f) },
+        {4, (0.25f,0.5f) },
+      
     };
+
+    public static (float min, float max) GetCurrentDisruptorSpeedValue()
+    {
+        return DISRUPTOR_SPEED_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.DISRUPTORxSPEED]];
+    }
 
 
     public static Dictionary<int, float> BOMB_SPAWNER_SPAWN_RATE_DEGREE_VALUE_DICT = new()
@@ -72,17 +89,68 @@ public class DifficultyManager : MonoBehaviour
 
     };
 
+    public static float GetCurrentBombSpawnerSpawnRateValue()
+    {
+        return BOMB_SPAWNER_SPAWN_RATE_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.BOMB_SPAWNERxSPAWN_RATE]];
+    }
+
+
+    public static Dictionary<int, float> CONSTELLATION_SPAWN_RATE_DEGREE_VALUE_DICT = new()
+    {
+        {0, 60f },
+        {1, 47.5f },
+        {2, 35f },
+        {3, 22.5f },
+        {4, 10f },
+
+    };
+
+    public static float GetCurrentConstellationSpawnRateValue()
+    {
+        return CONSTELLATION_SPAWN_RATE_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.CONSTELLATIONxSPAWN_RATE]];
+    }
+
+    public static Dictionary<int, int> CONSTELLATION_MAX_STARS_DEGREE_VALUE_DICT = new()
+    {
+        {0, 4 },
+        {1, 5 },
+        {2, 6 },
+        {3, 7 },
+        {4, 8 },
+    };
+
+
+    public static float GetCurrentConstellationMaxStarsValue()
+    {
+        return CONSTELLATION_MAX_STARS_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.CONSTELLATIONxMAX_STARS]];
+    }
+
+
+    public static string GetCurrentFormattedValue(AffectedFeature feature) 
+    {
+
+        return feature switch
+        {
+            AffectedFeature.DISRUPTORxSPEED => "AVG " + ((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2),
+            AffectedFeature.DISRUPTORxSPAWN_CHANCE => GetCurrentDisruptorSpawnChanceValue() + "% / minute",
+            AffectedFeature.CONSTELLATIONxSPAWN_RATE => GetCurrentConstellationSpawnRateValue() + "s",
+            AffectedFeature.CONSTELLATIONxMAX_STARS => GetCurrentConstellationMaxStarsValue().ToString(),
+            AffectedFeature.BOMB_SPAWNERxSPAWN_RATE => GetCurrentBombSpawnerSpawnRateValue() + "s",
+            AffectedFeature.BOMB_SPAWNERxFORM => GetCurrentBombSpawnerFormValue() + "/"+MAX_FEATURE_VALUE,
+            _=>""
+
+        }; ;
+    
+    
+    
+    }
 
 
 
+    //public delegate void DifficultyChangeEvent(DifficultyEventArgs dea);
+    //  public event DifficultyChangeEvent OnDifficultyValueChange;
 
-
-
-
-    public delegate void DifficultyChangeEvent(DifficultyEventArgs dea);
-    public event DifficultyChangeEvent OnDifficultyValueChange;
-
-
+    public event Action OnBombSpawnerForm;
 
 
 
@@ -94,10 +162,10 @@ public class DifficultyManager : MonoBehaviour
     public static int DISRUPTOR_SPAWN_CHANCE = 100;
 
 
+    
 
 
-
-    public static int CONSTELLATION_SPAWN_RATE = 200;
+    public static int CONSTELLATION_SPAWN_RATE = 20;
 
 
     public static int DISRUPTOR_DEFAULT_START_HEALTH = 100, DISRUPTOR_START_HEALTH;
@@ -125,7 +193,7 @@ public class DifficultyManager : MonoBehaviour
     public void EnemyChange()
     {
 
-        DifficultyEventArgs dif_event_args = new(AffectedFeature.BOMB_SPAWNER, AffectedFeatureBehaviour.FORM, "", AffectedFeatureCircumstance.ENEMY);
+       // DifficultyEventArgs dif_event_args = new(AffectedFeature.BOMB_SPAWNER, AffectedFeatureBehaviour.FORM, "", AffectedFeatureCircumstance.ENEMY);
 
 
 
@@ -133,23 +201,28 @@ public class DifficultyManager : MonoBehaviour
     }
 
 
-    /*
-        public Dictionary<AffectedFeature, List<AffectedFeatureBehaviour>> feature_behaviour_dict = new() 
-        {
-            {AffectedFeature.DISRUPTOR},
-            { },
-
-
-
-        };
-    */
-
-
-    public void FriendlyChange()
+    public static void ChangeRandomDifficulty(AffectedFeatureCircumstance circumstance) 
     {
 
+        List<AffectedFeature> list = circumstance == AffectedFeatureCircumstance.TOKEN ? TOKEN_CHANGABLE_FEATURES : TIME_CHANGABLE_FEATURES;
 
-        DifficultyEventArgs dif_event_args = new(AffectedFeature.DISRUPTOR, AffectedFeatureBehaviour.CHARGE_UP_SPEED, "6", AffectedFeatureCircumstance.ENEMY);
+
+        AffectedFeature feature = list[new System.Random().Next(list.Count)];
+
+
+
+
+
+
+        FEATURE_VALUE_DICT[feature]++;
+
+
+
+
+
+
+
+        DifficultyEventArgs dif_event_args = new(feature, circumstance);
 
 
         if (UICommunication.CanPopup)
@@ -166,14 +239,24 @@ public class DifficultyManager : MonoBehaviour
 
 
 
+        
+
+        if (FEATURE_VALUE_DICT[feature] == MAX_FEATURE_VALUE)
+        {
+            if (feature == AffectedFeature.BOMB_SPAWNERxFORM) 
+            {
+            
+            
+            }
 
 
 
+            list.Remove(feature);
+        
+        }
 
-
-
-    }
-
+    } 
+    
 
 
 
@@ -187,25 +270,10 @@ public class DifficultyManager : MonoBehaviour
 
         if (UICommunication.Secs == 0) { return; }
 
-        if (UICommunication.Secsf % 5 < Time.deltaTime)
+        if (UICommunication.Secsf % 100 < Time.deltaTime)
         {
 
-
-
-            DifficultyEventArgs dif_event_args = new(AffectedFeature.DISRUPTOR, AffectedFeatureBehaviour.CHARGE_UP_SPEED, "6", AffectedFeatureCircumstance.ENEMY);
-
-
-            if (UICommunication.CanPopup)
-            {
-                UICommunication.Raise_OnDifficultyValueChange(dif_event_args);
-
-            }
-            else
-            {
-                UICommunication.Enqueue_PopupArguments(dif_event_args);
-
-            }
-
+            ChangeRandomDifficulty(AffectedFeatureCircumstance.TIME);
 
 
         }
@@ -251,9 +319,19 @@ public class DifficultyEventArgs : EventArgs
     public DifficultyManager.AffectedFeatureCircumstance Target { get; private set; }
 
     //TODO
-    public DifficultyEventArgs(DifficultyManager.AffectedFeature feature, string affectedBehaviourVal, DifficultyManager.AffectedFeatureCircumstance target)
+    public DifficultyEventArgs(DifficultyManager.AffectedFeature feature, DifficultyManager.AffectedFeatureCircumstance target)
     {
-       // Message = feature.ToString()?.Replace("_", " ") + " : " + behaviour.ToString()?.Replace("_", " ") + " " + affectedBehaviourVal;
+
+
+
+        string[] split = feature.ToString().Split("x");
+
+
+
+
+        string feature_object = split[0].Replace("_"," ");
+        string feature_behaviour = split[1].Replace("_", " ");
+        Message = feature_object+ " : " + feature_behaviour + " ["+ DifficultyManager.GetCurrentFormattedValue(feature)+"]";
         Target = target;
     }
 

@@ -22,6 +22,12 @@ public class RotateDisruptor : MonoBehaviour
 
 
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
+
     public void EngageRotation(Vector3 target)
     {
 

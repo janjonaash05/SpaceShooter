@@ -11,8 +11,8 @@ public class PopupDisplay : MonoBehaviour
     [SerializeField]  TextMeshProUGUI txt;
     [SerializeField] Vector2 font_size_range;
     [SerializeField] float popup_speed;
-    Color32 default_color = new(255, 255, 225, 255), alert_color_friendly = new(15, 129, 32, 255), alert_color_enemy = new(158, 12, 26, 255);
-
+    Color32 default_color = new(255, 255, 225, 255); //, alert_color_friendly = new(15, 129, 32, 255), alert_color_enemy = new(158, 12, 26, 255);
+    [SerializeField] Color alert_time, alert_token;
 
 
 
@@ -66,8 +66,8 @@ public class PopupDisplay : MonoBehaviour
             txt.fontSize = font_size_range.y;
 
 
-            Color alert_color = (e.Target == AffectedTarget.ENEMY) ? alert_color_enemy : alert_color_friendly;
-            for (int i = 0; i < 9; i++)
+            Color alert_color = (e.Target == DifficultyManager.AffectedFeatureCircumstance.TOKEN) ? alert_token : alert_time;
+            for (int i = 0; i < 19; i++)
             {
                 txt.color = (i % 2 == 0) ? alert_color : default_color;
                 yield return new WaitForSeconds(0.15f);

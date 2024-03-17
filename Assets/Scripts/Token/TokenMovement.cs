@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using static DifficultyManager;
 
-public class TokenMovement : MonoBehaviour
+public class TokenMovement : MonoBehaviour, IScoreEnumerable
 {
 
 
@@ -62,7 +63,7 @@ public class TokenMovement : MonoBehaviour
     [SerializeField] TokenType type;
     TokenDirection dir;
 
-    Vector3 target;
+    Transform target;
 
 
 
@@ -78,14 +79,14 @@ public class TokenMovement : MonoBehaviour
         ps_destroyed = transform.GetChild(1).GetComponent<ParticleSystem>();
 
 
-
+        DisabledRewards = type == TokenType.FRIENDLY;
 
 
 
         speed = UnityEngine.Random.Range(0, 3) switch { 0 => TokenSpeed.SLOW, 1 => TokenSpeed.MEDIUM, 2 => TokenSpeed.FAST, _=> TokenSpeed.SLOW};
 
         dir = TokenDirection.CENTER;
-        target = TokenSpawning.center_transform.position;
+        target = TokenSpawning.center_transform;
     }
 
     void Update()
@@ -93,7 +94,7 @@ public class TokenMovement : MonoBehaviour
 
 
 
-        transform.position = Vector3.MoveTowards(transform.position, target, (int)speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target.position, (int)speed * Time.deltaTime);
 
 
 
@@ -108,16 +109,30 @@ public class TokenMovement : MonoBehaviour
 
 
 
-        Debug.Log(Vector3.Distance(transform.position, target) + " "+dir);
+       // Debug.Log(Vector3.Distance(transform.position, target) + " "+dir);
 
-        if (Vector3.Distance(transform.position, target) < edgeDistance)
+        if (Vector3.Distance(transform.position, target.position) < edgeDistance)
         {
+
+
+            
+            speed = new System.Random().Next(3) switch
+            {
+                0 => TokenSpeed.SLOW,
+                1 => TokenSpeed.MEDIUM,
+                2 => TokenSpeed.FAST
+
+            } ;
+            
+
+
+
             Action toExecute = dir switch
             {
                 TokenDirection.TRANSPORTER => () =>
                 {
                     dir = TokenDirection.CENTER;
-                    target = TokenSpawning.center_transform.position;
+                    
 
                     HP--;
                     OnHealthDecrease?.Invoke(HP);
@@ -126,13 +141,14 @@ public class TokenMovement : MonoBehaviour
                         StartCoroutine(PlayDestroyed());
                         return;
                     }
+                    target = TokenSpawning.center_transform;
                     transform.position = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)].position;
                 }
                 ,
                 TokenDirection.CENTER => () =>
                 {
                     dir = TokenDirection.TRANSPORTER;
-                    target = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)].position;
+                    target = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)];
                 }
                 ,
                 TokenDirection.HARPOON_STATION => () =>
@@ -157,7 +173,7 @@ public class TokenMovement : MonoBehaviour
     {
         speed = 0;
         dir = TokenDirection.HARPOON_STATION;
-        target = TokenSpawning.harpoon_station_transform.position;
+        target = TokenSpawning.harpoon_station_transform;
 
 
     }
@@ -165,16 +181,19 @@ public class TokenMovement : MonoBehaviour
 
 
 
-    IEnumerator PlayPS(ParticleSystem ps) 
+    IEnumerator PlayPS(ParticleSystem ps)
     {
 
         ps.enableEmission = true;
         ps.Play();
-     //   Debug.LogError("PLAYING PS waiting "+ps.main.duration) ;
+
+
+       
+
         yield return new WaitForSeconds(ps.main.duration);
-    
-    
-    
+
+        
+
     }
 
     IEnumerator PlayCaught() 
@@ -191,9 +210,10 @@ public class TokenMovement : MonoBehaviour
         }
 
         StartCoroutine(Shrink());
-
+        UICommunication.Raise_ScoreChange(ScoreReward());
         yield return StartCoroutine( PlayPS(ps_caught));
 
+       
        
 
         Destroy(gameObject);
@@ -206,14 +226,21 @@ public class TokenMovement : MonoBehaviour
     {
         speed = 0;
 
+
+
+
+
+
         if (ps_destroyed.emission.enabled) yield break;
         if (type == TokenType.ENEMY)
         {
-          //  DifficultyManager.Ra.
+           DifficultyManager.ChangeRandomDifficulty(AffectedFeatureCircumstance.TOKEN);
         }
 
         StartCoroutine(Shrink());
 
+        target.parent.GetChild(0).GetComponent<TokenTransportColorChange>().SetColorDelayed(GetComponent<Renderer>().materials[^1], ps_destroyed.main.duration);
+        GetComponent<Renderer>().enabled = false;
         yield return StartCoroutine(PlayPS(ps_destroyed));
 
 
@@ -229,6 +256,7 @@ public class TokenMovement : MonoBehaviour
     readonly float scale_down_increment_width = 0.1f;
     readonly float scale_down_increment_length = 0.1f / 5f;
 
+
     IEnumerator Shrink() 
     {
         while (transform.localScale.x > min_scale_down_size)
@@ -242,5 +270,15 @@ public class TokenMovement : MonoBehaviour
     }
 
 
+    public bool DisabledRewards { get; set; }
 
+
+    public int ScoreReward()
+    {
+        if (DisabledRewards) { return 0; }
+
+
+        DisabledRewards = true;
+        return HP * 4;
+    }
 }

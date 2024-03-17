@@ -29143,6 +29143,8 @@ MonoBehaviour:
   txt: {fileID: 0}
   font_size_range: {x: 0, y: 20}
   popup_speed: 0.5
+  alert_time: {r: 0.22745098, g: 0.20392157, b: 0.1764706, a: 1}
+  alert_token: {r: 0.46023363, g: 0, b: 1, a: 1}
 --- !u!1001 &1102489235
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -44,7 +44,23 @@ public class TokenTransportColorChange : MonoBehaviour
 
 
 
+    public void SetColorDelayed(Material material, float delay) 
+    {
 
+        IEnumerator set()
+        {
+            rend.materials = new Material[] { rend.materials[0], rend.materials[1], material };
+            yield return new WaitForSeconds(delay);
+
+            rend.materials = new Material[] { rend.materials[0], rend.materials[1], MaterialHolder.Instance().SIDE_TOOLS_COLOR() };
+
+        }
+
+        StartCoroutine(set());
+
+       
+
+    }
 
 
 

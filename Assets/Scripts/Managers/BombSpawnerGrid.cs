@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.WSA;
 using Random = System.Random;
@@ -25,12 +26,15 @@ public class BombSpawnerGrid : MonoBehaviour
     const float MARGIN = 30;
 
 
+
+    List<GameObject> placeholders = new();
+
     int start_amount;
 
 
     void Start()
     {
-
+        DifficultyManager.OnBombSpawnerForm += () => StartCoroutine(SwitchPlaceholderForSpawner());
 
         start_amount = (size_x * size_y) / 3;
         positions = new Vector3[size_x, size_y];
@@ -50,15 +54,15 @@ public class BombSpawnerGrid : MonoBehaviour
         HashSet<(int i, int j)> loop_coordinates_for_spawns = new();
 
 
-        while (loop_coordinates_for_spawns.Count <= start_amount) 
+        while (loop_coordinates_for_spawns.Count <= start_amount)
         {
-            loop_coordinates_for_spawns.Add((new Random().Next(0,size_x), new Random().Next(0,size_y)));
-        
+            loop_coordinates_for_spawns.Add((new Random().Next(0, size_x), new Random().Next(0, size_y)));
+
         }
 
 
 
-       
+
 
 
 
@@ -88,18 +92,13 @@ public class BombSpawnerGrid : MonoBehaviour
                     loop_coordinates_for_spawns.Remove((i, j));
 
                 }
-                else 
+                else
                 {
-                    toSpawn=  Instantiate(placeholder_prefab, transform, false);
+                    toSpawn = Instantiate(placeholder_prefab, transform, false);
+
+                    placeholders.Add(toSpawn);
                 }
 
-                /*
-                GameObject toSpawn = new Random()
-                .Next(Mathf.RoundToInt(100 / chance) - 1) == 0 ?
-
-                Instantiate(spawner_prefab, transform, false) :
-                Instantiate(placeholder_prefab, transform, false);
-                */
                 float y = left_corner.y + MARGIN * j;
 
 
@@ -122,6 +121,58 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
     }
+
+
+    IEnumerator SwitchPlaceholderForSpawner()
+    {
+        GameObject placeholder = placeholders[new System.Random().Next(placeholders.Count)];
+        placeholders.Remove(placeholder);
+
+
+        ParticleSystem ps = placeholder.transform.GetChild(0).GetComponent<ParticleSystem>();
+        ps.enableEmission = true;
+        ps.Play();
+
+        placeholder.GetComponent<Renderer>() .enabled = false;
+
+        GameObject spawner = Instantiate(spawner_prefab, transform, false);
+        spawner.transform.parent = transform;
+        spawner.transform.localPosition = placeholder.transform.localPosition;
+        Vector3 target_scale = spawner.transform.localScale;
+
+        spawner.transform.localScale = placeholder.transform.localScale;
+
+        
+
+
+
+
+
+        float lerp = 0;
+        while (spawner.transform.localScale.x < target_scale.x)
+        {
+            lerp += Time.deltaTime;
+
+            spawner.transform.localScale = new Vector3(Mathf.Lerp(0, target_scale.x, lerp), Mathf.Lerp(0, target_scale.y, lerp), Mathf.Lerp(0, target_scale.z, lerp));
+
+            yield return null;
+        }
+
+        spawner.transform.localScale = target_scale;
+
+        yield return new WaitForSeconds(ps.main.duration);
+
+        Destroy(placeholder);
+
+
+
+
+    }
+
+
+
+
+
 
 
 

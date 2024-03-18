@@ -34,7 +34,7 @@ public class DifficultyManager : MonoBehaviour
     };
 
 
-    public const int MAX_FEATURE_VALUE = 4;
+    public const int MAX_FEATURE_VALUE = 1;
 
     public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxMAX_STARS };
 
@@ -70,7 +70,7 @@ public class DifficultyManager : MonoBehaviour
         {2, (1.375f,2.75f) },
         {3, (0.8125f,1.625f) },
         {4, (0.25f,0.5f) },
-      
+
     };
 
     public static (float min, float max) GetCurrentDisruptorSpeedValue()
@@ -126,23 +126,23 @@ public class DifficultyManager : MonoBehaviour
     }
 
 
-    public static string GetCurrentFormattedValue(AffectedFeature feature) 
+    public static string GetCurrentFormattedValue(AffectedFeature feature)
     {
 
         return feature switch
         {
-            AffectedFeature.DISRUPTORxSPEED => "AVG " + ((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2),
+            AffectedFeature.DISRUPTORxSPEED => "AVG " + Math.Round((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2, 2),
             AffectedFeature.DISRUPTORxSPAWN_CHANCE => GetCurrentDisruptorSpawnChanceValue() + "% / minute",
             AffectedFeature.CONSTELLATIONxSPAWN_RATE => GetCurrentConstellationSpawnRateValue() + "s",
             AffectedFeature.CONSTELLATIONxMAX_STARS => GetCurrentConstellationMaxStarsValue().ToString(),
             AffectedFeature.BOMB_SPAWNERxSPAWN_RATE => GetCurrentBombSpawnerSpawnRateValue() + "s",
-            AffectedFeature.BOMB_SPAWNERxFORM => GetCurrentBombSpawnerFormValue() + "/"+MAX_FEATURE_VALUE,
-            _=>""
+            AffectedFeature.BOMB_SPAWNERxFORM => GetCurrentBombSpawnerFormValue() + "/" + MAX_FEATURE_VALUE,
+            _ => ""
 
         }; ;
-    
-    
-    
+
+
+
     }
 
 
@@ -150,7 +150,7 @@ public class DifficultyManager : MonoBehaviour
     //public delegate void DifficultyChangeEvent(DifficultyEventArgs dea);
     //  public event DifficultyChangeEvent OnDifficultyValueChange;
 
-    public event Action OnBombSpawnerForm;
+    public static event Action OnBombSpawnerForm;
 
 
 
@@ -162,7 +162,7 @@ public class DifficultyManager : MonoBehaviour
     public static int DISRUPTOR_SPAWN_CHANCE = 100;
 
 
-    
+
 
 
     public static int CONSTELLATION_SPAWN_RATE = 20;
@@ -193,7 +193,7 @@ public class DifficultyManager : MonoBehaviour
     public void EnemyChange()
     {
 
-       // DifficultyEventArgs dif_event_args = new(AffectedFeature.BOMB_SPAWNER, AffectedFeatureBehaviour.FORM, "", AffectedFeatureCircumstance.ENEMY);
+        // DifficultyEventArgs dif_event_args = new(AffectedFeature.BOMB_SPAWNER, AffectedFeatureBehaviour.FORM, "", AffectedFeatureCircumstance.ENEMY);
 
 
 
@@ -201,13 +201,13 @@ public class DifficultyManager : MonoBehaviour
     }
 
 
-    public static void ChangeRandomDifficulty(AffectedFeatureCircumstance circumstance) 
+    public static void ChangeRandomDifficulty(AffectedFeatureCircumstance circumstance)
     {
 
         List<AffectedFeature> list = circumstance == AffectedFeatureCircumstance.TOKEN ? TOKEN_CHANGABLE_FEATURES : TIME_CHANGABLE_FEATURES;
 
 
-        AffectedFeature feature = list[new System.Random().Next(list.Count)];
+        AffectedFeature feature = circumstance == AffectedFeatureCircumstance.TIME ? list[new System.Random().Next(list.Count)] : AffectedFeature.BOMB_SPAWNERxFORM;
 
 
 
@@ -239,24 +239,31 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-        
+
 
         if (FEATURE_VALUE_DICT[feature] == MAX_FEATURE_VALUE)
         {
-            if (feature == AffectedFeature.BOMB_SPAWNERxFORM) 
+            if (feature == AffectedFeature.BOMB_SPAWNERxFORM)
             {
-            
-            
+                OnBombSpawnerForm?.Invoke();
+
+
+                FEATURE_VALUE_DICT[AffectedFeature.BOMB_SPAWNERxFORM] = 0;
+
+
+            }
+            else
+            {
+                list.Remove(feature);
+
             }
 
 
 
-            list.Remove(feature);
-        
         }
 
-    } 
-    
+    }
+
 
 
 
@@ -329,9 +336,9 @@ public class DifficultyEventArgs : EventArgs
 
 
 
-        string feature_object = split[0].Replace("_"," ");
+        string feature_object = split[0].Replace("_", " ");
         string feature_behaviour = split[1].Replace("_", " ");
-        Message = feature_object+ " : " + feature_behaviour + " ["+ DifficultyManager.GetCurrentFormattedValue(feature)+"]";
+        Message = feature_object + " : " + feature_behaviour + " [" + DifficultyManager.GetCurrentFormattedValue(feature) + "]";
         Target = target;
     }
 

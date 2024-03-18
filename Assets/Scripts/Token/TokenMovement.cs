@@ -202,7 +202,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
 
 
-        Debug.LogError("CAUGHT, ACTIVE PS "+ ps_caught.emission.enabled);
+       
         if (ps_caught.emission.enabled) { yield break; }
         if (type == TokenType.FRIENDLY)
         {

@@ -47,6 +47,8 @@ TagManager:
   - TurretCharge2
   - ShieldHemispherePS
   - EmitterPS
+  - HelperFace
+  - HelperStation
   layers:
   - Default
   - TransparentFX

@@ -35,9 +35,13 @@ public class DisruptorMovement : MonoBehaviour
         y_amplitude = new System.Random().Next((int)amplitude_interval.x, (int)amplitude_interval.y);
         z_amplitude = new System.Random().Next((int)amplitude_interval.x, (int)amplitude_interval.y);
 
+        float min_period = DifficultyManager.GetCurrentDisruptorSpeedValue().min;
 
-        y_period = UnityEngine.Random.Range(period_interval.x, period_interval.y);
-        z_period = UnityEngine.Random.Range(period_interval.x, period_interval.y);
+        float max_period = DifficultyManager.GetCurrentDisruptorSpeedValue().max;
+
+
+        y_period = UnityEngine.Random.Range(min_period, max_period);//UnityEngine.Random.Range(period_interval.x, period_interval.y);
+        z_period = UnityEngine.Random.Range(min_period, max_period);
 
         movement_y = (new System.Random().Next(0, 2) == 1) ? Mathf.Sin : Mathf.Cos;
         movement_z = (new System.Random().Next(0, 2) == 1) ? Mathf.Sin : Mathf.Cos;

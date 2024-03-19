@@ -120,7 +120,7 @@ public class DifficultyManager : MonoBehaviour
     };
 
 
-    public static float GetCurrentConstellationMaxStarsValue()
+    public static int GetCurrentConstellationMaxStarsValue()
     {
         return CONSTELLATION_MAX_STARS_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.CONSTELLATIONxMAX_STARS]];
     }
@@ -131,7 +131,7 @@ public class DifficultyManager : MonoBehaviour
 
         return feature switch
         {
-            AffectedFeature.DISRUPTORxSPEED => "AVG " + Math.Round((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2, 2),
+            AffectedFeature.DISRUPTORxSPEED => "AVG " +  1/ Math.Round((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2, 2),
             AffectedFeature.DISRUPTORxSPAWN_CHANCE => GetCurrentDisruptorSpawnChanceValue() + "% / minute",
             AffectedFeature.CONSTELLATIONxSPAWN_RATE => GetCurrentConstellationSpawnRateValue() + "s",
             AffectedFeature.CONSTELLATIONxMAX_STARS => GetCurrentConstellationMaxStarsValue().ToString(),

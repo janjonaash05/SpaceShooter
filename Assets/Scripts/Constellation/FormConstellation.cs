@@ -69,7 +69,7 @@ public class FormConstellation : MonoBehaviour
 
     async void Form()
     {
-        STAR_AMOUNT = new System.Random().Next(8)+1;
+        STAR_AMOUNT = DifficultyManager.GetCurrentConstellationMaxStarsValue();
 
 
 

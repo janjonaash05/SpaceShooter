@@ -240,7 +240,7 @@ public class ShieldRecharge : MonoBehaviour
         }
 
 
-        charges.RemoveAt(0); //removes a wrongly delayed deleted charge
+        
 
 
 

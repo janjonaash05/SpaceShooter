@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -133,7 +134,7 @@ public class BombSpawnerGrid : MonoBehaviour
         ps.enableEmission = true;
         ps.Play();
 
-        placeholder.GetComponent<Renderer>() .enabled = false;
+        placeholder.GetComponent<Renderer>().enabled = false;
 
         GameObject spawner = Instantiate(spawner_prefab, transform, false);
         spawner.transform.parent = transform;
@@ -142,11 +143,16 @@ public class BombSpawnerGrid : MonoBehaviour
 
         spawner.transform.localScale = placeholder.transform.localScale;
 
-        
+        Material[] oldmats = new Material[spawner.GetComponent<Renderer>().materials.Length];
+        Material[] newmats = new Material[spawner.GetComponent<Renderer>().materials.Length];
+
+
+        Array.Copy(spawner.GetComponent<Renderer>().materials, oldmats, spawner.GetComponent<Renderer>().materials.Length);
+        Array.Fill(newmats, MaterialHolder.Instance().ENEMY_UPGRADE());
 
 
 
-
+        spawner.GetComponent<Renderer>().materials = newmats;
 
         float lerp = 0;
         while (spawner.transform.localScale.x < target_scale.x)
@@ -155,8 +161,9 @@ public class BombSpawnerGrid : MonoBehaviour
 
             spawner.transform.localScale = new Vector3(Mathf.Lerp(0, target_scale.x, lerp), Mathf.Lerp(0, target_scale.y, lerp), Mathf.Lerp(0, target_scale.z, lerp));
 
-            yield return null;
         }
+
+        spawner.GetComponent<Renderer>().materials = oldmats;
 
         spawner.transform.localScale = target_scale;
 

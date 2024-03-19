@@ -83,7 +83,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
 
 
-        speed = UnityEngine.Random.Range(0, 3) switch { 0 => TokenSpeed.SLOW, 1 => TokenSpeed.MEDIUM, 2 => TokenSpeed.FAST, _=> TokenSpeed.SLOW};
+        speed = UnityEngine.Random.Range(0, 3) switch { 0 => TokenSpeed.SLOW, 1 => TokenSpeed.MEDIUM, 2 => TokenSpeed.FAST, _ => TokenSpeed.SLOW };
 
         dir = TokenDirection.CENTER;
         target = TokenSpawning.center_transform;
@@ -109,21 +109,21 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
 
 
-       // Debug.Log(Vector3.Distance(transform.position, target) + " "+dir);
+        // Debug.Log(Vector3.Distance(transform.position, target) + " "+dir);
 
         if (Vector3.Distance(transform.position, target.position) < edgeDistance)
         {
 
 
-            
+
             speed = new System.Random().Next(3) switch
             {
                 0 => TokenSpeed.SLOW,
                 1 => TokenSpeed.MEDIUM,
                 2 => TokenSpeed.FAST
 
-            } ;
-            
+            };
+
 
 
 
@@ -132,7 +132,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
                 TokenDirection.TRANSPORTER => () =>
                 {
                     dir = TokenDirection.CENTER;
-                    
+
 
                     HP--;
                     OnHealthDecrease?.Invoke(HP);
@@ -165,7 +165,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
 
 
-       
+
     }
 
 
@@ -188,21 +188,21 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
         ps.Play();
 
 
-       
+
 
         yield return new WaitForSeconds(ps.main.duration);
 
-        
+
 
     }
 
-    IEnumerator PlayCaught() 
+    IEnumerator PlayCaught()
     {
 
 
 
 
-       
+        
         if (ps_caught.emission.enabled) { yield break; }
         if (type == TokenType.FRIENDLY)
         {
@@ -211,14 +211,14 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
         StartCoroutine(Shrink());
         UICommunication.Raise_ScoreChange(ScoreReward());
-        yield return StartCoroutine( PlayPS(ps_caught));
+        yield return StartCoroutine(PlayPS(ps_caught));
 
-       
-       
+
+
 
         Destroy(gameObject);
 
-    
+
     }
 
 
@@ -234,7 +234,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
         if (ps_destroyed.emission.enabled) yield break;
         if (type == TokenType.ENEMY)
         {
-           DifficultyManager.ChangeRandomDifficulty(AffectedFeatureCircumstance.TOKEN);
+            DifficultyManager.ChangeRandomDifficulty(AffectedFeatureCircumstance.TOKEN);
         }
 
         StartCoroutine(Shrink());
@@ -244,11 +244,11 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
         yield return StartCoroutine(PlayPS(ps_destroyed));
 
 
-       
+
 
         Destroy(gameObject);
 
-        
+
 
     }
 
@@ -257,7 +257,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
     readonly float scale_down_increment_length = 0.1f / 5f;
 
 
-    IEnumerator Shrink() 
+    IEnumerator Shrink()
     {
         while (transform.localScale.x > min_scale_down_size)
         {

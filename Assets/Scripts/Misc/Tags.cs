@@ -69,8 +69,10 @@ public static class Tags
     public const string TOKEN_TRANSPORT_COLLIDER = "TokenTransportCollider";
 
     public const string UPGRADE_FACE = "UpgradeFace";
+    public const string HELPER_FACE = "HelperFace";
 
     public const string UPGRADE_STATION = "UpgradeStation";
+    public const string HELPER_STATION = "HelperStation";
 
     public const string UPGRADE_STATION_ARROW_UP = "UpgradeStationArrowUp";
     public const string UPGRADE_STATION_ARROW_DOWN = "UpgradeStationArrowDown";

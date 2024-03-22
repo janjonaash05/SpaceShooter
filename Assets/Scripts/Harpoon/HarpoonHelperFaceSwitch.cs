@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
@@ -8,7 +9,7 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
     // Start is called before the first frame update
 
 
-
+    protected readonly Dictionary<int, int> order_index_dict = new() { { 4, 2 }, { 3, 5 }, { 2, 3 }, { 1, 4 } };
     public enum HelperType { EMP, BLACK_HOLE }
 
 
@@ -22,17 +23,21 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
     HelperState emp_state, black_hole_state;
 
-    class HelperState 
+    Dictionary<HelperType, HelperState> type_state_dict;
+
+
+    const int PRICE = 4;
+
+    class HelperState
     {
 
 
-        public event Action<int> OnCountDownValueChange;
+        public event Action OnCountDownValueChange;
         public event Action OnCountDownFinished;
 
 
 
-        public int Price { get; private set; }
-    
+
 
         public bool Recharging;
         public bool Selected;
@@ -41,42 +46,48 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
         public int CountDownValue { get; private set; }
 
 
-        const int WAIT_TIME = 1;
+        const int WAIT_TIME = 1000;
 
 
-        public HelperState(int price)
+        public HelperState()
         {
             CountDownValue = 0;
             Recharging = false;
-            Price = price;
-           
+
         }
 
 
 
 
-       public void StartCountDown()
+        public async Task StartCountDown()
         {
-            IEnumerator countdown() 
+
+            if (Recharging) return;
+
+            Debug.LogError("couunting down");
+
+            Recharging = true;
+
+            for (int i = 4; i >= 0; i--)
             {
-                Recharging = true;
+                CountDownValue = i;
 
-                for (int i = 4; i > 0;)
-                {
-                    CountDownValue = i;
-                    OnCountDownValueChange?.Invoke(CountDownValue);
-                    yield return new WaitForSeconds(WAIT_TIME);
-                }
-
-
-                Recharging = false;
-                OnCountDownFinished?.Invoke();
-
-
-
+                Debug.LogError("couunting down " + i);
+                OnCountDownValueChange?.Invoke();
+                await Task.Delay(WAIT_TIME);
             }
-        
-        
+
+
+            Recharging = false;
+            OnCountDownValueChange?.Invoke();
+            OnCountDownFinished?.Invoke();
+
+
+
+
+
+
+
         }
 
 
@@ -87,44 +98,53 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
         base.Start();
 
 
-        emp_state = new(3);
-        black_hole_state = new(2);
+        emp_state = new();
+        black_hole_state = new();
+
+        type_state_dict = new() { { HelperType.BLACK_HOLE, black_hole_state }, { HelperType.EMP, emp_state } };
+
+
+        black_hole_state.OnCountDownValueChange += () => { if (current_helper == HelperType.BLACK_HOLE) ShowHelperState(); };
+        emp_state.OnCountDownValueChange += () => { if (current_helper == HelperType.EMP) ShowHelperState(); };
 
 
 
+        PlayerInputCommunication.OnHelperStationArrowDownClick += (_) => { ArrowDown(); ShowHelperState(); };
 
+        PlayerInputCommunication.OnHelperStationArrowUpClick += (_) => { ArrowUp(); ShowHelperState(); };
 
-
-
-
-        ShowHelperState();
-
-        PlayerInputCommunication.OnUpgradeStationArrowDownClick += (_) => { ArrowDown(); ShowHelperState(); };
-
-        PlayerInputCommunication.OnUpgradeStationArrowUpClick += (_) => { ArrowUp(); ShowHelperState(); };
-
-        PlayerInputCommunication.OnUpgradeStationClick += (_) =>
+        PlayerInputCommunication.OnHelperStationClick += (_) =>
         {
-            
+
+            Debug.LogError("STARTCOUNTDOWN");
+            var a = type_state_dict[current_helper].StartCountDown();
         };
 
 
-        AssignFaceRenderers(StationType.UPGRADE);
+        AssignFaceRenderers(StationType.HELPER);
+
+
+        Debug.LogError(faces_rend.Count + " facescoutn");
+        ShowHelperState();
+
     }
 
 
 
 
 
-    void ShowHelperState() 
+    void ShowHelperState()
     {
-        current_upgrade = upgrades_list[face_index];
+        current_helper = helpers_list[face_index];
 
 
-        int degree = UpgradesManager.UPGRADE_VALUE_DICT[current_upgrade];
+
+        var state = type_state_dict[current_helper];
+
+        int degree = state.Recharging ? state.CountDownValue : PRICE;
 
 
-        Material on = degree == UpgradesManager.MAX_VALUE ? MaterialHolder.Instance().FRIENDLY_UPGRADE() : on_mat;
+        Material on = state.Recharging ? on_mat : MaterialHolder.Instance().FRIENDLY_UPGRADE();
         Material[] mats = transform.GetChild(0).GetComponent<Renderer>().materials;
 
 
@@ -159,6 +179,6 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

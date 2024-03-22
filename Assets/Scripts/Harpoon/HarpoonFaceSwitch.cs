@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class HarpoonFaceSwitch : MonoBehaviour
 {
-    protected readonly Dictionary<int, int> order_index_dict = new() { { 1, 2 }, { 2, 5 }, { 3, 3 }, { 4, 4 } };
+    
     protected List<Renderer> faces_rend;
 
     protected Material on_mat, off_mat, color_mat;

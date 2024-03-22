@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class HarpoonUpgradeFaceSwitch : HarpoonFaceSwitch
 {
-   
 
 
-  
+    protected readonly Dictionary<int, int> order_index_dict = new() { { 1, 2 }, { 2, 5 }, { 3, 3 }, { 4, 4 } };
 
 
 
-  
+
+
 
     readonly List<UpgradesManager.UpgradeType> upgrades_list = new()
     {UpgradesManager.UpgradeType.TURRET_CAPACITY, UpgradesManager.UpgradeType.TURRET_RECHARGE, UpgradesManager.UpgradeType.SLIDER_RECHARGE,UpgradesManager.UpgradeType.SLIDER_SPEED };
@@ -69,7 +69,7 @@ public class HarpoonUpgradeFaceSwitch : HarpoonFaceSwitch
         current_upgrade = upgrades_list[face_index];
 
 
-        int degree = UpgradesManager.UPGRADE_VALUE_DICT[current_upgrade];
+        int degree =   UpgradesManager.UPGRADE_VALUE_DICT[current_upgrade];
 
 
         Material on = degree == UpgradesManager.MAX_VALUE ? MaterialHolder.Instance().FRIENDLY_UPGRADE() : on_mat;

@@ -16,7 +16,8 @@ public static class PlayerInputCommunication
 
         OnHarpoonColliderClick,
         OnSliderControlClick, OnSliderFullAutoClick, OnSliderBoltClick,
-        OnUpgradeStationArrowDownClick, OnUpgradeStationArrowUpClick, OnUpgradeStationClick;
+        OnUpgradeStationArrowDownClick, OnUpgradeStationArrowUpClick, OnUpgradeStationClick,
+     OnHelperStationArrowDownClick, OnHelperStationArrowUpClick, OnHelperStationClick;
 
 
 
@@ -24,30 +25,37 @@ public static class PlayerInputCommunication
 
     public static event Action OnMouseDown, OnMouseUp;
 
-    static Dictionary<string, Action<RaycastHit>> TAG_CLICK_DICT = new()
+    static readonly Dictionary<string, Action<RaycastHit>> TAG_CLICK_DICT = new()
     {
-        { Tags.COLOR_COLLIDER_1, Raise_OnColorCollider1Click},
-            { Tags.COLOR_COLLIDER_2, Raise_OnColorCollider2Click },
+        { Tags.COLOR_COLLIDER_1, (h) => OnColorCollider1Click?.Invoke(h) },
+            { Tags.COLOR_COLLIDER_2, (h) => OnColorCollider2Click?.Invoke(h)  },
 
-            { Tags.AUTO_COLLIDER_1, Raise_OnAutoCollider1Click },
-            { Tags.AUTO_COLLIDER_2, Raise_OnAutoCollider2Click },
+            { Tags.AUTO_COLLIDER_1, (h) => OnAutoCollider1Click?.Invoke(h)  },
+            { Tags.AUTO_COLLIDER_2, (h) => OnAutoCollider2Click?.Invoke(h)  },
 
-            { Tags.LASER_TARGET_1, Raise_OnLaserTarget1Click },
-            { Tags.LASER_TARGET_2, Raise_OnLaserTarget2Click },
-
-
-             { Tags.SLIDER_CONTROL_COLLIDER, Raise_OnSliderControlClick },
-
-             { Tags.SLIDER_FULL_AUTO_COLLIDER, Raise_OnSliderFullAutoClick },
-             { Tags.SLIDER_BOLT_COLLIDER, Raise_OnSliderBoltClick },
+            { Tags.LASER_TARGET_1, (h) => OnLaserTarget1Click?.Invoke(h)  },
+            { Tags.LASER_TARGET_2, (h) => OnLaserTarget2Click?.Invoke(h)  },
 
 
-            { Tags.HARPOON_COLLIDER, Raise_OnHarpoonColliderClick },
+             { Tags.SLIDER_CONTROL_COLLIDER, (h) => OnSliderControlClick?.Invoke(h)  },
 
-            { Tags.UPGRADE_STATION, Raise_OnUpgradeStationClick },
+             { Tags.SLIDER_FULL_AUTO_COLLIDER, (h) => OnSliderFullAutoClick?.Invoke(h)  },
+             { Tags.SLIDER_BOLT_COLLIDER, (h) => OnSliderBoltClick?.Invoke(h)  },
 
-            { Tags.UPGRADE_STATION_ARROW_UP, Raise_OnUpgradeStationArrowUpClick },
-            { Tags.UPGRADE_STATION_ARROW_DOWN, Raise_OnUpgradeStationArrowDownClick },
+
+            { Tags.HARPOON_COLLIDER, (h) => OnHarpoonColliderClick?.Invoke(h) },
+
+            { Tags.UPGRADE_STATION, (h) => OnUpgradeStationClick?.Invoke(h) },
+
+            { Tags.UPGRADE_STATION_ARROW_UP, (h) => OnUpgradeStationArrowUpClick?.Invoke(h)  },
+            { Tags.UPGRADE_STATION_ARROW_DOWN, (h) => OnUpgradeStationArrowDownClick?.Invoke(h)  },
+
+
+            { Tags.HELPER_STATION, (h) => OnHelperStationClick?.Invoke(h) },
+
+            { Tags.HELPER_STATION_ARROW_UP, (h) => OnHelperStationArrowUpClick?.Invoke(h)  },
+            { Tags.HELPER_STATION_ARROW_DOWN, (h) => OnHelperStationArrowDownClick?.Invoke(h)  },
+
         };
 
 
@@ -97,82 +105,9 @@ public static class PlayerInputCommunication
 
 
 
-    static void Raise_OnColorCollider1Click(RaycastHit hit)
-    {
+    
 
-        OnColorCollider1Click?.Invoke(hit);
-    }
-
-    static void Raise_OnColorCollider2Click(RaycastHit hit)
-    {
-
-        OnColorCollider2Click?.Invoke(hit);
-    }
-
-
-    static void Raise_OnAutoCollider1Click(RaycastHit hit)
-    {
-
-        OnAutoCollider1Click?.Invoke(hit);
-    }
-
-    static void Raise_OnAutoCollider2Click(RaycastHit hit)
-    {
-
-        OnAutoCollider2Click?.Invoke(hit);
-    }
-
-    static void Raise_OnLaserTarget1Click(RaycastHit hit)
-    {
-
-        OnLaserTarget1Click?.Invoke(hit);
-    }
-
-    static void Raise_OnLaserTarget2Click(RaycastHit hit)
-    {
-
-        OnLaserTarget2Click?.Invoke(hit);
-    }
-
-
-    static void Raise_OnSliderControlClick(RaycastHit hit)
-    {
-
-        OnSliderControlClick?.Invoke(hit);
-    }
-
-    static void Raise_OnSliderFullAutoClick(RaycastHit hit)
-    {
-
-        OnSliderFullAutoClick?.Invoke(hit);
-    }
-
-    static void Raise_OnSliderBoltClick(RaycastHit hit)
-    {
-
-        OnSliderBoltClick?.Invoke(hit);
-    }
-
-
-    static void Raise_OnHarpoonColliderClick(RaycastHit hit)
-    {
-        OnHarpoonColliderClick?.Invoke(hit);
-    }
-
-    static void Raise_OnUpgradeStationClick(RaycastHit hit) 
-    {
-        OnUpgradeStationClick?.Invoke(hit);
-    }
-
-    static void Raise_OnUpgradeStationArrowDownClick(RaycastHit hit)
-    {
-        OnUpgradeStationArrowDownClick?.Invoke(hit);
-    }
-
-    static void Raise_OnUpgradeStationArrowUpClick(RaycastHit hit)
-    {
-        OnUpgradeStationArrowUpClick?.Invoke(hit);
-    }
+   
 
 
 

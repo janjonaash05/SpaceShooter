@@ -49,6 +49,8 @@ TagManager:
   - EmitterPS
   - HelperFace
   - HelperStation
+  - HelperStationArrowUp
+  - HelperStationArrowDown
   layers:
   - Default
   - TransparentFX

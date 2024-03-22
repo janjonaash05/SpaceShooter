@@ -77,6 +77,8 @@ public static class Tags
     public const string UPGRADE_STATION_ARROW_UP = "UpgradeStationArrowUp";
     public const string UPGRADE_STATION_ARROW_DOWN = "UpgradeStationArrowDown";
 
+    public const string HELPER_STATION_ARROW_UP = "HelperStationArrowUp";
+    public const string HELPER_STATION_ARROW_DOWN = "HelperStationArrowDown";
 
 
 

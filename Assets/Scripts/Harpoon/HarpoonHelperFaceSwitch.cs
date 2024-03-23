@@ -10,20 +10,20 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
 
     protected readonly Dictionary<int, int> order_index_dict = new() { { 4, 2 }, { 3, 5 }, { 2, 3 }, { 1, 4 } };
-    public enum HelperType { EMP, BLACK_HOLE }
 
 
-    readonly List<HelperType> helpers_list = new()
-    {HelperType.BLACK_HOLE, HelperType.EMP };
+
+    readonly List<HelperSpawnerManager.HelperType> helpers_list = new()
+    {HelperSpawnerManager.HelperType.BLACK_HOLE, HelperSpawnerManager.HelperType.EMP };
 
 
-    HelperType current_helper;
+    HelperSpawnerManager.HelperType current_helper;
 
 
 
     HelperState emp_state, black_hole_state;
 
-    Dictionary<HelperType, HelperState> type_state_dict;
+    Dictionary<HelperSpawnerManager.HelperType, HelperState> type_state_dict;
 
 
     const int PRICE = 4;
@@ -101,23 +101,37 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
         emp_state = new();
         black_hole_state = new();
 
-        type_state_dict = new() { { HelperType.BLACK_HOLE, black_hole_state }, { HelperType.EMP, emp_state } };
+        type_state_dict = new() { { HelperSpawnerManager.HelperType.BLACK_HOLE, black_hole_state }, { HelperSpawnerManager.HelperType.EMP, emp_state } };
 
 
-        black_hole_state.OnCountDownValueChange += () => { if (current_helper == HelperType.BLACK_HOLE) ShowHelperState(); };
-        emp_state.OnCountDownValueChange += () => { if (current_helper == HelperType.EMP) ShowHelperState(); };
+        black_hole_state.OnCountDownValueChange += () => { if (current_helper == HelperSpawnerManager.HelperType.BLACK_HOLE) ShowHelperState(); };
+        emp_state.OnCountDownValueChange += () => { if (current_helper == HelperSpawnerManager.HelperType.EMP) ShowHelperState(); };
 
+
+        current_helper = HelperSpawnerManager.HelperType.BLACK_HOLE;
 
 
         PlayerInputCommunication.OnHelperStationArrowDownClick += (_) => { ArrowDown(); ShowHelperState(); };
-
         PlayerInputCommunication.OnHelperStationArrowUpClick += (_) => { ArrowUp(); ShowHelperState(); };
+
 
         PlayerInputCommunication.OnHelperStationClick += (_) =>
         {
 
+            if (!type_state_dict[current_helper].Recharging)
+            {
+                HelperSpawnerManager.Instance().SpawnHelper(current_helper);
+            }
+
+
+
             Debug.LogError("STARTCOUNTDOWN");
             var a = type_state_dict[current_helper].StartCountDown();
+
+            
+
+
+
         };
 
 

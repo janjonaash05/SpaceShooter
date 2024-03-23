@@ -33,6 +33,10 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     {
         rb = GetComponent<Rigidbody>();
         target = GameObject.FindWithTag(Tags.BOMB_TARGET).transform.position;//  core.transform.position + Random.insideUnitSphere;
+
+
+
+        HelperSpawnerManager.OnBlackHoleSpawn += () => { target = HelperSpawnerManager.Instance().BlackHolePosition; MoveSpeed = 2; }; 
        
     }
 
@@ -79,15 +83,22 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     {
 
         if (col.transform.CompareTag(Tags.BOMB_TARGET))
-        { 
+        {
             Destroy(gameObject.GetComponent<BombFall>());
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(BombDestructionType.TARGET);
 
 
             CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().bomb_color);
 
-            
+
         }
+        else if (col.transform.CompareTag(Tags.BLACK_HOLE)) 
+        {
+            _ = gameObject.GetComponent<DamageBomb>().StartDamage(BombDestructionType.BLACK_HOLE);
+
+        }
+
+        
     }
 
 

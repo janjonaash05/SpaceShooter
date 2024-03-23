@@ -82,6 +82,12 @@ public static class Tags
 
 
 
+    public const string HELPER_SPAWNER_MANAGER = "HelperSpawnerManager";
+
+
+    public const string BLACK_HOLE = "BlackHole";
+
+
     public const string SHIELD_HEMISPHERE_PS = "ShieldHemispherePS";
     public const string EMITTER_PS = "EmitterPS";
 

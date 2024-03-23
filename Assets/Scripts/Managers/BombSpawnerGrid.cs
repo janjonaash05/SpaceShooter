@@ -167,7 +167,7 @@ public class BombSpawnerGrid : MonoBehaviour
 
         spawner.transform.localScale = target_scale;
 
-        yield return new WaitForSeconds(ps.main.duration);
+        yield return new WaitForSeconds(ps.duration);
 
         Destroy(placeholder);
 

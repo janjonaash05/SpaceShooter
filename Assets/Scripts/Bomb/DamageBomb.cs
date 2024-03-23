@@ -11,7 +11,7 @@ using static UnityEngine.GraphicsBuffer;
 
 
 
-public enum BombDestructionType {MANUAL, AUTO, TARGET }
+public enum BombDestructionType {MANUAL, AUTO, TARGET, BLACK_HOLE }
 
 public class DamageBomb : MonoBehaviour
 {
@@ -34,6 +34,16 @@ public class DamageBomb : MonoBehaviour
         token = cancel_source.Token;
 
     }
+
+
+
+    private void Awake()
+    {
+        HelperSpawnerManager.OnBlackHoleSpawn += () => scale_down_increment /= 10;
+    }
+
+
+
 
     // Update is called once per frame
 
@@ -65,18 +75,45 @@ public class DamageBomb : MonoBehaviour
 
 
         Destroy(GetComponent<Collider>());
-        Destroy(GetComponent<BombFall>());
-        await GetComponent<BombColorChange>().CoverInColor();
+
+        if (bombDestructionType != BombDestructionType.BLACK_HOLE) 
+        {
+            Destroy(GetComponent<BombFall>());
+            await GetComponent<BombColorChange>().CoverInColor();
+
+            
+        }
+
+        //   Action damage = (bombDestructionType == BombDestructionType.TARGET) ? DamageByTarget : () => DamageByPlayer(bombDestructionType);
 
 
-        Action damage = (bombDestructionType == BombDestructionType.TARGET) ?   DamageByTarget : () => DamageByPlayer(bombDestructionType);
+        Action damageMethod = bombDestructionType switch
+        {
+            BombDestructionType.TARGET => DamageByTarget,
+            BombDestructionType.MANUAL => () => DamageByPlayer(bombDestructionType),
+            BombDestructionType.AUTO => () => DamageByPlayer(bombDestructionType),
+            BombDestructionType.BLACK_HOLE => () => {  var _ = DamageByBlackHole(); }
 
-        damage();
+        }; ;
+
+        damageMethod();
+
 
     }
 
 
 
+
+
+
+    async Task DamageByBlackHole()
+    {
+        var scaledown = ScaleDown(token);
+
+        await scaledown;
+        Destroy(gameObject);
+
+    }
 
 
     void DamageByTarget()
@@ -100,7 +137,7 @@ public class DamageBomb : MonoBehaviour
         transform.GetChild(1).GetComponent<ParticleSystem>().enableEmission = true;
         transform.GetChild(1).GetComponent<ParticleSystem>().Play();
 
-        _ = ScaleDown(token);
+       
         //  StartCoroutine(DamageByCore_FallIntoCore());
 
 

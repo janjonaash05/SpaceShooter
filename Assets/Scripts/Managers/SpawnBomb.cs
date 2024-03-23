@@ -24,7 +24,7 @@ public class SpawnBomb : MonoBehaviour
     public GameObject prefab;
 
 
-
+    bool CanSpawn = true;
 
 
     public event Action<Material> OnBombSpawnStart;
@@ -46,6 +46,12 @@ public class SpawnBomb : MonoBehaviour
 
 
         InvokeRepeating(nameof(Spawn), DifficultyManager.BOMB_SPAWN_DELAY* (float)new System.Random().NextDouble(),DifficultyManager.BOMB_SPAWN_DELAY);
+
+
+        HelperSpawnerManager.OnBlackHoleSpawn += () => CanSpawn = false;
+        HelperSpawnerManager.OnBlackHoleDestroy += () => CanSpawn = true;
+
+
 
 
         OnBombSpawnStart += ChangeTileToColor;
@@ -103,6 +109,9 @@ public class SpawnBomb : MonoBehaviour
 
     void Spawn()
     {
+
+
+        if (!CanSpawn) return;
 
         string tag = Random.Range(0, 2) == 1 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
         

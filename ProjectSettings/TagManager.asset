@@ -51,6 +51,8 @@ TagManager:
   - HelperStation
   - HelperStationArrowUp
   - HelperStationArrowDown
+  - HelperSpawnerManager
+  - BlackHole
   layers:
   - Default
   - TransparentFX

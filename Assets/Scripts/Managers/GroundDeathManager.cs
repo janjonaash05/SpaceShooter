@@ -25,7 +25,7 @@ public class GroundDeathManager : MonoBehaviour
         OnGroundSidePrimaryDeath,
 
         OnControlStandsDeath, OnSliderRechargeStationDeath, OnTurretPillarsDeath,
-        OnControlHeadsDeath, OnHarpoonControlHeadsDeath, OnSliderRechargeHeadsDeath, OnTurretStationsDeath, OnSideUtilityHeadsDeath,
+        OnControlHeadsDeath, OnHarpoonControlHeadsDeath, OnSliderRechargeHeadsDeath, OnTurretStationsDeath, OnHarpoonHeadDeath, OnSliderHeadDeath,
         OnTurretHeadsDeath,
         OnShieldAdapterDeath, OnShieldStorageDeath, OnShieldEmitterDeath, OnTokenTransporterDeath;
 
@@ -44,7 +44,7 @@ public class GroundDeathManager : MonoBehaviour
         {6, () => OnGroundSideSecondaryDeath?.Invoke() },
         {7, () => OnGroundSidePrimaryDeath?.Invoke() },
         {8, () =>{ OnControlStandsDeath?.Invoke(); OnSliderRechargeStationDeath?.Invoke(); OnTurretPillarsDeath?.Invoke();  } },
-        {9, () =>{ OnControlHeadsDeath?.Invoke(); OnHarpoonControlHeadsDeath?.Invoke(); OnSliderRechargeHeadsDeath?.Invoke(); OnTurretStationsDeath?.Invoke();  OnSideUtilityHeadsDeath?.Invoke();  } },
+        {9, () =>{ OnControlHeadsDeath?.Invoke(); OnHarpoonControlHeadsDeath?.Invoke(); OnSliderRechargeHeadsDeath?.Invoke(); OnTurretStationsDeath?.Invoke();  OnHarpoonHeadDeath?.Invoke(); OnSliderHeadDeath?.Invoke();  } },
         {10, () => OnTurretHeadsDeath?.Invoke() },
         {11, () =>{ OnShieldAdapterDeath?.Invoke(); OnShieldStorageDeath?.Invoke(); OnShieldEmitterDeath?.Invoke();  OnTokenTransporterDeath?.Invoke();  } },
     };

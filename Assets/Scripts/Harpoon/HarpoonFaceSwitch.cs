@@ -6,12 +6,13 @@ using UnityEngine;
 public class HarpoonFaceSwitch : MonoBehaviour
 {
     
-    protected List<Renderer> faces_rend;
+    protected List<Renderer> faces_rend = new();
 
     protected Material on_mat, off_mat, color_mat;
 
 
-
+    protected const int ARROW_DOWN_COLOR_INDEX = 7;
+    protected const int ARROW_UP_COLOR_INDEX = 6;
 
 
 
@@ -19,10 +20,10 @@ public class HarpoonFaceSwitch : MonoBehaviour
     protected int face_index = 0;
     protected virtual void Start()
     {
-        
 
-        on_mat = transform.GetChild(0).GetComponent<Renderer>().materials[^1];
-        off_mat = transform.GetChild(0).GetComponent<Renderer>().materials[^2];
+
+        on_mat = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
+        off_mat = MaterialHolder.Instance().FRIENDLY_PRIMARY();
         color_mat = MaterialHolder.Instance().FRIENDLY_UPGRADE();
     }
 
@@ -60,7 +61,7 @@ public class HarpoonFaceSwitch : MonoBehaviour
         string tag = type == StationType.UPGRADE ? Tags.UPGRADE_FACE : Tags.HELPER_FACE;
 
 
-        faces_rend = new();
+        
 
         foreach (Transform child in transform)
         {
@@ -73,6 +74,22 @@ public class HarpoonFaceSwitch : MonoBehaviour
 
     }
 
+
+
+    protected Material GetArrowUpColor() 
+    {
+        return (face_index == faces_rend.Count - 1) ? off_mat : on_mat;
+
+
+    }
+
+
+    protected Material GetArrowDownColor()
+    {
+        return (face_index == 0) ? off_mat : on_mat;
+
+
+    }
 
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class SpinnerChargeUp : MonoBehaviour
     public GameObject charge;
     Material changing_mat;
 
-
+    public static event Action OnLaserShotPlayerDeath;
 
     void Start()
     {
@@ -102,5 +103,24 @@ public class SpinnerChargeUp : MonoBehaviour
 
         }
 
+        while (laser.transform.localScale.x > 0)
+        {
+
+            laser.transform.localScale = new Vector3(laser.transform.localScale.x - laser_size_increase, distance / 2f, laser.transform.localScale.z - laser_size_increase);
+
+            Vector3 middleVector = (originVector + targetVector) / 2f;
+            laser.transform.position = middleVector;
+
+            Vector3 rotationDirection = (targetVector - originVector);
+            laser.transform.up = rotationDirection;
+            yield return null;
+
+        }
+
+
+
+        OnLaserShotPlayerDeath?.Invoke();
+
+        Destroy(laser);
     }
 }

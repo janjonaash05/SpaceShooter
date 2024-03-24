@@ -112,7 +112,7 @@ public class DifficultyManager : MonoBehaviour
 
     public static Dictionary<int, int> CONSTELLATION_MAX_STARS_DEGREE_VALUE_DICT = new()
     {
-        {0, 4 },
+        {0, 8 },
         {1, 5 },
         {2, 6 },
         {3, 7 },

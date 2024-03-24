@@ -82,11 +82,18 @@ public class SupernovaColorChange : MonoBehaviour
 
     }
 
+    private void Awake()
+    {
 
+        HelperSpawnerManager.OnEMPSpawn += () => { StopAllCoroutines(); DeathAllColorUp(); };
+    }
 
 
     void Start()
     {
+
+
+
         StarFall.OnStarFallen += SetCentertAndAddColorToList;
         FormConstellation.OnAllStarsGone += AllColorUp;
 
@@ -107,6 +114,45 @@ public class SupernovaColorChange : MonoBehaviour
         StarFall.OnStarFallen -= SetCentertAndAddColorToList;
         FormConstellation.OnAllStarsGone -= AllColorUp;
     }
+
+
+
+    void DeathAllColorUp() 
+    {
+        Material mat = MaterialHolder.Instance().FRIENDLY_UPGRADE();
+
+
+
+        OnlyCenterColorUp(mat);
+
+        IEnumerator colorUp()
+        {
+            current_color_index = 1;
+            for (int i = 0; i < 8; i++)
+            {
+
+
+
+                AddColor(mat);
+
+
+
+                yield return new WaitForSeconds(color_change_delay/4);
+            }
+
+
+
+            
+
+        }
+
+        StartCoroutine(colorUp());
+
+    }
+
+
+
+
 
 
 
@@ -137,10 +183,6 @@ public class SupernovaColorChange : MonoBehaviour
         }
 
         StartCoroutine(colorUp());
-
-
-
-
 
     }
 
@@ -234,17 +276,6 @@ public class SupernovaColorChange : MonoBehaviour
         {6,3 },
         {7,8 },
         {8,5 },
-
-
-
-
-
-
-
-
-
-
-
     };
 
 

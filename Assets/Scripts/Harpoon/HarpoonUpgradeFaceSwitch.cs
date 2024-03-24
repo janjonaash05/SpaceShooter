@@ -91,6 +91,12 @@ public class HarpoonUpgradeFaceSwitch : HarpoonFaceSwitch
             mats[order_index_dict[i]] = on;
 
         }
+
+
+        mats[ARROW_DOWN_COLOR_INDEX] = GetArrowDownColor();
+        mats[ARROW_UP_COLOR_INDEX] = GetArrowUpColor();
+
+
         transform.GetChild(0).GetComponent<Renderer>().materials = mats;
 
 

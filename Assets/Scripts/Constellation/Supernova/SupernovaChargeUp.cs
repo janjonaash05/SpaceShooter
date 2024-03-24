@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SupernovaChargeUp : MonoBehaviour
@@ -42,6 +43,8 @@ public class SupernovaChargeUp : MonoBehaviour
    
     void Awake()
     {
+        HelperSpawnerManager.OnEMPSpawn += () => StopAllCoroutines();
+
 
         supernova_color_change = GetComponent<SupernovaColorChange>();
         float target_speed = 2f;
@@ -150,7 +153,7 @@ public class SupernovaChargeUp : MonoBehaviour
     {
 
 
-
+       
 
 
         ParticleSystem ps = transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();

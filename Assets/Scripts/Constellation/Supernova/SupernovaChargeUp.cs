@@ -38,12 +38,15 @@ public class SupernovaChargeUp : MonoBehaviour
     SupernovaColorChange supernova_color_change;
 
 
+    void OnEMP() => StopAllCoroutines();
 
-
-   
+    private void OnDestroy()
+    {
+        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+    }
     void Awake()
     {
-        HelperSpawnerManager.OnEMPSpawn += () => StopAllCoroutines();
+        HelperSpawnerManager.OnEMPSpawn += OnEMP;
 
 
         supernova_color_change = GetComponent<SupernovaColorChange>();
@@ -89,7 +92,7 @@ public class SupernovaChargeUp : MonoBehaviour
 
         StarFall.OnStarFallen += (m) =>
         {
-           
+
 
 
             if (index >= 9) return;
@@ -102,7 +105,7 @@ public class SupernovaChargeUp : MonoBehaviour
 
 
 
-        
+
             shoot_mats.Add(m);
         };
 
@@ -111,12 +114,34 @@ public class SupernovaChargeUp : MonoBehaviour
 
 
         GetComponent<SupernovaColorChange>().OnColorUpFinished += () => StartCoroutine(RotateTowardsCore());
+        GetComponent<SupernovaColorChange>().OnDeathColorUpFinished += () => StartCoroutine(ShrinkAndDie(0.75f));
     }
 
 
 
 
+    public IEnumerator ShrinkAndDie( float duration)
+    {
+        Vector3 original = transform.localScale;
+        Vector3 target = Vector3.zero;
 
+
+        float counter = 0f;
+        while (counter < duration)
+        {
+
+            counter += Time.deltaTime;
+
+            transform.localScale = Vector3.Lerp(original, target, counter / duration);
+
+            yield return null;
+        }
+
+
+
+        Destroy(gameObject);
+
+    }
 
 
 
@@ -153,7 +178,7 @@ public class SupernovaChargeUp : MonoBehaviour
     {
 
 
-       
+
 
 
         ParticleSystem ps = transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
@@ -172,7 +197,7 @@ public class SupernovaChargeUp : MonoBehaviour
             ps.GetComponent<ParticleSystemRenderer>().material = m;
             ps.Play();
 
-            CoreCommunication.Raise_ValueChange(0,1);
+            CoreCommunication.Raise_ValueChange(0, 1);
 
 
 
@@ -188,15 +213,15 @@ public class SupernovaChargeUp : MonoBehaviour
 
             scale = scales[index];
 
-           
+
 
             yield return new WaitForSeconds(ps.main.duration / 8);
 
 
-            
 
 
-           
+
+
 
 
 

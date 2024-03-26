@@ -56,9 +56,11 @@ public class CoreRotation : MonoBehaviour
 
     Material[] mats_storage;
 
+    bool disabled = false;
+
     void Start()
     {
-
+        SpinnerChargeUp.OnLaserShotPlayerDeath += () => disabled = true;
 
 
         mats_storage = MaterialHolder.Instance().PLAYER_HEALTH_SET();
@@ -117,6 +119,7 @@ public class CoreRotation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(disabled) return;
         transform.Rotate(-speed * Time.deltaTime);
 
         rend.materials = CoreCommunication.CORE_INDEX_HOLDER.Parent switch

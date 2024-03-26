@@ -53,6 +53,7 @@ TagManager:
   - HelperStationArrowDown
   - HelperSpawnerManager
   - BlackHole
+  - Blocker
   layers:
   - Default
   - TransparentFX

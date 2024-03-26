@@ -26,6 +26,7 @@ public class SupernovaColorChange : MonoBehaviour
 
     public  event Action OnColorUpFinished;
 
+    public event Action OnDeathColorUpFinished;
 
    
     
@@ -85,8 +86,10 @@ public class SupernovaColorChange : MonoBehaviour
     private void Awake()
     {
 
-        HelperSpawnerManager.OnEMPSpawn += () => { StopAllCoroutines(); DeathAllColorUp(); };
     }
+
+
+
 
 
     void Start()
@@ -96,6 +99,7 @@ public class SupernovaColorChange : MonoBehaviour
 
         StarFall.OnStarFallen += SetCentertAndAddColorToList;
         FormConstellation.OnAllStarsGone += AllColorUp;
+        HelperSpawnerManager.OnEMPSpawn += DeathAllColorUp;
 
         color_mats = new();
 
@@ -113,40 +117,24 @@ public class SupernovaColorChange : MonoBehaviour
     {
         StarFall.OnStarFallen -= SetCentertAndAddColorToList;
         FormConstellation.OnAllStarsGone -= AllColorUp;
+        HelperSpawnerManager.OnEMPSpawn -= DeathAllColorUp;
     }
 
 
 
     void DeathAllColorUp() 
     {
+        StopAllCoroutines();
         Material mat = MaterialHolder.Instance().FRIENDLY_UPGRADE();
 
+        Material[] mats = GetComponent<Renderer>().materials;
 
+        Array.Fill(mats, mat);
 
-        OnlyCenterColorUp(mat);
+        GetComponent<Renderer>().materials = mats;
 
-        IEnumerator colorUp()
-        {
-            current_color_index = 1;
-            for (int i = 0; i < 8; i++)
-            {
+        OnDeathColorUpFinished?.Invoke();
 
-
-
-                AddColor(mat);
-
-
-
-                yield return new WaitForSeconds(color_change_delay/4);
-            }
-
-
-
-            
-
-        }
-
-        StartCoroutine(colorUp());
 
     }
 

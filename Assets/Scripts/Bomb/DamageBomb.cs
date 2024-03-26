@@ -132,7 +132,7 @@ public class DamageBomb : MonoBehaviour
 
         //  Debug.DrawRay(transform.position, rotationDirection, Color.red, 1f);
 
-
+        _ = ScaleDown(token);
 
         transform.GetChild(1).GetComponent<ParticleSystem>().enableEmission = true;
         transform.GetChild(1).GetComponent<ParticleSystem>().Play();

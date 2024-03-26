@@ -22,22 +22,29 @@ public class RotateDisruptor : MonoBehaviour
 
 
 
+    private void Awake()
+    {
+        HelperSpawnerManager.OnEMPSpawn += OnEMP;
+    }
+
+    void OnEMP() => StopAllCoroutines();
+
     private void OnDestroy()
     {
+        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+
         StopAllCoroutines();
     }
 
 
     public void EngageRotation(Vector3 target)
     {
-
-
-        RotateTowards(target);
+        StartCoroutine(RotateTowards(target));
     }
 
 
 
-    public IEnumerator  RotateTowards(Vector3 target)
+    public IEnumerator RotateTowards(Vector3 target)
     {
 
         Quaternion targetRot = GetRotation(target);

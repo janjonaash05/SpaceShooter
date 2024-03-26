@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public class FormConstellation : MonoBehaviour
 
     [SerializeField] GameObject star_prefab, supernova_prefab;
 
-     Material[] mats;
+    Material[] mats;
     [SerializeField] float random_distance_factor;
     [SerializeField]
 
@@ -27,6 +28,9 @@ public class FormConstellation : MonoBehaviour
         new Vector3(Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2, 0),
     };
 
+
+
+    
 
     /*
     Vector3[] constellation_star_offsets = {
@@ -47,14 +51,22 @@ public class FormConstellation : MonoBehaviour
 
     [SerializeField][Tooltip("in ms")] int star_spawn_delay;
 
+
+    bool spawn_locked = false;
+
     void Start()
     {
+
+        
+
         mats = MaterialHolder.Instance().COLOR_SET_WHOLE();
 
         InvokeRepeating(nameof(Form), DifficultyManager.CONSTELLATION_SPAWN_RATE, DifficultyManager.CONSTELLATION_SPAWN_RATE);
 
 
-   
+        HelperSpawnerManager.OnEMPSpawn += () => spawn_locked = true;
+
+        HelperSpawnerManager.OnEMPDestroy += () => spawn_locked = false;
 
 
 
@@ -67,15 +79,19 @@ public class FormConstellation : MonoBehaviour
 
 
 
-    async void Form()
+    async Task Form()
     {
+
+        if (GameObject.FindGameObjectsWithTag(Tags.SUPERNOVA).Length != 0) return;
+        
+
         STAR_AMOUNT = DifficultyManager.GetCurrentConstellationMaxStarsValue();
 
 
 
-      var nova =   Instantiate(supernova_prefab,transform,false);
+        var nova = Instantiate(supernova_prefab, transform, false);
         nova.transform.parent = transform;
-        nova.transform.localPosition = new Vector3(-86.5f,0,0);
+        nova.transform.localPosition = new Vector3(-86.5f, 0, 0);
 
 
 
@@ -89,12 +105,17 @@ public class FormConstellation : MonoBehaviour
 
         for (int i = 0; i < STAR_AMOUNT; i++)
         {
+
+            if(spawn_locked) return ;
+
+
+
             var star = Instantiate(star_prefab, transform, false);
 
             star.transform.parent = transform;
             star.transform.localPosition = Vector3.zero;
 
-            
+
             star_list.Add(star);
 
             System.Random r = new();
@@ -140,7 +161,7 @@ public class FormConstellation : MonoBehaviour
 
 
 
-  
+
 
 
     void CheckForCompletedFalls()
@@ -150,7 +171,7 @@ public class FormConstellation : MonoBehaviour
             while (true)
             {
 
-             
+
 
                 bool ready = true;
                 foreach (GameObject star in star_list)
@@ -179,5 +200,5 @@ public class FormConstellation : MonoBehaviour
 
 
     public static event Action OnAllStarsGone;
-    
+
 }

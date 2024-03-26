@@ -48,27 +48,27 @@ public class GroundDeathColorChange : MonoBehaviour
         target_actions_dict = new()
         {
 
-            {DeathTarget.CORE,( NonChildrenFull, () => {GroundDeathManager.OnCoreDeath += () => locked = false; }) },
-            {DeathTarget.CORE_RING, ( NonChildrenFull, () => {GroundDeathManager.OnCoreRingDeath += () => locked = false; }) },
-            {DeathTarget.GROUND_MAIN_PRIMARY, ( GroundPrimary, () => {GroundDeathManager.OnGroundMainPrimaryDeath += () => locked = false; }) },
-            {DeathTarget.GROUND_MAIN_SECONDARY, ( GroundSecondary, () => {GroundDeathManager.OnGroundMainSecondaryDeath += () => locked = false; }) },
-            {DeathTarget.CONTROL_PAD,( NonChildrenFull, () => {GroundDeathManager.OnControlPadsDeath += () => locked = false; }) },
-            {DeathTarget.GROUND_SIDE_PRIMARY, ( GroundPrimary, () => {GroundDeathManager.OnGroundSidePrimaryDeath += () => locked = false; }) },
-            {DeathTarget.GROUND_SIDE_SECONDARY, ( GroundSecondary, () => {GroundDeathManager.OnGroundSideSecondaryDeath += () => locked = false; }) },
-            {DeathTarget.CONTROL_STAND,( NonChildrenFull, () => {GroundDeathManager.OnControlStandsDeath += () => locked = false; }) },
-            {DeathTarget.SLIDER_RECHARGE_STATION,( ChildrenFull, () => {GroundDeathManager.OnSliderRechargeStationDeath += () => locked = false; }) },
-            {DeathTarget.TURRET_PILLAR,( NonChildrenFull, () => {GroundDeathManager.OnTurretPillarsDeath += () => locked = false; }) },
-            {DeathTarget.CONTROL_HEAD,( NonChildrenFull, () => {GroundDeathManager.OnControlHeadsDeath += () => locked = false; }) },
-            {DeathTarget.HARPOON_CONTROL_HEAD,( ChildrenFull, () => {GroundDeathManager.OnHarpoonControlHeadsDeath += () => locked = false; }) },
-            {DeathTarget.SLIDER_RECHARGE_HEAD,( NonChildrenFull, () => {GroundDeathManager.OnSliderRechargeHeadsDeath += () => locked = false; }) },
-            {DeathTarget.TURRET_STATION,( ChildrenFull, () => {GroundDeathManager.OnTurretStationsDeath += () => locked = false; }) },
-            {DeathTarget.SLIDER_HEAD,( ChildrenFull, () => {GroundDeathManager.OnSliderHeadDeath += () => locked = false; }) },
-            {DeathTarget.HARPOON_HEAD,( ChildrenFull, () => {GroundDeathManager.OnHarpoonHeadDeath += () => locked = false; }) },
-            {DeathTarget.TURRET_HEAD,( ChildrenFull, () => {GroundDeathManager.OnTurretHeadsDeath += () => locked = false; }) },
-            {DeathTarget.SHIELD_ADAPTER,( NonChildrenFull, () => {GroundDeathManager.OnShieldAdapterDeath += () => locked = false; }) },
-            {DeathTarget.SHIELD_STORAGE,( ChildrenFull, () => {GroundDeathManager.OnShieldStorageDeath += () => locked = false; }) },
-            {DeathTarget.SHIELD_EMITTER,( NonChildrenFull, () => {GroundDeathManager.OnShieldEmitterDeath += () => locked = false; }) },
-            {DeathTarget.TOKEN_TRANSPORTER,( NonChildrenFull, () => {GroundDeathManager.OnTokenTransporterDeath += () => locked = false; }) },
+            {DeathTarget.CORE,( NonChildrenFull, () => {GroundDeathManager.OnCoreDeath +=  UnlockAndChange; } ) },
+            {DeathTarget.CORE_RING, ( NonChildrenFull, () => {GroundDeathManager.OnCoreRingDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.GROUND_MAIN_PRIMARY, ( GroundPrimary, () => {GroundDeathManager.OnGroundMainPrimaryDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.GROUND_MAIN_SECONDARY, ( GroundSecondary, () => {GroundDeathManager.OnGroundMainSecondaryDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.CONTROL_PAD,( NonChildrenFull, () => {GroundDeathManager.OnControlPadsDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.GROUND_SIDE_PRIMARY, ( GroundPrimary, () => {GroundDeathManager.OnGroundSidePrimaryDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.GROUND_SIDE_SECONDARY, ( GroundSecondary, () => {GroundDeathManager.OnGroundSideSecondaryDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.CONTROL_STAND,( NonChildrenFull, () => {GroundDeathManager.OnControlStandsDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.SLIDER_RECHARGE_STATION,( ChildrenFull, () => {GroundDeathManager.OnSliderRechargeStationDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.TURRET_PILLAR,( NonChildrenFull, () => {GroundDeathManager.OnTurretPillarsDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.CONTROL_HEAD,( NonChildrenFull, () => {GroundDeathManager.OnControlHeadsDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.HARPOON_CONTROL_HEAD,( ChildrenFull, () => {GroundDeathManager.OnHarpoonControlHeadsDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.SLIDER_RECHARGE_HEAD,( NonChildrenFull, () => {GroundDeathManager.OnSliderRechargeHeadsDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.TURRET_STATION,( ChildrenFull, () => {GroundDeathManager.OnTurretStationsDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.SLIDER_HEAD,( ChildrenFull, () => {GroundDeathManager.OnSliderHeadDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.HARPOON_HEAD,( ChildrenFull, () => {GroundDeathManager.OnHarpoonHeadDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.TURRET_HEAD,( ChildrenFull, () => {GroundDeathManager.OnTurretHeadsDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.SHIELD_ADAPTER,( NonChildrenFull, () => {GroundDeathManager.OnShieldAdapterDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.SHIELD_STORAGE,( ChildrenFull, () => {GroundDeathManager.OnShieldStorageDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.SHIELD_EMITTER,( NonChildrenFull, () => {GroundDeathManager.OnShieldEmitterDeath +=  UnlockAndChange;} ) },
+            {DeathTarget.TOKEN_TRANSPORTER,( NonChildrenFull, () => {GroundDeathManager.OnTokenTransporterDeath +=  UnlockAndChange;} ) },
         };
 
 
@@ -90,7 +90,16 @@ public class GroundDeathColorChange : MonoBehaviour
 
     void Update()
     {
+        
 
+    }
+
+
+
+    void UnlockAndChange()
+    {
+        locked = false;
+        color_change();
     }
 
 

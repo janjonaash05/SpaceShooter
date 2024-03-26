@@ -24,10 +24,11 @@ public class DisruptorStartEndMovement : MonoBehaviour
     }
 
 
-    void Kill() {
+    void Kill()
+    {
 
         Destroy(gameObject);
-    
+
     }
 
     // Update is called once per frame
@@ -36,7 +37,8 @@ public class DisruptorStartEndMovement : MonoBehaviour
 
     }
 
-    public void MoveUp() {
+    public void MoveUp()
+    {
 
         StartCoroutine(MovingUp());
     }
@@ -48,38 +50,38 @@ public class DisruptorStartEndMovement : MonoBehaviour
         StartCoroutine(MovingDown());
     }
 
-    
+
 
 
     IEnumerator MovingDown()
     {
-       
-            while (transform.position.y > min_y)
-            {
 
-                transform.Translate(new Vector3(0, -down_speed * Time.deltaTime, 0), Space.World);
-           
+        while (transform.position.y > min_y)
+        {
+
+            transform.Translate(new Vector3(0, -down_speed * Time.deltaTime, 0), Space.World);
+
             yield return null;
 
 
-            }
+        }
 
-            OnMoveDownFinish?.Invoke();
-            
-       
+        OnMoveDownFinish?.Invoke();
+
+
 
 
     }
 
 
-    IEnumerator MovingUp() 
+    IEnumerator MovingUp()
     {
         while (transform.position.y < max_y)
         {
-            if (cancelMoveUpExternally) 
+            if (cancelMoveUpExternally)
             {
                 break;
-            
+
             }
 
             transform.Translate(new Vector3(0, up_speed * Time.deltaTime, 0), Space.World);
@@ -89,7 +91,7 @@ public class DisruptorStartEndMovement : MonoBehaviour
 
 
         }
-        if (!cancelMoveUpExternally) 
+        if (!cancelMoveUpExternally)
         {
             OnMoveUpFinish?.Invoke();
 
@@ -97,11 +99,11 @@ public class DisruptorStartEndMovement : MonoBehaviour
     }
 
 
-   public void CancelMovingUp()
+    public void CancelMovingUp()
     {
         cancelMoveUpExternally = true;
-        
-    
-    
+
+
+
     }
 }

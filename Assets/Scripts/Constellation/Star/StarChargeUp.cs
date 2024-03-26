@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -18,25 +19,52 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable
 
     public event Action OnChargeUp;
 
-    
+    CancellationTokenSource token_source = new();
 
+    CancellationToken cancellation_token;
     void Start()
     {
+        cancellation_token = token_source.Token;
 
+        HelperSpawnerManager.OnEMPSpawn += DeathAndColorUp;
 
+    }
 
-        
+    private void OnDestroy()
+    {
+        HelperSpawnerManager.OnEMPSpawn -= DeathAndColorUp;
     }
 
 
 
 
-   public void Setup(Material c) 
+
+    void DeathAndColorUp() 
+    {
+
+        token_source.Cancel();
+
+
+
+        var renderer = GetComponent<Renderer>();
+        Material[] mats = renderer.materials;
+
+        var mat = MaterialHolder.Instance().FRIENDLY_UPGRADE();
+        Array.Fill(mats, mat);
+
+        renderer.materials = mats;
+    }
+
+
+
+
+
+    public void Setup(Material c)
     {
         color = c; ;
 
         InitialColorUp();
-        
+
     }
 
     void InitialColorUp()
@@ -66,8 +94,8 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable
 
 
 
-        
-       
+
+
 
         GetComponent<Renderer>().materials = mats;
     }
@@ -76,67 +104,62 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable
     int chargeup_index = 0;
     public async Task ChargeUp()
     {
-        
-            for (chargeup_index = 1; chargeup_index <= order_index_dict.Count; chargeup_index++)
+
+        for (chargeup_index = 1; chargeup_index <= order_index_dict.Count; chargeup_index++)
+        {
+            if (cancellation_token.IsCancellationRequested) { return; }
+
+
+
+            Material[] mats = GetComponent<Renderer>().materials;
+
+            mats[primary_index] = primary;
+            mats[white_outline_index] = white;
+            mats[color_index] = color;
+            try
             {
-                Material[] mats = GetComponent<Renderer>().materials;
 
-                mats[primary_index] = primary;
-                mats[white_outline_index] = white;
-                mats[color_index] = color;
-
-
-
-                try
+                for (int backwards = 1; backwards < order_index_dict.Count; backwards++)
                 {
-
-                    for (int backwards = 1; backwards < order_index_dict.Count; backwards++) 
-                    {
-                        mats[order_index_dict[chargeup_index - backwards]] = color;
-                    }
-                    
-                    
-                } catch (Exception) { }
-                
-                mats[order_index_dict[chargeup_index]] = color;
-
-
-                try {
-
-
-                    for (int forwards = 1; forwards < order_index_dict.Count; forwards++)
-                    {
-                        mats[order_index_dict[chargeup_index + forwards]] = (chargeup_index + forwards) switch
-                        {
-                            <= 3 => secondary,
-                            >= 4 => white
-
-
-                        };
-                    }
-
+                    mats[order_index_dict[chargeup_index - backwards]] = color;
                 }
-                catch (Exception) { }
 
 
+            }
+            catch (Exception) { }
+
+            mats[order_index_dict[chargeup_index]] = color;
 
 
+            try
+            {
 
-               
+
+                for (int forwards = 1; forwards < order_index_dict.Count; forwards++)
+                {
+                    mats[order_index_dict[chargeup_index + forwards]] = (chargeup_index + forwards) switch
+                    {
+                        <= 3 => secondary,
+                        >= 4 => white
 
 
+                    };
+                }
 
-                GetComponent<Renderer>().materials = mats;
+            }
+            catch (Exception) { }
+
+            GetComponent<Renderer>().materials = mats;
 
             await Task.Delay(delay);
 
 
-            }
+        }
 
 
-
-        OnChargeUp?.Invoke();
         
+        OnChargeUp?.Invoke();
+
 
 
     }

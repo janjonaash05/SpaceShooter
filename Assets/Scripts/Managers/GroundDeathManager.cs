@@ -31,7 +31,7 @@ public class GroundDeathManager : MonoBehaviour
 
 
 
-    const float WAIT_TIME = 0.5f;
+    const float WAIT_TIME = 0.2f;
 
 
     static readonly Dictionary<int, Action>  execution_order_dict = new()
@@ -57,12 +57,13 @@ public class GroundDeathManager : MonoBehaviour
     {
         IEnumerator StartDeath()
         {
-            GameObject blocker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            blocker.GetComponent<Renderer>().enabled = false;
 
-            blocker.transform.localPosition = Camera.main.transform.position;
-            blocker.transform.localScale = Vector3.one;
+            GameObject[] blockers = GameObject.FindGameObjectsWithTag(Tags.BLOCKER);
 
+            foreach (GameObject blocker in blockers) 
+            {
+                blocker.transform.position = new Vector3(blocker.transform.position.x, 13, blocker.transform.position.z);
+            }
 
 
 

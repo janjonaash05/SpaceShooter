@@ -25,7 +25,7 @@ public class DestroyStar : MonoBehaviour
         Material[] mats = new Material[GetComponent<Renderer>().materials.Length]; Array.Fill(mats, white);
         GetComponent<Renderer>().materials = mats;
 
-
+       
 
     }
 
@@ -46,7 +46,7 @@ public class DestroyStar : MonoBehaviour
 
 
         GetComponent<IScoreEnumerable>().DisabledRewards = true;
-        ScaleDown();
+        _ = ScaleDown();
 
 
 
@@ -59,9 +59,13 @@ public class DestroyStar : MonoBehaviour
 
 
 
+    public void DestroyByEMP() 
+    {
+    
+    
+    }
 
-
-    async void ScaleDown()
+    async Task ScaleDown()
     {
 
 

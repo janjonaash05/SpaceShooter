@@ -28,8 +28,21 @@ public class DisruptorMovement : MonoBehaviour
     MovementTypeY movement_y;
     MovementTypeZ movement_z;
 
+
+    void OnEMP() => StopAllCoroutines();
+
+
+    private void OnDestroy()
+    {
+        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+    }
+
     void Start()
     {
+
+        HelperSpawnerManager.OnEMPSpawn += OnEMP;
+
+
         player = Camera.main.transform;
 
         y_amplitude = new System.Random().Next((int)amplitude_interval.x, (int)amplitude_interval.y);

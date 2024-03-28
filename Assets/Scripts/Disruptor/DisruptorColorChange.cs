@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
@@ -26,9 +27,17 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
     {
 
         HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+
+        Debug.LogError("Destroying  "+this.GetType().Name);
     }
 
-    void Start()
+
+    private void OnDisable()
+    {
+        //Debug.LogError("Destroying  " + this.GetType().Name);
+    }
+
+    void Awake()
     {
 
 
@@ -52,12 +61,45 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
     {
         StopAllCoroutines();
 
+
+        
         Material[] mats = rend.materials;
 
         Array.Fill(mats, MaterialHolder.Instance().FRIENDLY_UPGRADE());
 
         rend.materials = mats;
 
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+
+            Destroy(transform.GetChild(i).gameObject);
+        }
+        Debug.LogError(transform.localScale.z);
+        IEnumerator shrivel()
+        {
+
+            float lerp = 0f;
+            Vector3 targetScale = Vector3.zero;
+            Vector3 orignal_scale = transform.localScale;
+            while (transform.localScale.z > targetScale.z)
+            {
+
+                lerp += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(orignal_scale, targetScale, lerp);
+                Debug.LogError("LERP " + lerp);
+                yield return null;
+
+            }
+
+
+            Debug.LogError("DESTROYING DISRUPTOR");
+            Destroy(gameObject);
+
+        }
+
+        StartCoroutine(shrivel());
+        
 
     }
 

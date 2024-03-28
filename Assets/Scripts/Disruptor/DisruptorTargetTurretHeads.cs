@@ -23,8 +23,22 @@ public class DisruptorTargetTurretHeads : MonoBehaviour
         cam = Camera.main.transform;
         turretHead1 = GameObject.FindGameObjectWithTag(Tags.TURRET_CONTROL_1).transform;
         rotateDisruptor = GetComponent<RotateDisruptor>();
+
+
+
+        HelperSpawnerManager.OnEMPSpawn += OnEMP;
     }
 
+
+
+
+    private void OnDestroy()
+    {
+        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+
+
+        Debug.LogError("Destroying  " + this.GetType().Name);
+    }
 
     void Update()
     {
@@ -33,6 +47,13 @@ public class DisruptorTargetTurretHeads : MonoBehaviour
         Debug.DrawRay(transform.position, forward, Color.green);
     }
 
+
+
+    void OnEMP()
+    {
+        StopAllCoroutines();
+    
+    }
 
 
     public void InitiateRotations()

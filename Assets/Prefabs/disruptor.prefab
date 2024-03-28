@@ -5055,7 +5055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a2c8c980a663f43b95d1feb1973d16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color_change_delay: 0.1
+  color_change_delay: 0.35
   white: {fileID: 2100000, guid: 2d3422a6a953f4945aaebcb8e7fe7871, type: 2}
 --- !u!114 &2278785404713912107
 MonoBehaviour:
@@ -5081,7 +5081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da936351823d0fc42b675afe016ddcb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  down_speed: 40
+  down_speed: 80
   up_speed: 20
   min_y: -20
   max_y: 40

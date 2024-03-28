@@ -29,13 +29,26 @@ public class DisruptorMovement : MonoBehaviour
     MovementTypeZ movement_z;
 
 
-    void OnEMP() => StopAllCoroutines();
+    void OnEMP() => movement_locked = true;
+
+
+    bool movement_locked = false;
 
 
     private void OnDestroy()
     {
         HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+
+
+       
     }
+
+
+    private void OnDisable()
+    {
+        Debug.LogError("Destroying  " + this.GetType().Name);
+    }
+
 
     void Start()
     {
@@ -126,7 +139,7 @@ public class DisruptorMovement : MonoBehaviour
     void Update()
     {
 
-        if (targeting || initial_movement_phase) { return; }
+        if (targeting || initial_movement_phase || movement_locked) { return; }
 
         Vector3 rotationDirection = (player.position - transform.position).normalized;
         Quaternion rot = Quaternion.LookRotation(rotationDirection);
@@ -150,7 +163,7 @@ public class DisruptorMovement : MonoBehaviour
 
         this.targeting = targeting;
 
-
+        
     }
 
 

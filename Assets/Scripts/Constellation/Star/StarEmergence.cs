@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,22 +8,22 @@ public class StarEmergence : MonoBehaviour
     // Start is called before the first frame update
 
 
-   [SerializeField] Vector3 initScale, targetScale;
+    [SerializeField] Vector3 initScale, target_scale;
     void Start()
     {
         RotateTowardsPlayer();
-        Emerge();
+      //  Emerge();
+      ScaleChange(emergeCondition);
 
-
-        HelperSpawnerManager.OnEMPSpawn += OnEMP ;
+        HelperSpawnerManager.OnEMPSpawn += OnEMP;
     }
 
 
 
-    void OnEMP() 
+    void OnEMP()
     {
         StopAllCoroutines();
-        Shrivel();
+        ScaleChange(shrivelCondition);
     }
 
     private void OnDestroy()
@@ -31,7 +32,7 @@ public class StarEmergence : MonoBehaviour
     }
 
 
-    void RotateTowardsPlayer() 
+    void RotateTowardsPlayer()
     {
         Vector3 rotationDirection = (Camera.main.transform.position - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(rotationDirection);
@@ -40,25 +41,25 @@ public class StarEmergence : MonoBehaviour
         transform.localScale = initScale;
 
 
-        
+
     }
 
 
-   public void Emerge()
+    public void Emerge()
     {
 
-        
+
 
 
         IEnumerator emerge()
         {
 
             float lerp = 0f;
-            while (transform.localScale.z < targetScale.z)
+            while (transform.localScale.z < target_scale.z)
             {
 
                 lerp += Time.deltaTime / 100;
-                transform.localScale = Vector3.Lerp(transform.localScale, targetScale, lerp);
+                transform.localScale = Vector3.Lerp(transform.localScale, target_scale, lerp);
                 yield return null;
 
             }
@@ -71,19 +72,64 @@ public class StarEmergence : MonoBehaviour
     }
 
 
+    delegate (bool scale_change_condition, bool destroy_after) ScaleChangeCondition(float val1, float val2);
+
+
+    ScaleChangeCondition emergeCondition = (v1, v2) => (v1 < v2, false);
+    ScaleChangeCondition shrivelCondition = (v1, v2) => (v1 > v2, true);
+
+
+
+
+    void ScaleChange(ScaleChangeCondition condition) 
+    {
+        IEnumerator scaleChange()
+        {
+
+            float lerp = 0f;
+            Vector3 original_scale = initScale;
+            while (condition(transform.localScale.z, target_scale.z).scale_change_condition)
+            {
+
+                lerp += Time.deltaTime /100;
+                transform.localScale = Vector3.Lerp(original_scale, target_scale, lerp);
+                yield return null;
+
+            }
+
+
+
+            if (condition(0, 0).destroy_after) { Destroy(gameObject); }
+
+
+        }
+
+        StartCoroutine(scaleChange());
+
+
+
+    }
+
+
+
+
 
     public void Shrivel()
     {
+
+
+
         IEnumerator shrivel()
         {
 
             float lerp = 0f;
-            targetScale = Vector3.zero;
-            while (transform.localScale.z > targetScale.z)
+            target_scale = Vector3.zero;
+            Vector3 original_scale = transform.localScale;
+            while (transform.localScale.z > target_scale.z)
             {
 
                 lerp += Time.deltaTime / 100;
-                transform.localScale = Vector3.Lerp(transform.localScale, targetScale, lerp);
+                transform.localScale = Vector3.Lerp(original_scale, target_scale, lerp);
                 yield return null;
 
             }
@@ -100,6 +146,6 @@ public class StarEmergence : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

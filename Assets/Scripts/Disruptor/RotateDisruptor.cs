@@ -33,7 +33,7 @@ public class RotateDisruptor : MonoBehaviour
     {
         HelperSpawnerManager.OnEMPSpawn -= OnEMP;
 
-        StopAllCoroutines();
+        Debug.LogError("Destroying  " + this.GetType().Name);
     }
 
 

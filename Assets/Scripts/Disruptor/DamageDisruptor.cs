@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DamageDisruptor : MonoBehaviour
 {
-    
-   
+
+
     float health;
     void Start()
     {
@@ -19,25 +19,25 @@ public class DamageDisruptor : MonoBehaviour
 
 
 
-  public  void Damage(float amount)
+    public void Damage(float amount)
     {
-        
+
         health -= amount;
 
 
-        if (health <= 0) 
+        if (health <= 0)
         {
             Destroy(this);
             GetComponent<DestroyDisruptor>().Engage();
-        
+
         }
 
     }
 
-   
 
 
 
 
-    
+
+
 }

@@ -6,13 +6,13 @@ public class FlashDisruptorCharge : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] Material white;
-    float charge_up_flash_delay = 0.5f;
-    float all_colors_flash_delay = 0.2f;
+    readonly float charge_up_flash_delay = 0.5f;
+    readonly float all_colors_flash_delay = 0.2f;
 
 
     void Start()
     {
-        
+
     }
 
 
@@ -45,7 +45,7 @@ public class FlashDisruptorCharge : MonoBehaviour
 
             GetComponent<Renderer>().material = m;
 
-            FlashParticles(m,false);
+            FlashParticles(m, false);
             yield return new WaitForSeconds(charge_up_flash_delay);
             GetComponent<Renderer>().material = white;
 
@@ -67,13 +67,13 @@ public class FlashDisruptorCharge : MonoBehaviour
 
         IEnumerator flashALlColors(Material[] ms)
         {
-            
+
 
             while (true)
             {
                 foreach (var mat in ms)
                 {
-                    FlashParticles(mat,true);
+                    FlashParticles(mat, true);
                     GetComponent<Renderer>().material = mat;
                     yield return new WaitForSeconds(all_colors_flash_delay);
                     GetComponent<Renderer>().material = white;
@@ -99,14 +99,14 @@ public class FlashDisruptorCharge : MonoBehaviour
     ParticleSystem ps;
     ParticleSystemRenderer ps_rend;
 
-    void FlashParticles(Material m, bool fullArc) 
+    void FlashParticles(Material m, bool fullArc)
     {
 
 
         var emission = ps.emission;
         if (fullArc)
         {
-            var burst = emission.GetBurst(0);burst.probability = 0;
+            var burst = emission.GetBurst(0); burst.probability = 0;
 
             var shape = ps.shape;
             var main = ps.main;
@@ -116,13 +116,14 @@ public class FlashDisruptorCharge : MonoBehaviour
 
 
 
-            emission.rateOverTime = 2; shape.arc = 360; }
+            emission.rateOverTime = 2; shape.arc = 360;
+        }
         ps_rend.material = m;
 
 
 
 
-        
+
 
         emission.enabled = true;
 
@@ -131,32 +132,15 @@ public class FlashDisruptorCharge : MonoBehaviour
         ps.Play();
 
 
-    
-    }
-
-
-
-    void PlayRepeatParticles() 
-    {
-        var emission = ps.emission;
-        // emission.GetBurst(0).probability = 0;
-        var shape = ps.shape;
-        var main = ps.main;
-
-
-        main.loop = true;
-
-       
-
-        emission.rateOverTime = 10;
-
-        ps.Play();
 
     }
 
 
 
-  
+
+
+
+
 
 
 

@@ -64,7 +64,6 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
             if (Recharging) return;
 
-            Debug.LogError("couunting down");
 
             Recharging = true;
 
@@ -72,7 +71,6 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
             {
                 CountDownValue = i;
 
-                Debug.LogError("couunting down " + i);
                 OnCountDownValueChange?.Invoke();
                 await Task.Delay(WAIT_TIME);
             }

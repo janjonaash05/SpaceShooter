@@ -15,12 +15,28 @@ public class DisruptorStartEndMovement : MonoBehaviour
 
 
 
+    public void OnEMP()
+    {
+
+        StopAllCoroutines();
+    }
+
 
     bool cancelMoveUpExternally;
+
+    private void OnDestroy()
+    {
+        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+
+
+        Debug.LogError("Destroying  " + this.GetType().Name);
+    }
+
     void Start()
     {
         cancelMoveUpExternally = false;
         OnMoveDownFinish += Kill;
+        HelperSpawnerManager.OnEMPSpawn += OnEMP;
     }
 
 

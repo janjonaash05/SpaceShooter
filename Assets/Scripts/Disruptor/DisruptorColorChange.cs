@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
+public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 {
     // Start is called before the first frame update
 
@@ -26,7 +26,6 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
     private void OnDestroy()
     {
 
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
 
         Debug.LogError("Destroying  "+this.GetType().Name);
     }
@@ -44,7 +43,6 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
         mats_storage = MaterialHolder.Instance().COLOR_SET_WHOLE();
 
 
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
 
 
 
@@ -57,17 +55,9 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
 
 
     //CAUSES A CRASH
-    void OnEMP()
+   public void OnEMP()
     {
         StopAllCoroutines();
-
-
-        
-        Material[] mats = rend.materials;
-
-        Array.Fill(mats, MaterialHolder.Instance().FRIENDLY_UPGRADE());
-
-        rend.materials = mats;
 
 
         for (int i = 0; i < transform.childCount; i++)
@@ -75,30 +65,8 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable
 
             Destroy(transform.GetChild(i).gameObject);
         }
-        Debug.LogError(transform.localScale.z);
-        IEnumerator shrivel()
-        {
+        
 
-            float lerp = 0f;
-            Vector3 targetScale = Vector3.zero;
-            Vector3 orignal_scale = transform.localScale;
-            while (transform.localScale.z > targetScale.z)
-            {
-
-                lerp += Time.deltaTime;
-                transform.localScale = Vector3.Lerp(orignal_scale, targetScale, lerp);
-                Debug.LogError("LERP " + lerp);
-                yield return null;
-
-            }
-
-
-            Debug.LogError("DESTROYING DISRUPTOR");
-            Destroy(gameObject);
-
-        }
-
-        StartCoroutine(shrivel());
         
 
     }

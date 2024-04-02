@@ -17,7 +17,7 @@ public class BlackHoleRotation : MonoBehaviour
         ps = GetComponentInChildren<ParticleSystem>();
 
         StartCoroutine(ScaleUpDown());
-        StartCoroutine(SpeedUpDown());
+        //StartCoroutine(SpeedUpDown());
         StartCoroutine(EmissionRateGrowShrink());
       //  StartCoroutine(ParticleSizeGrowShrink());
 
@@ -51,19 +51,7 @@ public class BlackHoleRotation : MonoBehaviour
         }
     }
 
-    IEnumerator ChangeSpeedOverTime(Vector3 original, Vector3 target, float duration)
-    {
-        float counter = 0f;
-        while (counter < duration)
-        {
-
-            counter += Time.deltaTime;
-
-            rot_speed = Vector3.Lerp(original, target, counter / duration);
-
-            yield return null;
-        }
-    }
+  
 
 
 
@@ -88,22 +76,7 @@ public class BlackHoleRotation : MonoBehaviour
     }
 
 
-    IEnumerator ChangeParticleSizeOverTime(float original, float target, float duration)
-    {
-
-
-        var main = ps.main;
-        float counter = 0f;
-
-        while (counter < duration)
-        {
-
-            counter += Time.deltaTime;
-            main.startSize = Mathf.Lerp(original, target, counter / duration);
-
-            yield return null;
-        }
-    }
+  
 
 
 
@@ -120,16 +93,7 @@ public class BlackHoleRotation : MonoBehaviour
     }
 
 
-    IEnumerator SpeedUpDown()
-    {
-
-        Vector3 target_speed = new Vector3(0, 0, 1f) * 1000; ;
-
-
-        yield return StartCoroutine(ChangeSpeedOverTime(Vector3.zero, target_speed, HelperSpawnerManager.LIFETIME / 2));
-        yield return StartCoroutine(ChangeSpeedOverTime(target_speed, Vector3.zero, HelperSpawnerManager.LIFETIME / 2));
-
-    }
+  
 
 
 
@@ -146,17 +110,7 @@ public class BlackHoleRotation : MonoBehaviour
     }
 
 
-    IEnumerator ParticleSizeGrowShrink()
-    {
-        float target_size = ps.startSize;
 
-        yield return StartCoroutine(ChangeParticleSizeOverTime(0, target_size, HelperSpawnerManager.LIFETIME / 4));
-        yield return new WaitForSeconds(HelperSpawnerManager.LIFETIME / 2);
-        yield return StartCoroutine(ChangeParticleSizeOverTime(target_size, 0, HelperSpawnerManager.LIFETIME / 4));
-
-
-
-    }
 
 
 

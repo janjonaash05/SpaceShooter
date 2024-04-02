@@ -4905,6 +4905,7 @@ GameObject:
   - component: {fileID: 7127210927327851426}
   - component: {fileID: 1179934248641496902}
   - component: {fileID: 7540317570094448971}
+  - component: {fileID: -4622131133210986248}
   m_Layer: 0
   m_Name: disruptor
   m_TagString: Disruptor
@@ -5108,6 +5109,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db75bb41a2b465448ab70e0acb9502b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4622131133210986248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2648449319868875810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c1b47761171f34f966a0b6a3847d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4069687522648837984

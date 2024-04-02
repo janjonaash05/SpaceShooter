@@ -56618,7 +56618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   black_hole_prefab: {fileID: 3746982578527995638, guid: 568baeb5c11ba4f4baaaab8bdecc08ef, type: 3}
-  emp_prefab: {fileID: 3746982578527995638, guid: 568baeb5c11ba4f4baaaab8bdecc08ef, type: 3}
+  emp_prefab: {fileID: 4543832894199922146, guid: 0c8b63eb8a025fe4d9053eff610b9ba1, type: 3}
 --- !u!1 &1491867750
 GameObject:
   m_ObjectHideFlags: 0

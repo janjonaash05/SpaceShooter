@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class StarFall : MonoBehaviour
+public class StarFall : MonoBehaviour, IEMPDisruptable
 {
     // Start is called before the first frame update
 
@@ -21,23 +21,19 @@ public class StarFall : MonoBehaviour
     {
         target = Vector3.zero + GameObject.FindGameObjectWithTag(Tags.SUPERNOVA).transform.localPosition;
         GetComponent<StarChargeUp>().OnChargeUp += Fall;
+        GetComponent<StarChargeUp>().OnChargeUp += () => Debug.LogError("STAR CHARGED UP");
 
-
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
     }
 
 
 
-    void OnEMP()
+   public void OnEMP()
     {
         if(fall_cr != null)
         StopCoroutine(fall_cr);
     }
 
-    private void OnDestroy()
-    {
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
-    }
+  
 
 
     IEnumerator fall()

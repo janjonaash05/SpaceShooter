@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisruptorStartEndMovement : MonoBehaviour
+public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
 {
     // Start is called before the first frame update
 
@@ -26,7 +26,6 @@ public class DisruptorStartEndMovement : MonoBehaviour
 
     private void OnDestroy()
     {
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
 
 
         Debug.LogError("Destroying  " + this.GetType().Name);
@@ -36,7 +35,6 @@ public class DisruptorStartEndMovement : MonoBehaviour
     {
         cancelMoveUpExternally = false;
         OnMoveDownFinish += Kill;
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
     }
 
 

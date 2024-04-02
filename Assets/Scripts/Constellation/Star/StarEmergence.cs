@@ -3,33 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StarEmergence : MonoBehaviour
+public class StarEmergence : MonoBehaviour, IEMPDisruptable
 {
     // Start is called before the first frame update
 
 
-    [SerializeField] Vector3 initScale, target_scale;
+     Vector3 target_scale;
     void Start()
     {
-        RotateTowardsPlayer();
-      //  Emerge();
-      ScaleChange(emergeCondition);
+      
 
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
     }
 
 
+    private void Awake()
+    {
 
-    void OnEMP()
+
+        target_scale = transform.localScale;
+
+
+        RotateTowardsPlayer();
+        Emerge(1f);
+    }
+
+
+    public void OnEMP()
     {
         StopAllCoroutines();
-        ScaleChange(shrivelCondition);
     }
 
-    private void OnDestroy()
-    {
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
-    }
+ 
 
 
     void RotateTowardsPlayer()
@@ -38,68 +42,43 @@ public class StarEmergence : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(rotationDirection);
         transform.Rotate(Vector3.up, 90);
 
-        transform.localScale = initScale;
+        transform.localScale = Vector3.zero;
 
 
 
     }
 
 
-    public void Emerge()
-    {
+   
 
 
 
 
-        IEnumerator emerge()
-        {
 
-            float lerp = 0f;
-            while (transform.localScale.z < target_scale.z)
-            {
-
-                lerp += Time.deltaTime / 100;
-                transform.localScale = Vector3.Lerp(transform.localScale, target_scale, lerp);
-                yield return null;
-
-            }
-
-
-
-        }
-
-        StartCoroutine(emerge());
-    }
-
-
-    delegate (bool scale_change_condition, bool destroy_after) ScaleChangeCondition(float val1, float val2);
-
-
-    ScaleChangeCondition emergeCondition = (v1, v2) => (v1 < v2, false);
-    ScaleChangeCondition shrivelCondition = (v1, v2) => (v1 > v2, true);
-
-
-
-
-    void ScaleChange(ScaleChangeCondition condition) 
+    //FIX
+    void Emerge(float duration) 
     {
         IEnumerator scaleChange()
         {
 
             float lerp = 0f;
-            Vector3 original_scale = initScale;
-            while (condition(transform.localScale.z, target_scale.z).scale_change_condition)
+            Vector3 original = Vector3.zero;
+            Vector3 target = target_scale;
+
+
+
+            while (lerp < duration)
             {
 
-                lerp += Time.deltaTime /100;
-                transform.localScale = Vector3.Lerp(original_scale, target_scale, lerp);
+
+
+                lerp += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(original, target, lerp / duration);
                 yield return null;
 
             }
 
 
-
-            if (condition(0, 0).destroy_after) { Destroy(gameObject); }
 
 
         }

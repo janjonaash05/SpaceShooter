@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SupernovaColorChange : MonoBehaviour
+public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 {
     // Start is called before the first frame update
 
@@ -99,7 +99,6 @@ public class SupernovaColorChange : MonoBehaviour
 
         StarFall.OnStarFallen += SetCentertAndAddColorToList;
         FormConstellation.OnAllStarsGone += AllColorUp;
-        HelperSpawnerManager.OnEMPSpawn += DeathAllColorUp;
 
         color_mats = new();
 
@@ -117,26 +116,11 @@ public class SupernovaColorChange : MonoBehaviour
     {
         StarFall.OnStarFallen -= SetCentertAndAddColorToList;
         FormConstellation.OnAllStarsGone -= AllColorUp;
-        HelperSpawnerManager.OnEMPSpawn -= DeathAllColorUp;
     }
 
 
 
-    void DeathAllColorUp() 
-    {
-        StopAllCoroutines();
-        Material mat = MaterialHolder.Instance().FRIENDLY_UPGRADE();
-
-        Material[] mats = GetComponent<Renderer>().materials;
-
-        Array.Fill(mats, mat);
-
-        GetComponent<Renderer>().materials = mats;
-
-        OnDeathColorUpFinished?.Invoke();
-
-
-    }
+  
 
 
 
@@ -238,15 +222,10 @@ public class SupernovaColorChange : MonoBehaviour
 
     }
 
-
-
-
-
-
-
-
-
-
+    public void OnEMP()
+    {
+        StopAllCoroutines();
+    }
 
     const int CENTER_INDEX = 0;
 

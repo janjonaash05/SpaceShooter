@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class StarChargeUp : MonoBehaviour, IScoreEnumerable
+public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 {
     // Start is called before the first frame update
     Dictionary<int, int> order_index_dict;
@@ -26,34 +26,21 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable
     {
         cancellation_token = token_source.Token;
 
-        HelperSpawnerManager.OnEMPSpawn += DeathAndColorUp;
 
     }
 
     private void OnDestroy()
     {
-        HelperSpawnerManager.OnEMPSpawn -= DeathAndColorUp;
     }
 
 
-
-
-
-    void DeathAndColorUp() 
+    public void OnEMP() 
     {
-
         token_source.Cancel();
 
-
-
-        var renderer = GetComponent<Renderer>();
-        Material[] mats = renderer.materials;
-
-        var mat = MaterialHolder.Instance().FRIENDLY_UPGRADE();
-        Array.Fill(mats, mat);
-
-        renderer.materials = mats;
     }
+
+
 
 
 
@@ -109,70 +96,68 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable
         {
             if (cancellation_token.IsCancellationRequested) { return; }
 
+            
+                Debug.LogError("Star iteration " + chargeup_index);
 
 
-            Material[] mats = GetComponent<Renderer>().materials;
+                Material[] mats = GetComponent<Renderer>().materials;
 
-            mats[primary_index] = primary;
-            mats[white_outline_index] = white;
-            mats[color_index] = color;
-            try
-            {
-
-                for (int backwards = 1; backwards < order_index_dict.Count; backwards++)
+                mats[primary_index] = primary;
+                mats[white_outline_index] = white;
+                mats[color_index] = color;
+                try
                 {
-                    mats[order_index_dict[chargeup_index - backwards]] = color;
-                }
 
-
-            }
-            catch (Exception) { }
-
-            mats[order_index_dict[chargeup_index]] = color;
-
-
-            try
-            {
-
-
-                for (int forwards = 1; forwards < order_index_dict.Count; forwards++)
-                {
-                    mats[order_index_dict[chargeup_index + forwards]] = (chargeup_index + forwards) switch
+                    for (int backwards = 1; backwards < order_index_dict.Count; backwards++)
                     {
-                        <= 3 => secondary,
-                        >= 4 => white
+                        mats[order_index_dict[chargeup_index - backwards]] = color;
+                    }
 
 
-                    };
                 }
+                catch (Exception) { }
 
-            }
-            catch (Exception) { }
+                mats[order_index_dict[chargeup_index]] = color;
 
-            GetComponent<Renderer>().materials = mats;
 
-            await Task.Delay(delay);
+                try
+                {
+
+
+                    for (int forwards = 1; forwards < order_index_dict.Count; forwards++)
+                    {
+                        mats[order_index_dict[chargeup_index + forwards]] = (chargeup_index + forwards) switch
+                        {
+                            <= 3 => secondary,
+                            >= 4 => white
+
+
+                        };
+                    }
+
+                }
+                catch (Exception) { }
+
+                GetComponent<Renderer>().materials = mats;
+
+                await Task.Delay(delay);
 
 
         }
 
-
-        
         OnChargeUp?.Invoke();
 
 
+        // Update is called once per frame
 
     }
 
+void Update()
+{
 
+}
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    public bool DisabledRewards { get; set; }
+public bool DisabledRewards { get; set; }
 
     public int ScoreReward()
     {

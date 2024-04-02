@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisruptorMovement : MonoBehaviour
+public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
 {
     // Start is called before the first frame update
     float y_amplitude, y_period, z_amplitude, z_period;
@@ -29,7 +29,7 @@ public class DisruptorMovement : MonoBehaviour
     MovementTypeZ movement_z;
 
 
-    void OnEMP() => movement_locked = true;
+   public void OnEMP() => movement_locked = true;
 
 
     bool movement_locked = false;
@@ -37,7 +37,6 @@ public class DisruptorMovement : MonoBehaviour
 
     private void OnDestroy()
     {
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
 
 
        
@@ -53,7 +52,6 @@ public class DisruptorMovement : MonoBehaviour
     void Start()
     {
 
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
 
 
         player = Camera.main.transform;

@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.UI.Image;
 
 
-public class DisruptorTargetTurretHeads : MonoBehaviour
+public class DisruptorTargetTurretHeads : MonoBehaviour, IEMPDisruptable
 {
 
     GameObject charge1, charge2;
@@ -26,7 +26,6 @@ public class DisruptorTargetTurretHeads : MonoBehaviour
 
 
 
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
     }
 
 
@@ -34,7 +33,6 @@ public class DisruptorTargetTurretHeads : MonoBehaviour
 
     private void OnDestroy()
     {
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
 
 
         Debug.LogError("Destroying  " + this.GetType().Name);
@@ -49,7 +47,7 @@ public class DisruptorTargetTurretHeads : MonoBehaviour
 
 
 
-    void OnEMP()
+   public void OnEMP()
     {
         StopAllCoroutines();
     
@@ -110,15 +108,5 @@ public class DisruptorTargetTurretHeads : MonoBehaviour
 
 
     }
-
-
-   
-
-
-
-
-    
-
-
 
 }

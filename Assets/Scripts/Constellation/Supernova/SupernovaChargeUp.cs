@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SupernovaChargeUp : MonoBehaviour
+public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 {
     // Start is called before the first frame update
 
@@ -38,15 +38,11 @@ public class SupernovaChargeUp : MonoBehaviour
     SupernovaColorChange supernova_color_change;
 
 
-    void OnEMP() => StopAllCoroutines();
+   public void OnEMP() => StopAllCoroutines();
 
-    private void OnDestroy()
-    {
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
-    }
+   
     void Awake()
     {
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
 
 
         supernova_color_change = GetComponent<SupernovaColorChange>();
@@ -114,12 +110,12 @@ public class SupernovaChargeUp : MonoBehaviour
 
 
         GetComponent<SupernovaColorChange>().OnColorUpFinished += () => StartCoroutine(RotateTowardsCore());
-        GetComponent<SupernovaColorChange>().OnDeathColorUpFinished += () => StartCoroutine(ShrinkAndDie(0.75f));
+       // GetComponent<SupernovaColorChange>().OnDeathColorUpFinished += () => StartCoroutine(ShrinkAndDie(0.75f));
     }
 
 
 
-
+    /*
     public IEnumerator ShrinkAndDie( float duration)
     {
         Vector3 original = transform.localScale;
@@ -143,7 +139,7 @@ public class SupernovaChargeUp : MonoBehaviour
 
     }
 
-
+    */
 
 
 
@@ -255,4 +251,6 @@ public class SupernovaChargeUp : MonoBehaviour
 
 
     }
+
+   
 }

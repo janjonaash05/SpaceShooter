@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class RotateDisruptor : MonoBehaviour
+public class RotateDisruptor : MonoBehaviour, IEMPDisruptable
 {
     // Start is called before the first frame update
 
@@ -24,14 +24,12 @@ public class RotateDisruptor : MonoBehaviour
 
     private void Awake()
     {
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
     }
 
-    void OnEMP() => StopAllCoroutines();
+   public void OnEMP() => StopAllCoroutines();
 
     private void OnDestroy()
     {
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
 
         Debug.LogError("Destroying  " + this.GetType().Name);
     }

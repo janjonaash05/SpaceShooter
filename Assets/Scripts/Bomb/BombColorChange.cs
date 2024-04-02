@@ -27,13 +27,13 @@ public class BombColorChange : MonoBehaviour
     public bool Finished { get; private set; }
 
 
-    static protected readonly Dictionary<int, int> primary_order_index_dict = new Dictionary<int, int>
-        {
+    static protected readonly Dictionary<int, int> primary_order_index_dict = new()
+    {
           /*1*/ /*2*/  {3,2 },{4,3 },{5,4 },{6,5 },{7,6 },{8,7 }
         };
 
 
-    static protected readonly Dictionary<int, int> secondary_order_index_dict = new Dictionary<int, int>
+    static protected readonly Dictionary<int, int> secondary_order_index_dict = new()
         {
           {1,8 },{2,0 },   /*3*/ /*4*/ {5,11 },{6,10 } /*7*/ /*8*/
         };
@@ -66,34 +66,7 @@ public class BombColorChange : MonoBehaviour
         Material[] mats = rend.materials;
 
 
-
-        /*
-
-        for (int i = 0; i < mats.Length; i++)
-        {
-
-
-            if (primary_order_index_dict.ContainsKey(i))
-            {
-                mats[primary_order_index_dict[i]] = primary;
-
-            }
-            if (secondary_order_index_dict.ContainsKey(i))
-            {
-                mats[secondary_order_index_dict[i]] = secondary;
-
-            }
-
-
-
-        }
-
-        */
-
-        //this.bomb_color = color;
         mats[COLOR_INDEX] = color;
-
-        //  mats[OUTLINE_INDEX] = secondary;
         rend.materials = mats;
     }
 
@@ -143,7 +116,7 @@ public class BombColorChange : MonoBehaviour
 
 
 
-    
+
 
     double intensity;
     IEnumerator FluctuateIntensity()
@@ -151,7 +124,7 @@ public class BombColorChange : MonoBehaviour
 
 
 
-      
+
 
 
 
@@ -169,9 +142,9 @@ public class BombColorChange : MonoBehaviour
 
 
 
-            float mult = float.IsNaN(move_speed) ?0 : move_speed*25;
+            float mult = float.IsNaN(move_speed) ? 0 : move_speed * 25;
 
-            float lerp = (Mathf.Sin(Time.time * mult)+1)/2;
+            float lerp = (Mathf.Sin(Time.time * mult) + 1) / 2;
 
 
 

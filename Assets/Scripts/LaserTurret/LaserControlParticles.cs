@@ -23,8 +23,8 @@ public class LaserControlParticles : MonoBehaviour
         ps_rend = ps.GetComponent<ParticleSystemRenderer>();
         ps_emission = ps.emission;
 
-        
 
+        SpinnerChargeUp.OnLaserShotPlayerDeath += () => ps.startSize = 0;
 
 
         switch (ID)

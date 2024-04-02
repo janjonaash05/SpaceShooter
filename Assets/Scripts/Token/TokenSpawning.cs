@@ -14,7 +14,7 @@ public class TokenSpawning : MonoBehaviour
 
     [SerializeField] GameObject friendly_prefab, enemy_prefab;
 
-    bool can_spawn;
+    bool perma_stopped = false;
 
 
 
@@ -22,13 +22,12 @@ public class TokenSpawning : MonoBehaviour
 
     void Start()
     {
-
+        SpinnerChargeUp.OnLaserShotPlayerDeath += () => perma_stopped = true;
 
         friendly_mat = friendly_prefab.GetComponent<Renderer>().sharedMaterials[^1];
 
         enemy_mat = enemy_prefab.GetComponent<Renderer>().sharedMaterials[^1];
 
-        can_spawn = true;
 
 
 
@@ -55,14 +54,16 @@ public class TokenSpawning : MonoBehaviour
     {
         while (true)
         {
+            if (perma_stopped)
+            {
+                yield break;
+            }
 
 
-
-
-            float waitTime =0;//= UnityEngine.Random.Range(2, 10);
+            float waitTime = 0;//= UnityEngine.Random.Range(2, 10);
             yield return new WaitForSeconds(waitTime);
             if (GameObject.FindGameObjectWithTag(Tags.TOKEN) == null)
-              yield return  StartCoroutine(Spawn());
+                yield return StartCoroutine(Spawn());
         }
 
 
@@ -75,13 +76,16 @@ public class TokenSpawning : MonoBehaviour
 
 
 
+   
+
+
     IEnumerator Spawn()
     {
+        if (perma_stopped) yield break;
 
 
 
-
-        (GameObject prefab, Material mat) = UnityEngine.Random.Range(0, 2) switch { 0 => (friendly_prefab, friendly_mat), _ => (enemy_prefab, enemy_mat) };
+        (GameObject prefab, Material mat) = UnityEngine.Random.Range(0, 2) switch { 0 => (friendly_prefab, friendly_mat), 1 => (enemy_prefab, enemy_mat) };
         //(GameObject prefab, Material mat) = UnityEngine.Random.Range(0, 2) switch { 0 => (friendly_prefab, friendly_mat), _ => (friendly_prefab, friendly_mat) };
 
         int index = UnityEngine.Random.Range(0, 4);

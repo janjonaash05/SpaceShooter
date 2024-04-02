@@ -44,6 +44,10 @@ public class DestroyDisruptor : MonoBehaviour
 
 
 
+        Destroy(GetComponent<AfterEMP>());
+        Destroy(GetComponent<Collider>());
+
+
 
         TryGetComponent(out RotateDisruptor rd);
 

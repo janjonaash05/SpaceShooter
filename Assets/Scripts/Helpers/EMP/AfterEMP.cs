@@ -16,22 +16,29 @@ public class AfterEMP : MonoBehaviour
     private void Awake()
     {
         HelperSpawnerManager.OnEMPSpawn += OnEMP;
-    }
-    // Update is called once per frame
-    void Update()
-    {
+
+        SpinnerChargeUp.OnLaserShotPlayerDeath += OnLaserShotPlayerDeath;
 
     }
-
-
 
     private void OnDestroy()
     {
         HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+
+        SpinnerChargeUp.OnLaserShotPlayerDeath -= OnLaserShotPlayerDeath;
     }
 
 
+    
 
+
+
+
+    void OnLaserShotPlayerDeath() 
+    {
+        EMPDisrupt();
+
+    }
 
     
 
@@ -46,7 +53,6 @@ public class AfterEMP : MonoBehaviour
 
 
         EMPDisrupt();
-        StopAllCoroutines();
         CoverInColor();
         ScaleChange();
 
@@ -57,11 +63,23 @@ public class AfterEMP : MonoBehaviour
 
     void EMPDisrupt() 
     {
+
+
+
+
+
+        
+
         var disruptions = GetComponents<IEMPDisruptable>();
 
         foreach (var _ in disruptions)
         {
-            _.OnEMP();   
+            try
+            {
+                _.OnEMP();
+            }
+            catch (Exception e) { Debug.LogError(e); }
+           
         }
 
     }

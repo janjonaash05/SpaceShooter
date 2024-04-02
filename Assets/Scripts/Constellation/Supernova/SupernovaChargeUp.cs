@@ -43,7 +43,7 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
    
     void Awake()
     {
-
+        
 
         supernova_color_change = GetComponent<SupernovaColorChange>();
         float target_speed = 2f;

@@ -53,6 +53,9 @@ public class FormConstellation : MonoBehaviour
 
 
     bool spawn_locked = false;
+    bool perma_spawn_locked = false;
+
+
 
     void Start()
     {
@@ -65,7 +68,7 @@ public class FormConstellation : MonoBehaviour
 
 
         HelperSpawnerManager.OnEMPSpawn += () => spawn_locked = true;
-
+        SpinnerChargeUp.OnLaserShotPlayerDeath += () => perma_spawn_locked = true;
         HelperSpawnerManager.OnEMPDestroy += () => spawn_locked = false;
 
 
@@ -81,6 +84,9 @@ public class FormConstellation : MonoBehaviour
 
     async Task Form()
     {
+
+
+        if (spawn_locked || perma_spawn_locked) return;
 
         if (GameObject.FindGameObjectsWithTag(Tags.SUPERNOVA).Length != 0) return;
         
@@ -106,7 +112,7 @@ public class FormConstellation : MonoBehaviour
         for (int i = 0; i < STAR_AMOUNT; i++)
         {
 
-            if(spawn_locked) return ;
+            if(spawn_locked || perma_spawn_locked) return ;
 
 
 
@@ -170,7 +176,7 @@ public class FormConstellation : MonoBehaviour
         {
             while (true)
             {
-
+                if (spawn_locked || perma_spawn_locked) yield break;
 
 
                 bool ready = true;

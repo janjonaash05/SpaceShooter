@@ -67,11 +67,23 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
 
 
+    void StopOnDeath() 
+    {
+        speed = 0;
+    }
+
+
+    private void OnDestroy()
+    {
+        SpinnerChargeUp.OnLaserShotPlayerDeath -= StopOnDeath;
+    }
 
 
     void Awake()
     {
 
+
+        SpinnerChargeUp.OnLaserShotPlayerDeath += StopOnDeath;
 
 
 

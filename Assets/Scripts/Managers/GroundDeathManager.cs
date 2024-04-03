@@ -94,7 +94,10 @@ public class GroundDeathManager : MonoBehaviour
 
 
 
-
+    private void OnDestroy()
+    {
+        SpinnerChargeUp.OnLaserShotPlayerDeath -= Die;
+    }
 
     void Start()
     {

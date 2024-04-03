@@ -21,6 +21,7 @@ public class CoreEnergyPSChange : MonoBehaviour
 
 
 
+    Dictionary<int, Action> toExecuteDict;
     void Start()
     {
         core_adapter_rend = core_adapter.GetComponent<Renderer>();
@@ -32,7 +33,7 @@ public class CoreEnergyPSChange : MonoBehaviour
 
 
 
-        Dictionary<int, Action> toExecuteDict = new()
+         toExecuteDict = new()
         {
             { 0, () => { ps_rend.material = mats_storage[4]; ps_rend.trailMaterial = ps_rend.material; ChangeAdapterColor(ps_rend.material); ps.emissionRate = 0; } },
             { 1, () => { ps_rend.material = mats_storage[4]; ps_rend.trailMaterial = ps_rend.material; ChangeAdapterColor(ps_rend.material); ps.emissionRate = 5; } },
@@ -46,11 +47,21 @@ public class CoreEnergyPSChange : MonoBehaviour
 
 
 
-        CoreCommunication.OnParentValueChangedCore += () => toExecuteDict[CoreCommunication.CORE_INDEX_HOLDER.Parent]();
+        CoreCommunication.OnParentValueChangedCore += OnParentValueChangedCore;
        
     }
 
-    // Update is called once per frame
+
+
+
+
+    void OnParentValueChangedCore() => toExecuteDict[CoreCommunication.CORE_INDEX_HOLDER.Parent]();
+
+
+    private void OnDestroy()
+    {
+        CoreCommunication.OnParentValueChangedCore -= OnParentValueChangedCore;
+    }
 
 
 

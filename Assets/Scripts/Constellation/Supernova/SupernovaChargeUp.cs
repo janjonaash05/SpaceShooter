@@ -148,17 +148,22 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
     }
 
-    float lerp_speed = 1;
+    float lerp_speed = 2;
     public IEnumerator RotateTowardsCore()
     {
 
         Quaternion targetRot = Quaternion.LookRotation(GameObject.FindGameObjectWithTag(Tags.CORE).transform.position - transform.position);
 
+
+        Quaternion start_rotation = transform.rotation;
+
+
+
         float lerp = 0;
         while (lerp <= 1)
         {
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, lerp);
+            transform.rotation = Quaternion.Slerp(start_rotation, targetRot, lerp);
             lerp += Time.deltaTime * lerp_speed;
             yield return null;
 

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public static class Tags
 {
+    public const string PLAYER = "Player";
+
+
+
+
     public const string MATERIAL_HOLDER = "MaterialHolder";
 
     public const string COLOR_COLLIDER_1 = "ColorCollider1";
@@ -100,5 +105,10 @@ public static class Tags
 
 
     public const string BUTTON = "Button";
+
+
+
+
+
 
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StarEmergence : MonoBehaviour, IEMPDisruptable
@@ -22,10 +23,16 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
 
         target_scale = transform.localScale;
 
-
-        RotateTowardsPlayer();
         Emerge(1f);
+       
+        
     }
+
+
+
+  
+
+
 
 
     public void OnEMP()
@@ -36,11 +43,30 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
  
 
 
-    void RotateTowardsPlayer()
+   public void RotateTowardsPlayer()
     {
-        Vector3 rotationDirection = (Camera.main.transform.position - transform.position).normalized;
-        transform.rotation = Quaternion.LookRotation(rotationDirection);
+
+
+
+        /*
+        Vector3 rotationDirection = (Camera.main.transform.position - transform.position);
+
+        Quaternion targetRot = Quaternion.LookRotation(Camera.main.transform.position - transform.position);
+        */
+
+
+
+          transform.rotation = Quaternion.LookRotation(GameObject.FindWithTag(Tags.PLAYER).transform.position - transform.position);
+
+
+
+
         transform.Rotate(Vector3.up, 90);
+
+
+        Debug.LogError("Rotating towards");
+
+
 
         transform.localScale = Vector3.zero;
 

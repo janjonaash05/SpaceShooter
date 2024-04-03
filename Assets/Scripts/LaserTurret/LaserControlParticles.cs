@@ -17,6 +17,41 @@ public class LaserControlParticles : MonoBehaviour
 
 
 
+
+
+    void LaserShotPlayerDeath() => ps.startSize = 0;
+
+
+    private void OnDestroy()
+    {
+        SpinnerChargeUp.OnLaserShotPlayerDeath -= LaserShotPlayerDeath;
+
+
+        switch (ID)
+        {
+            case 1:
+                LaserTurretCommunicationChannels.Channel1.OnControlDisabled -= EnableParticles;
+                LaserTurretCommunicationChannels.Channel1.OnControlEnabled -= DisableParticles;
+
+
+                break;
+
+            case 2:
+
+                LaserTurretCommunicationChannels.Channel2.OnControlDisabled -= EnableParticles;
+                LaserTurretCommunicationChannels.Channel2.OnControlEnabled -= DisableParticles;
+
+
+                break;
+
+        }
+    }
+
+
+
+
+
+
     void Start()
     {
         ps = transform.GetChild(transform.childCount - 1).GetComponent<ParticleSystem>();
@@ -24,7 +59,7 @@ public class LaserControlParticles : MonoBehaviour
         ps_emission = ps.emission;
 
 
-        SpinnerChargeUp.OnLaserShotPlayerDeath += () => ps.startSize = 0;
+        SpinnerChargeUp.OnLaserShotPlayerDeath += LaserShotPlayerDeath;
 
 
         switch (ID)

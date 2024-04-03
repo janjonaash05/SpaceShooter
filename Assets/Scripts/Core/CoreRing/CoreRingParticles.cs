@@ -18,6 +18,29 @@ public class CoreRingParticles : MonoBehaviour
     ParticleSystemRenderer ps_renderer;
     ParticleSystem ps;
 
+
+
+    void ParentValueChangedCore() 
+    {
+
+        ps.emissionRate = CoreCommunication.CORE_INDEX_HOLDER.Parent switch
+        {
+
+            0 => 0,
+            1 => 10,
+            2 => 50,
+            3 => 200,
+            4 => 300,
+            5 => 500,
+
+
+
+        };
+    }
+
+
+
+
     void Start()
     {
         colorChange = GetComponent<CoreRingColorChange>();
@@ -32,24 +55,13 @@ public class CoreRingParticles : MonoBehaviour
 
 
 
-        CoreCommunication.OnParentValueChangedCore += () =>
-        {
-            ps.emissionRate = CoreCommunication.CORE_INDEX_HOLDER.Parent switch
-            {
-
-              0 => 0,
-              1 => 10,
-              2 => 50,
-              3 => 200,
-              4 => 300,
-              5 => 500,
+        CoreCommunication.OnParentValueChangedCore += ParentValueChangedCore;
+    }
 
 
-
-            };
-
-
-        };
+    private void OnDestroy()
+    {
+        CoreCommunication.OnParentValueChangedCore -= ParentValueChangedCore;
     }
 
 

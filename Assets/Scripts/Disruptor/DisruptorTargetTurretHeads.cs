@@ -62,6 +62,10 @@ public class DisruptorTargetTurretHeads : MonoBehaviour, IEMPDisruptable
     public IEnumerator Rotations()
     {
 
+
+        /*
+
+
         Vector3 target_up = cam.position;
         target_up.y = transform.position.y;
 
@@ -102,6 +106,24 @@ public class DisruptorTargetTurretHeads : MonoBehaviour, IEMPDisruptable
         target_right.y = transform.position.y;
 
         yield return StartCoroutine(rotateDisruptor.RotateTowards(target_right));
+
+
+        */
+
+
+        Vector3 target_down = turretHead1.position;
+        target_down.x = 0;
+        yield return StartCoroutine(rotateDisruptor.RotateTowards(target_down));
+
+        charge1.GetComponent<MoveDisruptorCharge>().StartMovement();
+        charge2.GetComponent<MoveDisruptorCharge>().StartMovement();
+
+
+        Vector3 target_player = GameObject.FindWithTag(Tags.PLAYER).transform.position;
+
+        yield return StartCoroutine(rotateDisruptor.RotateTowards(target_player));
+
+
 
         GetComponent<DisruptorStartEndMovement>().MoveDown();
 

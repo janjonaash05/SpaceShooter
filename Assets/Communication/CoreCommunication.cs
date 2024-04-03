@@ -60,12 +60,6 @@ public static class CoreCommunication
 
 
 
-        SpinnerChargeUp.OnLaserShotPlayerDeath += () =>
-        {
-            LaserTurretCommunicationChannels.Channel1.OnManualTargeting -= ManualTargeting;
-            LaserTurretCommunicationChannels.Channel2.OnManualTargeting -= ManualTargeting;
-
-        };
 
 
 
@@ -74,10 +68,27 @@ public static class CoreCommunication
 
         CORE_INDEX_HOLDER = new(4, 4, MaterialIndexHolder.Target.CORE, MaterialIndexHolder.Edge.UPPER);
 
+        Debug.LogWarning("INDEX HOLDERS INITS");
+
+
+
         OnCommunicationInit?.Invoke();
     }
 
 
+
+
+
+
+
+
+    static void Destroy() 
+    {
+        LaserTurretCommunicationChannels.Channel1.OnManualTargeting -= ManualTargeting;
+        LaserTurretCommunicationChannels.Channel2.OnManualTargeting -= ManualTargeting;
+
+
+    }
 
 
 

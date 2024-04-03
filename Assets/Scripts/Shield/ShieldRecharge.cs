@@ -11,7 +11,7 @@ using UnityEngine;
 public class ShieldRecharge : MonoBehaviour
 {
 
-     int max_capacity;
+    int max_capacity;
 
 
     [SerializeField] GameObject charge_prefab;
@@ -33,7 +33,7 @@ public class ShieldRecharge : MonoBehaviour
 
 
 
-    
+
 
 
     ParticleSystem ps;
@@ -42,6 +42,23 @@ public class ShieldRecharge : MonoBehaviour
     Renderer emitter_rend, antenna_rend;
 
     Material on_mat, off_mat;
+
+
+
+
+
+    private void OnDestroy()
+    {
+
+        CoreCommunication.OnBombFallen -= BombFallen;
+        CoreCommunication.OnShieldDepleted -= RechargeOnDepletion;
+        UpgradesManager.OnShieldMaxCapacityValueChange -= ShieldMaxCapacityValueChange;
+    }
+
+
+
+
+
     void Start()
     {
 
@@ -64,36 +81,11 @@ public class ShieldRecharge : MonoBehaviour
 
 
 
-      
-
-        CoreCommunication.OnBombFallen += (m) =>
-        {
-            if (recharging) return;
-            charges[CoreCommunication.SHIELD_CAPACITY].GetComponent<Renderer>().enabled = false;
-
-        };
 
 
+        CoreCommunication.OnBombFallen += BombFallen;
         CoreCommunication.OnShieldDepleted += RechargeOnDepletion;
-
-
-
-        UpgradesManager.OnShieldMaxCapacityValueChange += () =>
-        {
-
-
-            if (recharging)
-            {
-                StartCoroutine(UpgradeRecharging());
-                return;
-            }
-
-
-            StartCoroutine(Upgrade());
-
-
-
-        };
+        UpgradesManager.OnShieldMaxCapacityValueChange += ShieldMaxCapacityValueChange;
 
 
 
@@ -106,6 +98,35 @@ public class ShieldRecharge : MonoBehaviour
 
 
     }
+
+
+
+
+
+    void BombFallen(Material m)
+    {
+        if (recharging) return;
+        charges[CoreCommunication.SHIELD_CAPACITY].GetComponent<Renderer>().enabled = false;
+
+    }
+
+    void ShieldMaxCapacityValueChange()
+    {
+        if (recharging)
+        {
+            StartCoroutine(UpgradeRecharging());
+            return;
+        }
+
+
+        StartCoroutine(Upgrade());
+    }
+
+
+
+
+
+
 
     void RechargeOnDepletion()
     {
@@ -136,11 +157,11 @@ public class ShieldRecharge : MonoBehaviour
             {
                 charges[i].GetComponent<Renderer>().enabled = false;
             }
-            catch 
+            catch
             {
-            
+
             }
-            
+
         }
 
     }
@@ -325,15 +346,15 @@ public class ShieldRecharge : MonoBehaviour
             ARBITRARY_SHIELD_RECHARGED_CAPACITY++;
 
             i++;
-            float recharge_delay = (i <= skips_amount) ? 0 : CoreCommunication.CORE_INDEX_HOLDER.Parent switch 
+            float recharge_delay = (i <= skips_amount) ? 0 : CoreCommunication.CORE_INDEX_HOLDER.Parent switch
             {
-            5 => 0.75f,
-            4 => 1f,
-            3 => 1.25f,
-            2 => 1.5f,
-            1 => 1.75f,
-            0 => float.PositiveInfinity
-            
+                5 => 0.75f,
+                4 => 1f,
+                3 => 1.25f,
+                2 => 1.5f,
+                1 => 1.75f,
+                0 => float.PositiveInfinity
+
             };
 
 

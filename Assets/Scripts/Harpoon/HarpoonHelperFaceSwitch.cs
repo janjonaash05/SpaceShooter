@@ -108,7 +108,7 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
         current_helper = HelperSpawnerManager.HelperType.BLACK_HOLE;
 
-
+        /*
         PlayerInputCommunication.OnHelperStationArrowDownClick += (_) => { ArrowDown(); ShowHelperState(); };
         PlayerInputCommunication.OnHelperStationArrowUpClick += (_) => { ArrowUp(); ShowHelperState(); };
 
@@ -131,6 +131,14 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
 
         };
+        */
+
+
+        PlayerInputCommunication.OnHelperStationArrowDownClick += HelperStationArrowDownClick;
+        PlayerInputCommunication.OnHelperStationArrowUpClick += HelperStationArrowUpClick;
+
+
+        PlayerInputCommunication.OnHelperStationClick += HelperStationClick;
 
 
         AssignFaceRenderers(StationType.HELPER);
@@ -139,6 +147,52 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
         Debug.LogError(faces_rend.Count + " facescoutn");
         ShowHelperState();
 
+    }
+
+
+
+
+
+
+
+
+    void HelperStationArrowDownClick(RaycastHit _)
+    {
+        ArrowDown(); ShowHelperState();
+
+    }
+
+
+    void HelperStationArrowUpClick(RaycastHit _)
+    {
+        ArrowUp(); ShowHelperState();
+
+    }
+
+
+
+    void HelperStationClick(RaycastHit _) 
+    {
+        if (!type_state_dict[current_helper].Recharging)
+        {
+            HelperSpawnerManager.Instance().SpawnHelper(current_helper);
+        }
+
+
+
+        Debug.LogError("STARTCOUNTDOWN");
+        var a = type_state_dict[current_helper].StartCountDown();
+    }
+
+
+
+    private void OnDestroy()
+    {
+        PlayerInputCommunication.OnHelperStationArrowDownClick -= HelperStationArrowDownClick;
+        PlayerInputCommunication.OnHelperStationArrowUpClick -= HelperStationArrowUpClick;
+
+
+        PlayerInputCommunication.OnHelperStationClick -= HelperStationClick;
     }
 
 

@@ -41,10 +41,26 @@ public class GroundDeathColorChange : MonoBehaviour
 
     Dictionary<DeathTarget, (Action color_change_type, Action manager_listener)> target_actions_dict;
 
+
+
+
+    void MaterialChange(Material m) 
+    {
+        changing_mat = m ;
+        if (!locked) color_change();
+    }
+
+
+    private void OnDestroy()
+    {
+        SpinnerColorChange.OnMaterialChange -= MaterialChange;
+    }
+
+
     void Start()
     {
         rend = GetComponent<Renderer>();
-        SpinnerColorChange.OnMaterialChange += (m) => changing_mat = m;
+        SpinnerColorChange.OnMaterialChange += MaterialChange;
         target_actions_dict = new()
         {
 
@@ -76,7 +92,7 @@ public class GroundDeathColorChange : MonoBehaviour
         target_actions_dict[death_target].manager_listener?.Invoke();
 
         color_change = target_actions_dict[death_target].color_change_type;
-        SpinnerColorChange.OnMaterialChange += (m) => { if (!locked) color_change(); };
+        
 
 
     }

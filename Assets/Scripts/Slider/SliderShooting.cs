@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -37,6 +38,33 @@ public class SliderShooting : MonoBehaviour
 
     ParticleSystem active_ps;
 
+
+
+    private void OnDestroy()
+    {
+        PlayerInputCommunication.OnMouseDown -= StartShooting;
+        PlayerInputCommunication.OnMouseUp -= CancelShooting;
+
+        PlayerInputCommunication.OnSliderBoltClick -= SliderBoltClick;
+        PlayerInputCommunication.OnSliderFullAutoClick -= SliderFullAutoClick;
+
+        UpgradesManager.OnSliderSpeedValueChange -= SliderSpeedValueChange;
+
+    }
+
+
+
+
+    void SliderBoltClick(RaycastHit _) { loader_recharge = pivot_source_bolt_recharge; active_ps = bolt_ps; }
+    void SliderFullAutoClick(RaycastHit _) { loader_recharge = pivot_source_full_auto_recharge; active_ps = full_auto_ps; }
+
+
+    void SliderSpeedValueChange() => (bullet_speed_full_auto, bullet_speed_bolt)
+        = UpgradesManager.SLIDER_SPEED_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.SLIDER_SPEED]];
+
+
+
+
     void Start()
     {
         
@@ -53,19 +81,26 @@ public class SliderShooting : MonoBehaviour
 
 
 
-        PlayerInputCommunication.OnSliderBoltClick += (_) => { loader_recharge = pivot_source_bolt_recharge; active_ps = bolt_ps; };
-        PlayerInputCommunication.OnSliderFullAutoClick += (_) => { loader_recharge = pivot_source_full_auto_recharge; active_ps = full_auto_ps; };
+        //   PlayerInputCommunication.OnSliderBoltClick += (_) => { loader_recharge = pivot_source_bolt_recharge; active_ps = bolt_ps; };
+        //  PlayerInputCommunication.OnSliderFullAutoClick += (_) => { loader_recharge = pivot_source_full_auto_recharge; active_ps = full_auto_ps; };
+
+        PlayerInputCommunication.OnSliderBoltClick += SliderBoltClick;
+        PlayerInputCommunication.OnSliderFullAutoClick += SliderFullAutoClick;
 
 
 
-        (bullet_speed_full_auto, bullet_speed_bolt)
+
+
+      (bullet_speed_full_auto, bullet_speed_bolt)
         = UpgradesManager.SLIDER_SPEED_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.SLIDER_SPEED]];
 
+        /*
+                UpgradesManager.OnSliderSpeedValueChange += () => 
+                (bullet_speed_full_auto, bullet_speed_bolt) 
+                = UpgradesManager.SLIDER_SPEED_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.SLIDER_SPEED]];
+        */
 
-        UpgradesManager.OnSliderSpeedValueChange += () => 
-        (bullet_speed_full_auto, bullet_speed_bolt) 
-        = UpgradesManager.SLIDER_SPEED_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.SLIDER_SPEED]];
-
+        UpgradesManager.OnSliderSpeedValueChange += SliderSpeedValueChange;
 
 
 

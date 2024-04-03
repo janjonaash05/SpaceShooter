@@ -54,6 +54,7 @@ TagManager:
   - HelperSpawnerManager
   - BlackHole
   - Blocker
+  - Button
   layers:
   - Default
   - TransparentFX

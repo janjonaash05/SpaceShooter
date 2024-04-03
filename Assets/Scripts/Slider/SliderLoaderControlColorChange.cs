@@ -41,8 +41,16 @@ public class SliderLoaderControlColorChange : MonoBehaviour
 
 
 
+    private void OnDestroy()
+    {
+        PlayerInputCommunication.OnSliderFullAutoClick -= TurnOnFullAuto;
+        PlayerInputCommunication.OnSliderFullAutoClick -= TurnOffBolt;
 
-    
+        PlayerInputCommunication.OnSliderBoltClick -= TurnOnBolt;
+        PlayerInputCommunication.OnSliderBoltClick -= TurnOffFullAuto;
+
+    }
+
 
 
     void TurnOffBolt(RaycastHit hit)

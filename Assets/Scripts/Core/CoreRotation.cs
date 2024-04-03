@@ -58,9 +58,17 @@ public class CoreRotation : MonoBehaviour
 
     bool disabled = false;
 
+
+
+
+
+
+
+
+
     void Start()
     {
-        SpinnerChargeUp.OnLaserShotPlayerDeath += () => disabled = true;
+        SpinnerChargeUp.OnLaserShotPlayerDeath += OnLaserShotPlayerDeath;
 
 
         mats_storage = MaterialHolder.Instance().PLAYER_HEALTH_SET();
@@ -90,19 +98,25 @@ public class CoreRotation : MonoBehaviour
 
         speed = speed_parent_dict[5];
 
+        /*
         CoreCommunication.OnParentValueChangedCore += () =>
         {
+
             speed = speed_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent];
 
-
         };
+        */
 
 
 
 
-        CoreCommunication.OnParentValueChangedCore += () => { ps_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent](); };
+        //  CoreCommunication.OnParentValueChangedCore += () => { ps_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent](); };
 
-        CoreRingColorChange.OnMaterialChange += (m) => changing_mat = m;
+        // CoreRingColorChange.OnMaterialChange += (m) => changing_mat = m;
+
+
+        CoreRingColorChange.OnMaterialChange += MaterialChange;
+        CoreCommunication.OnParentValueChangedCore += OnParentValueChangedCore;
 
         changing_mat = MaterialHolder.Instance().PLAYER_HEALTH_SET()[0];
 
@@ -116,10 +130,29 @@ public class CoreRotation : MonoBehaviour
 
     }
 
+
+
+    void MaterialChange(Material m) => changing_mat = m;
+
+    void OnParentValueChangedCore() { speed = speed_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent]; ps_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent](); }
+
+
+    void OnLaserShotPlayerDeath() => disabled = true;
+
+    private void OnDestroy()
+    {
+        SpinnerChargeUp.OnLaserShotPlayerDeath -= OnLaserShotPlayerDeath;
+        CoreRingColorChange.OnMaterialChange -= MaterialChange;
+        CoreCommunication.OnParentValueChangedCore -= OnParentValueChangedCore;
+    }
+
+
+
+
     // Update is called once per frame
     void Update()
     {
-        if(disabled) return;
+        if (disabled) return;
         transform.Rotate(-speed * Time.deltaTime);
 
         rend.materials = CoreCommunication.CORE_INDEX_HOLDER.Parent switch

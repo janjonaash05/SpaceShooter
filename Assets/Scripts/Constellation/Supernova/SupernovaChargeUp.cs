@@ -86,24 +86,7 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
-        StarFall.OnStarFallen += (m) =>
-        {
-
-
-
-            if (index >= 9) return;
-            rotation_speed = rotation_speeds[index];
-
-            scale = scales[index];
-
-            index++;
-
-
-
-
-
-            shoot_mats.Add(m);
-        };
+        StarFall.OnStarFallen += StarFallen;
 
 
 
@@ -141,7 +124,29 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
     */
 
+    private void OnDestroy()
+    {
+        StarFall.OnStarFallen -= StarFallen;
+    }
 
+
+
+    void StarFallen(Material m) 
+    {
+        if (index >= 9) return;
+        rotation_speed = rotation_speeds[index];
+
+        scale = scales[index];
+
+        index++;
+
+
+
+
+
+        shoot_mats.Add(m);
+
+    }
 
     float lerp_speed = 1;
     public IEnumerator RotateTowardsCore()

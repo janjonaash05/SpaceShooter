@@ -49,10 +49,26 @@ public static class CoreCommunication
 
 
 
-      
 
-        LaserTurretCommunicationChannels.Channel1.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
-        LaserTurretCommunicationChannels.Channel2.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
+
+        // LaserTurretCommunicationChannels.Channel1.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
+        // LaserTurretCommunicationChannels.Channel2.OnManualTargeting += (g) => Raise_ValueChange(0, -1);
+
+
+        LaserTurretCommunicationChannels.Channel1.OnManualTargeting += ManualTargeting;
+        LaserTurretCommunicationChannels.Channel2.OnManualTargeting += ManualTargeting;
+
+
+
+        SpinnerChargeUp.OnLaserShotPlayerDeath += () =>
+        {
+            LaserTurretCommunicationChannels.Channel1.OnManualTargeting -= ManualTargeting;
+            LaserTurretCommunicationChannels.Channel2.OnManualTargeting -= ManualTargeting;
+
+        };
+
+
+
 
         SPINNER_INDEX_HOLDER = new(1, 1, MaterialIndexHolder.Target.SPINNER, MaterialIndexHolder.Edge.LOWER);
 
@@ -60,6 +76,12 @@ public static class CoreCommunication
 
         OnCommunicationInit?.Invoke();
     }
+
+
+
+
+
+    static void ManualTargeting(GameObject g) => Raise_ValueChange(0, -1);
 
 
 

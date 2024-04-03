@@ -33,9 +33,21 @@ public class BombSpawnerGrid : MonoBehaviour
     int start_amount;
 
 
+
+
+
+    void BombSpawnerForm() => StartCoroutine(SwitchPlaceholderForSpawner());
+
+
+    private void OnDestroy()
+    {
+        DifficultyManager.OnBombSpawnerForm -= BombSpawnerForm;
+
+    }
+
     void Start()
     {
-        DifficultyManager.OnBombSpawnerForm += () => StartCoroutine(SwitchPlaceholderForSpawner());
+        DifficultyManager.OnBombSpawnerForm += BombSpawnerForm;
 
         start_amount = (size_x * size_y) / 3;
         positions = new Vector3[size_x, size_y];

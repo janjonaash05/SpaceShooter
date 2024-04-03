@@ -17,6 +17,9 @@ public class TokenTransportColorChange : MonoBehaviour
 
 
 
+    void OnLaserShotPlayerDeath() => perma_stopped = true;
+
+
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -24,10 +27,18 @@ public class TokenTransportColorChange : MonoBehaviour
 
 
 
-        SpinnerChargeUp.OnLaserShotPlayerDeath += () => perma_stopped = true;
+        SpinnerChargeUp.OnLaserShotPlayerDeath += OnLaserShotPlayerDeath;
 
 
     }
+
+
+
+    private void OnDestroy()
+    {
+        SpinnerChargeUp.OnLaserShotPlayerDeath -= OnLaserShotPlayerDeath;
+    }
+
 
     // Update is called once per frame
     void Update()

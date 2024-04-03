@@ -72,6 +72,7 @@ public class HarpoonLaunch : MonoBehaviour
         off_color_head = head_renderer.materials[1];
         off_color_charge = head_renderer.materials[0];
 
+        /*
         PlayerInputCommunication.OnHarpoonColliderClick += (hit) =>
         {
             turnedOff = !turnedOff;
@@ -85,18 +86,45 @@ public class HarpoonLaunch : MonoBehaviour
 
 
         };
+        */
 
 
 
 
-        PlayerInputCommunication.OnMouseDown += () => { if (!turnedOff) StartCoroutine(Launch()); };
-    
+
+
+        PlayerInputCommunication.OnMouseDown += MouseDown;
+        PlayerInputCommunication.OnHarpoonColliderClick += HarpoonColliderClick;
     }
 
 
 
+    private void OnDestroy()
+    {
+        PlayerInputCommunication.OnMouseDown -= MouseDown;
+        PlayerInputCommunication.OnHarpoonColliderClick -= HarpoonColliderClick;
+    }
 
-    
+    private void MouseDown()
+    {
+        if (!turnedOff) StartCoroutine(Launch());
+    }
+
+
+
+    void HarpoonColliderClick(RaycastHit hit) 
+    {
+        turnedOff = !turnedOff;
+        Debug.Log(turnedOff + " turned off");
+        harpoon_station_charge.GetComponent<Renderer>().material = (turnedOff) ? off_color_charge : charge_color;
+
+        Material[] head_mats = harpoon_head.GetComponent<Renderer>().materials;
+        head_mats[2] = turnedOff ? off_color_head : charge_color;
+
+        harpoon_head.GetComponent<Renderer>().materials = head_mats;
+    }
+
+
 
 
     IEnumerator LaunchProcess()

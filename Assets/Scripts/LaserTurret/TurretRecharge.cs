@@ -45,16 +45,12 @@ public class TurretRecharge : MonoBehaviour
         ps = transform.GetChild(0).GetComponent<ParticleSystem>();
 
 
+
+        /*
+
         switch (ID)
         {
             case 1:
-
-                // OnRechargeStart += LaserTurretCommunicationChannels.Channel1.Raise_DisableAutoTargeting;
-                // OnRechargeEnd += LaserTurretCommunicationChannels.Channel1.Raise_EnableAutoTargeting;
-
-         
-
-
 
                 LaserTurretCommunicationChannels.Channel1.OnTurretCapacityChanged += () =>
                 {
@@ -71,7 +67,6 @@ public class TurretRecharge : MonoBehaviour
 
             case 2:
 
-     
                 LaserTurretCommunicationChannels.Channel2.OnTurretCapacityChanged += () =>
                 {
                     if (recharging) return;
@@ -102,8 +97,92 @@ public class TurretRecharge : MonoBehaviour
 
 
         };
+        */
+
+
+        switch (ID)
+        {
+            case 1:
+
+                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityChanged += Turret1CapacityValueChanged;
+
+
+                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityDepleted += TurretCapacityDepleted;
+
+                break;
+
+            case 2:
+
+                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityChanged += Turret2CapacityValueChanged;
+
+
+                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityDepleted += TurretCapacityDepleted;
+                break;
+        }
+
+        UpgradesManager.OnTurretCapacityValueChange += TurretCapacityUpgradeValueChange;
 
     }
+
+
+    void Turret1CapacityValueChanged()
+    {
+        if (recharging) return;
+        charges[LaserTurretCommunicationChannels.Channel1.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
+    }
+
+
+    void Turret2CapacityValueChanged()
+    {
+        if (recharging) return;
+        charges[LaserTurretCommunicationChannels.Channel2.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
+    }
+
+
+    void TurretCapacityDepleted() => RechargeOnDepletion();
+
+
+    void TurretCapacityUpgradeValueChange() 
+    {
+        if (recharging)
+        {
+            StartCoroutine(UpgradeRecharging());
+            return;
+        }
+
+
+        StartCoroutine(Upgrade());
+
+    }
+
+
+    private void OnDestroy()
+    {
+        switch (ID)
+        {
+            case 1:
+
+                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityChanged -= Turret1CapacityValueChanged;
+
+
+                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityDepleted -= TurretCapacityDepleted;
+
+                break;
+
+            case 2:
+
+                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityChanged -= Turret2CapacityValueChanged;
+
+
+                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityDepleted -= TurretCapacityDepleted;
+                break;
+        }
+
+        UpgradesManager.OnTurretCapacityValueChange -= TurretCapacityUpgradeValueChange;
+    }
+
+
+
 
 
     void RechargeOnDepletion()

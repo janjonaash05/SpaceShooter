@@ -20,19 +20,30 @@ public class HarpoonUpgradeFaceSwitch : HarpoonFaceSwitch
     UpgradesManager.UpgradeType current_upgrade;
 
 
-
-
-    
-
-    protected override void Start() 
+    private void OnDestroy()
     {
-     
+        PlayerInputCommunication.OnUpgradeStationArrowDownClick -= UpgradeStationArrowDownClick;
+
+        PlayerInputCommunication.OnUpgradeStationArrowUpClick -= UpgradeStationArrowUpClick;
+
+        PlayerInputCommunication.OnUpgradeStationClick -= UpgradeStationClick;
+    }
+
+
+
+    protected override void Start()
+    {
+
         base.Start();
 
 
 
 
         ShowUpgradeDegree();
+
+
+
+        /*
 
         PlayerInputCommunication.OnUpgradeStationArrowDownClick += (_) => { ArrowDown(); ShowUpgradeDegree(); };
 
@@ -47,17 +58,49 @@ public class HarpoonUpgradeFaceSwitch : HarpoonFaceSwitch
                 ShowUpgradeDegree();
             }
         };
+        */
+
+
+
+        PlayerInputCommunication.OnUpgradeStationArrowDownClick += UpgradeStationArrowDownClick;
+
+        PlayerInputCommunication.OnUpgradeStationArrowUpClick += UpgradeStationArrowUpClick;
+
+        PlayerInputCommunication.OnUpgradeStationClick += UpgradeStationClick;
 
 
         AssignFaceRenderers(StationType.UPGRADE);
 
-       
+
+
+    }
+
+    void UpgradeStationArrowDownClick(RaycastHit _)
+    {
+        ArrowDown(); ShowUpgradeDegree();
+
+    }
+
+
+    void UpgradeStationArrowUpClick(RaycastHit _)
+    {
+        ArrowUp(); ShowUpgradeDegree();
 
     }
 
 
 
 
+    void UpgradeStationClick(RaycastHit _) 
+    {
+        if (UICommunication.Tokens > 0 && UpgradesManager.UPGRADE_VALUE_DICT[current_upgrade] < UpgradesManager.MAX_VALUE)
+        {
+            UpgradesManager.IncreaseValue(current_upgrade);
+            UICommunication.Raise_TokenChange(-1);
+            ShowUpgradeDegree();
+        }
+
+    }
     void ShowUpgradeDegree()
     {
 

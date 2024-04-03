@@ -27,12 +27,22 @@ public class SliderControlActivation : MonoBehaviour
     Transform slider_pivot_transform;
 
 
+
+    void SliderControlClick(RaycastHit hit) => EngageActivation();
+
+
+    private void OnDestroy()
+    {
+        PlayerInputCommunication.OnSliderControlClick -= SliderControlClick;
+    }
+
+
     void Start()
     {
         on_material = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
         off_material = GetComponent<Renderer>().materials[1];
 
-        PlayerInputCommunication.OnSliderControlClick += (_) => EngageActivation();
+        PlayerInputCommunication.OnSliderControlClick += SliderControlClick;
 
 
 

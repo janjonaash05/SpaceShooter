@@ -29,6 +29,49 @@ public class LaserControlColorChange : MonoBehaviour
 
 
 
+
+
+
+    private void OnDestroy()
+    {
+
+        switch (ID)
+        {
+            case 1:
+                LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange -= StartChange;
+                LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange -= StartChange;
+
+
+                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingDisabled -= DisableAutoTargeting;
+                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingEnabled += EnableAutoTargeting;
+
+
+                LaserTurretCommunicationChannels.Channel1.OnControlDisabled -= TurnOff;
+                LaserTurretCommunicationChannels.Channel1.OnControlEnabled -= TurnOn;
+
+
+                break;
+
+            case 2:
+
+                LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange -= StartChange;
+                LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange -= StartChange;
+
+
+                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingDisabled -= DisableAutoTargeting;
+                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingEnabled -= EnableAutoTargeting;
+
+
+                LaserTurretCommunicationChannels.Channel2.OnControlDisabled -= TurnOff;
+                LaserTurretCommunicationChannels.Channel2.OnControlEnabled -= TurnOn;
+
+                break;
+
+        }
+    }
+
+
+
     public void Start()
     {
         current_mats = GetComponent<Renderer>().materials;

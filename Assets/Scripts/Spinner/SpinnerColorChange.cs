@@ -9,7 +9,7 @@ public class SpinnerColorChange : MonoBehaviour
 {
 
 
-    Material changing_mat;
+   public static Material CHANGING_MAT { get; private set; }
   
 
 
@@ -31,6 +31,19 @@ public class SpinnerColorChange : MonoBehaviour
     const int PRIMARY_INDEX = 1, SECONDARY_INDEX = 0, CHARGING_INDEX = 2;
 
 
+    void SpinnerChargeUpStart() => EngageChargeUp(true);
+    void SpinnerChargeUpEnd() => EngageChargeUp(false);
+
+
+
+
+    private void OnDestroy()
+    {
+        CoreCommunication.OnSpinnerChargeUpStart -= SpinnerChargeUpStart;
+        CoreCommunication.OnSpinnerChargeUpEnd -= SpinnerChargeUpEnd;
+        CoreCommunication.OnSpinnerInitialColorUp -= InitialColorSetup;
+
+    }
 
 
     void Start()
@@ -40,8 +53,8 @@ public class SpinnerColorChange : MonoBehaviour
 
         mats_storage = MaterialHolder.Instance().COLOR_SET_WHOLE();
 
-        CoreCommunication.OnSpinnerChargeUpStart += () => EngageChargeUp(true);
-        CoreCommunication.OnSpinnerChargeUpEnd += () => EngageChargeUp(false);
+        CoreCommunication.OnSpinnerChargeUpStart += SpinnerChargeUpStart;
+        CoreCommunication.OnSpinnerChargeUpEnd += SpinnerChargeUpEnd;
         CoreCommunication.OnSpinnerInitialColorUp += InitialColorSetup;
 
 
@@ -74,7 +87,7 @@ public class SpinnerColorChange : MonoBehaviour
 
         newMats[PRIMARY_INDEX] = primary;
         newMats[SECONDARY_INDEX] = secondary;
-        newMats[CHARGING_INDEX] = charge_up_mode ? changing_mat : secondary;
+        newMats[CHARGING_INDEX] = charge_up_mode ? CHANGING_MAT : secondary;
     }
 
     void InitialColorSetup()
@@ -153,7 +166,7 @@ public class SpinnerColorChange : MonoBehaviour
             {
 
 
-                newMats[i] = changing_mat;
+                newMats[i] = CHANGING_MAT;
 
             }
         }
@@ -172,7 +185,7 @@ public class SpinnerColorChange : MonoBehaviour
 
 
         rend.materials = newMats;
-        charge.GetComponent<Renderer>().materials = new[] { changing_mat, changing_mat };
+        charge.GetComponent<Renderer>().materials = new[] { CHANGING_MAT, CHANGING_MAT };
 
 
 
@@ -188,7 +201,7 @@ public class SpinnerColorChange : MonoBehaviour
             foreach (Material m in mats_storage)
             {
 
-                changing_mat = m;
+                CHANGING_MAT = m;
                 OnMaterialChange?.Invoke(m);
                 ChangeMaterialArray();
 

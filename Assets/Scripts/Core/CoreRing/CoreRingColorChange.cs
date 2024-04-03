@@ -66,6 +66,13 @@ public class CoreRingColorChange : MonoBehaviour
     }
 
 
+
+    private void OnDestroy()
+    {
+        CoreCommunication.OnCommunicationInit -= Init;
+    }
+
+
     private void Init()
     {
         index_holder = CoreCommunication.CORE_INDEX_HOLDER;

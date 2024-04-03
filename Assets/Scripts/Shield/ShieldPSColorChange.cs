@@ -26,6 +26,12 @@ public class ShieldPSColorChange : MonoBehaviour
 
 
 
+    private void OnDestroy()
+    {
+        CoreCommunication.OnBombFallen -= Play;
+    }
+
+
 
 
     void Play(Material m)

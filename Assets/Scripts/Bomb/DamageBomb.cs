@@ -37,9 +37,15 @@ public class DamageBomb : MonoBehaviour
 
 
 
+    void BlackHoleSpawn() => scale_down_increment /= 10;
+
+
+
     private void Awake()
     {
-        HelperSpawnerManager.OnBlackHoleSpawn += () => scale_down_increment /= 10;
+        HelperSpawnerManager.OnBlackHoleSpawn += BlackHoleSpawn;
+
+       
     }
 
 
@@ -49,6 +55,11 @@ public class DamageBomb : MonoBehaviour
 
     private void OnDestroy()
     {
+
+        HelperSpawnerManager.OnBlackHoleSpawn -= BlackHoleSpawn;
+
+
+
         cancel_source.Cancel();
         cancel_source.Dispose();
     }

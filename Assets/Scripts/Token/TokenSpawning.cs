@@ -20,9 +20,20 @@ public class TokenSpawning : MonoBehaviour
 
     Material friendly_mat, enemy_mat;
 
+
+
+
+    void OnLaserShotPlayerDeath() => perma_stopped = true;
+
+
+    private void OnDestroy()
+    {
+        SpinnerChargeUp.OnLaserShotPlayerDeath -= OnLaserShotPlayerDeath;
+    }
+
     void Start()
     {
-        SpinnerChargeUp.OnLaserShotPlayerDeath += () => perma_stopped = true;
+        SpinnerChargeUp.OnLaserShotPlayerDeath += OnLaserShotPlayerDeath;
 
         friendly_mat = friendly_prefab.GetComponent<Renderer>().sharedMaterials[^1];
 

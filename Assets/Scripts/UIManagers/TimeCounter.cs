@@ -8,7 +8,7 @@ public class TimeCounter : MonoBehaviour
 
 
 
-    [SerializeField] static TextMeshProUGUI txt;
+    TextMeshProUGUI txt;
 
 
     public int Hundredths { get; private set; }

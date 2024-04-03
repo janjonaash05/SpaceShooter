@@ -43,7 +43,16 @@ public class PopupDisplay : MonoBehaviour
 
     }
 
-   
+
+
+
+
+    private void OnDestroy()
+    {
+        UICommunication.OnDifficultyValueChange -= Popup;
+    }
+
+
     void Update()
     {
 

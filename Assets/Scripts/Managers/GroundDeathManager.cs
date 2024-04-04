@@ -83,7 +83,7 @@ public class GroundDeathManager : MonoBehaviour
 
 
 
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }
 
         StartCoroutine(StartDeath());

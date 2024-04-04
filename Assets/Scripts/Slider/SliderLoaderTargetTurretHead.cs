@@ -28,7 +28,7 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
         loader_recharge = turret_station.transform.parent.GetComponent<SliderLoaderRecharge>();
 
 
-        SliderControlActivation.OnEngagement += (b) => turret_active = b;
+        SliderControlActivation.OnEngagement += Engagement;
 
         loader_recharge.OnDepletion += (loader_recharge is SliderLoaderFullAutoRecharge) ? DestroyLaser : BurstPulsate;
 
@@ -52,7 +52,7 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
         if (loader_recharge is SliderLoaderFullAutoRecharge)
         {
 
-            PlayerInputCommunication.OnMouseDown += () => { if (turret_active) SetupLaser(); };
+            PlayerInputCommunication.OnMouseDown += MouseDown;
             PlayerInputCommunication.OnMouseUp += DestroyLaser;
         }
 
@@ -62,6 +62,38 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
     // Update is called once per frame
 
 
+
+
+
+
+
+
+    void Engagement(bool b) => turret_active = b;
+
+    void MouseDown() 
+    {
+        if (turret_active) SetupLaser();
+    }
+
+    private void OnDestroy()
+    {
+        SliderControlActivation.OnEngagement -= Engagement;
+
+        loader_recharge.OnDepletion -= (loader_recharge is SliderLoaderFullAutoRecharge) ? DestroyLaser : BurstPulsate;
+
+
+        loader_recharge.OnFullRecharge -= ActivateColor;
+        loader_recharge.OnDepletion -= DeactivateColor;
+
+        if (loader_recharge is SliderLoaderFullAutoRecharge)
+        {
+
+            PlayerInputCommunication.OnMouseDown -= MouseDown;
+            PlayerInputCommunication.OnMouseUp -= DestroyLaser;
+        }
+
+
+    }
 
 
 

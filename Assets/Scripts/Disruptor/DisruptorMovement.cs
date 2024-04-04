@@ -42,13 +42,7 @@ public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
        
     }
 
-
-    private void OnDisable()
-    {
-        Debug.LogError("Destroying  " + this.GetType().Name);
-    }
-
-
+    
     void Start()
     {
 

@@ -8,17 +8,24 @@ public class ScoreCounter : MonoBehaviour
 {
     // Start is called before the first frame update
      TextMeshProUGUI txt;
+
+
+
+   [SerializeField] bool OnGameOverScreen;
+
+
+
     void Start()
     {
 
 
         GetComponent<RectTransform>().anchoredPosition = new Vector3(120, -27, 0);
         txt = GetComponent<TextMeshProUGUI>();
-        txt.text = "Score: "+UICommunication.Score;
+        txt.text = "Score: " + UICommunication.Score;
 
 
 
-
+        if (OnGameOverScreen) return;
 
 
         UICommunication.OnScoreChange += () => txt.text = "Score: " + UICommunication.Score;

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
@@ -62,20 +62,30 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
         scales = new Vector3[9];
 
-        Vector3 target_scale = new(500, 500, 250);
+        Vector3 target_scale = new(750, 750, 250);
 
 
 
         scales[0] = Vector3.zero;
 
+        
         for (int i = 1; i <= 8; i++)
         {
-            scales[i] = new((target_scale.x / 8) * i, (target_scale.y / 8) * i, (target_scale.z / 8) * i);
+            scales[i] = new Vector3((target_scale.x / 8) * i, (target_scale.y / 8) * i, (target_scale.z / 8) * i);
 
 
         }
+        
 
 
+        /*
+        for (int i = 1; i <= 8; i++)
+        {
+            scales[i] = target_scale - 50 * Mathf.Abs(8 - i) * target_scale.normalized;
+
+
+        }
+        */
 
 
         rotation_speed = rotation_speeds[0];
@@ -191,11 +201,32 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
+        Vector3 ps_pos = transform.GetChild(0).position;
+
+
+
+
+        /*
+        List<float> size_based_lifetimes = new List<float>();
+
+        float min_lifetime = 0.125f;
+        float lifetime_increase = 0.05f;
+
+        for (int i = 0; i < 8; i++) 
+        {
+            size_based_lifetimes.Add(min_lifetime + lifetime_increase*i);
+        
+        }
+        */
+        
+
+
+
         ps.enableEmission = true;
         var main = ps.main;
         main.startSize = transform.localScale.x / 500;
 
-
+        
 
         foreach (Material m in shoot_mats)
         {
@@ -206,7 +237,7 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
             CoreCommunication.Raise_ValueChange(0, 1);
 
 
-
+           
 
 
 
@@ -218,10 +249,10 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
             rotation_speed = rotation_speeds[index];
 
             scale = scales[index];
+            transform.GetChild(0).position = ps_pos;
 
 
-
-            yield return new WaitForSeconds(ps.main.duration / 8);
+            yield return new WaitForSeconds(ps.main.duration);
 
 
 

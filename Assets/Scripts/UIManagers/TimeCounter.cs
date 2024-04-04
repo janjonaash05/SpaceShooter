@@ -10,7 +10,7 @@ public class TimeCounter : MonoBehaviour
 
     TextMeshProUGUI txt;
 
-
+    [SerializeField] bool OnGameOverScreen;
     public int Hundredths { get; private set; }
 
     public int Secs { get; private set; }
@@ -23,27 +23,45 @@ public class TimeCounter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
         GetComponent<RectTransform>().anchoredPosition = new Vector3(-120, -27, 0);
         txt = GetComponent<TextMeshProUGUI>();
+
+
+
+        if(OnGameOverScreen) txt.text = string.Format("{0:00}:{1:00}:{2:00}", UICommunication.Mins, UICommunication.Secs, UICommunication.Hundredths);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (OnGameOverScreen) return;
 
-       
-        Secsf = Time.time % 60;
+        float time = Time.timeSinceLevelLoad;
+
+
+
+
+        Secsf = time % 60;
         Secs = Mathf.FloorToInt(Secsf);
-        Minsf = Time.time / 60;
+        Minsf = time / 60;
         Mins = Mathf.FloorToInt(Minsf);
 
 
-        Hundredths = (int) ( ((Time.time - Secs) * 100) % 99 );
+        Hundredths = (int) ( ((time - Secs) * 100) % 99 );
 
         UICommunication.Assign_TimeValues(Secsf,Secs,Minsf, Mins,Hundredths);
 
 
         txt.text = string.Format("{0:00}:{1:00}:{2:00}" ,Mins, Secs, Hundredths);
+    }
+
+
+
+
+
+    private void OnDestroy()
+    {
+        
     }
 }

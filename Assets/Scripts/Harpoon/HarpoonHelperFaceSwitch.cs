@@ -144,7 +144,6 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
         AssignFaceRenderers(StationType.HELPER);
 
 
-        Debug.LogError(faces_rend.Count + " facescoutn");
         ShowHelperState();
 
     }
@@ -173,15 +172,22 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
     void HelperStationClick(RaycastHit _) 
     {
-        if (!type_state_dict[current_helper].Recharging)
+        if (!type_state_dict[current_helper].Recharging && UICommunication.Tokens >= 4)
         {
+
+
+
+
+            UICommunication.Raise_TokenChange(-4);
+
+
+
             HelperSpawnerManager.Instance().SpawnHelper(current_helper);
+            type_state_dict[current_helper].StartCountDown();
         }
 
 
 
-        Debug.LogError("STARTCOUNTDOWN");
-        var a = type_state_dict[current_helper].StartCountDown();
     }
 
 

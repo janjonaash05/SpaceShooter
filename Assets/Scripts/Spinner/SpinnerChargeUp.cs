@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Android;
 
 public class SpinnerChargeUp : MonoBehaviour
 {
@@ -22,13 +24,35 @@ public class SpinnerChargeUp : MonoBehaviour
             changing_mat = m;
             if (laserRend != null) { laserRend.material = m; }
         };
+
+
+
+
+
+        CoreCommunication.OnSpinnerChargeUpStart += StartCharging;
+        CoreCommunication.OnSpinnerChargeUpEnd += EndCharging;
+
     }
 
 
     void Update()
     {
+        if (charge == null) return;
         charge.transform.Rotate(rotation * Time.deltaTime);
     }
+
+
+
+
+    private void OnDestroy()
+    {
+        CoreCommunication.OnSpinnerChargeUpStart -= StartCharging;
+        CoreCommunication.OnSpinnerChargeUpEnd -= EndCharging;
+    }
+
+
+
+
 
 
     public void StartCharging()
@@ -47,17 +71,35 @@ public class SpinnerChargeUp : MonoBehaviour
     }
 
 
+
+    public const float CHARGE_UP_TIME = 5f;
+
     IEnumerator Charge()
     {
 
-        while (size_unit < max_size_unit)
-        {
+        float duration = CHARGE_UP_TIME;
 
-            size_unit += delta_size_unit;
-            charge.transform.localScale = new Vector3(size_unit, size_unit, size_unit);
-            yield return new WaitForSeconds(delay);
+        float lerp = 0;
+
+
+
+
+
+       
+
+        while(lerp < duration)
+        {
+            lerp += Time.deltaTime;
+
+            charge.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one * max_size_unit, lerp / duration); ;
+
+            yield return null;
 
         }
+
+
+
+
 
         charge.transform.localScale = new Vector3(max_size_unit, max_size_unit, max_size_unit);
         StartCoroutine(Shoot());
@@ -77,8 +119,6 @@ public class SpinnerChargeUp : MonoBehaviour
     {
 
 
-        Vector3 originVector = laser.transform.position;
-        Vector3 targetVector = GameObject.FindWithTag(Tags.CORE).transform.position + Vector3.forward * 0.5f;
 
 
         Vector3 middleVector = (originVector + targetVector) / 2f;
@@ -87,6 +127,45 @@ public class SpinnerChargeUp : MonoBehaviour
         Vector3 rotationDirection = (targetVector - originVector);
         laser.transform.up = rotationDirection;
     }
+
+    Vector3 originVector;
+    Vector3 targetVector;
+
+
+
+
+
+
+
+
+    IEnumerator Deplete()
+    {
+        var index_holder = CoreCommunication.SPINNER_INDEX_HOLDER;
+
+
+
+        SpinnerColorChange colorChange = GetComponent<SpinnerColorChange>();
+
+
+
+        index_holder.SetEdge(MaterialIndexHolder.Edge.UPPER);
+
+
+
+        do
+        {
+            colorChange.ChangeMaterialArray();
+
+            yield return new WaitForSeconds(0.05f);
+
+        }
+        while (index_holder.ChangeIndex(0, -1) != -1);
+
+
+    }
+
+
+
 
 
 
@@ -98,8 +177,8 @@ public class SpinnerChargeUp : MonoBehaviour
         laserRend.material = changing_mat;
         laser.transform.position = charge.transform.position;
 
-        Vector3 originVector = laser.transform.position;
-        Vector3 targetVector = GameObject.FindWithTag(Tags.CORE).transform.position + Vector3.forward * 0.5f;
+        originVector = laser.transform.position;
+        targetVector = GameObject.FindWithTag(Tags.CORE).transform.position + Vector3.forward * 0.5f;
 
         laser.transform.localScale = Vector3.zero;
 
@@ -107,6 +186,8 @@ public class SpinnerChargeUp : MonoBehaviour
 
         float distance = Vector3.Distance(originVector, targetVector);
 
+
+        StartCoroutine(Deplete());
 
 
         while (laser.transform.localScale.x < max_laser_size)
@@ -118,6 +199,9 @@ public class SpinnerChargeUp : MonoBehaviour
             yield return null;
 
         }
+
+
+        charge.SetActive(false);
 
         while (laser.transform.localScale.x > 0)
         {

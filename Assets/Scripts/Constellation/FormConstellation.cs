@@ -134,7 +134,7 @@ public class FormConstellation : MonoBehaviour
             float rand_multiplier = (float)(r.NextDouble() * random_distance_factor) + 1;
 
 
-            star.transform.Translate(rand_multiplier * constellation_star_offsets[pos_index].y * Vector3.up);
+            star.transform.Translate(rand_multiplier *0.5f * constellation_star_offsets[pos_index].y * Vector3.up);
             star.transform.Translate(rand_multiplier * constellation_star_offsets[pos_index].x * Vector3.forward);
 
             star.GetComponent<StarChargeUp>().Setup(mats[color_index]);

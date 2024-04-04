@@ -39,7 +39,7 @@ public class Button : MonoBehaviour
     void RETRY()
     {
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
 
     }
 
@@ -74,7 +74,7 @@ public class Button : MonoBehaviour
     void Start()
     {
         rend = GetComponent<Renderer>();
-        off_mat = rend.materials[0];
+        off_mat = rend.materials[1];
 
         function_dict = new()
         {
@@ -111,7 +111,8 @@ public class Button : MonoBehaviour
 
         Material[] mats = rend.materials;
 
-        mats[0] = on_mat;
+        mats[0] = off_mat;
+        mats[1] = on_mat;
 
         rend.materials = mats;
 
@@ -133,7 +134,8 @@ public class Button : MonoBehaviour
 
         Material[] mats = rend.materials;
 
-        mats[0] = off_mat;
+        mats[0] = on_mat;
+        mats[1] = off_mat;
 
         rend.materials = mats;
 

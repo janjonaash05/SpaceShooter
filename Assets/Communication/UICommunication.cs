@@ -21,6 +21,19 @@ public static class UICommunication
 
 
 
+    public static void Awake() 
+    {
+        Score = 0;
+        Tokens = 0;
+
+    
+    
+    
+    }
+
+
+
+
 
 
     public static event Action OnScoreChange;

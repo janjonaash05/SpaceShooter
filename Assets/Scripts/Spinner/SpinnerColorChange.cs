@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.Animations;
 
@@ -9,11 +9,11 @@ public class SpinnerColorChange : MonoBehaviour
 {
 
 
-   public static Material CHANGING_MAT { get; private set; }
-  
+    public static Material CHANGING_MAT { get; private set; }
 
 
-     Material[] mats_storage;
+
+    Material[] mats_storage;
 
     Material secondary, primary;
 
@@ -31,8 +31,13 @@ public class SpinnerColorChange : MonoBehaviour
     const int PRIMARY_INDEX = 1, SECONDARY_INDEX = 0, CHARGING_INDEX = 2;
 
 
-    void SpinnerChargeUpStart() => EngageChargeUp(true);
-    void SpinnerChargeUpEnd() => EngageChargeUp(false);
+    // void SpinnerChargeUpStart() => EngageChargeUp(true);
+    // void SpinnerChargeUpEnd() => EngageChargeUp(false);
+
+
+    void SpinnerChargeUpStart() => charge_up_mode = true;
+    void SpinnerChargeUpEnd() => charge_up_mode = false;
+
 
 
 
@@ -80,7 +85,7 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
- 
+
 
     void AssignBasicColors(Material[] newMats)
     {
@@ -130,9 +135,17 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
-   
 
-    void ChangeMaterialArray()
+
+
+
+
+
+
+
+
+
+    public void ChangeMaterialArray()
     {
 
         if (index_holder.Parent == 0) { return; }
@@ -146,19 +159,18 @@ public class SpinnerColorChange : MonoBehaviour
 
 
         var copyHolder = new MaterialIndexHolder(index_holder.Parent, index_holder.Child, MaterialIndexHolder.Target.SPINNER, index_holder.edge);
-        
+
 
 
         var colorlist = copyHolder.AllMatIndexesByHolder(true);
 
-        copyHolder.ChangeIndex(0, 1) ;
+        copyHolder.ChangeIndex(0, 1);
         var offlist = copyHolder.AllMatIndexesByHolder(false);
 
         Debug.Log(colorlist.Count + " C " + offlist.Count + " O");
 
-        Debug.Log(colorlist.ToCommaSeparatedString() + " C," + offlist.ToCommaSeparatedString() + " O");
 
-        
+
 
         if (colorlist.Count > 0)
         {
@@ -180,7 +192,7 @@ public class SpinnerColorChange : MonoBehaviour
             }
         }
 
-        
+
         AssignBasicColors(newMats);
 
 
@@ -197,7 +209,7 @@ public class SpinnerColorChange : MonoBehaviour
 
         while (true)
         {
-           
+
             foreach (Material m in mats_storage)
             {
 

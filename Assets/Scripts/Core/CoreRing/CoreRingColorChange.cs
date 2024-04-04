@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class CoreRingColorChange : MonoBehaviour
@@ -174,9 +174,7 @@ public class CoreRingColorChange : MonoBehaviour
 
         var offlist = copyHolder.AllMatIndexesByHolder(false);
 
-        Debug.Log(colorlist.Count + " C " + offlist.Count + " O");
 
-        Debug.Log(colorlist.ToCommaSeparatedString() + " C," + offlist.ToCommaSeparatedString() + " O");
 
 
 

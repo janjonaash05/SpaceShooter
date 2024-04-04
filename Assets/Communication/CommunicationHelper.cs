@@ -10,7 +10,7 @@ public class CommunicationHelper : MonoBehaviour
     {
         LaserTurretCommunicationChannels.Awake();
         CoreCommunication.Awake();
-
+        UICommunication.Awake();
         //  PlayerInputCommunication.OnLaserTarget1Click += LaserTurretCommunicationChannels.Channel1.AttemptRaise_ManualTargeting;
         //  PlayerInputCommunication.OnLaserTarget2Click += LaserTurretCommunicationChannels.Channel2.AttemptRaise_ManualTargeting;
 

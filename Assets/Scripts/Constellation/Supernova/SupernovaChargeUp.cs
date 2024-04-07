@@ -205,6 +205,13 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
+        
+
+
+        Debug.LogError(ps_pos + " PS pos");
+
+
+
 
         /*
         List<float> size_based_lifetimes = new List<float>();
@@ -232,6 +239,7 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
         {
 
             ps.GetComponent<ParticleSystemRenderer>().material = m;
+            ps.GetComponent<ParticleSystemRenderer>().trailMaterial = m;
             ps.Play();
 
             CoreCommunication.Raise_ValueChange(0, 1);
@@ -244,12 +252,18 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
             supernova_color_change.RemoveColor();
 
 
+            yield return StartCoroutine(ShootLaser(m));
+
+
             index--;
 
             rotation_speed = rotation_speeds[index];
 
             scale = scales[index];
             transform.GetChild(0).position = ps_pos;
+            
+
+            Debug.LogError(transform.GetChild(0).position+  "child set PS pos");
 
 
             yield return new WaitForSeconds(ps.main.duration);
@@ -278,6 +292,81 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
+    void AdjustLaser()
+    {
+
+        Vector3 middleVector = (originVector + targetVector) / 2f;
+        laser.transform.position = middleVector;
+
+        Vector3 rotationDirection = (targetVector - originVector);
+        laser.transform.up = rotationDirection;
+    }
+
+    Vector3 originVector;
+    Vector3 targetVector;
+
+
+
+    IEnumerator LaserScaleChange(Vector3 origin, Vector3 target, float duration)
+    {
+
+        float lerp = 0;
+
+        while (lerp < duration)
+        {
+            lerp += Time.deltaTime;
+
+            laser.transform.localScale = Vector3.Lerp(origin, target, lerp / duration);
+            AdjustLaser();
+            yield return null;
+
+        }
+
+    }
+
+
+
+
+
+
+    GameObject laser;
+    Renderer laserRend;
+
+
+    float max_laser_size = 15;
+
+    IEnumerator ShootLaser(Material mat)
+    {
+        if (laser != null) yield break;
+        laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        laserRend = laser.GetComponent<Renderer>();
+        laserRend.material = mat;
+        laser.transform.position = transform.position;
+
+        originVector = laser.transform.position;
+        targetVector = GameObject.FindWithTag(Tags.CORE).transform.position + Vector3.forward * 0.5f;
+
+        laser.transform.localScale = Vector3.zero;
+
+
+
+        float distance = Vector3.Distance(originVector, targetVector);
+
+
+
+        Vector3 start_scale = new(0, distance / 2f, 0);
+        Vector3 target_scale = new(max_laser_size, distance / 2f, max_laser_size);
+
+
+        yield return StartCoroutine(LaserScaleChange(start_scale, target_scale, 0.05f));
+
+        yield return StartCoroutine(LaserScaleChange(target_scale, start_scale, 0.05f));
+
+
+
+
+        Destroy(laser);
+    }
 
 
 

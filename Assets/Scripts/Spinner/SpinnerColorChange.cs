@@ -95,7 +95,7 @@ public class SpinnerColorChange : MonoBehaviour
         newMats[CHARGING_INDEX] = charge_up_mode ? CHANGING_MAT : secondary;
     }
 
-    void InitialColorSetup()
+    public void InitialColorSetup()
     {
         // Renderer rend = GetComponent<Renderer>();
         Material[] newMats = new Material[rend.materials.Length];

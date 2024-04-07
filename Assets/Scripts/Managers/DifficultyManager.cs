@@ -6,6 +6,8 @@ using static UpgradesManager;
 
 public class DifficultyManager : MonoBehaviour
 {
+    
+
 
     public enum AffectedFeatureCircumstance
     {
@@ -17,6 +19,11 @@ public class DifficultyManager : MonoBehaviour
         BOMB_SPAWNERxSPAWN_RATE, BOMB_SPAWNERxFORM,
         CONSTELLATIONxSPAWN_RATE, CONSTELLATIONxMAX_STARS
     }
+
+
+
+
+
 
 
 
@@ -34,7 +41,7 @@ public class DifficultyManager : MonoBehaviour
     };
 
 
-    public const int MAX_FEATURE_VALUE = 1;
+    public const int MAX_FEATURE_VALUE = 4;
 
     public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxMAX_STARS };
 
@@ -165,7 +172,7 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-    public static int CONSTELLATION_SPAWN_RATE = 0;
+    public static int CONSTELLATION_SPAWN_RATE = 10;
 
 
     public static int DISRUPTOR_DEFAULT_START_HEALTH = 100, DISRUPTOR_START_HEALTH;
@@ -207,7 +214,7 @@ public class DifficultyManager : MonoBehaviour
         List<AffectedFeature> list = circumstance == AffectedFeatureCircumstance.TOKEN ? TOKEN_CHANGABLE_FEATURES : TIME_CHANGABLE_FEATURES;
 
 
-        AffectedFeature feature = circumstance == AffectedFeatureCircumstance.TIME ? list[new System.Random().Next(list.Count)] : AffectedFeature.BOMB_SPAWNERxFORM;
+        AffectedFeature feature = list[new System.Random().Next(list.Count)];
 
 
 

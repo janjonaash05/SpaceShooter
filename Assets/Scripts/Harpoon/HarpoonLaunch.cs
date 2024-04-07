@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class HarpoonLaunch : MonoBehaviour
 {
+
+
+
+
+
     GameObject harpoon_head, harpoon_station_charge;
 
-
+    [SerializeField] GameObject charge;
+    [SerializeField] HarpoonGrab grab;
     [SerializeField] float launch_distance;
     [SerializeField] float launch_speed;
-    Material charge_color; 
+    Material charge_color;
     Material off_color_head, off_color_charge;
 
 
@@ -23,6 +29,9 @@ public class HarpoonLaunch : MonoBehaviour
 
 
     bool turnedOff = true;
+
+    bool successfulGrab;
+
     IEnumerator Launch()
     {
         if (!readyToLaunch) yield break;
@@ -30,17 +39,26 @@ public class HarpoonLaunch : MonoBehaviour
 
 
         readyToLaunch = false;
-        
+
 
         target = harpoon_head_transform.localPosition + Vector3.up * launch_distance;
-        start =  harpoon_head_transform.localPosition;
+        start = harpoon_head_transform.localPosition;
 
 
         SetupTether();
         yield return LaunchProcess();
-        
-        readyToLaunch = true;
-        
+
+
+
+        if (successfulGrab) { readyToLaunch = true; successfulGrab = false; }
+        else { StartCoroutine(Recharge()); };
+
+
+
+
+
+      
+
 
 
     }
@@ -58,7 +76,7 @@ public class HarpoonLaunch : MonoBehaviour
         charge_color = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
 
 
-
+        grab.OnSuccessfulGrab += () => successfulGrab = true;
 
         harpoon_head = transform.GetChild(0).gameObject;
         harpoon_head_transform = harpoon_head.transform;
@@ -112,7 +130,7 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
-    void HarpoonColliderClick(RaycastHit hit) 
+    void HarpoonColliderClick(RaycastHit hit)
     {
         turnedOff = !turnedOff;
         Debug.Log(turnedOff + " turned off");
@@ -125,28 +143,79 @@ public class HarpoonLaunch : MonoBehaviour
     }
 
 
+    IEnumerator Recharge()
+    {
+
+        Vector3 start_scale = charge.transform.localScale;
+        Vector3 target_scale = Vector3.zero;
+
+
+        float duration = 0.5f;
+
+
+        yield return StartCoroutine(ChangeScale(start_scale, target_scale, duration));
+        yield return StartCoroutine(ChangeScale(target_scale, start_scale, duration));
+
+        readyToLaunch = true;
+
+    }
+
+
+    IEnumerator ChangeScale(Vector3 start, Vector3 end, float duration)
+    {
+        float lerp = 0;
+
+
+        while (lerp < duration)
+        {
+            lerp += Time.deltaTime;
+
+
+
+            charge.transform.localScale = Vector3.Lerp(start, end, lerp / duration);
+
+            yield return null;
+
+
+
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     IEnumerator LaunchProcess()
     {
 
 
-        
+
 
 
         // Vector3 start_point = transform.position;
-       
+
         //Vector3 targetPoint = (backwards) ? start : target;
         //Vector3 startPoint = harpoon_head_transform.localPosition;
 
 
         //
-                          
-                          
-                         
+
+
+
         while (Vector3.Distance(harpoon_head_transform.localPosition, target) > 0.001f)
         {
-          //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
+            //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
 
             //  harpoon_head_transform.Translate( Time.deltaTime* launch_speed*(target - harpoon_head_transform.localPosition) );
 
@@ -184,7 +253,7 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
-  
+
 
 
 
@@ -200,11 +269,11 @@ public class HarpoonLaunch : MonoBehaviour
         laser_tether.GetComponent<Renderer>().sharedMaterial = charge_color;
         laser_tether.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-        float angle = 45*180/Mathf.PI;// transform.rotation.eulerAngles.x;
+        float angle = 45 * 180 / Mathf.PI;// transform.rotation.eulerAngles.x;
 
-        originVector = transform.position + new Vector3(-Mathf.Cos(angle), Mathf.Sin(angle),0) ;
+        originVector = transform.position + new Vector3(-Mathf.Cos(angle), Mathf.Sin(angle), 0);
 
-        
+
 
         //  isTargeting = true;
 

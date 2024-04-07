@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HarpoonGrab : MonoBehaviour
 {
-    
 
+    public event Action OnSuccessfulGrab;
     
 
 
@@ -32,7 +33,13 @@ public class HarpoonGrab : MonoBehaviour
         if (collision.transform.CompareTag(Tags.TOKEN)) 
         {
 
-            
+            OnSuccessfulGrab?.Invoke();
+
+
+
+            Destroy(collision.gameObject.GetComponent<Collider>());
+
+
 
 
             collision.transform.parent = gameObject.transform;

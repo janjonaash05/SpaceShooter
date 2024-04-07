@@ -109,6 +109,27 @@ public class SpinnerChargeUp : MonoBehaviour
 
 
 
+    IEnumerator LaserScaleChange(Vector3 origin, Vector3 target, float duration) 
+    {
+
+        float lerp = 0;
+
+        while (lerp < duration)
+        {
+            lerp += Time.deltaTime;
+
+            laser.transform.localScale = Vector3.Lerp(origin, target, lerp / duration);
+            AdjustLaser();
+            yield return null;
+
+        }
+
+    }
+
+
+
+
+
 
     GameObject laser;
     Renderer laserRend;
@@ -117,9 +138,6 @@ public class SpinnerChargeUp : MonoBehaviour
 
     void AdjustLaser()
     {
-
-
-
 
         Vector3 middleVector = (originVector + targetVector) / 2f;
         laser.transform.position = middleVector;
@@ -146,20 +164,38 @@ public class SpinnerChargeUp : MonoBehaviour
 
         SpinnerColorChange colorChange = GetComponent<SpinnerColorChange>();
 
+        colorChange.charge_up_mode = false;
 
 
-        index_holder.SetEdge(MaterialIndexHolder.Edge.UPPER);
 
 
 
-        do
+        int res = 0;
+
+
+        while (res != -1)
         {
+            res = index_holder.ChangeIndex(0, -1);
+
             colorChange.ChangeMaterialArray();
 
             yield return new WaitForSeconds(0.05f);
 
         }
-        while (index_holder.ChangeIndex(0, -1) != -1);
+
+        colorChange.InitialColorSetup();
+     
+
+
+
+
+
+
+        Debug.LogError(index_holder + " spinner index holder");
+
+  
+
+
 
 
     }
@@ -189,31 +225,20 @@ public class SpinnerChargeUp : MonoBehaviour
 
         StartCoroutine(Deplete());
 
+      
+        Vector3 start_scale = new(0, distance / 2f, 0);
+        Vector3 target_scale = new(max_laser_size, distance / 2f, max_laser_size);
 
-        while (laser.transform.localScale.x < max_laser_size)
-        {
 
-            laser.transform.localScale = new Vector3(laser.transform.localScale.x + laser_size_increase, distance / 2f, laser.transform.localScale.z + laser_size_increase);
-
-            AdjustLaser();
-            yield return null;
-
-        }
+        yield return StartCoroutine(LaserScaleChange(start_scale,target_scale, 0.5f));
 
 
         charge.SetActive(false);
 
-        while (laser.transform.localScale.x > 0)
-        {
 
-            laser.transform.localScale = new Vector3(laser.transform.localScale.x - laser_size_increase, distance / 2f, laser.transform.localScale.z - laser_size_increase);
+        yield return StartCoroutine(LaserScaleChange(target_scale, start_scale, 0.5f));
 
-            AdjustLaser();
-            yield return null;
-
-        }
-
-
+        
 
         OnLaserShotPlayerDeath?.Invoke();
 

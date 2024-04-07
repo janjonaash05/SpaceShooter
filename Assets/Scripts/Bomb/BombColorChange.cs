@@ -35,7 +35,7 @@ public class BombColorChange : MonoBehaviour
 
     static protected readonly Dictionary<int, int> secondary_order_index_dict = new()
         {
-          {1,8 },{2,0 },   /*3*/ /*4*/ {5,11 },{6,10 } /*7*/ /*8*/
+          {1,8 },{2,0 },   /*3*/ /*4*/ {5,11 },{6,10 }, /*7*/ /*8*/ {9,1 }
         };
 
 

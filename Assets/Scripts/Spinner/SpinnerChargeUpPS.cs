@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
@@ -40,7 +41,24 @@ public class SpinnerChargeUpPS : MonoBehaviour
         StartCoroutine(ScaleUp());
     
     }
-    void SpinnerChargeUpEnd() => StopAllCoroutines();
+    void SpinnerChargeUpEnd() 
+    {
+        StopAllCoroutines();
+
+        var main = ps.main;
+        var emission = ps.emission;
+        var shape = ps.shape;
+        emission.enabled = false;
+
+
+
+
+        main.startSpeed = speed_interval.min;
+        shape.radius = radius_interval.min;
+        emission.rateOverTime = rate_interval.min;
+
+
+    } 
 
 
 
@@ -56,7 +74,11 @@ public class SpinnerChargeUpPS : MonoBehaviour
 
     }
 
+    (float min, float max) radius_interval = (55, 165);
 
+    (float min, float max) speed_interval = (-5, -150);
+
+    (float min, float max) rate_interval = (10, 100);
     IEnumerator ScaleUp() 
     {
         var main = ps.main;
@@ -72,11 +94,7 @@ public class SpinnerChargeUpPS : MonoBehaviour
 
 
 
-        (float min, float max) radius_interval = (55,165);
-
-        (float min, float max) speed_interval = (-5, -150);
-
-        (float min, float max) rate_interval = (10, 100);
+      
 
         float lerp = 0;
 
@@ -96,6 +114,9 @@ public class SpinnerChargeUpPS : MonoBehaviour
             yield return null;
 
         }
+
+
+        emission.enabled = false;
 
 
 

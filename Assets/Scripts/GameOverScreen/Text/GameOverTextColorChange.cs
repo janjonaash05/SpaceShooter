@@ -16,36 +16,23 @@ public class GameOverTextColorChange : MonoBehaviour
 
 
 
-        Engage(mats[0]);
+        Engage();
 
 
-        // Engage(SpinnerColorChange.CHANGING_MAT);
     }
 
 
 
-    public void Engage(Material mat)
+    public void Engage()
     {
 
-        int start_index = -1;
-
-
-        for (int i = 0; i < mats.Length; i++)
-        {
-            if (mats[i].name.Contains(mat.name))
-            {
-                start_index = i;
-                break;
-            }
-
-
-        }
+        
 
 
 
         IEnumerator cycle()
         {
-            int index = start_index;
+            int index = Random.Range(0, mats.Length);
             while (true)
             {
                 rend.material = mats[index];

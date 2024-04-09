@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class MouseReactivity : MonoBehaviour
 {
@@ -24,15 +25,15 @@ public class MouseReactivity : MonoBehaviour
 
 
 
-            
+
 
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
             {
 
                 Debug.Log(hit.transform.tag);
 
-                 valid_click =  PlayerInputCommunication.Raise_RaycastClick(hit);
-                
+                valid_click = PlayerInputCommunication.Raise_RaycastClick(hit);
+
 
 
 
@@ -46,21 +47,28 @@ public class MouseReactivity : MonoBehaviour
 
             }
         }
-       
 
-        if (Input.GetButtonUp("Fire1")) 
+
+        if (Input.GetButtonUp("Fire1"))
         {
-        
+
             PlayerInputCommunication.Raise_MouseUp();
         }
 
 
+
+
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            SceneManager.LoadScene(2);
+        
+        
+        }
         
 
 
 
     }
-
 
 
 

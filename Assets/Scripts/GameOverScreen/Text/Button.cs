@@ -80,7 +80,7 @@ public class Button : MonoBehaviour
         {
             {ButtonFunction.RETRY, RETRY },
             {ButtonFunction.EXIT_TO_MENU, EXIT_TO_MENU },
-             {ButtonFunction.EXIT_GAME, EXIT_GAME }
+            {ButtonFunction.EXIT_GAME, EXIT_GAME }
 
 
 

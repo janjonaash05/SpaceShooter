@@ -45,7 +45,7 @@ public class DifficultyManager : MonoBehaviour
 
     public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxMAX_STARS };
 
-    public static List<AffectedFeature> TIME_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPAWN_CHANCE, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxSPAWN_RATE };
+    public static List<AffectedFeature> TIME_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPAWN_CHANCE, AffectedFeature.BOMB_SPAWNERxSPAWN_RATE, AffectedFeature.CONSTELLATIONxSPAWN_RATE };
 
     public static int GetCurrentBombSpawnerFormValue()
     {

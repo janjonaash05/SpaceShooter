@@ -41,6 +41,8 @@ public class LaserControlColorChange : MonoBehaviour
                 LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange -= StartChange;
                 LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange -= StartChange;
 
+                LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange -= PlaySound;
+                LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange -= PlaySound;
 
                 LaserTurretCommunicationChannels.Channel1.OnAutoTargetingDisabled -= DisableAutoTargeting;
                 LaserTurretCommunicationChannels.Channel1.OnAutoTargetingEnabled += EnableAutoTargeting;
@@ -56,6 +58,9 @@ public class LaserControlColorChange : MonoBehaviour
 
                 LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange -= StartChange;
                 LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange -= StartChange;
+
+                LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange -= PlaySound;
+                LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange -= PlaySound;
 
 
                 LaserTurretCommunicationChannels.Channel2.OnAutoTargetingDisabled -= DisableAutoTargeting;
@@ -101,6 +106,8 @@ public class LaserControlColorChange : MonoBehaviour
                 LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange += StartChange;
                 LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange += StartChange;
 
+                LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange += PlaySound;
+                LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange += PlaySound;
 
                 LaserTurretCommunicationChannels.Channel1.OnAutoTargetingDisabled += DisableAutoTargeting;
                 LaserTurretCommunicationChannels.Channel1.OnAutoTargetingEnabled += EnableAutoTargeting;
@@ -116,6 +123,10 @@ public class LaserControlColorChange : MonoBehaviour
 
                 LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange += StartChange;
                 LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange += StartChange;
+
+
+                LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange += PlaySound;
+                LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange += PlaySound;
 
 
                 LaserTurretCommunicationChannels.Channel2.OnAutoTargetingDisabled += DisableAutoTargeting;
@@ -152,6 +163,20 @@ public class LaserControlColorChange : MonoBehaviour
 
     Material[] normal_mats, off_mats;
     Material off_mat;
+
+
+    void PlaySound(Material _)
+    {
+        var activity_type = (ID == 1) ? AudioManager.ActivityType.TURRET_CONTROL_CLICK_1 : AudioManager.ActivityType.TURRET_CONTROL_CLICK_2;
+
+
+        AudioManager.PlayActivitySound(activity_type);
+    }
+
+
+
+
+   
 
     void TurnOff()
     {

@@ -58,8 +58,17 @@ public class MouseReactivity : MonoBehaviour
 
 
 
-        if (Input.GetKeyDown(KeyCode.Escape)) 
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
+            UpgradesManager.ResetValues();
+            DifficultyManager.ResetValues();
+
+
+
+
+
+
+
             SceneManager.LoadScene(2);
         
         

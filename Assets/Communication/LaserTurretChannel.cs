@@ -230,6 +230,7 @@ public class LaserTurretChannel
         if (is_targeting || is_barraging || is_control_disabled) { Debug.Log("nuh uh"); return; }
 
         OnColorCollider_ControlColorChange?.Invoke(mat);
+       
 
 
     }

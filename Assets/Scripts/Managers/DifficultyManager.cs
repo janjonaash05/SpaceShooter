@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UpgradesManager;
 
 public class DifficultyManager : MonoBehaviour
 {
-    
+
 
 
     public enum AffectedFeatureCircumstance
@@ -119,7 +120,7 @@ public class DifficultyManager : MonoBehaviour
 
     public static Dictionary<int, int> CONSTELLATION_MAX_STARS_DEGREE_VALUE_DICT = new()
     {
-        {0, 8 },
+        {0, 4 },
         {1, 5 },
         {2, 6 },
         {3, 7 },
@@ -138,7 +139,7 @@ public class DifficultyManager : MonoBehaviour
 
         return feature switch
         {
-            AffectedFeature.DISRUPTORxSPEED => "AVG " +  1/ Math.Round((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2, 2),
+            AffectedFeature.DISRUPTORxSPEED => "AVG " + 1 / Math.Round((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2, 2),
             AffectedFeature.DISRUPTORxSPAWN_CHANCE => GetCurrentDisruptorSpawnChanceValue() + "% / minute",
             AffectedFeature.CONSTELLATIONxSPAWN_RATE => GetCurrentConstellationSpawnRateValue() + "s",
             AffectedFeature.CONSTELLATIONxMAX_STARS => GetCurrentConstellationMaxStarsValue().ToString(),
@@ -185,16 +186,34 @@ public class DifficultyManager : MonoBehaviour
     static int bomb_spawner_value = 0;
 
 
-
-
-
-    void Start()
+    private void Start()
     {
         DISRUPTOR_START_HEALTH = DISRUPTOR_DEFAULT_START_HEALTH;
-
     }
 
 
+    void OnDestroy()
+    {
+        
+
+
+
+
+
+       
+
+    }
+
+    public static void ResetValues()
+    {
+        var keySet = FEATURE_VALUE_DICT.Keys.ToList(); ;
+
+        foreach (var key in keySet)
+        {
+            FEATURE_VALUE_DICT[key] = 0;
+
+        }
+    }
 
 
     public void EnemyChange()
@@ -276,6 +295,12 @@ public class DifficultyManager : MonoBehaviour
 
 
 
+
+
+
+
+
+   
     void Update()
     {
 

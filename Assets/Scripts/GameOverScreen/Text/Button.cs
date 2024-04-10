@@ -48,7 +48,7 @@ public class Button : MonoBehaviour
     void EXIT_TO_MENU()
     {
 
-        Debug.Log("Exitting to menu");
+        SceneManager.LoadScene(0);
 
     }
 
@@ -56,8 +56,7 @@ public class Button : MonoBehaviour
     void EXIT_GAME()
     {
 
-        Debug.Log("Exitting game");
-
+        Application.Quit();
     }
 
 

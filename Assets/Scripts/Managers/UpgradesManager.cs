@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UpgradesManager : MonoBehaviour
@@ -26,7 +27,7 @@ public class UpgradesManager : MonoBehaviour
 
 
 
-    public static int GetCurrentTurretCapacityValue() 
+    public static int GetCurrentTurretCapacityValue()
     {
         return TURRET_CAPACITY_DEGREE_VALUE_DICT[UPGRADE_VALUE_DICT[UpgradeType.TURRET_CAPACITY]];
     }
@@ -39,7 +40,7 @@ public class UpgradesManager : MonoBehaviour
 
 
 
-    public static (int full_auto, float bolt) GetCurrentSliderRechargeValue() 
+    public static (int full_auto, float bolt) GetCurrentSliderRechargeValue()
     {
 
         return SLIDER_RECHARGE_DEGREE_VALUE_DICT[UPGRADE_VALUE_DICT[UpgradeType.SLIDER_RECHARGE]];
@@ -104,9 +105,22 @@ public class UpgradesManager : MonoBehaviour
 
 
 
+   
+
+    public static void ResetValues()
+    {
+        var keySet = UPGRADE_VALUE_DICT.Keys.ToList();
+
+        foreach (var key in keySet)
+        {
 
 
 
+            UPGRADE_VALUE_DICT[key] = 0;
+        }
+
+        Debug.LogError("RESETTING ");
+    }
 
 
 

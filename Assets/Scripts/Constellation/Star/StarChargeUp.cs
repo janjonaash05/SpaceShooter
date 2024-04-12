@@ -97,7 +97,6 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
             if (cancellation_token.IsCancellationRequested) { return; }
 
             
-                Debug.LogError("Star iteration " + chargeup_index);
 
 
                 Material[] mats = GetComponent<Renderer>().materials;

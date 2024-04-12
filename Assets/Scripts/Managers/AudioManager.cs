@@ -29,14 +29,8 @@ public class AudioManager : MonoBehaviour
 
    public static Dictionary<ActivityType, AudioClip> ACTIVITY_CLIP_DICT { get; private set; }
 
-    public readonly Dictionary<ActivityType, SoundSettings> ACTIVITY_SOUND_SETTINGS_DICT= new() 
-    {
-        { ActivityType. },
-    
-    
-    
-    };
 
+    public static Dictionary<ActivityType, SoundSettings> ACTIVITY_SOUND_SETTINGS_DICT { get; private set; } = new();
 
     private void Awake()
     {
@@ -49,6 +43,25 @@ public class AudioManager : MonoBehaviour
         }
 
 
+        SoundSettings control_click_settings = new(0.75f,0.47f);
+        SoundSettings target_bomb_settings = new(1f, 1f);
+        
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_CONTROL_CLICK_1, control_click_settings);
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_CONTROL_CLICK_2, control_click_settings);
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_CONTROL_CLICK, control_click_settings);
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_TARGET_BOMB_1, target_bomb_settings);
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_TARGET_BOMB_2, target_bomb_settings);
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_BOLT_SHOT, new(1,0.75f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_FULL_AUTO_SHOT, new(0.75f, 1f));
+
+
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.HARPOON_CONTROL_CLICK, control_click_settings);
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_CLICK, control_click_settings);
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.HELPER_STATION_CLICK, control_click_settings);
+
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_UPGRADE_CLICK, new(1, 1)); 
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_FINAL_UPGRADE_CLICK, new(1, 1));
+
 
 
     }
@@ -60,10 +73,14 @@ public class AudioManager : MonoBehaviour
     public enum ActivityType 
     {
         TURRET_CONTROL_CLICK_1, TURRET_CONTROL_CLICK_2, 
-        SLIDER_CONTROL_CLICK, SLIDER_BOLT_CLICK, SLIDER_FULL_AUTO_CLICK,
+        SLIDER_CONTROL_CLICK, // SLIDER_BOLT_CLICK, SLIDER_FULL_AUTO_CLICK,
         HARPOON_CONTROL_CLICK,
-        UPGRADE_STATION_ARROW_UP_CLICK, UPGRADE_STATION_ARROW_DOWN_CLICK, UPGRADE_STATION_FACE_CLICK,
-        HELPER_STATION_ARROW_UP_CLICK, HELPER_STATION_ARROW_DOWN_CLICK, HELPER_STATION_FACE_CLICK,
+       UPGRADE_STATION_CLICK, UPGRADE_STATION_UPGRADE_CLICK, UPGRADE_STATION_FINAL_UPGRADE_CLICK,
+        HELPER_STATION_CLICK, 
+
+        TURRET_TARGET_BOMB_1, TURRET_TARGET_BOMB_2,
+        SLIDER_BOLT_SHOT, SLIDER_FULL_AUTO_SHOT
+
 
 
     }
@@ -103,6 +120,10 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         
+
+
+
+
     }
 
     // Update is called once per frame

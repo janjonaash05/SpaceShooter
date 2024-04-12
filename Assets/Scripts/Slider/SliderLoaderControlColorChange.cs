@@ -23,9 +23,11 @@ public class SliderLoaderControlColorChange : MonoBehaviour
 
         PlayerInputCommunication.OnSliderFullAutoClick += TurnOnFullAuto;
         PlayerInputCommunication.OnSliderFullAutoClick += TurnOffBolt;
+        PlayerInputCommunication.OnSliderFullAutoClick += PlaySound;
 
         PlayerInputCommunication.OnSliderBoltClick += TurnOnBolt;
         PlayerInputCommunication.OnSliderBoltClick += TurnOffFullAuto;
+        PlayerInputCommunication.OnSliderBoltClick += PlaySound;
 
 
 
@@ -45,12 +47,16 @@ public class SliderLoaderControlColorChange : MonoBehaviour
     {
         PlayerInputCommunication.OnSliderFullAutoClick -= TurnOnFullAuto;
         PlayerInputCommunication.OnSliderFullAutoClick -= TurnOffBolt;
+        PlayerInputCommunication.OnSliderFullAutoClick -= PlaySound;
 
         PlayerInputCommunication.OnSliderBoltClick -= TurnOnBolt;
         PlayerInputCommunication.OnSliderBoltClick -= TurnOffFullAuto;
-
+        PlayerInputCommunication.OnSliderBoltClick -= PlaySound;
     }
 
+
+
+    void PlaySound(RaycastHit _) => AudioManager.PlayActivitySound(AudioManager.ActivityType.SLIDER_CONTROL_CLICK);
 
 
     void TurnOffBolt(RaycastHit hit)

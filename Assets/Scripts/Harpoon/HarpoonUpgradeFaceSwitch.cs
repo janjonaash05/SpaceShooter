@@ -77,6 +77,9 @@ public class HarpoonUpgradeFaceSwitch : HarpoonFaceSwitch
 
     void UpgradeStationArrowDownClick(RaycastHit _)
     {
+
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.UPGRADE_STATION_CLICK);
         ArrowDown(); ShowUpgradeDegree();
 
     }
@@ -84,6 +87,8 @@ public class HarpoonUpgradeFaceSwitch : HarpoonFaceSwitch
 
     void UpgradeStationArrowUpClick(RaycastHit _)
     {
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.UPGRADE_STATION_CLICK);
         ArrowUp(); ShowUpgradeDegree();
 
     }
@@ -95,6 +100,8 @@ public class HarpoonUpgradeFaceSwitch : HarpoonFaceSwitch
     {
         if (UICommunication.Tokens > 0 && UpgradesManager.UPGRADE_VALUE_DICT[current_upgrade] < UpgradesManager.MAX_VALUE)
         {
+
+          
             UpgradesManager.IncreaseValue(current_upgrade);
             UICommunication.Raise_TokenChange(-1);
             ShowUpgradeDegree();

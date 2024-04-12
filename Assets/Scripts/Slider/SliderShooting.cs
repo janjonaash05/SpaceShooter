@@ -175,6 +175,7 @@ public class SliderShooting : MonoBehaviour
                 while (auto.ChangeIndex(-1) != -1)
                 {
                     CreateBullet();
+                    AudioManager.PlayActivitySound(AudioManager.ActivityType.SLIDER_FULL_AUTO_SHOT);
 
                     yield return new WaitForSeconds(firing_delay);
                 }
@@ -183,6 +184,7 @@ public class SliderShooting : MonoBehaviour
             case SliderLoaderBoltRecharge bolt:
                 bolt.Use();
                 CreateBullet();
+                AudioManager.PlayActivitySound(AudioManager.ActivityType.SLIDER_BOLT_SHOT);
                 break;
         }
     }

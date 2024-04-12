@@ -64,7 +64,6 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
         transform.Rotate(Vector3.up, 90);
 
 
-        Debug.LogError("Rotating towards");
 
 
 

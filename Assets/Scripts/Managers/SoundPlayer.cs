@@ -16,6 +16,7 @@ public class SoundPlayer : MonoBehaviour
     private void Awake()
     {
         src = GetComponent<AudioSource>();
+        src.spatialBlend = 1;
 
 
 
@@ -49,6 +50,11 @@ public class SoundPlayer : MonoBehaviour
             if (activity == activity_type) 
             {
                 src.clip = AudioManager.ACTIVITY_CLIP_DICT[activity_type];
+
+                var settings = AudioManager.ACTIVITY_SOUND_SETTINGS_DICT[activity_type];
+
+                src.pitch = settings.Pitch;
+                src.volume = settings.Volume;
                 src.Play();
                 
             } 

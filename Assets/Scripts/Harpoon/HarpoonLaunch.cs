@@ -132,6 +132,9 @@ public class HarpoonLaunch : MonoBehaviour
 
     void HarpoonColliderClick(RaycastHit hit)
     {
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.HARPOON_CONTROL_CLICK);
+
         turnedOff = !turnedOff;
         Debug.Log(turnedOff + " turned off");
         harpoon_station_charge.GetComponent<Renderer>().material = (turnedOff) ? off_color_charge : charge_color;

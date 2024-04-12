@@ -24,12 +24,7 @@ public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
 
     bool cancelMoveUpExternally;
 
-    private void OnDestroy()
-    {
-
-
-        Debug.LogError("Destroying  " + this.GetType().Name);
-    }
+   
 
     void Start()
     {

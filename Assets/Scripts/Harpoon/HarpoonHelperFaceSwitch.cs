@@ -157,6 +157,7 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
     void HelperStationArrowDownClick(RaycastHit _)
     {
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_CLICK);
         ArrowDown(); ShowHelperState();
 
     }
@@ -164,6 +165,7 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
     void HelperStationArrowUpClick(RaycastHit _)
     {
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_CLICK);
         ArrowUp(); ShowHelperState();
 
     }
@@ -176,6 +178,7 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
         {
 
 
+            AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_CLICK);
 
 
             UICommunication.Raise_TokenChange(-4);

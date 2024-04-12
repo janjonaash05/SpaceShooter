@@ -46,6 +46,7 @@ public class SliderControlActivation : MonoBehaviour
 
 
 
+
         slider_pivot_transform = slider_pivot.transform;
 
     }
@@ -119,6 +120,9 @@ public class SliderControlActivation : MonoBehaviour
 
     public void EngageActivation()
     {
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.SLIDER_CONTROL_CLICK);
+
 
         active = !active;
         OnEngagement?.Invoke(active);

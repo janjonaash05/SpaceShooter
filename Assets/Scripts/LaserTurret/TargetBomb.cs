@@ -140,7 +140,7 @@ public class TargetBomb : MonoBehaviour
     {
         try
         {
-
+            AudioManager.PlayActivitySound( ID==1 ?   AudioManager.ActivityType.TURRET_TARGET_BOMB_1 : AudioManager.ActivityType.TURRET_TARGET_BOMB_2);
 
             OnTargetingStart?.Invoke();
             SetupLaser();

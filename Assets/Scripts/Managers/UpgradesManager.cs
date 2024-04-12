@@ -137,8 +137,14 @@ public class UpgradesManager : MonoBehaviour
         if (UPGRADE_VALUE_DICT[type] == MAX_VALUE) { return false; }
 
 
+        AudioManager.ActivityType activity_type = AudioManager.ActivityType.UPGRADE_STATION_UPGRADE_CLICK;
+
         UPGRADE_VALUE_DICT[type]++;
-        if (UPGRADE_VALUE_DICT[type] == MAX_VALUE) { SHIELD_MAX_CAPACITY++; OnShieldMaxCapacityValueChange?.Invoke(); }
+        if (UPGRADE_VALUE_DICT[type] == MAX_VALUE) 
+        {
+            SHIELD_MAX_CAPACITY++; OnShieldMaxCapacityValueChange?.Invoke();
+            activity_type = AudioManager.ActivityType.UPGRADE_STATION_FINAL_UPGRADE_CLICK;
+        }
 
 
 
@@ -154,6 +160,7 @@ public class UpgradesManager : MonoBehaviour
 
         toExecute();
 
+        AudioManager.PlayActivitySound(activity_type);
 
         return true;
 

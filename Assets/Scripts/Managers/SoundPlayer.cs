@@ -16,7 +16,7 @@ public class SoundPlayer : MonoBehaviour
     private void Awake()
     {
         src = GetComponent<AudioSource>();
-        src.spatialBlend = 1;
+        src.spatialBlend = 1f;
 
 
 

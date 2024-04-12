@@ -12,7 +12,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     [SerializeField] float rotation_speed_multiplier;
 
 
-    [SerializeField] float min_speed, max_speed;
+     
 
     public bool DisabledRewards { get; set; }
 
@@ -47,6 +47,10 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     {
         DisabledRewards = false;
 
+
+
+
+        (float min_speed, float max_speed) = DifficultyManager.BOMBxSPEED_INTERVAL_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY];
         MoveSpeed = UnityEngine.Random.Range(min_speed, max_speed);
         OnMoveSpeedSet?.Invoke(MoveSpeed);
 

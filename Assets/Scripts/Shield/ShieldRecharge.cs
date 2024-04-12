@@ -60,7 +60,7 @@ public class ShieldRecharge : MonoBehaviour
 
 
         max_capacity = UpgradesManager.SHIELD_MAX_CAPACITY;
-
+        Debug.LogError(max_capacity +" shield max capacity");
 
         charges = new();
         StartCoroutine(GenerateCharges());

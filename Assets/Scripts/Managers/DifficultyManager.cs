@@ -10,6 +10,62 @@ public class DifficultyManager : MonoBehaviour
 
 
 
+
+
+   public enum Difficulty { EASY, NORMAL, HARD }
+
+
+
+    public static Difficulty DIFFICULTY { get; private set; }
+
+    public static void SetDifficulty(Difficulty difficulty) => DIFFICULTY = difficulty;
+
+
+
+
+
+    public static readonly Dictionary<Difficulty, int> BOMB_GRIDxSIZE_DIFFICULTY_DICT = new() 
+    {
+        {Difficulty.EASY, 3 },
+        {Difficulty.NORMAL,4 },
+        {Difficulty.HARD, 5 }
+    
+    
+    };
+
+
+    public static readonly Dictionary<Difficulty, float> HARPOONxMISS_RECHARGE_DELAY_DIFFICULTY_DICT = new()
+    {
+        {Difficulty.EASY, 0.5f },
+        {Difficulty.NORMAL,1f },
+        {Difficulty.HARD, 1.5f }
+
+
+    };
+
+    public static readonly Dictionary<Difficulty, (float min, float max)> BOMBxSPEED_INTERVAL_DIFFICULTY_DICT = new()
+    {
+        {Difficulty.EASY, (0.1f,0.35f) },
+        {Difficulty.NORMAL,(0.2f,0.45f) },
+        {Difficulty.HARD, (0.3f,0.66f) }
+
+
+    };
+
+
+    public static readonly Dictionary<Difficulty, float> DISRUPTORxDISABLE_TIME_DIFFICULTY_DICT = new()
+    {
+        {Difficulty.EASY, 7.5f },
+        {Difficulty.NORMAL,10f },
+        {Difficulty.HARD, 12.5f }
+
+    };
+
+
+
+
+
+
     public enum AffectedFeatureCircumstance
     {
         TOKEN, TIME
@@ -139,7 +195,7 @@ public class DifficultyManager : MonoBehaviour
 
         return feature switch
         {
-            AffectedFeature.DISRUPTORxSPEED => "AVG " + 1 / Math.Round((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2, 2),
+            AffectedFeature.DISRUPTORxSPEED => "AVG " + Math.Round((GetCurrentDisruptorSpeedValue().min + GetCurrentDisruptorSpeedValue().max) / 2, 2),
             AffectedFeature.DISRUPTORxSPAWN_CHANCE => GetCurrentDisruptorSpawnChanceValue() + "% / minute",
             AffectedFeature.CONSTELLATIONxSPAWN_RATE => GetCurrentConstellationSpawnRateValue() + "s",
             AffectedFeature.CONSTELLATIONxMAX_STARS => GetCurrentConstellationMaxStarsValue().ToString(),

@@ -66,13 +66,14 @@ public class MoveDisruptorCharge : MonoBehaviour
 
 
 
+        float disable_duration = DifficultyManager.DISRUPTORxDISABLE_TIME_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY] * 1000;
         switch (ID) 
         {
             case 1:
-                LaserTurretCommunicationChannels.Channel1.DisableControlFor(DifficultyManager.DISRUPTOR_DISABLE_TIME * 1000);
+                LaserTurretCommunicationChannels.Channel1.DisableControlFor(disable_duration);
                 break;
             case 2:
-                LaserTurretCommunicationChannels.Channel2.DisableControlFor(DifficultyManager.DISRUPTOR_DISABLE_TIME * 1000);
+                LaserTurretCommunicationChannels.Channel2.DisableControlFor(disable_duration);
                 break;
         }
       

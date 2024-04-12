@@ -267,7 +267,7 @@ public class LaserControlColorChange : MonoBehaviour
 
 
 
-    public enum CONTROL_TYPE { SLIDER, TURRET_1, TURRET_2 };
+   
 
 
 
@@ -275,7 +275,6 @@ public class LaserControlColorChange : MonoBehaviour
     [SerializeField] float darkening_intensity;
     [SerializeField] Dictionary<string, int> mat_index_dict;
 
-    [SerializeField] CONTROL_TYPE control_type;
 
     private Material[] current_mats;
 

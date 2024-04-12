@@ -62,6 +62,8 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_UPGRADE_CLICK, new(1, 1)); 
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_FINAL_UPGRADE_CLICK, new(1, 1));
 
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.BOMB_EXPLOSION, new(0.25f, 1f));
+
 
 
     }
@@ -79,7 +81,9 @@ public class AudioManager : MonoBehaviour
         HELPER_STATION_CLICK, 
 
         TURRET_TARGET_BOMB_1, TURRET_TARGET_BOMB_2,
-        SLIDER_BOLT_SHOT, SLIDER_FULL_AUTO_SHOT
+        SLIDER_BOLT_SHOT, SLIDER_FULL_AUTO_SHOT,
+
+        BOMB_EXPLOSION
 
 
 

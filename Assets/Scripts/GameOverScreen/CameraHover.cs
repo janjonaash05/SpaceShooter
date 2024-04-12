@@ -51,7 +51,7 @@ public class CameraHover : MonoBehaviour
 
 
 
-                if(Input.GetMouseButton(0)) 
+                if(Input.GetMouseButtonDown(0)) 
                 {
                     current_button.OnClick();
                 

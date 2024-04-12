@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UpgradesManager : MonoBehaviour
+public class UpgradesManager
 {
 
     public enum UpgradeType { TURRET_CAPACITY, TURRET_RECHARGE, SLIDER_RECHARGE, SLIDER_SPEED }
@@ -24,6 +24,8 @@ public class UpgradesManager : MonoBehaviour
 
 
     public static int SHIELD_MAX_CAPACITY { get; private set; } = 4;
+
+    public static void Awake() => SHIELD_MAX_CAPACITY = 4;
 
 
 

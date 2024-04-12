@@ -20,6 +20,11 @@ public class Button : MonoBehaviour
 
 
 
+
+    AudioSource src;
+
+
+
     Renderer rend;
 
 
@@ -36,8 +41,39 @@ public class Button : MonoBehaviour
 
 
 
+
+
+    void PLAY_EASY() 
+    {
+
+        DifficultyManager.SetDifficulty(DifficultyManager.Difficulty.EASY);
+        SceneManager.LoadScene(1);
+
+    }
+
+
+    void PLAY_NORMAL()
+    {
+
+        DifficultyManager.SetDifficulty(DifficultyManager.Difficulty.NORMAL);
+        SceneManager.LoadScene(1);
+
+    }
+
+    void PLAY_HARD()
+    {
+
+        DifficultyManager.SetDifficulty(DifficultyManager.Difficulty.HARD);
+        SceneManager.LoadScene(1);
+
+    }
+
+
     void RETRY()
     {
+
+
+
 
         SceneManager.LoadScene(1);
 
@@ -64,7 +100,7 @@ public class Button : MonoBehaviour
     {
 
 
-        RETRY, EXIT_TO_MENU, EXIT_GAME
+        RETRY, EXIT_TO_MENU, EXIT_GAME, PLAY_EASY, PLAY_NORMAL,PLAY_HARD
 
 
     }
@@ -72,6 +108,11 @@ public class Button : MonoBehaviour
 
     void Start()
     {
+
+        src = GetComponent<AudioSource>();
+        src.volume = 0.5f;
+        src.spatialBlend = 0.5f;
+
         rend = GetComponent<Renderer>();
         off_mat = rend.materials[1];
 
@@ -79,8 +120,10 @@ public class Button : MonoBehaviour
         {
             {ButtonFunction.RETRY, RETRY },
             {ButtonFunction.EXIT_TO_MENU, EXIT_TO_MENU },
-            {ButtonFunction.EXIT_GAME, EXIT_GAME }
-
+            {ButtonFunction.EXIT_GAME, EXIT_GAME },
+            {ButtonFunction.PLAY_EASY, PLAY_EASY },
+            {ButtonFunction.PLAY_NORMAL, PLAY_NORMAL },
+            {ButtonFunction.PLAY_HARD, PLAY_HARD}
 
 
 
@@ -90,7 +133,7 @@ public class Button : MonoBehaviour
 
 
 
-        OnClick = function_dict[buttonFunction];
+        OnClick = () => { src.pitch = 1.1f ; src.Play();  function_dict[buttonFunction](); };
     }
 
 
@@ -101,6 +144,9 @@ public class Button : MonoBehaviour
         if (isHovering) return;
 
 
+
+        src.pitch = 1.25f;
+        src.Play();
 
 
 

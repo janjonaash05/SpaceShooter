@@ -17,8 +17,8 @@ public class BombSpawnerGrid : MonoBehaviour
 
     Vector3[,] positions;
 
-    [SerializeField] int size_x;
-    [SerializeField] int size_y;
+    int size_x;
+    int size_y;
 
 
 
@@ -47,6 +47,11 @@ public class BombSpawnerGrid : MonoBehaviour
     void Start()
     {
         DifficultyManager.OnBombSpawnerForm += BombSpawnerForm;
+
+
+        size_x = DifficultyManager.BOMB_GRIDxSIZE_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY];
+        size_y = size_x;
+
 
         start_amount = (size_x * size_y) / 3;
         positions = new Vector3[size_x, size_y];

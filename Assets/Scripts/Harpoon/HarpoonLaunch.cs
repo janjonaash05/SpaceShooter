@@ -153,7 +153,7 @@ public class HarpoonLaunch : MonoBehaviour
         Vector3 target_scale = Vector3.zero;
 
 
-        float duration = 0.5f;
+        float duration = DifficultyManager.HARPOONxMISS_RECHARGE_DELAY_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY];
 
 
         yield return StartCoroutine(ChangeScale(start_scale, target_scale, duration));

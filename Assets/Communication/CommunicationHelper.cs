@@ -8,9 +8,11 @@ public class CommunicationHelper : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        UpgradesManager.Awake();
         LaserTurretCommunicationChannels.Awake();
         CoreCommunication.Awake();
         UICommunication.Awake();
+        
         //  PlayerInputCommunication.OnLaserTarget1Click += LaserTurretCommunicationChannels.Channel1.AttemptRaise_ManualTargeting;
         //  PlayerInputCommunication.OnLaserTarget2Click += LaserTurretCommunicationChannels.Channel2.AttemptRaise_ManualTargeting;
 

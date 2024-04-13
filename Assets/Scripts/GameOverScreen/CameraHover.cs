@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
@@ -17,11 +18,18 @@ public class CameraHover : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
+
+
+        all_buttons = GameObject.FindGameObjectsWithTag(Tags.BUTTON).ToList().Select(x=> x.GetComponent<Button>()).ToList();
+
+
+        
+
     }
 
 
 
-
+    List<Button> all_buttons;
 
 
   
@@ -73,8 +81,10 @@ public class CameraHover : MonoBehaviour
         else
         {
             if (current_button == null) return;
-            current_button.OnHoverExit();
-
+            foreach (var item in all_buttons)
+            {
+                item.OnHoverExit();
+            }
         }
 
 

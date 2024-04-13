@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -41,7 +42,26 @@ public class Button : MonoBehaviour
 
 
 
+    void SETTINGS()
+    {
+        SceneManager.LoadScene(3);
+        
+    }
 
+
+    void STATS()
+    {
+        SceneManager.LoadScene(2);
+
+    }
+
+
+
+    void APPLY() 
+    {
+
+        SceneManager.LoadScene(0);
+    }
 
     void PLAY_EASY() 
     {
@@ -100,17 +120,21 @@ public class Button : MonoBehaviour
     {
 
 
-        RETRY, EXIT_TO_MENU, EXIT_GAME, PLAY_EASY, PLAY_NORMAL,PLAY_HARD
+        RETRY, EXIT_TO_MENU, EXIT_GAME, PLAY_EASY, PLAY_NORMAL,PLAY_HARD, SETTINGS, APPLY
 
 
     }
+
+
+
+    const float DEFAULT_VOLUME = 0.5f;
 
 
     void Start()
     {
 
         src = GetComponent<AudioSource>();
-        src.volume = 0.5f;
+        src.volume = DEFAULT_VOLUME;
         src.spatialBlend = 0.5f;
 
         rend = GetComponent<Renderer>();
@@ -123,17 +147,22 @@ public class Button : MonoBehaviour
             {ButtonFunction.EXIT_GAME, EXIT_GAME },
             {ButtonFunction.PLAY_EASY, PLAY_EASY },
             {ButtonFunction.PLAY_NORMAL, PLAY_NORMAL },
-            {ButtonFunction.PLAY_HARD, PLAY_HARD}
+            {ButtonFunction.PLAY_HARD, PLAY_HARD},
+            {ButtonFunction.SETTINGS, SETTINGS },
+            {ButtonFunction.APPLY, APPLY },
 
 
 
         };
 
 
+        
 
 
 
-        OnClick = () => { src.pitch = 1.1f ; src.Play();  function_dict[buttonFunction](); };
+
+
+        OnClick = () => { src.pitch = 1.1f ; src.volume = DEFAULT_VOLUME * UserDataManager.VOLUME_MULTIPLIER; src.Play();  function_dict[buttonFunction](); };
     }
 
 
@@ -146,6 +175,7 @@ public class Button : MonoBehaviour
 
 
         src.pitch = 1.25f;
+        src.volume = DEFAULT_VOLUME * UserDataManager.VOLUME_MULTIPLIER;
         src.Play();
 
 

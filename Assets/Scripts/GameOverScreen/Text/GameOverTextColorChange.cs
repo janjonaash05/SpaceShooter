@@ -9,6 +9,12 @@ public class GameOverTextColorChange : MonoBehaviour
 
 
 
+
+    [SerializeField] bool ground = false;
+
+
+
+
     Renderer rend;
     void Start()
     {
@@ -35,7 +41,15 @@ public class GameOverTextColorChange : MonoBehaviour
             int index = Random.Range(0, mats.Length);
             while (true)
             {
-                rend.material = mats[index];
+                if (ground)
+                {
+                    rend.materials = new Material[] {   mats[index] , rend.materials[1] };
+                }
+                else 
+                {
+                    rend.material = mats[index];
+                }
+                
                 index++;
 
 

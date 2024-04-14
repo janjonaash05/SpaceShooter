@@ -35,7 +35,7 @@ public class GroundDeathManager : MonoBehaviour
     const float WAIT_TIME = 0.2f;
 
 
-    static readonly Dictionary<int, Action>  execution_order_dict = new()
+    static readonly Dictionary<int, Action> execution_order_dict = new()
     {
         {1, () => OnCoreDeath?.Invoke() },
         {2, () => OnCoreRingDeath?.Invoke() },
@@ -61,7 +61,7 @@ public class GroundDeathManager : MonoBehaviour
 
             GameObject[] blockers = GameObject.FindGameObjectsWithTag(Tags.BLOCKER);
 
-            foreach (GameObject blocker in blockers) 
+            foreach (GameObject blocker in blockers)
             {
                 blocker.transform.position = new Vector3(blocker.transform.position.x, 13, blocker.transform.position.z);
             }
@@ -81,16 +81,44 @@ public class GroundDeathManager : MonoBehaviour
 
 
 
+            ResetValuesAndSaveScore();
 
 
-            SceneManager.LoadScene(2);
+            
         }
 
         StartCoroutine(StartDeath());
 
 
-        
+
     }
+
+
+
+
+
+
+    public static void ResetValuesAndSaveScore() 
+    {
+
+
+
+
+
+        Debug.LogError("SAVING SCORE TIME DIFF "+ UICommunication.Score + " "+ UICommunication.Mins + " " + UICommunication.Secs + " " + UICommunication.Mins + " " + DifficultyManager.DIFFICULTY);
+        UserDataManager.SetScoreTimeDifficulty(UICommunication.Score, UICommunication.Mins, UICommunication.Secs, UICommunication.Mins, DifficultyManager.DIFFICULTY);
+
+
+        
+
+        UpgradesManager.ResetValues();
+        DifficultyManager.ResetValues();
+
+        SceneManager.LoadScene(2);
+
+
+    }
+
 
 
 

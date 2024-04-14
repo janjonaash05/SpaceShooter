@@ -38,7 +38,7 @@ public class AmbienceChange : MonoBehaviour
     {
         src = GetComponent<AudioSource>();
 
-        src.volume = DEFAULT_VOLUME * UserDataManager.VOLUME_MULTIPLIER;
+        src.volume = DEFAULT_VOLUME * UserDataManager.CURRENT_DATA.VolumeMultiplier;
 
 
 

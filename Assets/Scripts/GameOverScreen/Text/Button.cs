@@ -41,6 +41,13 @@ public class Button : MonoBehaviour
 
 
 
+    void STATS()
+    {
+        SceneManager.LoadScene(4);
+        
+    
+    }
+
 
     void SETTINGS()
     {
@@ -48,20 +55,37 @@ public class Button : MonoBehaviour
         
     }
 
-
-    void STATS()
+    void APPLY()
     {
-        SceneManager.LoadScene(2);
 
-    }
-
+        UserDataManager.SetSettingsData(SettingsManager.NewSettings);
 
 
-    void APPLY() 
-    {
+        Debug.LogError("SAVING " + SettingsManager.NewSettings);
+
+
+        UserDataManager.Save();
 
         SceneManager.LoadScene(0);
+
     }
+
+
+    void DISCARD()
+    {
+
+        SettingsManager.DiscardSettings();
+        SceneManager.LoadScene(0);
+        
+
+
+
+    }
+
+   
+
+
+  
 
     void PLAY_EASY() 
     {
@@ -109,6 +133,8 @@ public class Button : MonoBehaviour
     }
 
 
+    
+
     void EXIT_GAME()
     {
 
@@ -120,7 +146,7 @@ public class Button : MonoBehaviour
     {
 
 
-        RETRY, EXIT_TO_MENU, EXIT_GAME, PLAY_EASY, PLAY_NORMAL,PLAY_HARD, SETTINGS, APPLY
+        RETRY, EXIT_TO_MENU, EXIT_GAME, PLAY_EASY, PLAY_NORMAL,PLAY_HARD, SETTINGS, DISCARD,APPLY, STATS
 
 
     }
@@ -149,7 +175,9 @@ public class Button : MonoBehaviour
             {ButtonFunction.PLAY_NORMAL, PLAY_NORMAL },
             {ButtonFunction.PLAY_HARD, PLAY_HARD},
             {ButtonFunction.SETTINGS, SETTINGS },
+            {ButtonFunction.STATS, STATS },
             {ButtonFunction.APPLY, APPLY },
+            {ButtonFunction.DISCARD, DISCARD },
 
 
 
@@ -162,7 +190,7 @@ public class Button : MonoBehaviour
 
 
 
-        OnClick = () => { src.pitch = 1.1f ; src.volume = DEFAULT_VOLUME * UserDataManager.VOLUME_MULTIPLIER; src.Play();  function_dict[buttonFunction](); };
+        OnClick = () => { src.pitch = 1.1f ; src.volume = DEFAULT_VOLUME * UserDataManager.CURRENT_DATA.VolumeMultiplier; src.Play();  function_dict[buttonFunction](); };
     }
 
 
@@ -175,7 +203,7 @@ public class Button : MonoBehaviour
 
 
         src.pitch = 1.25f;
-        src.volume = DEFAULT_VOLUME * UserDataManager.VOLUME_MULTIPLIER;
+        src.volume = DEFAULT_VOLUME * UserDataManager.CURRENT_DATA.VolumeMultiplier;
         src.Play();
 
 

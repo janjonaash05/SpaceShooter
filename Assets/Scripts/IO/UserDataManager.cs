@@ -7,13 +7,66 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
+using System.Linq;
 
 
 
 [System.Serializable]
-public record UserData
-(int[] best_time_easy, int[] best_time_normal, int[] best_time_hard, int[] best_scores, float volume_multiplier, bool fullscreen) 
-{ };
+public class UserData
+{
+
+
+    public int[] BestTimeEasy; public int[] BestTimeNormal; public int[] BestTimeHard; public int[] BestScores; public float VolumeMultiplier; public int[] Resolution; public bool Fullscreen;
+
+
+
+
+
+
+    public UserData(int[] BestTimeEasy, int[] BestTimeNormal, int[] BestTimeHard, int[] BestScores, float VolumeMultiplier, int[] Resolution, bool Fullscreen)
+    {
+        this.BestTimeEasy = BestTimeEasy;
+        this.BestTimeNormal = BestTimeNormal;
+        this.BestTimeHard = BestTimeHard;
+        this.BestScores = BestScores;
+        this.VolumeMultiplier = VolumeMultiplier;
+        this.Resolution = Resolution;
+        this.Fullscreen = Fullscreen;
+    }
+
+
+    public void SetBestTimeEasy(int[] var) => BestTimeEasy = var;
+    public void SetBestTimeNormal(int[] var) => BestTimeNormal = var;
+    public void SetBestTimeHard(int[] var) => BestTimeHard = var;
+    public void SetBestScores(int[] var) => BestScores = var;
+    public void SetVolumeMultiplier(float var) => VolumeMultiplier = var;
+    public void SetResolution(int[] var) => Resolution = var;
+    public void SetFullscreen(bool var) => Fullscreen = var;
+
+
+
+    public override string ToString()
+    {
+        return FormatArray(BestTimeEasy) + " " + FormatArray(BestTimeNormal) + " " + FormatArray(BestTimeHard) + " " + FormatArray(BestScores) + " " + VolumeMultiplier + " " + FormatArray(Resolution) + " " + Fullscreen;
+    }
+
+    string FormatArray(int[] var)
+    {
+        string res = "[";
+        foreach (int i in var)
+        {
+            res += i + ",";
+        }
+        res += "]";
+
+        return res;
+
+    }
+
+
+
+
+};
 
 
 
@@ -22,65 +75,186 @@ public static class UserDataManager
     // EASY, NORMAL, HARD
 
 
-    static event Action<float> OnVolumeValueChange;
 
 
 
 
 
-    public static int[][] DIFFICULTY_BEST_TIMES { get; private set; } = new int[3][];
-    public static int[] DIFFICULTY_BEST_SCORES { get; private set; } = new int[3];
-    public static float VOLUME_MULTIPLIER;
-    public static bool FULLSCREEN { get; private set; }
+    /*
+    public static int[][] DIFFICULTY_BEST_TIMES { get; private set; } = new int[3][] { new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, };
+    public static int[] DIFFICULTY_BEST_SCORES { get; private set; } = new int[3] { 0, 0, 0 };
+    public static float VOLUME_MULTIPLIER = 1;
+    public static bool FULLSCREEN { get; private set; } = true;
+
+    public static int[] RESOLUTION { get; private set; } = new int[] { Screen.currentResolution.width, Screen.currentResolution.height };
+    */
 
 
 
 
+    public static UserData CURRENT_DATA { get; private set; }
 
-
-
-
-   public readonly static string path  = Application.persistentDataPath + "/user.data" ;
-
-    public static void Save() 
+    public static void SetSettingsData(SettingsData settings)
     {
-        BinaryFormatter formatter = new();
-
-        
-        FileStream stream = new(path, FileMode.Create);
-
-
-        UserData data = new(DIFFICULTY_BEST_TIMES[0], DIFFICULTY_BEST_TIMES[1], DIFFICULTY_BEST_TIMES[3], DIFFICULTY_BEST_SCORES, VOLUME_MULTIPLIER, FULLSCREEN);
+        CURRENT_DATA.SetVolumeMultiplier(settings.Volume);
+        CURRENT_DATA.SetResolution(settings.Resolution);
+        CURRENT_DATA.SetFullscreen(settings.Fullscreen);
 
 
-        formatter.Serialize(stream, data);
-        stream.Close();
+
+
+
+
+        Debug.LogError("SAVING DATA " + CURRENT_DATA);
+        Save();
+
+
+
     }
 
 
-    public static UserData Load() 
+
+    public static void SetScoreTimeDifficulty(int score, int mins, int secs, int hs, DifficultyManager.Difficulty difficulty)
     {
-        if (File.Exists(path)) 
+
+        try
+        {
+
+
+            (int[] diff_time, int diff_score_index) = difficulty switch
+            {
+                DifficultyManager.Difficulty.EASY => (CURRENT_DATA.BestTimeEasy, 0),
+                DifficultyManager.Difficulty.NORMAL => (CURRENT_DATA.BestTimeNormal, 1),
+                DifficultyManager.Difficulty.HARD => (CURRENT_DATA.BestTimeHard, 2),
+            };
+
+
+         
+
+
+            if (score > CURRENT_DATA.BestScores[diff_score_index])
+            {
+                CURRENT_DATA.BestScores[diff_score_index] = score;
+            }
+
+
+
+
+            int[] time = new int[] { mins, secs, hs };
+
+
+            Debug.LogError(diff_time[0]+" "+ diff_time[1] + " " + diff_time[2] +" Time");
+
+            
+            
+            for (int i = 0; i < time.Length; i++)
+            {
+                if (time[i] > diff_time[i])
+                {
+                    for (int j = i; j < diff_time.Length; j++)
+                    {
+                        diff_time[j] = time[j];
+                    }
+
+                }
+
+            }
+            
+            
+
+ 
+            Save();
+
+
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+
+        }
+
+    }
+
+
+
+
+
+    public readonly static string path = Application.persistentDataPath + "/user.data";
+
+    public static void Save()
+    {
+
+        try
+        {
+
+
+            BinaryFormatter formatter = new();
+
+
+            FileStream stream = new(path, FileMode.Create);
+
+            formatter.Serialize(stream, CURRENT_DATA);
+            stream.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+        }
+    }
+
+
+    public static void Load()
+    {
+
+
+        /*
+        CURRENT_DATA =  GetDefaultData();
+        return;
+        */
+
+
+
+
+        if (File.Exists(path))
         {
             BinaryFormatter formatter = new();
             FileStream stream = new(path, FileMode.Open);
 
-            var data =  formatter.Deserialize(stream) as UserData;
+
+
+
+
+
+
+
+            try
+            {
+                CURRENT_DATA = formatter.Deserialize(stream) as UserData;
+            }
+            catch
+            {
+                CURRENT_DATA = GetDefaultData();
+            }
+
             stream.Close();
 
-            
-
-
-            return data;
-
+            return;
         }
-        Debug.LogError("FILE ERROR");
-        return null;
+
+        CURRENT_DATA = GetDefaultData();
 
 
 
 
     }
+
+
+    public static UserData GetDefaultData() => new
+        (
+        new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 }, new int[] { 0, 0, 0 },
+        new int[] { 0, 0, 0 },
+        1f, new int[] { Screen.currentResolution.width, Screen.currentResolution.height }, true
+        );
 
 
 

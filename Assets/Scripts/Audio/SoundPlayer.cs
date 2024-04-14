@@ -54,7 +54,7 @@ public class SoundPlayer : MonoBehaviour
                 var settings = AudioManager.ACTIVITY_SOUND_SETTINGS_DICT[activity_type];
 
                 src.pitch = settings.Pitch;
-                src.volume = settings.Volume * UserDataManager.VOLUME_MULTIPLIER;
+                src.volume = settings.Volume * UserDataManager.CURRENT_DATA.VolumeMultiplier;
                 src.Play();
                 
             } 

@@ -105,8 +105,8 @@ public class GroundDeathManager : MonoBehaviour
 
 
 
-        Debug.LogError("SAVING SCORE TIME DIFF "+ UICommunication.Score + " "+ UICommunication.Mins + " " + UICommunication.Secs + " " + UICommunication.Mins + " " + DifficultyManager.DIFFICULTY);
-        UserDataManager.SetScoreTimeDifficulty(UICommunication.Score, UICommunication.Mins, UICommunication.Secs, UICommunication.Mins, DifficultyManager.DIFFICULTY);
+       // Debug.LogError("SAVING SCORE TIME DIFF "+ UICommunication.Score + " "+ UICommunication.Mins + " " + UICommunication.Secs + " " + UICommunication.Hundredths + " " + DifficultyManager.DIFFICULTY);
+        UserDataManager.SetScoreTimeDifficulty(UICommunication.Score, UICommunication.Mins, UICommunication.Secs, UICommunication.Hundredths, DifficultyManager.DIFFICULTY);
 
 
         

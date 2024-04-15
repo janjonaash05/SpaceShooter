@@ -16,11 +16,25 @@ public class SpawnBomb : MonoBehaviour
 
     [SerializeField] float spawn_x_offset;
 
-     Material[] mats1;
-     Material[] mats2;
+    Material[] mats1;
+    Material[] mats2;
 
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public GameObject prefab;
 
 
@@ -39,13 +53,35 @@ public class SpawnBomb : MonoBehaviour
     }
 
 
+
+    private void OnDestroy()
+    {
+        BombSpawnerGrid.OnClusterEventStart -= ClusterEventStart;
+        BombSpawnerGrid.OnClusterEventSpawn -= ClusterEventSpawn;
+        BombSpawnerGrid.OnClusterEventEnd -= ClusterEventEnd;
+    }
+
+
+
+
+    void ClusterEventStart() => CanSpawn = false; 
+    void ClusterEventEnd() => CanSpawn = true;
+    void ClusterEventSpawn(string tag, Material mat) => ConstructBomb(tag, mat, min_size);
+
     private void Awake()
     {
-        
+
+
+        BombSpawnerGrid.OnClusterEventStart += ClusterEventStart;
+        BombSpawnerGrid.OnClusterEventSpawn += ClusterEventSpawn;
+        BombSpawnerGrid.OnClusterEventEnd += ClusterEventEnd;
+
+
+
         spawner_ps = transform.parent.GetChild(0).GetComponent<ParticleSystem>();
 
 
-        InvokeRepeating(nameof(Spawn), DifficultyManager.BOMB_SPAWN_DELAY* (float)new System.Random().NextDouble(),DifficultyManager.BOMB_SPAWN_DELAY);
+        InvokeRepeating(nameof(SpawnRegular), DifficultyManager.BOMB_SPAWN_DELAY * (float)new System.Random().NextDouble(), DifficultyManager.BOMB_SPAWN_DELAY);
 
 
         HelperSpawnerManager.OnBlackHoleSpawn += () => CanSpawn = false;
@@ -68,9 +104,9 @@ public class SpawnBomb : MonoBehaviour
 
     const int TILE_COLOR_INDEX = 2;
     const int TILE_SECONDARY_INDEX = 1;
-    void ChangeTileToColor(Material m) 
+    void ChangeTileToColor(Material m)
     {
-        
+
         GameObject tile = transform.parent.gameObject;
         Material[] mats = tile.GetComponent<Renderer>().materials;
         mats[TILE_COLOR_INDEX] = m;
@@ -80,7 +116,7 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-    void ChangeTileToOff() 
+    void ChangeTileToOff()
     {
         GameObject tile = transform.parent.gameObject;
         Material[] mats = tile.GetComponent<Renderer>().materials;
@@ -89,9 +125,9 @@ public class SpawnBomb : MonoBehaviour
 
     }
 
-    void StartTileEmission(Material m) 
+    void StartTileEmission(Material m)
     {
-        
+
         spawner_ps.GetComponent<ParticleSystemRenderer>().material = m;
         var emission = spawner_ps.emission;
         emission.enabled = true;
@@ -107,14 +143,14 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-    void Spawn()
+    void SpawnRegular()
     {
 
 
         if (!CanSpawn) return;
 
         string tag = Random.Range(0, 2) == 1 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
-        
+
 
         Material colorMat = tag switch
         {
@@ -126,27 +162,27 @@ public class SpawnBomb : MonoBehaviour
             _ => mats1[0]
         };
 
-        OnBombSpawnStart?.Invoke(colorMat);
-
-
-        Vector3 spawn = transform.position;
-       GameObject bomb = Instantiate(prefab, spawn, transform.rotation);
-        bomb.transform.localScale = new(0.1f, 0.1f, 0.1f);
-
-
-        bomb.tag = tag;
 
         float size = Random.Range(min_size, max_size);
 
 
-        StartCoroutine(ScaleUp(bomb, size));
+        ConstructBomb(tag, colorMat, size);
 
 
+        /*
+        OnBombSpawnStart?.Invoke(colorMat);
+
+
+        Vector3 spawn = transform.position;
+        GameObject bomb = Instantiate(prefab, spawn, transform.rotation);
+        bomb.transform.localScale = new(0.1f, 0.1f, 0.1f);
+
+
+        bomb.tag = tag;
         
 
 
-
-
+        StartCoroutine(ScaleUp(bomb, size));
 
 
         ParticleSystem destroy_ps = bomb.transform.GetChild(0).GetComponent<ParticleSystem>();
@@ -159,8 +195,8 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-        destroy_main.startSize = size ;
-        dissolve_main.startSize = size/2;
+        destroy_main.startSize = size;
+        dissolve_main.startSize = size / 2;
 
 
 
@@ -171,10 +207,55 @@ public class SpawnBomb : MonoBehaviour
 
 
         bomb.GetComponent<BombColorChange>().Init(colorMat);
-       
+
+        */
 
 
 
+
+    }
+
+
+
+    void ConstructBomb(string tag, Material mat, float size)
+    {
+        OnBombSpawnStart?.Invoke(mat);
+
+
+        Vector3 spawn = transform.position;
+        GameObject bomb = Instantiate(prefab, spawn, transform.rotation);
+        bomb.transform.localScale = new(0.1f, 0.1f, 0.1f);
+
+
+        bomb.tag = tag;
+      //  float size = Random.Range(min_size, max_size);
+
+
+        StartCoroutine(ScaleUp(bomb, size));
+
+
+        ParticleSystem destroy_ps = bomb.transform.GetChild(0).GetComponent<ParticleSystem>();
+        ParticleSystem dissolve_ps = bomb.transform.GetChild(1).GetComponent<ParticleSystem>();
+
+
+
+        var destroy_main = destroy_ps.main;
+        var dissolve_main = dissolve_ps.main;
+
+
+
+        destroy_main.startSize = size;
+        dissolve_main.startSize = size / 2;
+
+
+
+
+
+        destroy_ps.GetComponent<ParticleSystemRenderer>().material = mat;
+        dissolve_ps.GetComponent<ParticleSystemRenderer>().material = mat;
+
+
+        bomb.GetComponent<BombColorChange>().Init(mat);
 
 
     }
@@ -191,11 +272,11 @@ public class SpawnBomb : MonoBehaviour
                 bomb.transform.localScale = new Vector3(bomb.transform.localScale.x + scale_up_increment, bomb.transform.localScale.y + scale_up_increment, bomb.transform.localScale.z + scale_up_increment);
 
             }
-            catch (Exception) 
+            catch (Exception)
             {
-                
+
                 OnBombSpawnEnd?.Invoke();
-          
+
                 yield break;
             }
 
@@ -205,7 +286,8 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-        if ( bomb == null   || bomb.GetComponent<BombFall>()==null) { OnBombSpawnEnd?.Invoke(); yield break; } bomb.GetComponent<BombFall>().SetScaledUp(); OnBombSpawnEnd?.Invoke();
+        if (bomb == null || bomb.GetComponent<BombFall>() == null) { OnBombSpawnEnd?.Invoke(); yield break; }
+        bomb.GetComponent<BombFall>().SetScaledUp(); OnBombSpawnEnd?.Invoke();
 
 
     }

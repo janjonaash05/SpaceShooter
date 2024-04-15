@@ -12,6 +12,11 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
 
+
+    public static event Action<string, Material> OnClusterEventSpawn;
+    public static event Action OnClusterEventStart, OnClusterEventEnd;
+
+
     [SerializeField] GameObject placeholder_prefab, spawner_prefab;
 
 
@@ -33,6 +38,64 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
 
+    IEnumerator ClusterEventTimer()
+    {
+
+        while (true)
+        {
+            yield return new WaitForSeconds(DifficultyManager.GetCurrentBombClusterFrequencyValue());
+
+
+            Debug.LogError("CLUSTER START");
+
+
+            OnClusterEventStart?.Invoke();
+
+            for (int i = 0; i < DifficultyManager.GetCurrentBombClusterBurstAmountValue(); i++) 
+            {
+                string tag = UnityEngine.Random.Range(0, 2) == 0 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
+
+                var materials = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().COLOR_SET_1() : MaterialHolder.Instance().COLOR_SET_2();
+
+
+                var mat = materials[UnityEngine.Random.Range(0, materials.Length)];
+
+
+                OnClusterEventSpawn?.Invoke(tag, mat);
+
+
+                yield return new WaitForSeconds(2f);
+
+            }
+            OnClusterEventEnd?.Invoke();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+        
+    
+    
+    
+    
+    }
+
+
+
+
 
 
     void BombSpawnerForm() => StartCoroutine(SwitchPlaceholderForSpawner());
@@ -49,6 +112,16 @@ public class BombSpawnerGrid : MonoBehaviour
         DifficultyManager.OnBombSpawnerForm += BombSpawnerForm;
 
 
+
+
+
+
+
+
+
+
+
+
         size_x = DifficultyManager.BOMB_GRIDxSIZE_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY];
         size_y = size_x;
 
@@ -57,6 +130,9 @@ public class BombSpawnerGrid : MonoBehaviour
         positions = new Vector3[size_x, size_y];
 
         GenerateGrid();
+        StartCoroutine(ClusterEventTimer());
+
+
     }
 
 

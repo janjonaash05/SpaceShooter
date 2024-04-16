@@ -46,7 +46,7 @@ public class SpawnDisruptor : MonoBehaviour
 
             if (GameObject.FindGameObjectsWithTag(Tags.DISRUPTOR).Length == 0)
             {
-                int chance = 100 / DifficultyManager.DISRUPTOR_SPAWN_CHANCE;
+                int chance = 100 / DifficultyManager.GetCurrentDisruptorSpawnChanceValue();
 
 
                 if (new System.Random().Next(0, chance) != 0) { yield return new WaitForSeconds(DifficultyManager.DISRUPTOR_SPAWN_DELAY); continue; }

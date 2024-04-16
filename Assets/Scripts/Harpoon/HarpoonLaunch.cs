@@ -216,6 +216,8 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.HARPOON_LAUNCH);
+
         while (Vector3.Distance(harpoon_head_transform.localPosition, target) > 0.001f)
         {
             //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
@@ -233,6 +235,7 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.HARPOON_RETRACTION);
         while (Vector3.Distance(harpoon_head_transform.localPosition, start) > 0.001f)
         {
             //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));

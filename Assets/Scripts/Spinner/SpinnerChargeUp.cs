@@ -16,6 +16,13 @@ public class SpinnerChargeUp : MonoBehaviour
 
     public static event Action OnLaserShotPlayerDeath;
 
+
+
+
+
+
+    bool charging_up = false;
+
     void Start()
     {
         //problematic
@@ -57,12 +64,16 @@ public class SpinnerChargeUp : MonoBehaviour
 
     public void StartCharging()
     {
+
+        
         StartCoroutine(Charge());
     }
 
     public void EndCharging()
     {
 
+        charging_up = false;
+        AudioManager.StopActivitySound(AudioManager.ActivityType.SPINNER_CHARGE_UP);
         StopAllCoroutines();
         charge.transform.localScale = new Vector3(0, 0, 0);
         size_unit = 0;
@@ -72,11 +83,16 @@ public class SpinnerChargeUp : MonoBehaviour
 
 
 
-    public const float CHARGE_UP_TIME = 5f;
+    public const float CHARGE_UP_TIME = 6f;
 
     IEnumerator Charge()
     {
 
+        if (charging_up) yield break;
+        charging_up = true;
+
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.SPINNER_CHARGE_UP);
         float duration = CHARGE_UP_TIME;
 
         float lerp = 0;
@@ -207,6 +223,10 @@ public class SpinnerChargeUp : MonoBehaviour
 
     IEnumerator Shoot()
     {
+
+
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.SPINNER_SHOOT);
         if (laser != null) yield break;
         laser = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         laserRend = laser.GetComponent<Renderer>();

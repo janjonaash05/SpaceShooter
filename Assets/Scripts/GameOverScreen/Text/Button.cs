@@ -61,7 +61,7 @@ public class Button : MonoBehaviour
         UserDataManager.SetSettingsData(SettingsManager.NewSettings);
 
 
-        Debug.LogError("SAVING " + SettingsManager.NewSettings);
+     //   Debug.LogError("SAVING " + SettingsManager.NewSettings);
 
 
         UserDataManager.Save();
@@ -132,7 +132,7 @@ public class Button : MonoBehaviour
 
     }
 
-
+    
     
 
     void EXIT_GAME()
@@ -142,11 +142,32 @@ public class Button : MonoBehaviour
     }
 
 
+    void RESET() 
+    {
+        SceneManager.LoadScene(5);
+        
+    }
+
+
+
+    void CONFIRM_DELETION() 
+    {
+        UserDataManager.ResetUserScoreTime();
+        SceneManager.LoadScene(4);
+    }
+
+
+    void CANCEL_DELETION()
+    {
+        SceneManager.LoadScene(4);
+    }
+
     public enum ButtonFunction
     {
 
 
-        RETRY, EXIT_TO_MENU, EXIT_GAME, PLAY_EASY, PLAY_NORMAL,PLAY_HARD, SETTINGS, DISCARD,APPLY, STATS
+        RETRY, EXIT_TO_MENU, EXIT_GAME, PLAY_EASY, PLAY_NORMAL,PLAY_HARD, SETTINGS, DISCARD,APPLY, STATS, 
+        CONFIRM_DELETION, CANCEL_DELETION, RESET
 
 
     }
@@ -178,6 +199,9 @@ public class Button : MonoBehaviour
             {ButtonFunction.STATS, STATS },
             {ButtonFunction.APPLY, APPLY },
             {ButtonFunction.DISCARD, DISCARD },
+            {ButtonFunction.CONFIRM_DELETION,CONFIRM_DELETION },
+            {ButtonFunction.CANCEL_DELETION, CANCEL_DELETION },
+            {ButtonFunction.RESET, RESET },
 
 
 

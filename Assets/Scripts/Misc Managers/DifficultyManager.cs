@@ -97,8 +97,8 @@ public class DifficultyManager : MonoBehaviour
         {AffectedFeature.CONSTELLATIONxMAX_STARS,0 },
 
 
-        {AffectedFeature.BOMB_CLUSTERxFREQUENCY,2 },
-        {AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT,2 },
+        {AffectedFeature.BOMB_CLUSTERxFREQUENCY,4 },
+       
 
     };
 
@@ -214,21 +214,7 @@ public class DifficultyManager : MonoBehaviour
     }
 
 
-    public static Dictionary<int, int> BOMB_CLUSTER_BURST_AMOUNT_DEGREE_VALUE_DICT = new()
-    {
-        {0,0 },
-        {1,1 },
-        {2,2 },
-        {3,3 },
-        {4,4 },
 
-
-    };
-
-    public static int GetCurrentBombClusterBurstAmountValue()
-    {
-        return BOMB_CLUSTER_BURST_AMOUNT_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT]];
-    }
 
 
     public static string GetCurrentFormattedValue(AffectedFeature feature)
@@ -243,7 +229,6 @@ public class DifficultyManager : MonoBehaviour
             AffectedFeature.BOMB_SPAWNERxSPAWN_RATE => GetCurrentBombSpawnerSpawnRateValue() + "s",
             AffectedFeature.BOMB_SPAWNERxFORM => GetCurrentBombSpawnerFormValue() + "/" + MAX_FEATURE_VALUE,
             AffectedFeature.BOMB_CLUSTERxFREQUENCY => GetCurrentBombClusterFrequencyValue() + "s",
-            AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT => GetCurrentBombClusterBurstAmountValue()+"", 
             _ => ""
 
         }; ;

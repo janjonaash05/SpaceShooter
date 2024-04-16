@@ -128,6 +128,9 @@ public class TargetBomb : MonoBehaviour
         OnBarrageStart += () => isBarraging = true;
         OnBarrageEnd += () => isBarraging = false;
 
+
+        OnBarrageStart += () => Debug.LogError("BARRAGE START");
+        OnBarrageEnd += () => Debug.LogError("BARRAGE END"); //called more times than start
     }
 
 

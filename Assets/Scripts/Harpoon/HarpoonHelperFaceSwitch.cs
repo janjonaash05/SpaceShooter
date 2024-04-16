@@ -71,8 +71,12 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
             {
                 CountDownValue = i;
 
+
+                
+
                 OnCountDownValueChange?.Invoke();
                 await Task.Delay(WAIT_TIME);
+                AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_HELPER_COUNTDOWN);
             }
 
 
@@ -178,7 +182,7 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
         {
 
 
-            AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_CLICK);
+            AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_HELPER_SPAWN);
 
 
             UICommunication.Raise_TokenChange(-4);

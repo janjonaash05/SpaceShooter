@@ -9,6 +9,7 @@ public class MainMenuManager : MonoBehaviour
     {
         UserDataManager.Load();
 
+
         Screen.SetResolution(UserDataManager.CURRENT_DATA.Resolution[0], UserDataManager.CURRENT_DATA.Resolution[1], UserDataManager.CURRENT_DATA.Fullscreen);
 
 

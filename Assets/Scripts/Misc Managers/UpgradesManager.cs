@@ -121,7 +121,7 @@ public class UpgradesManager
             UPGRADE_VALUE_DICT[key] = 0;
         }
 
-        Debug.LogError("RESETTING ");
+        //Debug.LogError("RESETTING ");
     }
 
 

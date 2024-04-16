@@ -51,22 +51,16 @@ public class BombSpawnerGrid : MonoBehaviour
 
             OnClusterEventStart?.Invoke();
 
-            for (int i = 0; i < DifficultyManager.GetCurrentBombClusterBurstAmountValue(); i++) 
-            {
-                string tag = UnityEngine.Random.Range(0, 2) == 0 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
+            string tag = UnityEngine.Random.Range(0, 2) == 0 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
 
-                var materials = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().COLOR_SET_1() : MaterialHolder.Instance().COLOR_SET_2();
+            var materials = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().COLOR_SET_1() : MaterialHolder.Instance().COLOR_SET_2();
 
 
-                var mat = materials[UnityEngine.Random.Range(0, materials.Length)];
+            var mat = materials[UnityEngine.Random.Range(0, materials.Length)];
 
 
-                OnClusterEventSpawn?.Invoke(tag, mat);
+            OnClusterEventSpawn?.Invoke(tag, mat);
 
-
-                yield return new WaitForSeconds(2f);
-
-            }
             OnClusterEventEnd?.Invoke();
 
 
@@ -86,11 +80,11 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
         }
-        
-    
-    
-    
-    
+
+
+
+
+
     }
 
 

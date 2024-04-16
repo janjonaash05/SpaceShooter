@@ -16,7 +16,13 @@ public class UserData
 {
 
 
-    public int[] BestTimeEasy; public int[] BestTimeNormal; public int[] BestTimeHard; public int[] BestScores; public float VolumeMultiplier; public int[] Resolution; public bool Fullscreen;
+    public int[] BestTimeEasy { get; private set; }
+    public int[] BestTimeNormal { get; private set; }
+    public int[] BestTimeHard { get; private set; }
+    public int[] BestScores { get; private set; }
+    public float VolumeMultiplier { get; private set; }
+    public int[] Resolution { get; private set; }
+    public bool Fullscreen { get; private set; }
 
 
 
@@ -101,18 +107,24 @@ public static class UserDataManager
         CURRENT_DATA.SetFullscreen(settings.Fullscreen);
 
 
-
-
-
-
         Debug.LogError("SAVING DATA " + CURRENT_DATA);
         Save();
 
-
-
     }
 
+    public static void ResetUserScoreTime()
+    {
 
+      
+
+
+        CURRENT_DATA.SetBestScores(new int[] { 0, 0, 0 });
+        CURRENT_DATA.SetBestTimeEasy(new int[] { 0, 0, 0 });
+        CURRENT_DATA.SetBestTimeNormal(new int[] { 0, 0, 0 });
+        CURRENT_DATA.SetBestTimeHard(new int[] { 0, 0, 0 });
+        Save();
+
+    }
 
     public static void SetScoreTimeDifficulty(int score, int mins, int secs, int hs, DifficultyManager.Difficulty difficulty)
     {
@@ -220,19 +232,16 @@ public static class UserDataManager
             BinaryFormatter formatter = new();
             FileStream stream = new(path, FileMode.Open);
 
-
-
-
-
-
-
-
             try
             {
-                CURRENT_DATA = formatter.Deserialize(stream) as UserData;
+               // Debug.LogError("successful load");
+                //CURRENT_DATA = GetDefaultData();
+                  CURRENT_DATA = formatter.Deserialize(stream) as UserData;
             }
             catch
             {
+
+               // Debug.LogError("failed load");
                 CURRENT_DATA = GetDefaultData();
             }
 

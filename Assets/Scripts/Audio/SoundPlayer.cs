@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static AudioManager;
 
 public class SoundPlayer : MonoBehaviour
 {
@@ -8,20 +9,21 @@ public class SoundPlayer : MonoBehaviour
 
     AudioSource src;
 
-   [SerializeField] AudioManager.ActivityType[] activity_types;
+   [SerializeField] ActivityType[] activity_types;
 
 
-    [SerializeField] Dictionary<AudioManager.ActivityType, AudioClip> activity_types_clip_dict;
+    [SerializeField] Dictionary<ActivityType, AudioClip> activity_types_clip_dict;
 
     private void Awake()
     {
         src = GetComponent<AudioSource>();
-        src.spatialBlend = 1f;
+        src.spatialBlend = 0.5f;
 
 
 
 
-        AudioManager.OnActivitySoundPlay += VerifyAndPlaySound;
+        OnActivitySoundPlay += VerifyAndPlaySound;
+        OnActivitySoundStop += StopSound ;
 
 
 
@@ -35,11 +37,12 @@ public class SoundPlayer : MonoBehaviour
     private void OnDestroy()
     {
 
-        AudioManager.OnActivitySoundPlay -= VerifyAndPlaySound;
+        OnActivitySoundPlay -= VerifyAndPlaySound;
+        OnActivitySoundStop -= StopSound;
     }
 
 
-    void VerifyAndPlaySound(AudioManager.ActivityType activity_type)
+    void VerifyAndPlaySound(ActivityType activity_type)
     {
 
 
@@ -49,12 +52,12 @@ public class SoundPlayer : MonoBehaviour
         {
             if (activity == activity_type) 
             {
-                src.clip = AudioManager.ACTIVITY_CLIP_DICT[activity_type];
+                src.clip = ACTIVITY_CLIP_DICT[activity_type];
 
-                var settings = AudioManager.ACTIVITY_SOUND_SETTINGS_DICT[activity_type];
+                var settings = ACTIVITY_SOUND_SETTINGS_DICT[activity_type];
 
                 src.pitch = settings.Pitch;
-                src.volume = settings.Volume * UserDataManager.CURRENT_DATA.VolumeMultiplier;
+                src.volume = settings.Volume * ( UserDataManager.CURRENT_DATA?.VolumeMultiplier ?? 1);
                 src.Play();
                 
             } 
@@ -63,6 +66,24 @@ public class SoundPlayer : MonoBehaviour
     
     }
 
+
+
+
+
+
+    void StopSound(ActivityType activity_type)
+    {
+        foreach (var activity in activity_types)
+        {
+            if (activity == activity_type)
+            {
+               src.Stop();
+
+            }
+        }
+
+
+    }
 
 
 

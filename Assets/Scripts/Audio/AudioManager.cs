@@ -18,6 +18,20 @@ public record SoundSettings(float Volume, float Pitch) { };
 
 
 
+[System.Serializable]
+public class ActivityClipPair
+{
+
+
+    public AudioManager.ActivityType Activity { get; private set; }
+    public AudioClip Clip { get; private set; } 
+
+
+}
+
+
+//AudioClip audioClip = Resources.Load <AudioClip> ("Music/Song_Name");
+
 
 
 public class AudioManager : MonoBehaviour
@@ -26,32 +40,100 @@ public class AudioManager : MonoBehaviour
     [SerializeField] List<AudioClip> values_clips;
 
 
+    [SerializeField] List<ActivityClipPair> values_clip_pairs;
 
-   public static Dictionary<ActivityType, AudioClip> ACTIVITY_CLIP_DICT { get; private set; }
+
+ //   public static Dictionary<ActivityType, AudioClip> ACTIVITY_CLIP_DICT { get; private set; }
 
 
     public static Dictionary<ActivityType, SoundSettings> ACTIVITY_SOUND_SETTINGS_DICT { get; private set; } = new();
 
+
+
+
+
+    public static Dictionary<ActivityType, AudioClip> ACTIVITY_CLIP_DICT = new();
+
+
+    const string path = "Sounds/";
+
+    //AudioClip audioClip = Resources.Load <AudioClip> ("Music/Song_Name");
+    public static void LoadResources()
+    {
+
+        AudioClip control_click = Resources.Load<AudioClip>(path + "Controls/clicking");
+        AudioClip laser_blast = Resources.Load<AudioClip>(path + "Turret/turret_laser_blast");
+        AudioClip upgrade = Resources.Load<AudioClip>(path + "Controls/upgrade");
+        AudioClip upgrade_final = Resources.Load<AudioClip>(path + "Controls/upgrade_final");
+
+
+
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_CONTROL_CLICK_1, control_click);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_CONTROL_CLICK_2, control_click);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SLIDER_CONTROL_CLICK, control_click);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.HARPOON_CONTROL_CLICK, control_click);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.UPGRADE_STATION_CLICK, control_click);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.HELPER_STATION_CLICK, control_click);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_TARGET_BOMB_1, laser_blast); 
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_TARGET_BOMB_2, laser_blast);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SLIDER_BOLT_SHOT, Resources.Load<AudioClip>(path+"Slider/slider_bolt_shot"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SLIDER_FULL_AUTO_SHOT, Resources.Load<AudioClip>(path + "Slider/slider_full_auto_shot"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.UPGRADE_STATION_UPGRADE_CLICK, upgrade);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.UPGRADE_STATION_FINAL_UPGRADE_CLICK, upgrade_final);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.HELPER_STATION_HELPER_SPAWN, upgrade_final);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.HELPER_STATION_HELPER_COUNTDOWN, upgrade);
+        ACTIVITY_CLIP_DICT.Add(ActivityType.HARPOON_LAUNCH, Resources.Load<AudioClip>(path + "Harpoon/harpoon_launch"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.HARPOON_RETRACTION, Resources.Load<AudioClip>(path + "Harpoon/harpoon_retract"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SPINNER_CHARGE_UP, Resources.Load<AudioClip>(path + "Spinner/spinner_charge_up"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SPINNER_SHOOT, Resources.Load<AudioClip>(path + "Spinner/spinner_shoot"));
+
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SHIELD_BLOCK, Resources.Load<AudioClip>(path + "Shield/shield_hit"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SHIELD_PASS, Resources.Load<AudioClip>(path + "Shield/shield_hit"));
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
     private void Awake()
     {
+
+        /*
         ACTIVITY_CLIP_DICT = new();
         for (int i = 0; i < keys_activities.Count; i++)
         {
             ACTIVITY_CLIP_DICT.Add(keys_activities[i], values_clips[i]);
-        
-        
+
+
         }
+        */
 
+        LoadResources();
 
-        SoundSettings control_click_settings = new(0.75f,0.47f);
+        SoundSettings control_click_settings = new(0.75f, 0.47f);
         SoundSettings target_bomb_settings = new(1f, 1f);
-        
+
+
+
+        if (ACTIVITY_SOUND_SETTINGS_DICT.Count != 0) return;
+
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_CONTROL_CLICK_1, control_click_settings);
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_CONTROL_CLICK_2, control_click_settings);
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_CONTROL_CLICK, control_click_settings);
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_TARGET_BOMB_1, target_bomb_settings);
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_TARGET_BOMB_2, target_bomb_settings);
-        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_BOLT_SHOT, new(1,0.75f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_BOLT_SHOT, new(1, 0.75f));
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_FULL_AUTO_SHOT, new(0.75f, 1f));
 
 
@@ -59,10 +141,26 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_CLICK, control_click_settings);
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.HELPER_STATION_CLICK, control_click_settings);
 
-        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_UPGRADE_CLICK, new(1, 1)); 
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_UPGRADE_CLICK, new(1, 1));
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.UPGRADE_STATION_FINAL_UPGRADE_CLICK, new(1, 1));
 
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.HELPER_STATION_HELPER_SPAWN, new(1, 1));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.HELPER_STATION_HELPER_COUNTDOWN, new(1, 1));
+
+
+
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.BOMB_EXPLOSION, new(0.25f, 1f));
+
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.HARPOON_LAUNCH, new(1f, 1f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.HARPOON_RETRACTION, new(1f, 1f));
+
+
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SPINNER_CHARGE_UP, new(0.85f, 0.5f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SPINNER_SHOOT, new(1f, 1.2f));
+
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SHIELD_BLOCK, new(1f,1f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SHIELD_PASS, new(1f, 0.5f));
+
 
 
 
@@ -72,20 +170,23 @@ public class AudioManager : MonoBehaviour
 
 
 
-    public enum ActivityType 
+    public enum ActivityType
     {
-        TURRET_CONTROL_CLICK_1, TURRET_CONTROL_CLICK_2, 
+        TURRET_CONTROL_CLICK_1, TURRET_CONTROL_CLICK_2,
         SLIDER_CONTROL_CLICK, // SLIDER_BOLT_CLICK, SLIDER_FULL_AUTO_CLICK,
         HARPOON_CONTROL_CLICK,
-       UPGRADE_STATION_CLICK, UPGRADE_STATION_UPGRADE_CLICK, UPGRADE_STATION_FINAL_UPGRADE_CLICK,
-        HELPER_STATION_CLICK, 
+        UPGRADE_STATION_CLICK, UPGRADE_STATION_UPGRADE_CLICK, UPGRADE_STATION_FINAL_UPGRADE_CLICK,
+        HELPER_STATION_CLICK, HELPER_STATION_HELPER_SPAWN, HELPER_STATION_HELPER_COUNTDOWN,
 
         TURRET_TARGET_BOMB_1, TURRET_TARGET_BOMB_2,
         SLIDER_BOLT_SHOT, SLIDER_FULL_AUTO_SHOT,
 
-        BOMB_EXPLOSION
+        BOMB_EXPLOSION,
 
+        HARPOON_LAUNCH, HARPOON_RETRACTION,
 
+        SPINNER_CHARGE_UP, SPINNER_SHOOT,
+        SHIELD_BLOCK,SHIELD_PASS
 
     }
 
@@ -96,18 +197,30 @@ public class AudioManager : MonoBehaviour
 
 
 
-    public static event Action<ActivityType> OnActivitySoundPlay;
+    public static event Action<ActivityType> OnActivitySoundPlay, OnActivitySoundStop;
 
 
 
 
 
 
-    public static void PlayActivitySound(ActivityType type) 
+    public static void PlayActivitySound(ActivityType type)
     {
 
 
         OnActivitySoundPlay?.Invoke(type);
+
+
+
+    }
+
+
+
+    public static void StopActivitySound(ActivityType type)
+    {
+
+
+        OnActivitySoundStop?.Invoke(type);
 
 
 
@@ -123,7 +236,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        
+
 
 
 
@@ -133,6 +246,6 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -64,7 +64,7 @@ public class FormConstellation : MonoBehaviour
 
         mats = MaterialHolder.Instance().COLOR_SET_WHOLE();
 
-        InvokeRepeating(nameof(Form), DifficultyManager.CONSTELLATION_SPAWN_RATE, DifficultyManager.CONSTELLATION_SPAWN_RATE);
+        InvokeRepeating(nameof(Form), DifficultyManager.GetCurrentConstellationSpawnRateValue(), DifficultyManager.GetCurrentConstellationSpawnRateValue());
 
 
         HelperSpawnerManager.OnEMPSpawn += () => spawn_locked = true;

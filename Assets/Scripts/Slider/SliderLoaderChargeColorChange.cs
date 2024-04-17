@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class SliderLoaderChargeColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public Material On, Off;  // Start is called before the first frame update
+    
+    public Material On, Off;  
 
 
-    // Update is called once per frame
+    
 
 
     void Start()

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DecreaseStationChargePower : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     [SerializeField] float max_power;
     float power;
      int power_levels;
@@ -142,7 +142,7 @@ public class DecreaseStationChargePower : MonoBehaviour
         em.enabled = false;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

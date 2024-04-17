@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TokenColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
 
@@ -77,7 +77,7 @@ public class TokenColorChange : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    
   
 
 

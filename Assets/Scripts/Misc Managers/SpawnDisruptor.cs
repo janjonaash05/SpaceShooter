@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnDisruptor : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     [SerializeField] GameObject prefab;
 
@@ -28,7 +28,7 @@ public class SpawnDisruptor : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    
 
 
     IEnumerator Spawn()

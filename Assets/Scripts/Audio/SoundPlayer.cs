@@ -5,7 +5,7 @@ using static AudioManager;
 
 public class SoundPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     AudioSource src;
 
@@ -14,8 +14,22 @@ public class SoundPlayer : MonoBehaviour
 
     [SerializeField] Dictionary<ActivityType, AudioClip> activity_types_clip_dict;
 
+    Dictionary<ActivityType, int> activity_muted_multiplier_dict;
+
+
+
     private void Awake()
     {
+        activity_muted_multiplier_dict = new();
+        foreach (var activityType in activity_types)
+        {
+            activity_muted_multiplier_dict.Add(activityType, 1);
+        
+        }
+
+
+
+
         src = GetComponent<AudioSource>();
         src.spatialBlend = 0.5f;
 
@@ -57,7 +71,7 @@ public class SoundPlayer : MonoBehaviour
                 var settings = ACTIVITY_SOUND_SETTINGS_DICT[activity_type];
 
                 src.pitch = settings.Pitch;
-                src.volume = settings.Volume * ( UserDataManager.CURRENT_DATA?.VolumeMultiplier ?? 1);
+                src.volume = settings.Volume * ( UserDataManager.CURRENT_DATA?.VolumeMultiplier ?? 1) * activity_muted_multiplier_dict[activity_type];
                 src.Play();
                 
             } 
@@ -87,13 +101,36 @@ public class SoundPlayer : MonoBehaviour
 
 
 
+   
+
+
+
+
+    void MuteOrUnMuteSound(ActivityType activity_type, bool mute)
+    {
+        foreach (var activity in activity_types)
+        {
+            if (activity == activity_type)
+            {
+                activity_muted_multiplier_dict[activity_type] = mute? 0:1;
+
+            }
+        }
+
+
+    }
+
+
+
+
+
 
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

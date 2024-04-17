@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SliderBulletCollision : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     public int DamagePotential;

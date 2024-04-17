@@ -249,20 +249,7 @@ public class LaserTurretChannel
     {
         if (is_targeting || is_barraging || is_control_disabled) { return; }
 
-
-        //if (hit.transform.gameObject.GetComponent<BombColorChange>().Color.color.Equals(charge_mat.color))
-        //{
-        //    OnManualTargeting?.Invoke(hit.transform.gameObject);
-        //}
-
-        //string baseMaterialName = myBaseMaterial.name;
-        //string assignedMaterialName = myRenderer.sharedMaterial.name;
-
-        //if (assignedMaterialName.Contains(baseMaterialName))
-        //{
-        //    // here is your Match
-        //}
-
+        if (hit.transform.gameObject.GetComponent<BombFall>().BombType == BombType.CLUSTER_UNIT) return;
 
 
 

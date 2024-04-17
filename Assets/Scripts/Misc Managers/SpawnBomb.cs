@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class SpawnBomb : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     ParticleSystem spawner_ps;
 
@@ -35,7 +35,7 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-    public GameObject prefab;
+    [SerializeField] GameObject bomb_normal_prefab, bomb_cluster_prefab;
 
 
     bool CanSpawn = true;
@@ -44,7 +44,7 @@ public class SpawnBomb : MonoBehaviour
     public event Action<Material> OnBombSpawnStart;
     public event Action OnBombSpawnEnd;
 
-    // Update is called once per frame
+    
 
     public void Start()
     {
@@ -66,7 +66,7 @@ public class SpawnBomb : MonoBehaviour
 
     void ClusterEventStart() => CanSpawn = false; 
     void ClusterEventEnd() => CanSpawn = true;
-    void ClusterEventSpawn(string tag, Material mat) => ConstructBomb(tag, mat, min_size);
+    void ClusterEventSpawn(string tag, Material mat) => ConstructBomb(bomb_cluster_prefab,tag, mat, min_size/5f);
 
     private void Awake()
     {
@@ -166,7 +166,7 @@ public class SpawnBomb : MonoBehaviour
         float size = Random.Range(min_size, max_size);
 
 
-        ConstructBomb(tag, colorMat, size);
+        ConstructBomb(bomb_normal_prefab, tag, colorMat, size);
 
 
         /*
@@ -217,7 +217,7 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-    void ConstructBomb(string tag, Material mat, float size)
+    void ConstructBomb(GameObject prefab,string tag, Material mat, float size)
     {
         OnBombSpawnStart?.Invoke(mat);
 
@@ -261,15 +261,33 @@ public class SpawnBomb : MonoBehaviour
     }
 
 
+    Vector3 target_scale;
+
+
     IEnumerator ScaleUp(GameObject bomb, float target_size)
     {
 
+        target_scale = target_size * Vector3.one;
+
         if (bomb == null) { OnBombSpawnEnd?.Invoke(); }
+
+
+
+        float duration = 0.5f;
+        float lerp = 0f;
+
+
+
+
         while (bomb.transform.localScale.x < target_size)
         {
             try
             {
-                bomb.transform.localScale = new Vector3(bomb.transform.localScale.x + scale_up_increment, bomb.transform.localScale.y + scale_up_increment, bomb.transform.localScale.z + scale_up_increment);
+                lerp += Time.deltaTime;
+                bomb.transform.localScale = Vector3.Lerp(Vector3.zero, target_scale, lerp / duration) ; //new Vector3(bomb.transform.localScale.x + scale_up_increment, bomb.transform.localScale.y + scale_up_increment, bomb.transform.localScale.z + scale_up_increment);
+
+
+ 
 
             }
             catch (Exception)

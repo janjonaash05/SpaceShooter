@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SliderShooting : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     //  GameObject laser;
     public GameObject slider_head_charge;
@@ -112,7 +112,7 @@ public class SliderShooting : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    
 
 
 

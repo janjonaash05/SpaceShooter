@@ -84,7 +84,7 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
 
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

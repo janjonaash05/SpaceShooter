@@ -3,7 +3,9 @@ guid: 4d0aac904e3b2c7468d57bd2e80681cf
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - bomb_normal_prefab: {instanceID: 0}
+  - bomb_cluster_prefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

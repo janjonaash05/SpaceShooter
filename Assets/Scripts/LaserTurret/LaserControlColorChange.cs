@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class LaserControlColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     [SerializeField] GameObject auto_collider;
 
 

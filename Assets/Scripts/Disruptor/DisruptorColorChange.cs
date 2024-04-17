@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 {
-    // Start is called before the first frame update
+    
 
 
     Material[] mats_storage;
@@ -164,7 +164,7 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisrupt
         GetComponent<DisruptorTargetTurretHeads>().InitiateRotations();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

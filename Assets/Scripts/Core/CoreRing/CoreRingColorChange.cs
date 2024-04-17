@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class CoreRingColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
 
@@ -81,7 +81,7 @@ public class CoreRingColorChange : MonoBehaviour
         StartCoroutine(ColorChange());
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

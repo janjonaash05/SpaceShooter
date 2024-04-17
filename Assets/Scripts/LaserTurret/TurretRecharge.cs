@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class TurretRecharge : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     int max_capacity;
 
 

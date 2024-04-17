@@ -95,7 +95,21 @@ public static class CoreCommunication
     static void ManualTargeting(GameObject g) => Raise_ValueChange(0, -1);
 
 
+    public static void DamageShieldOnly() 
+    {
+        if (SHIELD_CAPACITY > 0) 
+        {
 
+            SHIELD_CAPACITY--;
+
+            if (SHIELD_CAPACITY == 0)
+            {
+                Raise_ShieldDepleted();
+                
+            }
+        }
+
+    }
 
     public static void Raise_OnBombFallen(Material m)
     {

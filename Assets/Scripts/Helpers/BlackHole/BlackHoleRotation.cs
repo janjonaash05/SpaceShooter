@@ -7,7 +7,7 @@ using UnityEngine.Android;
 
 public class BlackHoleRotation : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     ParticleSystem ps;
 
@@ -116,7 +116,7 @@ public class BlackHoleRotation : MonoBehaviour
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

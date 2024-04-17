@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
 {
-    // Start is called before the first frame update
+    
     float y_amplitude, y_period, z_amplitude, z_period;
     [SerializeField] Vector2 amplitude_interval, period_interval;
     Vector3 initPos;
@@ -124,7 +124,7 @@ public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
 
 
 
-    // Update is called once per frame
+    
     float time_difference;
 
 

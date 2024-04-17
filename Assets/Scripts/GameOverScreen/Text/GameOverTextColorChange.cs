@@ -82,7 +82,7 @@ public class GameOverTextColorChange : MonoBehaviour
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

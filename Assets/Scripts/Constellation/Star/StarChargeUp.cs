@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 {
-    // Start is called before the first frame update
+    
     Dictionary<int, int> order_index_dict;
     [SerializeField] Material secondary, white, primary, color;
     [SerializeField][Tooltip("in ms")] int delay;
@@ -147,7 +147,7 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
         OnChargeUp?.Invoke();
 
 
-        // Update is called once per frame
+        
 
     }
 

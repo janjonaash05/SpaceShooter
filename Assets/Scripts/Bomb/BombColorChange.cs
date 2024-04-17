@@ -2,20 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BombColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
-    // Start is called before the first frame update
+    
+    
 
 
 
-    BombFall bf;
+   
+
+    
 
 
 
-    public const int COLOR_INDEX = 9;
+    public int COLOR_INDEX { get; private set; }
     public const int OUTLINE_INDEX = 1;
 
     [SerializeField] protected Material primary, secondary;
@@ -43,16 +46,25 @@ public class BombColorChange : MonoBehaviour
     protected Renderer rend;
     float move_speed;
 
+
+    [SerializeField] BombType bomb_type;
+
+
+
+
+
     void Awake()
     {
         rend = GetComponent<Renderer>();
 
+        COLOR_INDEX = bomb_type == BombType.NORMAL ? 9 : 2;
+        
         //  Debug.Log(rend.materials);
 
 
         GetComponent<BombFall>().OnMoveSpeedSet += (m) => move_speed = m;
 
-
+       
 
 
 
@@ -74,12 +86,18 @@ public class BombColorChange : MonoBehaviour
 
     public virtual void Init(Material color)
     {
+        if (bomb_type == BombType.CLUSTER_UNIT) 
+        {
+            bomb_color = color;
+            ChangeOnlyColor(color);
+            StartCoroutine(FluctuateIntensity());
+            return;
+        }
 
 
 
 
-
-        this.bomb_color = color;
+        bomb_color = color;
 
         Material[] mats = rend.materials;
 
@@ -186,10 +204,30 @@ public class BombColorChange : MonoBehaviour
 
     protected int coverage_degree = 0;
 
+
+    public void CoverInColorInstant()
+    {
+
+
+        StopAllCoroutines();
+        Array.Fill(rend.materials, bomb_color);
+        Finished = true;
+
+    }
+
+
+
+
     public async Task CoverInColor()
     {
 
         StopAllCoroutines();
+
+
+        if (bomb_type == BombType.CLUSTER_UNIT) { coverage_degree = 1; CoverInColorInstant(); return; }
+
+
+
         for (int i = 0; i <= ORDER_LENGTH; i++)
         {
             coverage_degree = i;

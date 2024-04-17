@@ -5,7 +5,7 @@ using System;
 
 public class StarFall : MonoBehaviour, IEMPDisruptable
 {
-    // Start is called before the first frame update
+    
 
     Vector3 target;
 

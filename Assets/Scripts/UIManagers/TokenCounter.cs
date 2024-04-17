@@ -6,7 +6,7 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class TokenCounter : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
    TextMeshProUGUI txt;
     void Start()
@@ -25,7 +25,7 @@ public class TokenCounter : MonoBehaviour
         UICommunication.OnTokensChange += () => txt.text = "Tokens: " + UICommunication.Tokens;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

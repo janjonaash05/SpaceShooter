@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 {
-    // Start is called before the first frame update
+    
 
 
     protected readonly Dictionary<int, int> order_index_dict = new() { { 4, 2 }, { 3, 5 }, { 2, 3 }, { 1, 4 } };
@@ -261,7 +261,7 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

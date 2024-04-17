@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FlashDisruptorCharge : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     [SerializeField] Material white;
     readonly float charge_up_flash_delay = 0.5f;
     readonly float all_colors_flash_delay = 0.2f;
@@ -30,7 +30,7 @@ public class FlashDisruptorCharge : MonoBehaviour
         DisruptorColorChange.OnColorChange -= FlashColorThenWhite;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

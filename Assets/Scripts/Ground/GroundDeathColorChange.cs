@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GroundDeathColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
 

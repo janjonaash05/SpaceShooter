@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SliderScope : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     Transform parent_trans;
@@ -19,7 +19,7 @@ public class SliderScope : MonoBehaviour
         turned_on_mat = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         if (Physics.Raycast(parent_trans.position, -parent_trans.right, out RaycastHit hit))

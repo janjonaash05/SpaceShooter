@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CommunicationHelper : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     void Awake()
     {
         UpgradesManager.Awake();

@@ -19,7 +19,7 @@ public class EMPRotate : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    
     void Update()
     {
         transform.Rotate(rot_speed * Time.deltaTime);

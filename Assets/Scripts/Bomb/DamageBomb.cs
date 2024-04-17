@@ -15,18 +15,18 @@ public enum BombDestructionType {MANUAL, AUTO, TARGET, BLACK_HOLE }
 
 public class DamageBomb : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     [SerializeField] float min_scale_down_size, scale_down_increment;
-    GameObject bomb;
+
 
     public bool DisabledRewards { get; set; }
     CancellationTokenSource cancel_source;
     protected CancellationToken token;
     void Start()
     {
-        bomb = gameObject;
+        
 
 
 
@@ -37,7 +37,7 @@ public class DamageBomb : MonoBehaviour
 
 
 
-    void BlackHoleSpawn() => scale_down_increment /= 10;
+    void BlackHoleSpawn() => scale_down_duration = 2f;
 
 
 
@@ -51,7 +51,7 @@ public class DamageBomb : MonoBehaviour
 
 
 
-    // Update is called once per frame
+    
 
     private void OnDestroy()
     {
@@ -173,42 +173,40 @@ public class DamageBomb : MonoBehaviour
 
 
 
-    /*
 
-    IEnumerator DamageByCore_FallIntoCore()
-    {
-
-
-        Rigidbody rb = GetComponent<Rigidbody>();
-        Vector3 target = GameObject.FindGameObjectWithTag(Tags.CORE).transform.position;
-
-
-
-        while (Vector3.Distance(rb.position,target) > 0.1)
-        {
-            rb.MovePosition(rb.position + (target - rb.position) * Time.fixedDeltaTime * 0.1f);
-            yield return new WaitForFixedUpdate();
-
-        }
-    }
-    */
-
+    float scale_down_duration = 0.5f;
 
 
     protected async Task ScaleDown(CancellationToken token)
     {
+        float duration = scale_down_duration;
+        Vector3 start_size = transform.localScale;
+        float lerp = 0;
 
-        while (bomb.transform.localScale.x > min_scale_down_size)
+        while (lerp < duration) 
         {
             if (token.IsCancellationRequested) { break; }
-            bomb.transform.localScale += (-scale_down_increment * Vector3.one);
+            lerp += Time.deltaTime;
 
-
+            transform.localScale = Vector3.Lerp(start_size, Vector3.zero,lerp / duration); ;
 
 
             await Task.Yield();
+
         }
 
+        /*
+        while (transform.localScale.x > min_scale_down_size)
+        {
+            if (token.IsCancellationRequested) { break; }
+            transform.localScale += (-scale_down_increment * Vector3.one);
+
+
+            await Task.Yield();
+
+
+        }
+        */
 
 
 

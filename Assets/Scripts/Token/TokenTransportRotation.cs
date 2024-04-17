@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TokenTransportRotation : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     void Start()
     {
         
@@ -24,7 +24,7 @@ public class TokenTransportRotation : MonoBehaviour
      //   transform.Rotate(0, 46, 0, Space.Self);
     }
 
-    // Update is called once per frame
+    
 
 
 

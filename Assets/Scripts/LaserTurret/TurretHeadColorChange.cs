@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurretHeadColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     Renderer rend;

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class ShieldChargeRecharge : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     bool recharging;
@@ -118,7 +118,7 @@ public class ShieldChargeRecharge : MonoBehaviour
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

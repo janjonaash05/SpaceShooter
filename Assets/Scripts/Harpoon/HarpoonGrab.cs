@@ -15,7 +15,7 @@ public class HarpoonGrab : MonoBehaviour
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

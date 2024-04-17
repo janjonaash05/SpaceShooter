@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
 {
-    // Start is called before the first frame update
+    
 
 
     public float down_speed, up_speed;
@@ -40,7 +40,7 @@ public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
 
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

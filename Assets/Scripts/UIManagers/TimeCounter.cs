@@ -20,7 +20,7 @@ public class TimeCounter : MonoBehaviour
     public int Mins { get; private set; }
     public float Minsf { get; private set; }
 
-    // Start is called before the first frame update
+    
     void Start()
     {
         
@@ -32,7 +32,7 @@ public class TimeCounter : MonoBehaviour
         if(OnGameOverScreen) txt.text = string.Format("{0:00}:{1:00}:{2:00}", UICommunication.Mins, UICommunication.Secs, UICommunication.Hundredths);
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         if (OnGameOverScreen) return;

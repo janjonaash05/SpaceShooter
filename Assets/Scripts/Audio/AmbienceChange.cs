@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class AmbienceChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     AudioSource src;
@@ -55,7 +55,7 @@ public class AmbienceChange : MonoBehaviour
         src.pitch = degree_pitch_dict[ CoreCommunication.CORE_INDEX_HOLDER.Parent];
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

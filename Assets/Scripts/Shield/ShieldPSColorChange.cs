@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShieldPSColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
 
@@ -62,7 +62,7 @@ public class ShieldPSColorChange : MonoBehaviour
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class StarEmergence : MonoBehaviour, IEMPDisruptable
 {
-    // Start is called before the first frame update
+    
 
 
      Vector3 target_scale;
@@ -147,7 +147,7 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

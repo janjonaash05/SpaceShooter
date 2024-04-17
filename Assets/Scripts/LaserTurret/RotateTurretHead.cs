@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RotateTurretHead : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     GameObject turret_head_charge;
     public Vector3 rotation;

@@ -27,7 +27,7 @@ public class HarpoonFaceSwitch : MonoBehaviour
         color_mat = MaterialHolder.Instance().FRIENDLY_UPGRADE();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

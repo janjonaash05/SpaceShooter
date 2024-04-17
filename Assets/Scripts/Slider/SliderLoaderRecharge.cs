@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class SliderLoaderRecharge : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     public event Action OnDepletion, OnFullRecharge;
 

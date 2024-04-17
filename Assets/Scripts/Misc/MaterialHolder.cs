@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class MaterialHolder : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     [SerializeField] Material[] _COLOR_SET,

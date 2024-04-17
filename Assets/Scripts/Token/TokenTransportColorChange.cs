@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TokenTransportColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     const int SPAWN_WAIT_TIME = 4;
 
@@ -40,7 +40,7 @@ public class TokenTransportColorChange : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

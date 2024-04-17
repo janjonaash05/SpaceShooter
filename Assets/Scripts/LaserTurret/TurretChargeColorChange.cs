@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TurretChargeColorChange : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     [SerializeField] int ID;
 
     Renderer rend;

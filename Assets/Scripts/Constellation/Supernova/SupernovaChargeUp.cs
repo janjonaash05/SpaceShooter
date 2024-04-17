@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 {
-    // Start is called before the first frame update
+    
 
 
 
@@ -371,7 +371,7 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

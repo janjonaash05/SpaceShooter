@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SliderLoaderTargetTurretHead : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     [SerializeField] GameObject turret_head, turret_head_charge, turret_station;
     Material white;
 
@@ -59,7 +59,7 @@ public class SliderLoaderTargetTurretHead : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    
 
 
 

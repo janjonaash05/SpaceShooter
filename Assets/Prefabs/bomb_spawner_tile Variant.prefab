@@ -4935,7 +4935,8 @@ MonoBehaviour:
   scale_up_increment: 5
   destoy_delay: 100
   spawn_x_offset: 0
-  prefab: {fileID: 8182570917509590457, guid: 64e982f068c237c4e80f4c7c97c0ace5, type: 3}
+  bomb_normal_prefab: {fileID: 8182570917509590457, guid: 64e982f068c237c4e80f4c7c97c0ace5, type: 3}
+  bomb_cluster_prefab: {fileID: 3261242338208326693, guid: de86e2826b25e7c45ab3f1645a3aec17, type: 3}
 --- !u!1001 &644942395774822645
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LaserControlParticles : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     [SerializeField] int ID;
 
@@ -116,7 +116,7 @@ public class LaserControlParticles : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

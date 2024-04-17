@@ -168,7 +168,7 @@ public class UpgradesManager
 
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

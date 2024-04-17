@@ -8,7 +8,7 @@ public class SliderLoaderControlColorChange : MonoBehaviour
     public enum SliderLoaderControlType:int { BOLT =4, FULL_AUTO = 6 }
 
 
-    // Start is called before the first frame update
+    
     [SerializeField] Material off_mat;
     [SerializeField] Material on_mat;
     

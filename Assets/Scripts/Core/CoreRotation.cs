@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class CoreRotation : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     Dictionary<int, Vector3> speed_parent_dict = new()
@@ -149,7 +149,7 @@ public class CoreRotation : MonoBehaviour
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
         if (disabled) return;

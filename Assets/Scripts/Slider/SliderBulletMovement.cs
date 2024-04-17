@@ -17,7 +17,7 @@ public class SliderBulletMovement : MonoBehaviour
         transform.position = origin;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         time += Time.deltaTime;

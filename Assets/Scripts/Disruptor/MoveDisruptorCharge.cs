@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveDisruptorCharge : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     Transform target;
     [SerializeField] float speed;
 
@@ -20,7 +20,7 @@ public class MoveDisruptorCharge : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ScoreCounter : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
      TextMeshProUGUI txt;
 
 
@@ -31,7 +31,7 @@ public class ScoreCounter : MonoBehaviour
         UICommunication.OnScoreChange += () => txt.text = "Score: " + UICommunication.Score;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class FormConstellation : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
 
     [SerializeField] GameObject star_prefab, supernova_prefab;

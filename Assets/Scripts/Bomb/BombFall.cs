@@ -3,16 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum BombType { NORMAL, CLUSTER_UNIT }
 public class BombFall : MonoBehaviour, IScoreEnumerable
 {
 
+
+
+
+    [SerializeField] BombType bomb_type;
+
+    public BombType BombType => bomb_type;
 
     public float MoveSpeed { get; private set; }
     Vector3 rotation_speed;
     [SerializeField] float rotation_speed_multiplier;
 
 
-     
+
 
     public bool DisabledRewards { get; set; }
 
@@ -26,7 +34,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
     public void SetScaledUp() => scaled_up = true;
 
-    // Start is called before the first frame update
+    
 
 
     void Awake()
@@ -36,8 +44,8 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
 
 
-        HelperSpawnerManager.OnBlackHoleSpawn += () => { target = HelperSpawnerManager.Instance().BlackHolePosition; MoveSpeed = 2; }; 
-       
+        HelperSpawnerManager.OnBlackHoleSpawn += () => { target = HelperSpawnerManager.Instance().BlackHolePosition; MoveSpeed = 2; };
+
     }
 
 
@@ -58,22 +66,23 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
         rotation_speed = MoveSpeed * 500 * UnityEngine.Random.insideUnitSphere;
     }
 
-    // Update is called once per frame
+    
 
     private void OnDestroy()
-    {rb.constraints=
+    {
+        rb.constraints =
         RigidbodyConstraints.FreezeAll;
     }
 
     void FixedUpdate()
     {
-        
+
 
         //rb.MovePosition(rb.position + Time.fixedDeltaTime *move_speed  );
 
 
-        
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(Time.fixedDeltaTime *rotation_speed));
+
+        rb.MoveRotation(rb.rotation * Quaternion.Euler(Time.fixedDeltaTime * rotation_speed));
 
 
         if (!scaled_up) return;
@@ -92,17 +101,17 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(BombDestructionType.TARGET);
 
 
-            CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().bomb_color);
-
+            Action damageAction = bomb_type == BombType.NORMAL ? () => CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().bomb_color) : CoreCommunication.DamageShieldOnly;
+            damageAction();
 
         }
-        else if (col.transform.CompareTag(Tags.BLACK_HOLE)) 
+        else if (col.transform.CompareTag(Tags.BLACK_HOLE))
         {
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(BombDestructionType.BLACK_HOLE);
 
         }
 
-        
+
     }
 
 
@@ -118,7 +127,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
         DisabledRewards = true;
 
-        return Mathf.RoundToInt(transform.localScale.x / 50  + VectorSum(rotation_speed) / 75 +  MoveSpeed * 75);
+        return Mathf.RoundToInt(transform.localScale.x / 50 + VectorSum(rotation_speed) / 75 + MoveSpeed * 75);
     }
 
 

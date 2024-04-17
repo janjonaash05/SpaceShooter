@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 {
-    // Start is called before the first frame update
+    
 
 
 
@@ -161,7 +161,7 @@ public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
 

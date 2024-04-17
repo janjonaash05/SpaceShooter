@@ -6,7 +6,7 @@ using static UnityEngine.UI.Image;
 
 public class SpinnerChargeUpPS : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     void Start()
     {
         SpinnerColorChange.OnMaterialChange += OnMaterialChange;
@@ -128,7 +128,7 @@ public class SpinnerChargeUpPS : MonoBehaviour
 
 
 
-    // Update is called once per frame
+    
     void Update()
     {
         

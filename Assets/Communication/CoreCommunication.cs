@@ -95,12 +95,21 @@ public static class CoreCommunication
     static void ManualTargeting(GameObject g) => Raise_ValueChange(0, -1);
 
 
+
+    
+
+
+
+
+
+
     public static void DamageShieldOnly() 
     {
         if (SHIELD_CAPACITY > 0) 
         {
 
             SHIELD_CAPACITY--;
+            OnBombFallen?.Invoke(mat_holder.SIDE_TOOLS_COLOR());
 
             if (SHIELD_CAPACITY == 0)
             {

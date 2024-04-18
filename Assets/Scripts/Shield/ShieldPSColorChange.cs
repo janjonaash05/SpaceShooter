@@ -37,6 +37,11 @@ public class ShieldPSColorChange : MonoBehaviour
     void Play(Material m)
     {
 
+
+
+
+        AudioManager.PlayActivitySound(CoreCommunication.SHIELD_CAPACITY == 0? AudioManager.ActivityType.SHIELD_PASS : AudioManager.ActivityType.SHIELD_BLOCK    );
+
         ParticleSystem ps = GetComponent<ParticleSystem>();
 
         ParticleSystemRenderer ps_rend = ps.GetComponent<ParticleSystemRenderer>();

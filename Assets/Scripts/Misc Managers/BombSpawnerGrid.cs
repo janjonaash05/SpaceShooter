@@ -58,7 +58,7 @@ public class BombSpawnerGrid : MonoBehaviour
 
             var mat = materials[UnityEngine.Random.Range(0, materials.Length)];
 
-
+            yield return new WaitForSeconds(5f);
             OnClusterEventSpawn?.Invoke(tag, mat);
 
             OnClusterEventEnd?.Invoke();

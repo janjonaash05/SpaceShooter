@@ -86,6 +86,8 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
         await Task.Delay(UpgradesManager.GetCurrentSliderRechargeValue().full_auto);
         while (ChangeIndex(1) != 1)
         {
+            AudioManager.PlayActivitySound(AudioManager.ActivityType.SLIDER_FULL_AUTO_CHARGE_SPAWN);
+
             await Task.Delay(UpgradesManager.GetCurrentSliderRechargeValue().full_auto);
         }
 

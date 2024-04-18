@@ -199,11 +199,11 @@ public class DifficultyManager : MonoBehaviour
 
     public static Dictionary<int, int> BOMB_CLUSTER_FREQUENCY_DEGREE_VALUE_DICT = new()
     {
-        {0,20 },
-        {1,16 },
-        {2,12 },
-        {3,8 },
-        {4,4 },
+        {0,32 },
+        {1,28 },
+        {2,24 },
+        {3,20 },
+        {4,16 },
 
 
     };

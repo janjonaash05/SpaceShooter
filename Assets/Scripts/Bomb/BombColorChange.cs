@@ -205,13 +205,16 @@ public class BombColorChange : MonoBehaviour
     protected int coverage_degree = 0;
 
 
-    public void CoverInColorInstant()
+    public async Task CoverInColorInstant()
     {
 
 
         StopAllCoroutines();
+        await Task.Delay(100);
         Array.Fill(rend.materials, bomb_color);
         Finished = true;
+
+        
 
     }
 
@@ -224,7 +227,7 @@ public class BombColorChange : MonoBehaviour
         StopAllCoroutines();
 
 
-        if (bomb_type == BombType.CLUSTER_UNIT) { coverage_degree = 1; CoverInColorInstant(); return; }
+        if (bomb_type == BombType.CLUSTER_UNIT) { coverage_degree = 1; await CoverInColorInstant(); return; }
 
 
 

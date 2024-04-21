@@ -13,7 +13,7 @@ namespace System.Runtime.CompilerServices
 
 
 
-public record SoundSettings(float Volume, float Pitch) { };
+public record SoundSettings(float Volume, float Pitch) { public override string ToString() => "vol "+Volume +" pitch" +Pitch; };
 
 
 
@@ -95,9 +95,8 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_CONTROLS_DISABLED, Resources.Load<AudioClip>(path + "Controls/controls_disabled"));
 
         ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_SPAWN, Resources.Load<AudioClip>(path + "Star/star_emerge"));
-
-
-
+        ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_DESTROYED, Resources.Load<AudioClip>(path + "Star/star_destroyed"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_FALL, Resources.Load<AudioClip>(path + "Star/star_fall"));
 
         ACTIVITY_CLIP_DICT.Add(ActivityType.BLACK_HOLE_SPAWN, Resources.Load<AudioClip>(path + "Helpers/black_hole"));
 
@@ -244,6 +243,7 @@ public class AudioManager : MonoBehaviour
     public static void PlayActivitySound(ActivityType type)
     {
 
+        Debug.LogError("playing "+ ACTIVITY_CLIP_DICT[type].name + " with " + ACTIVITY_SOUND_SETTINGS_DICT[type]);
        
         OnActivitySoundPlay?.Invoke(type);
 

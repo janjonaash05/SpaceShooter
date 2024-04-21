@@ -14,7 +14,12 @@ public class BlackHoleRotation : MonoBehaviour
 
     void Awake()
     {
+
+
+
         AudioManager.PlayActivitySound(AudioManager.ActivityType.BLACK_HOLE_SPAWN);
+
+
         ps = GetComponentInChildren<ParticleSystem>();
 
         StartCoroutine(ScaleUpDown());
@@ -39,7 +44,6 @@ public class BlackHoleRotation : MonoBehaviour
 
 
 
-    //Stolen https://stackoverflow.com/questions/49750245/lerp-between-two-values-over-time
 
     IEnumerator ChangeScaleOverTime(Vector3 original, Vector3 target, float duration)
     {

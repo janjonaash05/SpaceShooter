@@ -5,7 +5,7 @@ using System;
 
 public class StarFall : MonoBehaviour, IEMPDisruptable
 {
-    
+
 
     Vector3 target;
 
@@ -27,17 +27,18 @@ public class StarFall : MonoBehaviour, IEMPDisruptable
 
 
 
-   public void OnEMP()
+    public void OnEMP()
     {
-        if(fall_cr != null)
-        StopCoroutine(fall_cr);
+        if (fall_cr != null)
+            StopCoroutine(fall_cr);
     }
 
-  
+
 
 
     IEnumerator fall()
     {
+
         while (Vector3.Distance(transform.localPosition, target) > 0.1)
         {
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, speed * Time.deltaTime);
@@ -58,10 +59,10 @@ public class StarFall : MonoBehaviour, IEMPDisruptable
 
     public void Fall()
     {
-        
 
-       
-       fall_cr = StartCoroutine(fall());
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.STAR_FALL);
+        fall_cr = StartCoroutine(fall());
 
 
 

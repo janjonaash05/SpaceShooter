@@ -36,6 +36,11 @@ public class DestroyStar : MonoBehaviour
 
     public void Destroy()
     {
+
+
+
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.STAR_DESTROYED);
         Destroy(GetComponent<StarChargeUp>());
         Destroy(GetComponent<StarEmergence>());
         CoverInWhite();

@@ -93,7 +93,7 @@ public class DifficultyManager : MonoBehaviour
         {AffectedFeature.BOMB_SPAWNERxSPAWN_RATE,0 },
         {AffectedFeature.BOMB_SPAWNERxFORM, 0},
 
-        {AffectedFeature.CONSTELLATIONxSPAWN_RATE,0 },
+        {AffectedFeature.CONSTELLATIONxSPAWN_RATE,3 },
         {AffectedFeature.CONSTELLATIONxMAX_STARS,0 },
 
 

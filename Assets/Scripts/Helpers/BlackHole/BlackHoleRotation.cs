@@ -14,12 +14,16 @@ public class BlackHoleRotation : MonoBehaviour
 
     void Awake()
     {
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.BLACK_HOLE_SPAWN);
         ps = GetComponentInChildren<ParticleSystem>();
 
         StartCoroutine(ScaleUpDown());
         //StartCoroutine(SpeedUpDown());
         StartCoroutine(EmissionRateGrowShrink());
-      //  StartCoroutine(ParticleSizeGrowShrink());
+        //  StartCoroutine(ParticleSizeGrowShrink());
+
+
+       
 
 
     }

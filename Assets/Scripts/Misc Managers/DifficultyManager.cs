@@ -87,7 +87,7 @@ public class DifficultyManager : MonoBehaviour
 
     public static Dictionary<AffectedFeature, int> FEATURE_VALUE_DICT = new()
     {
-        {AffectedFeature.DISRUPTORxSPAWN_CHANCE,0 },
+        {AffectedFeature.DISRUPTORxSPAWN_CHANCE,3 },
         {AffectedFeature.DISRUPTORxSPEED,0 },
 
         {AffectedFeature.BOMB_SPAWNERxSPAWN_RATE,0 },
@@ -97,17 +97,18 @@ public class DifficultyManager : MonoBehaviour
         {AffectedFeature.CONSTELLATIONxMAX_STARS,0 },
 
 
-        {AffectedFeature.BOMB_CLUSTERxFREQUENCY,4 },
-       
+        {AffectedFeature.BOMB_CLUSTERxFREQUENCY,0 },
+        {AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT,0 },
+
 
     };
 
 
     public const int MAX_FEATURE_VALUE = 4;
 
-    public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxMAX_STARS };
+    public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxMAX_STARS, AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT };
 
-    public static List<AffectedFeature> TIME_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPAWN_CHANCE, AffectedFeature.BOMB_SPAWNERxSPAWN_RATE, AffectedFeature.CONSTELLATIONxSPAWN_RATE };
+    public static List<AffectedFeature> TIME_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPAWN_CHANCE, AffectedFeature.BOMB_SPAWNERxSPAWN_RATE, AffectedFeature.CONSTELLATIONxSPAWN_RATE, AffectedFeature.BOMB_CLUSTERxFREQUENCY };
 
     public static int GetCurrentBombSpawnerFormValue()
     {
@@ -213,6 +214,22 @@ public class DifficultyManager : MonoBehaviour
         return BOMB_CLUSTER_FREQUENCY_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.BOMB_CLUSTERxFREQUENCY]];
     }
 
+
+    public static Dictionary<int, int> BOMB_CLUSTER_BURST_AMOUNT_DEGREE_VALUE_DICT = new()
+    {
+        {0,5 },
+        {1,2 },
+        {2,3 },
+        {3,4 },
+        {4,5 },
+
+
+    };
+
+    public static int GetCurrentBombClusterBurstAmountValue()
+    {
+        return BOMB_CLUSTER_BURST_AMOUNT_DEGREE_VALUE_DICT[FEATURE_VALUE_DICT[AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT]];
+    }
 
 
 

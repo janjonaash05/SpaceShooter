@@ -279,7 +279,7 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-        while (bomb.transform.localScale.x < target_size)
+        while (lerp < duration)
         {
             try
             {

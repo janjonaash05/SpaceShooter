@@ -174,7 +174,7 @@ public class DamageBomb : MonoBehaviour
 
 
 
-    float scale_down_duration = 0.5f;
+    float scale_down_duration = 0.2f;
 
 
     protected async Task ScaleDown(CancellationToken token)

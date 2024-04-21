@@ -48,21 +48,33 @@ public class BombSpawnerGrid : MonoBehaviour
 
             Debug.LogError("CLUSTER START");
 
-
             OnClusterEventStart?.Invoke();
 
-            string tag = UnityEngine.Random.Range(0, 2) == 0 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
-
-            var materials = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().COLOR_SET_1() : MaterialHolder.Instance().COLOR_SET_2();
 
 
-            var mat = materials[UnityEngine.Random.Range(0, materials.Length)];
 
-            yield return new WaitForSeconds(5f);
-            OnClusterEventSpawn?.Invoke(tag, mat);
+            for (int i = 0; i < DifficultyManager.GetCurrentBombClusterBurstAmountValue();i++) 
+            {
+                string tag = UnityEngine.Random.Range(0, 2) == 0 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
+
+                var materials = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().COLOR_SET_1() : MaterialHolder.Instance().COLOR_SET_2();
+
+
+                var mat = materials[UnityEngine.Random.Range(0, materials.Length)];
+                OnClusterEventSpawn?.Invoke(tag, mat);
+
+
+                yield return new WaitForSeconds(1f);
+
+
+            }
+
+            
+
+          
 
             OnClusterEventEnd?.Invoke();
-
+            yield return new WaitForSeconds(5f);
 
 
 
@@ -120,7 +132,7 @@ public class BombSpawnerGrid : MonoBehaviour
         size_y = size_x;
 
 
-        start_amount = (size_x * size_y) / 3;
+        start_amount = (size_x * size_y) / 3 ;
         positions = new Vector3[size_x, size_y];
 
         GenerateGrid();
@@ -141,7 +153,7 @@ public class BombSpawnerGrid : MonoBehaviour
         HashSet<(int i, int j)> loop_coordinates_for_spawns = new();
 
 
-        while (loop_coordinates_for_spawns.Count <= start_amount)
+        while (loop_coordinates_for_spawns.Count < start_amount)
         {
             loop_coordinates_for_spawns.Add((new Random().Next(0, size_x), new Random().Next(0, size_y)));
 

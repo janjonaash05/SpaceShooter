@@ -24,6 +24,11 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
         target_scale = transform.localScale;
 
         Emerge(1f);
+
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.STAR_SPAWN);
+
+
        
         
     }

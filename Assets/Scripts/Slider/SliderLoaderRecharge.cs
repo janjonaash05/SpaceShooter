@@ -28,6 +28,9 @@ public abstract class SliderLoaderRecharge : MonoBehaviour
 
     protected void OnDepletionInvoke()
     {
+
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.SLIDER_BOLT_RECHARGE_START);
         OnDepletion?.Invoke();
         _isRecharging = true;
     
@@ -35,6 +38,7 @@ public abstract class SliderLoaderRecharge : MonoBehaviour
     }
     protected void OnFullRechargeInvoke()
     {
+        AudioManager.StopActivitySound(AudioManager.ActivityType.SLIDER_BOLT_RECHARGE_START);
         OnFullRecharge?.Invoke();
         _isRecharging = false;
 

@@ -120,6 +120,7 @@ public class DisruptorTargetTurretHeads : MonoBehaviour, IEMPDisruptable
 
 
         Vector3 target_player = GameObject.FindWithTag(Tags.PLAYER).transform.position;
+        target_player.y = transform.position.y;
 
         yield return StartCoroutine(rotateDisruptor.RotateTowards(target_player));
 

@@ -90,6 +90,16 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_CLIP_DICT.Add(ActivityType.SHIELD_BLOCK, Resources.Load<AudioClip>(path + "Shield/shield_hit"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.SHIELD_PASS, Resources.Load<AudioClip>(path + "Shield/shield_hit"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.SLIDER_FULL_AUTO_CHARGE_SPAWN, Resources.Load<AudioClip>(path + "Slider/slider_full_auto_charge"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SLIDER_BOLT_RECHARGE_START, Resources.Load<AudioClip>(path + "Slider/slider_bolt_recharge"));
+
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_CONTROLS_DISABLED, Resources.Load<AudioClip>(path + "Controls/controls_disabled"));
+
+        ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_SPAWN, Resources.Load<AudioClip>(path + "Star/star_emerge"));
+
+
+
+
+        ACTIVITY_CLIP_DICT.Add(ActivityType.BLACK_HOLE_SPAWN, Resources.Load<AudioClip>(path + "Helpers/black_hole"));
 
 
         foreach (ActivityType activity in Enum.GetValues(typeof(ActivityType)))
@@ -144,6 +154,8 @@ public class AudioManager : MonoBehaviour
 
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_FULL_AUTO_CHARGE_SPAWN, new(0.9f, 0.5f));
 
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_CONTROLS_DISABLED, new(0.35f, 0.9f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.STAR_SPAWN, new(0.8f, 0.9f));
 
         foreach (ActivityType activity in Enum.GetValues(typeof(ActivityType)))
         {
@@ -205,7 +217,7 @@ public class AudioManager : MonoBehaviour
 
         SPINNER_CHARGE_UP, SPINNER_SHOOT,
         SHIELD_BLOCK,SHIELD_PASS,
-        SLIDER_FULL_AUTO_CHARGE_SPAWN,SLIDER_BOLT_CHARGE_SPAWN,
+        SLIDER_FULL_AUTO_CHARGE_SPAWN,SLIDER_BOLT_RECHARGE_START,
         TURRET_CHARGE_SPAWN,SHIELD_CHARGE_SPAWN,
         TOKEN_CAUGHT,TOKEN_DESTROYED,TOKEN_TRANSPORTED,
         DISRUPTOR_SPAWN,DISRUPTOR_CHARGE_UP, DISRUPTOR_DESTROYED,
@@ -232,7 +244,7 @@ public class AudioManager : MonoBehaviour
     public static void PlayActivitySound(ActivityType type)
     {
 
-
+       
         OnActivitySoundPlay?.Invoke(type);
 
 

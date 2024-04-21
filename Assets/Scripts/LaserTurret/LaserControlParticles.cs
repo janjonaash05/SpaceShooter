@@ -93,9 +93,9 @@ public class LaserControlParticles : MonoBehaviour
 
 
 
-    void EnableParticles() { ps_emission.enabled = true; StartCoroutine(ColorChange()); }
+    void EnableParticles() { AudioManager.PlayActivitySound(AudioManager.ActivityType.TURRET_CONTROLS_DISABLED); ps_emission.enabled = true; StartCoroutine(ColorChange()); }
 
-    void DisableParticles() { ps_emission.enabled = false; StopAllCoroutines(); }
+    void DisableParticles() { AudioManager.StopActivitySound(AudioManager.ActivityType.TURRET_CONTROLS_DISABLED); ps_emission.enabled = false; StopAllCoroutines(); }
 
 
     IEnumerator ColorChange()

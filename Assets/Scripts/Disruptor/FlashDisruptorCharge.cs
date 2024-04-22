@@ -44,7 +44,7 @@ public class FlashDisruptorCharge : MonoBehaviour
         {
 
             GetComponent<Renderer>().material = m;
-
+            AudioManager.PlayActivitySound(AudioManager.ActivityType.DISRUPTOR_CHARGE_UP);
             FlashParticles(m, false);
             yield return new WaitForSeconds(charge_up_flash_delay);
             GetComponent<Renderer>().material = white;
@@ -75,6 +75,7 @@ public class FlashDisruptorCharge : MonoBehaviour
                 {
                     FlashParticles(mat, true);
                     GetComponent<Renderer>().material = mat;
+                    AudioManager.PlayActivitySound(AudioManager.ActivityType.DISRUPTOR_CHARGE_UP);
                     yield return new WaitForSeconds(all_colors_flash_delay);
                     GetComponent<Renderer>().material = white;
                     yield return new WaitForSeconds(all_colors_flash_delay);

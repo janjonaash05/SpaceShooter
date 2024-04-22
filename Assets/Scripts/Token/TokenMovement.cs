@@ -212,7 +212,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
     {
 
 
-
+        AudioManager.PlayActivitySound(type == TokenType.FRIENDLY ? AudioManager.ActivityType.TOKEN_CAUGHT_FRIENDLY : AudioManager.ActivityType.TOKEN_CAUGHT_ENEMY);
 
         
         if (ps_caught.emission.enabled) { yield break; }
@@ -238,6 +238,8 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
     {
         speed = 0;
 
+
+        AudioManager.PlayActivitySound(type == TokenType.FRIENDLY ? AudioManager.ActivityType.TOKEN_DESTROYED_FRIENDLY : AudioManager.ActivityType.TOKEN_DESTROYED_ENEMY);
 
 
 

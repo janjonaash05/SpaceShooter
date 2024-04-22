@@ -95,10 +95,32 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_CONTROLS_DISABLED, Resources.Load<AudioClip>(path + "Controls/controls_disabled"));
 
         ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_SPAWN, Resources.Load<AudioClip>(path + "Star/star_emerge"));
-        ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_DESTROYED, Resources.Load<AudioClip>(path + "Star/star_destroyed"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_DESTROYED, Resources.Load<AudioClip>(path + "Star/star_emerge"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_FALL, Resources.Load<AudioClip>(path + "Star/star_fall"));
 
+        ACTIVITY_CLIP_DICT.Add(ActivityType.DISRUPTOR_SPAWN, Resources.Load<AudioClip>(path + "Disruptor/disruptor_ambient"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.DISRUPTOR_CHARGE_UP, Resources.Load<AudioClip>(path + "Disruptor/disruptor_charge_up"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.DISRUPTOR_SHOOT, Resources.Load<AudioClip>(path + "Disruptor/disruptor_shoot"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.DISRUPTOR_DESTROYED, Resources.Load<AudioClip>(path + "Disruptor/disruptor_explosion"));
+
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SUPERNOVA_CHARGE_UP, Resources.Load<AudioClip>(path + "Supernova/supernova_charge_up"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SUPERNOVA_SHOOT, Resources.Load<AudioClip>(path + "Supernova/supernova_shot"));
+
+
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_CAUGHT_FRIENDLY, Resources.Load<AudioClip>(path + "Token/token_caught"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_CAUGHT_ENEMY, Resources.Load<AudioClip>(path + "Token/token_caught"));
+
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_FRIENDLY, Resources.Load<AudioClip>(path + "Token/token_caught"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_ENEMY, Resources.Load<AudioClip>(path + "Token/token_caught"));
+
+
+
+
+
+
+
         ACTIVITY_CLIP_DICT.Add(ActivityType.BLACK_HOLE_SPAWN, Resources.Load<AudioClip>(path + "Helpers/black_hole"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.EMP_SPAWN, Resources.Load<AudioClip>(path + "Helpers/EMP"));
 
 
         foreach (ActivityType activity in Enum.GetValues(typeof(ActivityType)))
@@ -151,10 +173,12 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SPINNER_SHOOT, new(1f, 1.2f));
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SHIELD_PASS, new(1f, 0.5f));
 
-        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_FULL_AUTO_CHARGE_SPAWN, new(0.9f, 0.5f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.SLIDER_FULL_AUTO_CHARGE_SPAWN, new(0.75f, 0.5f));
 
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TURRET_CONTROLS_DISABLED, new(0.35f, 0.9f));
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.STAR_SPAWN, new(0.8f, 0.9f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.STAR_DESTROYED, new(0.5f, 0.5f));
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.STAR_FALL, new(1f, 0.75f));
 
         foreach (ActivityType activity in Enum.GetValues(typeof(ActivityType)))
         {
@@ -201,28 +225,28 @@ public class AudioManager : MonoBehaviour
 
     public enum ActivityType
     {
-        TURRET_CONTROL_CLICK_1, TURRET_CONTROL_CLICK_2,
-        SLIDER_CONTROL_CLICK, // SLIDER_BOLT_CLICK, SLIDER_FULL_AUTO_CLICK,
-        HARPOON_CONTROL_CLICK,
-        UPGRADE_STATION_CLICK, UPGRADE_STATION_UPGRADE_CLICK, UPGRADE_STATION_FINAL_UPGRADE_CLICK,
-        HELPER_STATION_CLICK, HELPER_STATION_HELPER_SPAWN, HELPER_STATION_HELPER_COUNTDOWN,
+        TURRET_CONTROL_CLICK_1 = 0, TURRET_CONTROL_CLICK_2 = 1,
+        SLIDER_CONTROL_CLICK = 2, // SLIDER_BOLT_CLICK, SLIDER_FULL_AUTO_CLICK,
+        HARPOON_CONTROL_CLICK = 3,
+        UPGRADE_STATION_CLICK = 4, UPGRADE_STATION_UPGRADE_CLICK = 5, UPGRADE_STATION_FINAL_UPGRADE_CLICK = 6,
+        HELPER_STATION_CLICK = 7, HELPER_STATION_HELPER_SPAWN = 8, HELPER_STATION_HELPER_COUNTDOWN = 9,
 
-        TURRET_TARGET_BOMB_1, TURRET_TARGET_BOMB_2,
-        SLIDER_BOLT_SHOT, SLIDER_FULL_AUTO_SHOT,
+        TURRET_TARGET_BOMB_1 = 10, TURRET_TARGET_BOMB_2 = 11,
+        SLIDER_BOLT_SHOT = 12, SLIDER_FULL_AUTO_SHOT = 13,
 
-        BOMB_EXPLOSION,
+        BOMB_EXPLOSION = 14,
 
-        HARPOON_LAUNCH, HARPOON_RETRACTION,
+        HARPOON_LAUNCH =15, HARPOON_RETRACTION = 16,
 
-        SPINNER_CHARGE_UP, SPINNER_SHOOT,
-        SHIELD_BLOCK,SHIELD_PASS,
-        SLIDER_FULL_AUTO_CHARGE_SPAWN,SLIDER_BOLT_RECHARGE_START,
-        TURRET_CHARGE_SPAWN,SHIELD_CHARGE_SPAWN,
-        TOKEN_CAUGHT,TOKEN_DESTROYED,TOKEN_TRANSPORTED,
-        DISRUPTOR_SPAWN,DISRUPTOR_CHARGE_UP, DISRUPTOR_DESTROYED,
-        STAR_SPAWN, STAR_CHARGE_UP, STAR_DESTROYED, STAR_FALL, SUPERNOVA_SHOOT,
-        TURRET_CONTROLS_DISABLED, 
-        BLACK_HOLE_SPAWN, EMP_SPAWN
+        SPINNER_CHARGE_UP = 17, SPINNER_SHOOT = 18,
+        SHIELD_BLOCK = 19,SHIELD_PASS = 20,
+        SLIDER_FULL_AUTO_CHARGE_SPAWN = 21,SLIDER_BOLT_RECHARGE_START = 22,
+        TURRET_CHARGE_SPAWN = 23,SHIELD_CHARGE_SPAWN = 24,
+        TOKEN_CAUGHT_FRIENDLY = 251,TOKEN_CAUGHT_ENEMY = 252, TOKEN_DESTROYED_FRIENDLY = 261, TOKEN_DESTROYED_ENEMY = 262, TOKEN_TRANSPORTED = 27,
+        DISRUPTOR_SPAWN = 28,DISRUPTOR_CHARGE_UP =29, DISRUPTOR_DESTROYED =30, DISRUPTOR_SHOOT =31,
+        STAR_SPAWN =32, STAR_CHARGE_UP = 33, STAR_DESTROYED = 34, STAR_FALL = 35, SUPERNOVA_SHOOT = 36, SUPERNOVA_CHARGE_UP = 40,
+        TURRET_CONTROLS_DISABLED = 37, 
+        BLACK_HOLE_SPAWN = 38, EMP_SPAWN = 39
 
     }
 
@@ -243,7 +267,7 @@ public class AudioManager : MonoBehaviour
     public static void PlayActivitySound(ActivityType type)
     {
 
-        Debug.LogError("playing "+ ACTIVITY_CLIP_DICT[type].name + " with " + ACTIVITY_SOUND_SETTINGS_DICT[type]);
+        
        
         OnActivitySoundPlay?.Invoke(type);
 

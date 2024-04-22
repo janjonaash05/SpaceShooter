@@ -23,18 +23,9 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisrupt
 
     public static event Action<Material> OnColorChange;
 
-    private void OnDestroy()
-    {
+ 
 
-
-        Debug.LogError("Destroying  "+this.GetType().Name);
-    }
-
-
-    private void OnDisable()
-    {
-        //Debug.LogError("Destroying  " + this.GetType().Name);
-    }
+  
 
     void Awake()
     {

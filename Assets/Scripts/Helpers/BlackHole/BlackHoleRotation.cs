@@ -17,7 +17,7 @@ public class BlackHoleRotation : MonoBehaviour
 
 
 
-        AudioManager.PlayActivitySound(AudioManager.ActivityType.BLACK_HOLE_SPAWN);
+       
 
 
         ps = GetComponentInChildren<ParticleSystem>();
@@ -31,6 +31,12 @@ public class BlackHoleRotation : MonoBehaviour
        
 
 
+    }
+
+
+    private void Start()
+    {
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.BLACK_HOLE_SPAWN);
     }
 
 

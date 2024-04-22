@@ -175,7 +175,8 @@ public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 
     void AddColor(Material color) 
     {
-       
+
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.SUPERNOVA_CHARGE_UP);
 
         Material[] new_mats = new Material[r.materials.Length];
 

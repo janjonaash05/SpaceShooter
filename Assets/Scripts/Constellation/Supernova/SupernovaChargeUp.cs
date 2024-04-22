@@ -238,6 +238,10 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
         foreach (Material m in shoot_mats)
         {
 
+            AudioManager.PlayActivitySound(AudioManager.ActivityType.SUPERNOVA_SHOOT);
+
+
+
             ps.GetComponent<ParticleSystemRenderer>().material = m;
             ps.GetComponent<ParticleSystemRenderer>().trailMaterial = m;
             ps.Play();

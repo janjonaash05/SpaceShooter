@@ -27,7 +27,10 @@ public class EMPFlash : MonoBehaviour
   readonly  Dictionary<int, int> order_index_dict = new() { {1,3 }, {2,2 }, {3,0 }, {4,1 } };
 
 
-
+    private void Start()
+    {
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.EMP_SPAWN);
+    }
 
     void Awake()
     {

@@ -392,7 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d10772257ddc11147814ab92d27b4971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activity_types: 0100000024000000
+  activity_types: 0100000025000000
 --- !u!82 &51180091
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24020,7 +24020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d10772257ddc11147814ab92d27b4971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activity_types: 0000000024000000
+  activity_types: 0000000025000000
 --- !u!82 &782855383
 AudioSource:
   m_ObjectHideFlags: 0

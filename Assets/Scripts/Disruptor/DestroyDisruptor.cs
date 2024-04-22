@@ -38,7 +38,7 @@ public class DestroyDisruptor : MonoBehaviour
     public void Engage()
     {
 
-
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.DISRUPTOR_DESTROYED);
 
         Vector3 target = Camera.main.transform.position;
 

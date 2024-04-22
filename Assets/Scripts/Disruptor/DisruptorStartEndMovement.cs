@@ -32,6 +32,11 @@ public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
         OnMoveDownFinish += Kill;
     }
 
+    private void Awake()
+    {
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.DISRUPTOR_SPAWN);
+    }
+
 
     void Kill()
     {

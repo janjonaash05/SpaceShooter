@@ -115,6 +115,9 @@ public class DisruptorTargetTurretHeads : MonoBehaviour, IEMPDisruptable
         target_down.x = 0;
         yield return StartCoroutine(rotateDisruptor.RotateTowards(target_down));
 
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.DISRUPTOR_SHOOT);
+
+
         charge1.GetComponent<MoveDisruptorCharge>().StartMovement();
         charge2.GetComponent<MoveDisruptorCharge>().StartMovement();
 

@@ -16,7 +16,7 @@ public class SettingsData
 {
     public float Volume; public int[] Resolution; public bool Fullscreen;
 
-
+    
 
 
 
@@ -56,7 +56,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] TMP_Dropdown resolutions_dropdown;
     [SerializeField] Toggle fullscreen_toggle;
 
-
+    [SerializeField] AudioSource menu_ambience;
 
 
 
@@ -70,7 +70,7 @@ public class SettingsManager : MonoBehaviour
 
 
 
-
+    float start_ambience_volume;
 
 
 
@@ -111,7 +111,7 @@ public class SettingsManager : MonoBehaviour
 
 
 
-
+        start_ambience_volume = menu_ambience.volume;
 
 
 
@@ -168,6 +168,7 @@ public class SettingsManager : MonoBehaviour
 
     public void SetResolution(int index)
     {
+        src.Play();
         Screen.SetResolution(resolutions[index].width, resolutions[index].height, NewSettings.Fullscreen);
 
         NewSettings.SetResolution(new int[] { resolutions[index].width, resolutions[index].height });
@@ -182,6 +183,7 @@ public class SettingsManager : MonoBehaviour
 
     public void ChangeFullScreen(bool val)
     {
+        src.Play();
         Screen.fullScreen = val;
         NewSettings.SetFullscreen(val);
       //  Debug.LogError("SET fs to " + NewSettings.Fullscreen);
@@ -194,8 +196,11 @@ public class SettingsManager : MonoBehaviour
 
 
 
-        src.volume = 0.5f * val;
-        src.Play();
+        
+
+        src.volume = val;
+        menu_ambience.volume = val;
+        
 
         NewSettings.SetVolume(val);
 

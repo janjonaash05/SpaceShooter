@@ -212,10 +212,11 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
     {
 
 
-        AudioManager.PlayActivitySound(type == TokenType.FRIENDLY ? AudioManager.ActivityType.TOKEN_CAUGHT_FRIENDLY : AudioManager.ActivityType.TOKEN_CAUGHT_ENEMY);
-
+        
         
         if (ps_caught.emission.enabled) { yield break; }
+        AudioManager.PlayActivitySound(type == TokenType.FRIENDLY ? AudioManager.ActivityType.TOKEN_CAUGHT_FRIENDLY : AudioManager.ActivityType.TOKEN_CAUGHT_ENEMY);
+
         if (type == TokenType.FRIENDLY)
         {
             UICommunication.Raise_TokenChange(1);

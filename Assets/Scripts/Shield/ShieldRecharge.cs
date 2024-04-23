@@ -359,6 +359,7 @@ public class ShieldRecharge : MonoBehaviour
 
             try
             {
+                AudioManager.PlayActivitySound(AudioManager.ActivityType.SHIELD_CHARGE_SPAWN);
                 charge.GetComponent<Renderer>().enabled = true;
 
             }

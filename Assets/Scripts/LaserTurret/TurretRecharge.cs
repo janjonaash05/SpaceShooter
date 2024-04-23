@@ -343,6 +343,7 @@ public class TurretRecharge : MonoBehaviour
             try
             {
                 charge.GetComponent<Renderer>().enabled = true;
+                AudioManager.PlayActivitySound(ID == 1 ? AudioManager.ActivityType.TURRET_CHARGE_SPAWN_1 : AudioManager.ActivityType.TURRET_CHARGE_SPAWN_2);
 
             }
             catch (Exception e)

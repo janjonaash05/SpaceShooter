@@ -13,7 +13,7 @@ namespace System.Runtime.CompilerServices
 
 
 
-public record SoundSettings(float Volume, float Pitch) { public override string ToString() => "vol "+Volume +" pitch" +Pitch; };
+public record SoundSettings(float Volume, float Pitch) { public override string ToString() => "vol " + Volume + " pitch" + Pitch; };
 
 
 
@@ -24,7 +24,7 @@ public class ActivityClipPair
 
 
     public AudioManager.ActivityType Activity { get; private set; }
-    public AudioClip Clip { get; private set; } 
+    public AudioClip Clip { get; private set; }
 
 
 }
@@ -89,10 +89,17 @@ public class AudioManager : MonoBehaviour
 
         ACTIVITY_CLIP_DICT.Add(ActivityType.SHIELD_BLOCK, Resources.Load<AudioClip>(path + "Shield/shield_hit"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.SHIELD_PASS, Resources.Load<AudioClip>(path + "Shield/shield_hit"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.SHIELD_CHARGE_SPAWN, Resources.Load<AudioClip>(path + "Shield/shield_charge_recharge"));
+
         ACTIVITY_CLIP_DICT.Add(ActivityType.SLIDER_FULL_AUTO_CHARGE_SPAWN, Resources.Load<AudioClip>(path + "Slider/slider_full_auto_charge"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.SLIDER_BOLT_RECHARGE_START, Resources.Load<AudioClip>(path + "Slider/slider_bolt_recharge"));
 
         ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_CONTROLS_DISABLED, Resources.Load<AudioClip>(path + "Controls/controls_disabled"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_CHARGE_SPAWN_1, Resources.Load<AudioClip>(path + "Turret/turret_charge_recharge"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TURRET_CHARGE_SPAWN_2, Resources.Load<AudioClip>(path + "Turret/turret_charge_recharge"));
+
+
+
 
         ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_SPAWN, Resources.Load<AudioClip>(path + "Star/star_emerge"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.STAR_DESTROYED, Resources.Load<AudioClip>(path + "Star/star_emerge"));
@@ -110,9 +117,11 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_CAUGHT_FRIENDLY, Resources.Load<AudioClip>(path + "Token/token_caught"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_CAUGHT_ENEMY, Resources.Load<AudioClip>(path + "Token/token_caught"));
 
-        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_FRIENDLY, Resources.Load<AudioClip>(path + "Token/token_caught"));
-        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_ENEMY, Resources.Load<AudioClip>(path + "Token/token_caught"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_FRIENDLY, Resources.Load<AudioClip>(path + "Token/token_destroyed"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_ENEMY, Resources.Load<AudioClip>(path + "Token/token_destroyed"));
 
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_SPAWN, Resources.Load<AudioClip>(path + "Token/token_spawn"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_TRANSPORTED, Resources.Load<AudioClip>(path + "Token/token_transported"));
 
 
 
@@ -142,11 +151,15 @@ public class AudioManager : MonoBehaviour
     }
 
 
+    
 
 
-
-    public static void LoadSettings() 
+    public static void LoadSettings()
     {
+
+
+
+
         SoundSettings control_click_settings = new(0.75f, 0.47f);
         SoundSettings target_bomb_settings = new(1f, 1f);
 
@@ -226,7 +239,7 @@ public class AudioManager : MonoBehaviour
     public enum ActivityType
     {
         TURRET_CONTROL_CLICK_1 = 0, TURRET_CONTROL_CLICK_2 = 1,
-        SLIDER_CONTROL_CLICK = 2, // SLIDER_BOLT_CLICK, SLIDER_FULL_AUTO_CLICK,
+        SLIDER_CONTROL_CLICK = 2,
         HARPOON_CONTROL_CLICK = 3,
         UPGRADE_STATION_CLICK = 4, UPGRADE_STATION_UPGRADE_CLICK = 5, UPGRADE_STATION_FINAL_UPGRADE_CLICK = 6,
         HELPER_STATION_CLICK = 7, HELPER_STATION_HELPER_SPAWN = 8, HELPER_STATION_HELPER_COUNTDOWN = 9,
@@ -236,16 +249,16 @@ public class AudioManager : MonoBehaviour
 
         BOMB_EXPLOSION = 14,
 
-        HARPOON_LAUNCH =15, HARPOON_RETRACTION = 16,
+        HARPOON_LAUNCH = 15, HARPOON_RETRACTION = 16,
 
         SPINNER_CHARGE_UP = 17, SPINNER_SHOOT = 18,
-        SHIELD_BLOCK = 19,SHIELD_PASS = 20,
-        SLIDER_FULL_AUTO_CHARGE_SPAWN = 21,SLIDER_BOLT_RECHARGE_START = 22,
-        TURRET_CHARGE_SPAWN = 23,SHIELD_CHARGE_SPAWN = 24,
-        TOKEN_CAUGHT_FRIENDLY = 251,TOKEN_CAUGHT_ENEMY = 252, TOKEN_DESTROYED_FRIENDLY = 261, TOKEN_DESTROYED_ENEMY = 262, TOKEN_TRANSPORTED = 27,
-        DISRUPTOR_SPAWN = 28,DISRUPTOR_CHARGE_UP =29, DISRUPTOR_DESTROYED =30, DISRUPTOR_SHOOT =31,
-        STAR_SPAWN =32, STAR_CHARGE_UP = 33, STAR_DESTROYED = 34, STAR_FALL = 35, SUPERNOVA_SHOOT = 36, SUPERNOVA_CHARGE_UP = 40,
-        TURRET_CONTROLS_DISABLED = 37, 
+        SHIELD_BLOCK = 19, SHIELD_PASS = 20,
+        SLIDER_FULL_AUTO_CHARGE_SPAWN = 21, SLIDER_BOLT_RECHARGE_START = 22,
+        TURRET_CHARGE_SPAWN_1 = 231, TURRET_CHARGE_SPAWN_2 = 232, SHIELD_CHARGE_SPAWN = 24,
+        TOKEN_CAUGHT_FRIENDLY = 251, TOKEN_CAUGHT_ENEMY = 252, TOKEN_DESTROYED_FRIENDLY = 261, TOKEN_DESTROYED_ENEMY = 262, TOKEN_TRANSPORTED = 271, TOKEN_SPAWN = 272,
+        DISRUPTOR_SPAWN = 28, DISRUPTOR_CHARGE_UP = 29, DISRUPTOR_DESTROYED = 30, DISRUPTOR_SHOOT = 31,
+        STAR_SPAWN = 32, STAR_CHARGE_UP = 33, STAR_DESTROYED = 34, STAR_FALL = 35, SUPERNOVA_SHOOT = 36, SUPERNOVA_CHARGE_UP = 40,
+        TURRET_CONTROLS_DISABLED = 37,
         BLACK_HOLE_SPAWN = 38, EMP_SPAWN = 39
 
     }
@@ -267,8 +280,8 @@ public class AudioManager : MonoBehaviour
     public static void PlayActivitySound(ActivityType type)
     {
 
-        
-       
+
+
         OnActivitySoundPlay?.Invoke(type);
 
 
@@ -304,7 +317,7 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    
+
     void Update()
     {
 

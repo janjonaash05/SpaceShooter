@@ -144,7 +144,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
                 TokenDirection.TRANSPORTER => () =>
                 {
                     dir = TokenDirection.CENTER;
-
+                    AudioManager.PlayActivitySound(AudioManager.ActivityType.TOKEN_TRANSPORTED);
 
                     HP--;
                     OnHealthDecrease?.Invoke(HP);

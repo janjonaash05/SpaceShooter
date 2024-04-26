@@ -72,11 +72,6 @@ public class DamageBomb : MonoBehaviour
     {
 
 
-
-        
-
-
-
         int  score = GetComponent<IScoreEnumerable>().ScoreReward();
 
         Debug.Log(score + " score");
@@ -95,7 +90,6 @@ public class DamageBomb : MonoBehaviour
             
         }
 
-        //   Action damage = (bombDestructionType == BombDestructionType.TARGET) ? DamageByTarget : () => DamageByPlayer(bombDestructionType);
 
 
         Action damageMethod = bombDestructionType switch
@@ -131,17 +125,11 @@ public class DamageBomb : MonoBehaviour
     {
 
 
-
-
-
-
         Vector3 target = GameObject.FindGameObjectWithTag(Tags.BOMB_TARGET).transform.position;
 
         Vector3 rotationDirection = (target - transform.position);
 
         transform.rotation = Quaternion.LookRotation(rotationDirection);
-
-        //  Debug.DrawRay(transform.position, rotationDirection, Color.red, 1f);
 
         _ = ScaleDown(token);
 
@@ -149,7 +137,6 @@ public class DamageBomb : MonoBehaviour
         transform.GetChild(1).GetComponent<ParticleSystem>().Play();
 
        
-        //  StartCoroutine(DamageByCore_FallIntoCore());
 
 
         Destroy(gameObject, transform.GetChild(1).GetComponent<ParticleSystem>().main.duration);
@@ -194,24 +181,6 @@ public class DamageBomb : MonoBehaviour
             await Task.Yield();
 
         }
-
-        /*
-        while (transform.localScale.x > min_scale_down_size)
-        {
-            if (token.IsCancellationRequested) { break; }
-            transform.localScale += (-scale_down_increment * Vector3.one);
-
-
-            await Task.Yield();
-
-
-        }
-        */
-
-
-
-
-
     }
 
 

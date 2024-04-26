@@ -57,7 +57,7 @@ public class TokenTransportColorChange : MonoBehaviour
         {
             if (perma_stopped) yield break;
 
-
+            if (i % 2 == 0) { AudioManager.PlayActivitySound(AudioManager.ActivityType.TOKEN_SPAWN); }
 
             rend.materials = new Material[] { rend.materials[0], rend.materials[1], i % 2 == 0 ?  material : default_color, };
             yield return new WaitForSeconds(0.5f);

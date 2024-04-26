@@ -169,48 +169,6 @@ public class SpawnBomb : MonoBehaviour
         ConstructBomb(bomb_normal_prefab, tag, colorMat, size);
 
 
-        /*
-        OnBombSpawnStart?.Invoke(colorMat);
-
-
-        Vector3 spawn = transform.position;
-        GameObject bomb = Instantiate(prefab, spawn, transform.rotation);
-        bomb.transform.localScale = new(0.1f, 0.1f, 0.1f);
-
-
-        bomb.tag = tag;
-        
-
-
-        StartCoroutine(ScaleUp(bomb, size));
-
-
-        ParticleSystem destroy_ps = bomb.transform.GetChild(0).GetComponent<ParticleSystem>();
-        ParticleSystem dissolve_ps = bomb.transform.GetChild(1).GetComponent<ParticleSystem>();
-
-
-
-        var destroy_main = destroy_ps.main;
-        var dissolve_main = dissolve_ps.main;
-
-
-
-        destroy_main.startSize = size;
-        dissolve_main.startSize = size / 2;
-
-
-
-
-
-        destroy_ps.GetComponent<ParticleSystemRenderer>().material = colorMat;
-        dissolve_ps.GetComponent<ParticleSystemRenderer>().material = colorMat;
-
-
-        bomb.GetComponent<BombColorChange>().Init(colorMat);
-
-        */
-
-
 
 
     }

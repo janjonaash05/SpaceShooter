@@ -117,8 +117,8 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_CAUGHT_FRIENDLY, Resources.Load<AudioClip>(path + "Token/token_caught"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_CAUGHT_ENEMY, Resources.Load<AudioClip>(path + "Token/token_caught"));
 
-        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_FRIENDLY, Resources.Load<AudioClip>(path + "Token/token_destroyed"));
-        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_ENEMY, Resources.Load<AudioClip>(path + "Token/token_destroyed"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_FRIENDLY, Resources.Load<AudioClip>(path + "Token/token_destroyed_friendly"));
+        ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_DESTROYED_ENEMY, Resources.Load<AudioClip>(path + "Token/token_destroyed_enemy"));
 
         ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_SPAWN, Resources.Load<AudioClip>(path + "Token/token_spawn"));
         ACTIVITY_CLIP_DICT.Add(ActivityType.TOKEN_TRANSPORTED, Resources.Load<AudioClip>(path + "Token/token_transported"));
@@ -214,15 +214,6 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
 
-        /*
-        ACTIVITY_CLIP_DICT = new();
-        for (int i = 0; i < keys_activities.Count; i++)
-        {
-            ACTIVITY_CLIP_DICT.Add(keys_activities[i], values_clips[i]);
-
-
-        }
-        */
 
         LoadResources();
 

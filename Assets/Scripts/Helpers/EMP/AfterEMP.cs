@@ -15,7 +15,7 @@ public class AfterEMP : MonoBehaviour
 
     private void Awake()
     {
-        HelperSpawnerManager.OnEMPSpawn += OnEMP;
+        HelperSpawnerManager.OnEMPSpawn += OnEMPEngage;
 
         SpinnerChargeUp.OnLaserShotPlayerDeath += OnLaserShotPlayerDeath;
 
@@ -23,7 +23,7 @@ public class AfterEMP : MonoBehaviour
 
     private void OnDestroy()
     {
-        HelperSpawnerManager.OnEMPSpawn -= OnEMP;
+        HelperSpawnerManager.OnEMPSpawn -= OnEMPEngage;
 
         SpinnerChargeUp.OnLaserShotPlayerDeath -= OnLaserShotPlayerDeath;
     }
@@ -42,7 +42,7 @@ public class AfterEMP : MonoBehaviour
 
     
 
-    void OnEMP()
+    void OnEMPEngage()
     {
 
 
@@ -61,6 +61,10 @@ public class AfterEMP : MonoBehaviour
 
 
 
+
+    /// <summary>
+    /// Gets all components implementing IEMPDisruptable and attempts to call OnEMP on them
+    /// </summary>
     void EMPDisrupt() 
     {
 
@@ -85,7 +89,9 @@ public class AfterEMP : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Fills the materials array with the material and reassigns it back to the renderer
+    /// </summary>
     void CoverInColor()
     {
         Material[] mats = GetComponent<Renderer>().materials;

@@ -22,7 +22,7 @@ public class BombSpawnerGrid : MonoBehaviour
 
     Vector3[,] positions;
 
-    int size_x;
+    int size;
     int size_y;
 
 
@@ -37,7 +37,12 @@ public class BombSpawnerGrid : MonoBehaviour
     int start_amount;
 
 
-
+    /// <summary>
+    /// <para>Periodically starts, spawns and ends the cluster event.</para>
+    /// <para>The spawning repeats based on the burst amount value</para>
+    /// <para>Each spawn randomly chooses a tag and the color-name material pair from 2 sets</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ClusterEventTimer()
     {
 
@@ -55,37 +60,26 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
 
-            for (int i = 0; i < DifficultyManager.GetCurrentBombClusterBurstAmountValue();i++) 
+            for (int i = 0; i < DifficultyManager.GetCurrentBombClusterBurstAmountValue(); i++)
             {
                 string tag = UnityEngine.Random.Range(0, 2) == 0 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
 
                 var pairs = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().NAMED_COLOR_SET_1() : MaterialHolder.Instance().NAMED_COLOR_SET_2();
-
-
                 var pair = pairs[UnityEngine.Random.Range(0, pairs.Length)];
 
-              
-
                 OnClusterEventSpawn?.Invoke(tag, pair);
-
 
                 yield return one_second_wait;
 
 
             }
 
-            
 
-          
+
+
 
             OnClusterEventEnd?.Invoke();
             yield return five_second_wait;
-
-
-
-
-
-
 
 
 
@@ -123,22 +117,12 @@ public class BombSpawnerGrid : MonoBehaviour
         DifficultyManager.OnBombSpawnerForm += BombSpawnerForm;
 
 
+        size = DifficultyManager.BOMB_GRIDxSIZE_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY];
+        size_y = size;
 
 
-
-
-
-
-
-
-
-
-        size_x = DifficultyManager.BOMB_GRIDxSIZE_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY];
-        size_y = size_x;
-
-
-        start_amount = (size_x * size_y) / 3 ;
-        positions = new Vector3[size_x, size_y];
+        start_amount = (size * size) / 3;
+        positions = new Vector3[size, size_y];
 
         GenerateGrid();
         StartCoroutine(ClusterEventTimer());
@@ -146,21 +130,21 @@ public class BombSpawnerGrid : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// TODO
+    /// </summary>
     void GenerateGrid()
     {
 
-        bool x_odd = size_x % 2 != 0;
-        bool y_odd = size_y % 2 != 0;
 
-
+        bool odd = size % 2 != 0;
 
         HashSet<(int i, int j)> loop_coordinates_for_spawns = new();
 
 
         while (loop_coordinates_for_spawns.Count < start_amount)
         {
-            loop_coordinates_for_spawns.Add((new Random().Next(0, size_x), new Random().Next(0, size_y)));
+            loop_coordinates_for_spawns.Add((new Random().Next(0, size), new Random().Next(0, size_y)));
 
         }
 
@@ -174,18 +158,21 @@ public class BombSpawnerGrid : MonoBehaviour
         Vector3 center_position = transform.position;
 
 
-        (int size, int margin) x_adjust = (x_odd) ? (1, 0) : (0, 1);
-
-        (int size, int margin) y_adjust = (y_odd) ? (1, 0) : (0, 1);
+        (int size, int margin) adjust = (odd) ? (1, 0) : (0, 1);
 
 
 
-        Vector3 left_corner = center_position + new Vector3(-MARGIN * (size_x - x_adjust.size) / 2 + MARGIN * x_adjust.margin / 2, -MARGIN * (size_y - y_adjust.size) / 2 + MARGIN * y_adjust.margin / 2, 0);
 
-        for (int i = 0; i < size_x; i++)
+        Vector3 top_left_corner = center_position + new Vector3(-MARGIN * (size - adjust.size) / 2 + MARGIN * adjust.margin / 2, -MARGIN * (size - adjust.size) / 2 + MARGIN * adjust.margin / 2, 0);
+
+
+
+
+
+        for (int i = 0; i < size; i++)
         {
-            float x = left_corner.x + MARGIN * i;
-            for (int j = 0; j < size_y; j++)
+            float x = top_left_corner.x + MARGIN * i;
+            for (int j = 0; j < size; j++)
             {
                 GameObject toSpawn;
                 if (loop_coordinates_for_spawns.Contains((i, j)))
@@ -203,7 +190,7 @@ public class BombSpawnerGrid : MonoBehaviour
                     placeholders.Add(toSpawn);
                 }
 
-                float y = left_corner.y + MARGIN * j;
+                float y = top_left_corner.y + MARGIN * j;
 
 
 
@@ -226,7 +213,15 @@ public class BombSpawnerGrid : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// <para>Gets a random placeholder and removes it from the list.</para>
+    /// <para>Starts playing the placeholder's particle system and disables its renderer.</para>
+    /// <para>Instantiates a spawner object.</para>
+    /// <para>Creates a copy of the spawner materials and an array filled with enemy upgrade color.</para>
+    /// <para>Assigns the colors to the spawner, LERPs its scale from zero to target, sets its materials back to the copy.</para>
+    /// <para>Waits until the particle system finished and destroys the placeholder.</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator SwitchPlaceholderForSpawner()
     {
         GameObject placeholder = placeholders[new System.Random().Next(placeholders.Count)];
@@ -258,17 +253,27 @@ public class BombSpawnerGrid : MonoBehaviour
         spawner.GetComponent<Renderer>().materials = newmats;
 
         float lerp = 0;
-        while (spawner.transform.localScale.x < target_scale.x)
+        /*while (spawner.transform.localScale.x < target_scale.x)
         {
             lerp += Time.deltaTime;
 
             spawner.transform.localScale = new Vector3(Mathf.Lerp(0, target_scale.x, lerp), Mathf.Lerp(0, target_scale.y, lerp), Mathf.Lerp(0, target_scale.z, lerp));
 
         }
+        */
+
+        float duration = 0.75f;
+
+        while (lerp < duration)
+        {
+            lerp += Time.deltaTime;
+            spawner.transform.localScale = Vector3.Lerp(Vector3.zero, target_scale, lerp / duration);
+        }
+
 
         spawner.GetComponent<Renderer>().materials = oldmats;
 
-        spawner.transform.localScale = target_scale;
+
 
         yield return new WaitForSeconds(ps.duration);
 
@@ -287,9 +292,6 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
 
-    
-    void Update()
-    {
 
-    }
+
 }

@@ -65,7 +65,7 @@ public class BlackHoleRotation : MonoBehaviour
 
 
     /// <summary>
-    /// LERPs emission <c>rateOverTime</c> from original to target size over a duration
+    /// LERPs emission rateOverTime from original to target size over a duration
     /// </summary>
     /// <param name="original"></param>
     /// <param name="target"></param>
@@ -94,7 +94,7 @@ public class BlackHoleRotation : MonoBehaviour
 
 
     /// <summary>
-    /// Yields <c>ChangeScaleOverTime()</c>  twice, from zero to target scale, then from target scale to zero.
+    /// Yields ChangeScaleOverTime()  twice, from zero to target scale, then from target scale to zero.
     /// </summary>
     /// <returns></returns>
     IEnumerator ScaleUpDown()
@@ -112,7 +112,7 @@ public class BlackHoleRotation : MonoBehaviour
 
 
     /// <summary>
-    /// Yields <c>ChangeEmissionRateOverTime()</c>  twice, from zero to target rate, then from target rate to zero.
+    /// Yields ChangeEmissionRateOverTime() twice, from zero to target rate, then from target rate to zero.
     /// </summary>
     /// <returns></returns>
 

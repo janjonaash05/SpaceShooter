@@ -69,19 +69,23 @@ public class BombColorChange : MonoBehaviour
     public static Dictionary<COLOR, Dictionary<int, Material[]>> COLOR_NAMExCOVERAGE_DEGREE_DICTS_DICT;
 
 
-    
 
 
 
+    /// <summary>
+    /// <para>Iterates through all COLOR values, except for NONE.</para>
+    /// <para>For each value, creates a new Dictionary.</para>
+    /// <para>Recreates all entries from the template dictionary, but changes all null values to the COLOR value.</para>
+    /// <para>Adds the Dictionary to the color name coverage degree dictionaries Dictionary.</para>
+    /// </summary>
     public static void LoadAllDegreesOfCoverageColored()
     {
 
-        Debug.Log(MaterialHolder.Instance().NAME_MATERIAL_DICT.Count);
-
-
-
 
         int length = COVERAGE_DEGREE_TEMPLATE_DICT[1].Length;
+
+
+
         foreach (COLOR color in Enum.GetValues(typeof(COLOR)))
         {
             if (color == COLOR.NONE) { continue; }
@@ -181,7 +185,7 @@ public class BombColorChange : MonoBehaviour
     float move_speed;
 
 
-    [SerializeField] BombType bomb_type;
+    [SerializeField] BombType BombType;
 
 
 
@@ -191,7 +195,7 @@ public class BombColorChange : MonoBehaviour
     {
         rend = GetComponent<Renderer>();
 
-        COLOR_INDEX = bomb_type == BombType.NORMAL ? 9 : 2;
+        COLOR_INDEX = BombType == BombType.NORMAL ? 9 : 2;
 
 
         GetComponent<BombFall>().OnMoveSpeedSet += (m) => move_speed = m;
@@ -207,7 +211,7 @@ public class BombColorChange : MonoBehaviour
 
 
     /// <summary>
-    /// Gets the renderer materials, changes only the value at <c>COLOR_INDEX</c> to color, then reassigns them.
+    /// Gets the renderer materials, changes only the value at COLOR_INDEX to color, then reassigns them.
     /// </summary>
     /// <param name="color"></param>
     public void ChangeOnlyColor(Material color)
@@ -221,16 +225,23 @@ public class BombColorChange : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// <para>Assigns BombMaterial and BombColorName from the pair.</para>
+    /// <para>Checks if the BombType is CLUSTER_UNIT, if so then changes only color and starts the FluctuateIntensity Coroutine.</para>
+    /// <para>If not, gets all renderer materials, then changes all values to secondary or primary, based on if the indexes are contained in dictionaries.</para>
+    /// <para>Reassigns the materials, changes only color and starts the FluctuateIntensity Coroutine</para>
+    /// </summary>
+    /// <param name="pair"></param>
     public virtual void Init(NameMaterialPair pair)
     {
         BombMaterial = pair.Material;
         BombColorName = pair.ColorName;
 
+        
 
 
 
-        if (bomb_type == BombType.CLUSTER_UNIT)
+        if (BombType == BombType.CLUSTER_UNIT)
         {
             ChangeOnlyColor(BombMaterial);
             StartCoroutine(FluctuateIntensity());
@@ -274,7 +285,17 @@ public class BombColorChange : MonoBehaviour
 
 
 
-    double intensity;
+
+
+
+
+
+    /// <summary>
+    /// <para>Creates a copy of the BombMaterial.</para>
+    /// <para>Endlessly LERPs its emission color between the original and secondary with a sinus progression. </para>
+    /// <para>Assigns the changing material via ChangeOnlyColor()</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator FluctuateIntensity()
     {
         Material newMat = new(BombMaterial);
@@ -313,7 +334,10 @@ public class BombColorChange : MonoBehaviour
 
     protected int coverage_degree = 0;
 
-
+    /// <summary>
+    /// Stops all Coroutines, waits 100ms, fills the renderer materials with BombMaterial and sets Finished to true.
+    /// </summary>
+    /// <returns></returns>
     public async Task CoverInColorInstant()
     {
 
@@ -329,94 +353,29 @@ public class BombColorChange : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Stops all Coroutines.</para>
+    /// <para>Checks if the BombType is CLUSTER_UNIT, if so then sets the coverage degree to 1 and awaits CoverInColorInstant().d</para>
+    /// <para>If not, gets the matching coverage degree dictionary based on the BombColor, iterates it over time and sets the renderer materials and coverage degree.</para>
+    /// </summary>
+    /// <returns></returns>
     public async Task CoverInColor()
     {
 
         StopAllCoroutines();
 
 
-        if (bomb_type == BombType.CLUSTER_UNIT) { coverage_degree = 1; await CoverInColorInstant(); return; }
+        if (BombType == BombType.CLUSTER_UNIT) { coverage_degree = 1; await CoverInColorInstant(); return; }
 
         var dict = COLOR_NAMExCOVERAGE_DEGREE_DICTS_DICT[BombColorName];
 
         for (int i = 1; i <= dict.Count; i++)
         {
             coverage_degree = i;
-            Material[] mats = rend.materials;
+           
             rend.materials = dict[i];
 
-            /*
-            try
-            {
-
-                for (int backwards = 1; backwards <= ORDER_LENGTH; backwards++)
-                {
-                    if (primary_order_index_dict.ContainsKey(i))
-                    {
-                        mats[primary_order_index_dict[i]] = BombMaterial;
-
-                    }
-                    if (secondary_order_index_dict.ContainsKey(i))
-                    {
-                        mats[secondary_order_index_dict[i]] = BombMaterial;
-
-                    }
-                }
-
-
-            }
-            catch (Exception) { }
-
-            if (primary_order_index_dict.ContainsKey(i))
-            {
-                mats[primary_order_index_dict[i]] = BombMaterial;
-
-            }
-            else if (secondary_order_index_dict.ContainsKey(i)) //recently added else if
-            {
-                mats[secondary_order_index_dict[i]] = BombMaterial;
-
-            }
-
-
-            try
-            {
-                for (int forwards = 1; forwards <= ORDER_LENGTH; forwards++)
-                {
-
-                    if (primary_order_index_dict.ContainsKey(i))
-                    {
-                        mats[primary_order_index_dict[i]] = BombMaterial;
-
-                    }
-                    if (secondary_order_index_dict.ContainsKey(i))
-                    {
-                        mats[secondary_order_index_dict[i]] = BombMaterial;
-
-                    }
-
-                }
-
-            }
-            catch (Exception) { }
-
-            
-
-
-
-
-
-
-
-            mats[COLOR_INDEX] = BombMaterial;
-            mats[OUTLINE_INDEX] = (i == ORDER_LENGTH) ? BombMaterial : secondary;
-
-            rend.materials = mats;
-
-
-
-            */
+        
 
             await Task.Delay(cover_in_color_delay);
         }
@@ -429,11 +388,90 @@ public class BombColorChange : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Returns true if the coverage_degree is 0
+    /// </summary>
+    /// <returns></returns>
     public bool IsNotCurrentlyTargeted()
     {
         return coverage_degree == 0;
 
-
     }
+
+
 }
+
+
+
+/*
+          Material[] mats = rend.materials;
+        try
+        {
+
+            for (int backwards = 1; backwards <= ORDER_LENGTH; backwards++)
+            {
+                if (primary_order_index_dict.ContainsKey(i))
+                {
+                    mats[primary_order_index_dict[i]] = BombMaterial;
+
+                }
+                if (secondary_order_index_dict.ContainsKey(i))
+                {
+                    mats[secondary_order_index_dict[i]] = BombMaterial;
+
+                }
+            }
+
+
+        }
+        catch (Exception) { }
+
+        if (primary_order_index_dict.ContainsKey(i))
+        {
+            mats[primary_order_index_dict[i]] = BombMaterial;
+
+        }
+        else if (secondary_order_index_dict.ContainsKey(i)) //recently added else if
+        {
+            mats[secondary_order_index_dict[i]] = BombMaterial;
+
+        }
+
+
+        try
+        {
+            for (int forwards = 1; forwards <= ORDER_LENGTH; forwards++)
+            {
+
+                if (primary_order_index_dict.ContainsKey(i))
+                {
+                    mats[primary_order_index_dict[i]] = BombMaterial;
+
+                }
+                if (secondary_order_index_dict.ContainsKey(i))
+                {
+                    mats[secondary_order_index_dict[i]] = BombMaterial;
+
+                }
+
+            }
+
+        }
+        catch (Exception) { }
+
+
+
+
+
+
+
+
+
+        mats[COLOR_INDEX] = BombMaterial;
+        mats[OUTLINE_INDEX] = (i == ORDER_LENGTH) ? BombMaterial : secondary;
+
+        rend.materials = mats;
+
+
+
+        */

@@ -76,12 +76,6 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
     void FixedUpdate()
     {
-
-
-        //rb.MovePosition(rb.position + Time.fixedDeltaTime *move_speed  );
-
-
-
         rb.MoveRotation(rb.rotation * Quaternion.Euler(Time.fixedDeltaTime * rotation_speed));
 
 
@@ -91,7 +85,12 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
     }
 
-
+    /// <summary>
+    /// <para>If collided with bomb target, destroys BombFall, starts its damage procedure and does a damage to player action based on the BombType.</para>
+    /// <para>If collided the black hole, starts its damage procedure</para>
+    /// 
+    /// </summary>
+    /// <param name="col"></param>
     private void OnCollisionEnter(Collision col)
     {
 
@@ -101,7 +100,9 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(BombDestructionType.TARGET);
 
 
-            Action damageAction = bomb_type == BombType.NORMAL ? () => CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().BombMaterial) : CoreCommunication.DamageShieldOnly;
+            Action damageAction = bomb_type == BombType.NORMAL ? 
+                () => CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().BombMaterial)
+                : CoreCommunication.DamageShieldOnly;
             damageAction();
 
         }
@@ -120,7 +121,10 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
 
 
-
+    /// <summary>
+    /// If DisabledRewards isn't true, sets it to true and returns a calculated score reward.
+    /// </summary>
+    /// <returns></returns>
     public int ScoreReward()
     {
         if (DisabledRewards) { return 0; }
@@ -130,7 +134,11 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
         return Mathf.RoundToInt(transform.localScale.x / 50 + VectorSum(rotation_speed) / 75 + MoveSpeed * 75);
     }
 
-
+    /// <summary>
+    /// Sums the absolute values of the xyz vector values.
+    /// </summary>
+    /// <param name="v"></param>
+    /// <returns></returns>
     float VectorSum(Vector3 v)
     {
         return Mathf.Abs(v.x) + Mathf.Abs(v.y) + Mathf.Abs(v.z);

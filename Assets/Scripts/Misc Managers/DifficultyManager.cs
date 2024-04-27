@@ -104,7 +104,7 @@ public class DifficultyManager : MonoBehaviour
     };
 
 
-    public const int MAX_FEATURE_VALUE = 4;
+    public const int MAX_FEATURE_VALUE = 1;
 
     public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxMAX_STARS, AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT };
 

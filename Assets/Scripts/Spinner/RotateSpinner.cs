@@ -24,7 +24,6 @@ public class RotateSpinner : MonoBehaviour
 
     void Update()
     {
-     //   Debug.Log(index_holder.parent);
            float rotation_speed = GetComponent<SpinnerColorChange>().index_holder.Parent switch
              {
                  1 => 25,
@@ -37,7 +36,6 @@ public class RotateSpinner : MonoBehaviour
 
         chargeUpMode = GetComponent<SpinnerColorChange>().charge_up_mode;
         rotation.x = (chargeUpMode) ? charge_up_rotation_speed : rotation_speed;
-       // Debug.Log("ROTX " +rotation.x);
         transform.Rotate(rotation * Time.deltaTime);
 
 

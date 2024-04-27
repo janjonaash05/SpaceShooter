@@ -83,7 +83,6 @@ public class DestroyStar : MonoBehaviour
             await Task.Yield();
         }
 
-        Debug.LogWarning("done shrinkin");
         Destroy(gameObject);
 
 

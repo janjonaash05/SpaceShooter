@@ -203,12 +203,6 @@ public class SpinnerChargeUp : MonoBehaviour
      
 
 
-
-
-
-
-        Debug.LogError(index_holder + " spinner index holder");
-
   
 
 

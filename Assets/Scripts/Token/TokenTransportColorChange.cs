@@ -41,11 +41,7 @@ public class TokenTransportColorChange : MonoBehaviour
 
 
     
-    void Update()
-    {
-
-    }
-
+  
     Renderer rend;
 
 

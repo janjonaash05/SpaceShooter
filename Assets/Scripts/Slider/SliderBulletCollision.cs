@@ -23,11 +23,7 @@ public class SliderBulletCollision : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
 
-        //  Destroy(other.gameObject.GetComponent<DisruptorMovement>());
-        //  Destroy(other.gameObject.GetComponent<DisruptorColorChange>());
-
-
-       // Debug.Log(DamagePotential + "dmg");
+      
 
         switch (other.transform.tag)
         {
@@ -42,7 +38,6 @@ public class SliderBulletCollision : MonoBehaviour
 
                 other.gameObject.TryGetComponent(out DamageDisruptor damageDisruptor);
                 damageDisruptor?.Damage(DamagePotential);
-//                other.gameObject.GetComponent<DamageDisruptor>().Damage(DamagePotential);
 
 
                 if (DamagePotential == DifficultyManager.DISRUPTOR_START_HEALTH)
@@ -73,7 +68,7 @@ public class SliderBulletCollision : MonoBehaviour
 
 
 
-                } catch (Exception e) { }
+                } catch (Exception) { }
 
               
 

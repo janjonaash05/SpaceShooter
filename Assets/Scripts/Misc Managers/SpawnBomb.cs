@@ -25,7 +25,7 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-
+    NameMaterialPair[] pairs1, pairs2;
 
 
 
@@ -50,6 +50,9 @@ public class SpawnBomb : MonoBehaviour
     {
         mats1 = MaterialHolder.Instance().COLOR_SET_1();
         mats2 = MaterialHolder.Instance().COLOR_SET_2();
+
+        pairs1 = MaterialHolder.Instance().NAMED_COLOR_SET_1();
+        pairs2 = MaterialHolder.Instance().NAMED_COLOR_SET_2();
     }
 
 
@@ -66,7 +69,7 @@ public class SpawnBomb : MonoBehaviour
 
     void ClusterEventStart() => CanSpawn = false; 
     void ClusterEventEnd() => CanSpawn = true;
-    void ClusterEventSpawn(string tag, Material mat) => ConstructBomb(bomb_cluster_prefab,tag, mat, min_size/5f);
+    void ClusterEventSpawn(string tag, NameMaterialPair pair) => ConstructBomb(bomb_cluster_prefab,tag, pair, min_size/5f);
 
     private void Awake()
     {
@@ -152,21 +155,21 @@ public class SpawnBomb : MonoBehaviour
         string tag = Random.Range(0, 2) == 1 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
 
 
-        Material colorMat = tag switch
+        NameMaterialPair pair = tag switch
         {
 
 
-            Tags.LASER_TARGET_1 => mats1[Random.Range(0, 4)],
+            Tags.LASER_TARGET_1 => pairs1[Random.Range(0, 4)],
 
-            Tags.LASER_TARGET_2 => mats2[Random.Range(0, 4)],
-            _ => mats1[0]
-        };
+            Tags.LASER_TARGET_2 => pairs2[Random.Range(0, 4)],
+            _ => null
+        } ;
 
 
         float size = Random.Range(min_size, max_size);
 
 
-        ConstructBomb(bomb_normal_prefab, tag, colorMat, size);
+        ConstructBomb(bomb_normal_prefab, tag, pair, size);
 
 
 
@@ -175,8 +178,10 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-    void ConstructBomb(GameObject prefab,string tag, Material mat, float size)
+    void ConstructBomb(GameObject prefab,string tag, NameMaterialPair pair, float size)
     {
+
+        Material mat = pair.Material;
         OnBombSpawnStart?.Invoke(mat);
 
 
@@ -213,7 +218,7 @@ public class SpawnBomb : MonoBehaviour
         dissolve_ps.GetComponent<ParticleSystemRenderer>().material = mat;
 
 
-        bomb.GetComponent<BombColorChange>().Init(mat);
+        bomb.GetComponent<BombColorChange>().Init(pair);
 
 
     }

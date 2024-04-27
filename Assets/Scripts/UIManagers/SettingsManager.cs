@@ -95,7 +95,6 @@ public class SettingsManager : MonoBehaviour
     {
 
 
-        Debug.Log(UserDataManager.CURRENT_DATA + " UserData on Settings load");
 
 
         var data = UserDataManager.CURRENT_DATA;
@@ -172,7 +171,6 @@ public class SettingsManager : MonoBehaviour
         Screen.SetResolution(resolutions[index].width, resolutions[index].height, NewSettings.Fullscreen);
 
         NewSettings.SetResolution(new int[] { resolutions[index].width, resolutions[index].height });
-        //Debug.LogError("SET res to " + NewSettings.Resolution[0]+" "+ NewSettings.Resolution[1]);
 
 
     }
@@ -186,7 +184,6 @@ public class SettingsManager : MonoBehaviour
         src.Play();
         Screen.fullScreen = val;
         NewSettings.SetFullscreen(val);
-      //  Debug.LogError("SET fs to " + NewSettings.Fullscreen);
 
     }
 
@@ -206,7 +203,6 @@ public class SettingsManager : MonoBehaviour
 
 
         UserDataManager.CURRENT_DATA.SetVolumeMultiplier(NewSettings.Volume);
-      //  Debug.LogError("SET vol to val:"+val +" newsettings: "+ NewSettings.Volume+ " userdata: "+ UserDataManager.CURRENT_DATA.VolumeMultiplier);
 
 
     }

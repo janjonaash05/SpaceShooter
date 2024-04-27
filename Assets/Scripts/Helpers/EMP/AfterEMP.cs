@@ -6,18 +6,14 @@ using UnityEngine.Rendering;
 
 public class AfterEMP : MonoBehaviour
 {
-    void Start()
-    {
-
-    }
-
+ 
 
 
     private void Awake()
     {
         HelperSpawnerManager.OnEMPSpawn += OnEMPEngage;
 
-        SpinnerChargeUp.OnLaserShotPlayerDeath += OnLaserShotPlayerDeath;
+        SpinnerChargeUp.OnLaserShotPlayerDeath += EMPDisrupt;
 
     }
 
@@ -25,19 +21,7 @@ public class AfterEMP : MonoBehaviour
     {
         HelperSpawnerManager.OnEMPSpawn -= OnEMPEngage;
 
-        SpinnerChargeUp.OnLaserShotPlayerDeath -= OnLaserShotPlayerDeath;
-    }
-
-
-    
-
-
-
-
-    void OnLaserShotPlayerDeath() 
-    {
-        EMPDisrupt();
-
+        SpinnerChargeUp.OnLaserShotPlayerDeath -= EMPDisrupt;
     }
 
     
@@ -82,7 +66,7 @@ public class AfterEMP : MonoBehaviour
             {
                 _.OnEMP();
             }
-            catch (Exception e) { Debug.LogError(e); }
+            catch (Exception) { }
            
         }
 
@@ -90,7 +74,7 @@ public class AfterEMP : MonoBehaviour
 
 
     /// <summary>
-    /// Fills the materials array with the material and reassigns it back to the renderer
+    /// Fills the materials array with the upgrade material and reassigns it back to the renderer
     /// </summary>
     void CoverInColor()
     {
@@ -106,7 +90,9 @@ public class AfterEMP : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// LERPs from the original scale to zero over set amount of time, destroys GameObject after
+    /// </summary>
     void ScaleChange()
     {
         IEnumerator scaleChange()

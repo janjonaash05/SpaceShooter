@@ -137,7 +137,6 @@ public class MaterialIndexHolder : IndexHolder
         Child = maxChild;
 
 
-        Debug.Log("Setting to max " + target);
 
 
     }
@@ -147,7 +146,6 @@ public class MaterialIndexHolder : IndexHolder
         Parent = minParent;
         Child = minChild;
 
-        Debug.Log("Setting to min " + target);
 
     }
 
@@ -161,10 +159,10 @@ public class MaterialIndexHolder : IndexHolder
 
 
 
-        
-        if (IsAtMax() && childDelta >= 0) { Debug.Log("max to upper" + target); SetEdge(Edge.UPPER); return 1; }
 
-        if (IsAtMin() && childDelta <= 0) { Debug.Log("min to lower" + target); SetEdge(Edge.LOWER); return -1; }
+        if (IsAtMax() && childDelta >= 0) {  SetEdge(Edge.UPPER); return 1; }
+
+        if (IsAtMin() && childDelta <= 0) { SetEdge(Edge.LOWER); return -1; }
 
 
         if (edge == Edge.UPPER)
@@ -266,7 +264,6 @@ public class MaterialIndexHolder : IndexHolder
     {
 
 
-        //if ((IsAtMax() && color == false) || (IsAtMin() && color == true)) { Debug.Log("return empty because color is"+ color); return new(); }
 
         int direction = (color) ? -1 : 1;
 
@@ -287,7 +284,6 @@ public class MaterialIndexHolder : IndexHolder
             list.Add(GetCurrentMatIndex(copyHolder));
 
             changeResult = copyHolder.ChangeIndex(0, direction);
-            //  Debug.Log(copyHolder);
 
         }
 
@@ -322,7 +318,7 @@ public class MaterialIndexHolder : IndexHolder
 
 
 
-    
+
 
 
 

@@ -28,12 +28,7 @@ public class RotateDisruptor : MonoBehaviour, IEMPDisruptable
 
    public void OnEMP() => StopAllCoroutines();
 
-    private void OnDestroy()
-    {
-
-        Debug.LogError("Destroying  " + this.GetType().Name);
-    }
-
+ 
 
     public void EngageRotation(Vector3 target)
     {

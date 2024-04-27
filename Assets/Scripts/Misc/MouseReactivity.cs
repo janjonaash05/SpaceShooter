@@ -30,7 +30,6 @@ public class MouseReactivity : MonoBehaviour
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
             {
 
-                Debug.Log(hit.transform.tag);
 
                 valid_click = PlayerInputCommunication.Raise_RaycastClick(hit);
 

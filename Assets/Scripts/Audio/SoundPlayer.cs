@@ -125,14 +125,5 @@ public class SoundPlayer : MonoBehaviour
 
 
 
-    void Start()
-    {
-        
-    }
-
-    
-    void Update()
-    {
-        
-    }
+   
 }

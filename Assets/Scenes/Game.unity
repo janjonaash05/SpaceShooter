@@ -199,7 +199,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 69e54b58c900e85438b4f374589bbfd5, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 69e54b58c900e85438b4f374589bbfd5, type: 3}
       propertyPath: m_LocalScale.x
@@ -970,7 +970,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &131529388
 PrefabInstance:
@@ -8058,7 +8058,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &494458470
 MonoBehaviour:
@@ -13129,7 +13129,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &563108478 stripped
 GameObject:
@@ -18306,7 +18306,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &635715353
 PrefabInstance:
@@ -29492,7 +29492,7 @@ GameObject:
   - component: {fileID: 844844031}
   - component: {fileID: 844844032}
   m_Layer: 0
-  m_Name: cyan_collider
+  m_Name: CYAN
   m_TagString: ColorCollider2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30824,7 +30824,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1010984861
 MonoBehaviour:
@@ -30874,6 +30874,23 @@ MonoBehaviour:
   _FRIENDLY_UPGRADE: {fileID: 2100000, guid: ba06efade76e89b4c8c4a7d3697a43d3, type: 2}
   _PLAYER_HEALTH: {fileID: 2100000, guid: 9e8e772070647d94783a1f2a0d74ca80, type: 2}
   darkening_intensity: 0
+  _NAMED_MATERIAL_PAIRS:
+  - colorName: 0
+    material: {fileID: 2100000, guid: 62da4a9c2d7788844ada611cbcdbb4d4, type: 2}
+  - colorName: 1
+    material: {fileID: 2100000, guid: c040bc4f0c2516149bac547b832a9af7, type: 2}
+  - colorName: 2
+    material: {fileID: 2100000, guid: 30987b3662e99e24788a3b2094600073, type: 2}
+  - colorName: 3
+    material: {fileID: 2100000, guid: 1c88ecab92f746e4baed6d284a615bfe, type: 2}
+  - colorName: 4
+    material: {fileID: 2100000, guid: 650e01c36816ce24da3d355f2667f39d, type: 2}
+  - colorName: 5
+    material: {fileID: 2100000, guid: 7b7955d7959c59b4a83eebb891d483cf, type: 2}
+  - colorName: 6
+    material: {fileID: 2100000, guid: 221aa746b53e7e7408948d2de3024205, type: 2}
+  - colorName: 7
+    material: {fileID: 2100000, guid: 32be7422337f62e4086bf0c39cf50c89, type: 2}
 --- !u!1001 &1013935731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31063,7 +31080,7 @@ GameObject:
   - component: {fileID: 1034968080}
   - component: {fileID: 1034968081}
   m_Layer: 0
-  m_Name: orange_collider
+  m_Name: ORANGE
   m_TagString: ColorCollider2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31159,7 +31176,7 @@ GameObject:
   - component: {fileID: 1037469140}
   - component: {fileID: 1037469141}
   m_Layer: 0
-  m_Name: yellow_collider
+  m_Name: YELLOW
   m_TagString: ColorCollider1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42090,7 +42107,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1249665596
 PrefabInstance:
@@ -57565,7 +57582,7 @@ GameObject:
   - component: {fileID: 1347619650}
   - component: {fileID: 1347619651}
   m_Layer: 0
-  m_Name: blue_collider
+  m_Name: BLUE
   m_TagString: ColorCollider1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63040,7 +63057,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6d4cbd1d6daf9104394996def71741fd, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6d4cbd1d6daf9104394996def71741fd, type: 3}
       propertyPath: m_LocalScale.x
@@ -63501,7 +63518,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1544881351
 MonoBehaviour:
@@ -68864,7 +68881,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1617978362
 GameObject:
@@ -69238,7 +69255,7 @@ GameObject:
   - component: {fileID: 1639770769}
   - component: {fileID: 1639770770}
   m_Layer: 0
-  m_Name: teal_collider
+  m_Name: TEAL
   m_TagString: ColorCollider2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76248,7 +76265,7 @@ GameObject:
   - component: {fileID: 2024227434}
   - component: {fileID: 2024227435}
   m_Layer: 0
-  m_Name: green_collider
+  m_Name: GREEN
   m_TagString: ColorCollider1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76721,7 +76738,7 @@ GameObject:
   - component: {fileID: 2069406453}
   - component: {fileID: 2069406454}
   m_Layer: 0
-  m_Name: red_collider
+  m_Name: RED
   m_TagString: ColorCollider1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77269,7 +77286,7 @@ GameObject:
   - component: {fileID: 2145132944}
   - component: {fileID: 2145132945}
   m_Layer: 0
-  m_Name: magenta_collider
+  m_Name: MAGENTA
   m_TagString: ColorCollider2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -9842,6 +9842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5090247a390786f4d84c2adfd975cfd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bomb_type: 0
   rotation_speed_multiplier: 250
 --- !u!65 &4536775813684648314
 BoxCollider:
@@ -9906,6 +9907,7 @@ MonoBehaviour:
   primary: {fileID: 2100000, guid: 63bffc11c0b46d546ba228fb1fab0627, type: 2}
   secondary: {fileID: 2100000, guid: 3eb42ab208c796347b45e3f815a15600, type: 2}
   cover_in_color_delay: 20
+  bomb_type: 0
 --- !u!82 &4492906332928595125
 AudioSource:
   m_ObjectHideFlags: 0

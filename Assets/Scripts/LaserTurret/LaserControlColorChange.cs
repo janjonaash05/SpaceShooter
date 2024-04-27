@@ -211,14 +211,12 @@ public class LaserControlColorChange : MonoBehaviour
         auto_collider.GetComponent<Renderer>().material = block_material;
 
 
-       // Debug.LogWarning("DisableAutoTargeting");
 
 
         Renderer rend = GetComponent<Renderer>();
 
         Material[] mats = rend.materials; ;
 
-        // mats[AUTO_INDEX].SetColor(EMISSION_COLOR, block_material.GetColor(EMISSION_COLOR));
         mats[AUTO_INDEX] = off_mat;
 
         rend.materials = mats;
@@ -239,13 +237,11 @@ public class LaserControlColorChange : MonoBehaviour
         auto_collider.GetComponent<Renderer>().material = allow_material;
         if (turned_off) { return; }
 
-        Debug.LogWarning("ableAutoTargeting");
 
         Renderer rend = GetComponent<Renderer>();
 
 
         Material[] mats = rend.materials;
-        // mats[AUTO_INDEX].SetColor(EMISSION_COLOR, allow_material.GetColor(EMISSION_COLOR));
 
 
         mats[AUTO_INDEX] = normal_mats[AUTO_INDEX];

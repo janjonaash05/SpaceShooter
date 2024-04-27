@@ -78,7 +78,6 @@ public class SliderControlActivation : MonoBehaviour
 
 
         float yRot = slider_pivot_transform.rotation.eulerAngles.y + 90; // rotate turret front to actually be infront
-                                                                         //Debug.Log(slider_pivot.transform.rotation.eulerAngles.x);
 
 
 

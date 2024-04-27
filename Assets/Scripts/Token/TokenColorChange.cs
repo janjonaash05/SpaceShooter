@@ -42,7 +42,6 @@ public class TokenColorChange : MonoBehaviour
 
         GetComponent<TokenMovement>().OnHealthDecrease += (HP) => 
         {
-            Debug.Log(HP + "TOKEN HP");
 
            Material[] mats = rend.materials;
 

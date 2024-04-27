@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -8,31 +9,13 @@ public class CommunicationHelper : MonoBehaviour
     
     void Awake()
     {
+        MaterialHolder.Awake();
         UpgradesManager.Awake();
         LaserTurretCommunicationChannels.Awake();
         CoreCommunication.Awake();
         UICommunication.Awake();
         
-        //  PlayerInputCommunication.OnLaserTarget1Click += LaserTurretCommunicationChannels.Channel1.AttemptRaise_ManualTargeting;
-        //  PlayerInputCommunication.OnLaserTarget2Click += LaserTurretCommunicationChannels.Channel2.AttemptRaise_ManualTargeting;
-
-        /*
-        PlayerInputCommunication.OnAutoCollider1Click += (hit) => LaserTurretCommunicationChannels.Channel1.AttempRaise_AutoTargetingAttempt();
-        PlayerInputCommunication.OnAutoCollider1Click += (hit) => LaserTurretCommunicationChannels.Channel1.AttemptRaise_AutoCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
-
-
-
-        PlayerInputCommunication.OnColorCollider1Click += (hit) => LaserTurretCommunicationChannels.Channel1.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, false);
-        PlayerInputCommunication.OnColorCollider1Click += (hit) => LaserTurretCommunicationChannels.Channel1.AttemptRaise_ColorCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
-
-        PlayerInputCommunication.OnAutoCollider2Click += (hit) => LaserTurretCommunicationChannels.Channel2.AttempRaise_AutoTargetingAttempt();
-        PlayerInputCommunication.OnAutoCollider2Click += (hit) => LaserTurretCommunicationChannels.Channel2.AttemptRaise_AutoCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
-
-
-        PlayerInputCommunication.OnColorCollider2Click += (hit) => LaserTurretCommunicationChannels.Channel2.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, false);
-        PlayerInputCommunication.OnColorCollider2Click += (hit) => LaserTurretCommunicationChannels.Channel2.AttemptRaise_ColorCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
-        */
-
+      
 
 
         PlayerInputCommunication.OnLaserTarget1Click += LaserTarget1CLick;
@@ -45,6 +28,8 @@ public class CommunicationHelper : MonoBehaviour
         PlayerInputCommunication.OnColorCollider2Click += ColorCollider2Click;
 
 
+
+        BombColorChange.InitCoverages();
 
     }
 
@@ -66,7 +51,7 @@ public class CommunicationHelper : MonoBehaviour
     }
     void ColorCollider2Click(RaycastHit hit)
     {
-        LaserTurretCommunicationChannels.Channel2.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, false);
+        LaserTurretCommunicationChannels.Channel2.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, Enum.Parse<COLOR>(hit.transform.name, true), false);
         LaserTurretCommunicationChannels.Channel2.AttemptRaise_ColorCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
 
     }
@@ -74,7 +59,7 @@ public class CommunicationHelper : MonoBehaviour
 
     void ColorCollider1Click(RaycastHit hit)
     {
-        LaserTurretCommunicationChannels.Channel1.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, false);
+        LaserTurretCommunicationChannels.Channel1.AttemptRaise_TurretCharge_ColorChange(hit.transform.GetComponent<Renderer>().material, Enum.Parse<COLOR>(hit.transform.name, true), false);
         LaserTurretCommunicationChannels.Channel1.AttemptRaise_ColorCollider_ControlColorChange(hit.transform.GetComponent<Renderer>().material);
 
     }

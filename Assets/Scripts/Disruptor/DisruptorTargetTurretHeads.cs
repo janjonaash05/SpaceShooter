@@ -31,18 +31,12 @@ public class DisruptorTargetTurretHeads : MonoBehaviour, IEMPDisruptable
 
 
 
-    private void OnDestroy()
-    {
-
-
-        Debug.LogError("Destroying  " + this.GetType().Name);
-    }
+  
 
     void Update()
     {
         Vector3 forward = transform.TransformDirection(-Vector3.right) * 100;
-        //  Debug.Log(transform.position+forward);
-        Debug.DrawRay(transform.position, forward, Color.green);
+       
     }
 
 

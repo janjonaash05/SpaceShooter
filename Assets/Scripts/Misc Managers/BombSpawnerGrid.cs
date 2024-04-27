@@ -13,7 +13,7 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
 
-    public static event Action<string, Material> OnClusterEventSpawn;
+    public static event Action<string, NameMaterialPair> OnClusterEventSpawn;
     public static event Action OnClusterEventStart, OnClusterEventEnd;
 
 
@@ -41,12 +41,14 @@ public class BombSpawnerGrid : MonoBehaviour
     IEnumerator ClusterEventTimer()
     {
 
+        WaitForSeconds one_second_wait = new(1f);
+        WaitForSeconds five_second_wait = new(5f);
+
         while (true)
         {
             yield return new WaitForSeconds(DifficultyManager.GetCurrentBombClusterFrequencyValue());
 
 
-            Debug.LogError("CLUSTER START");
 
             OnClusterEventStart?.Invoke();
 
@@ -57,14 +59,17 @@ public class BombSpawnerGrid : MonoBehaviour
             {
                 string tag = UnityEngine.Random.Range(0, 2) == 0 ? Tags.LASER_TARGET_1 : Tags.LASER_TARGET_2;
 
-                var materials = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().COLOR_SET_1() : MaterialHolder.Instance().COLOR_SET_2();
+                var pairs = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().NAMED_COLOR_SET_1() : MaterialHolder.Instance().NAMED_COLOR_SET_2();
 
 
-                var mat = materials[UnityEngine.Random.Range(0, materials.Length)];
-                OnClusterEventSpawn?.Invoke(tag, mat);
+                var pair = pairs[UnityEngine.Random.Range(0, pairs.Length)];
+
+              
+
+                OnClusterEventSpawn?.Invoke(tag, pair);
 
 
-                yield return new WaitForSeconds(1f);
+                yield return one_second_wait;
 
 
             }
@@ -74,7 +79,7 @@ public class BombSpawnerGrid : MonoBehaviour
           
 
             OnClusterEventEnd?.Invoke();
-            yield return new WaitForSeconds(5f);
+            yield return five_second_wait;
 
 
 

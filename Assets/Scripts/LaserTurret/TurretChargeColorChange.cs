@@ -60,9 +60,8 @@ public class TurretChargeColorChange : MonoBehaviour
         {
             rend.material = GameObject.FindWithTag((ID == 1) ? Tags.TURRET_HEAD_CHARGE_1 : Tags.TURRET_HEAD_CHARGE_2).GetComponent<Renderer>().material;
         }
-        catch(Exception e)
+        catch
         {
-            Debug.LogError(e);
         }
 
     }

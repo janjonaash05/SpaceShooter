@@ -129,8 +129,6 @@ public class TargetBomb : MonoBehaviour
         OnBarrageEnd += () => isBarraging = false;
 
 
-        OnBarrageStart += () => Debug.LogError("BARRAGE START");
-        OnBarrageEnd += () => Debug.LogError("BARRAGE END"); //called more times than start
     }
 
 
@@ -191,7 +189,7 @@ public class TargetBomb : MonoBehaviour
             {
                 targetPos = bomb.transform.position;
             }
-            catch (Exception)
+            catch
             {
                 continue;
             }
@@ -307,19 +305,18 @@ public class TargetBomb : MonoBehaviour
         Material mat = transform.GetChild(0).GetComponent<Renderer>().sharedMaterial;
 
 
+        COLOR colorName = LaserTurretCommunicationChannels.GetChannelByID(ID).ChargeColorName;
 
 
-     
         var coloredTargets = (
             from bomb in allTargets
-            where mat.name.Contains(bomb.GetComponent<BombColorChange>().bomb_color.name) ||  bomb.GetComponent<BombColorChange>().bomb_color.name.Contains(mat.name)
-
+                // where mat.name.Contains(bomb.GetComponent<BombColorChange>().BombMaterial.name) ||  bomb.GetComponent<BombColorChange>().BombMaterial.name.Contains(mat.name)
+            where colorName == bomb.GetComponent<BombColorChange>().BombColorName
             where bomb.GetComponent<BombColorChange>().IsNotCurrentlyTargeted()
             select bomb
-        );
+        ); ;
 
 
-        Debug.LogWarning(coloredTargets.Count()+" coloredTargets for "+mat.name);
 
         return coloredTargets.ToArray();
     }

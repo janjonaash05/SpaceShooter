@@ -119,13 +119,9 @@ public class EMPFlash : MonoBehaviour
 
         float scale_duration = HelperSpawnerManager.LIFETIME / 8f;
 
-        Debug.LogError("ds "+ scale_duration);
 
-       // GetComponent<Renderer>().materials = color_mats;
         yield return StartCoroutine(ScaleChange(Vector3.zero, default_scale, scale_duration));
-        //GetComponent<Renderer>().materials = default_mat;
         yield return new WaitForSeconds(scale_duration * 6f);
-       // GetComponent<Renderer>().materials = color_mats;
         yield return StartCoroutine(ScaleChange(default_scale, Vector3.zero, scale_duration));
 
 
@@ -149,7 +145,6 @@ public class EMPFlash : MonoBehaviour
 
             lerp += Time.deltaTime;
             transform.localScale = Vector3.Lerp(original, target, lerp / duration);
-            Debug.LogError(transform.localScale + "local scale");
             yield return null;
 
         }

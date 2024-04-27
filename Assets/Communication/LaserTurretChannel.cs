@@ -38,7 +38,8 @@ public class LaserTurretChannel
     public event Action OnTurretCapacityChanged;
     public event Action OnTurretCapacityDepleted, OnTurretCapacityRecharged;
 
-    Material charge_mat;
+    Material ChargeMaterial;
+    public COLOR ChargeColorName { get; private set; }
 
     private  bool is_targeting, is_barraging, is_control_disabled, is_auto_targeting_disabled;
 
@@ -48,6 +49,10 @@ public class LaserTurretChannel
     public  void Awake(string tag)
     {
         this.tag = tag;
+
+
+        ChargeColorName = COLOR.NONE;
+
 
         is_control_disabled = false;
         is_auto_targeting_disabled = false;
@@ -93,8 +98,8 @@ public class LaserTurretChannel
 
 
 
-        OnAutoTargetingEnabled += () => { is_auto_targeting_disabled = false; Debug.LogWarning("enable auto targeting"); };
-        OnAutoTargetingDisabled += () => { is_auto_targeting_disabled = true; Debug.LogWarning("disable auto targeting"); };
+        OnAutoTargetingEnabled += () => { is_auto_targeting_disabled = false; };
+        OnAutoTargetingDisabled += () => { is_auto_targeting_disabled = true; };
 
 
 
@@ -151,7 +156,7 @@ public class LaserTurretChannel
     public  async void DisableControlFor(float ms)
     {
 
-        AttemptRaise_TurretCharge_ColorChange(new Material(Shader.Find("Specular")), true);
+        AttemptRaise_TurretCharge_ColorChange(new Material(Shader.Find("Specular") ), COLOR.NONE, true);
 
         Raise_DisableControl();
 
@@ -184,8 +189,8 @@ public class LaserTurretChannel
     {
 
 
-        charge_mat = MaterialHolder.Instance().FRIENDLY_SECONDARY();
-
+        ChargeMaterial = MaterialHolder.Instance().FRIENDLY_SECONDARY();
+        ChargeColorName = COLOR.NONE;
 
         is_control_disabled = true;
         OnControlDisabled?.Invoke();
@@ -201,12 +206,12 @@ public class LaserTurretChannel
 
 
 
-    public  void AttemptRaise_TurretCharge_ColorChange(Material mat, bool turn_off)
+    public  void AttemptRaise_TurretCharge_ColorChange(Material mat, COLOR color_name, bool turn_off)
     {
 
         if (turn_off)
         {
-            OnTurretChargeColorChange?.Invoke(charge_mat, true);
+            OnTurretChargeColorChange?.Invoke(ChargeMaterial, true);
             return;
         }
 
@@ -215,8 +220,9 @@ public class LaserTurretChannel
         if (is_targeting || is_control_disabled) { return; }
 
 
-        charge_mat = mat;
-        OnTurretChargeColorChange?.Invoke(charge_mat, false);
+        ChargeMaterial = mat;
+        ChargeColorName = color_name ;
+        OnTurretChargeColorChange?.Invoke(ChargeMaterial, false);
 
 
     }
@@ -227,7 +233,7 @@ public class LaserTurretChannel
 
     public  void AttemptRaise_ColorCollider_ControlColorChange(Material mat)
     {
-        if (is_targeting || is_barraging || is_control_disabled) { Debug.Log("nuh uh"); return; }
+        if (is_targeting || is_barraging || is_control_disabled) { return; }
 
         OnColorCollider_ControlColorChange?.Invoke(mat);
        
@@ -238,7 +244,7 @@ public class LaserTurretChannel
 
     public  void AttemptRaise_AutoCollider_ControlColorChange(Material mat)
     {
-        if (is_control_disabled || is_auto_targeting_disabled) { Debug.Log("nuh uh"); return; }
+        if (is_control_disabled || is_auto_targeting_disabled) { return; }
         OnAutoCollider_ControlColorChange?.Invoke(mat);
 
 
@@ -249,18 +255,26 @@ public class LaserTurretChannel
     {
         if (is_targeting || is_barraging || is_control_disabled) { return; }
 
-        if (hit.transform.gameObject.GetComponent<BombFall>().BombType == BombType.CLUSTER_UNIT) return;
+        if (hit.transform.GetComponent<BombFall>().BombType == BombType.CLUSTER_UNIT) return;
 
 
+        /*
 
-
-        if (charge_mat.name.Contains(hit.transform.gameObject.GetComponent<BombColorChange>().bomb_color.name)) 
+        if (charge_mat.name.Contains(hit.transform.gameObject.GetComponent<BombColorChange>().BombMaterial.name)) 
         {
 
             OnManualTargeting?.Invoke(hit.transform.gameObject);
         }
 
 
+        */
+
+
+        if (ChargeColorName == hit.transform.GetComponent<BombColorChange>().BombColorName) 
+        {
+
+            OnManualTargeting?.Invoke(hit.transform.gameObject);
+        }
 
     }
 

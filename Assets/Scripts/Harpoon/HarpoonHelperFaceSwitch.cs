@@ -112,30 +112,6 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
         current_helper = HelperSpawnerManager.HelperType.BLACK_HOLE;
 
-        /*
-        PlayerInputCommunication.OnHelperStationArrowDownClick += (_) => { ArrowDown(); ShowHelperState(); };
-        PlayerInputCommunication.OnHelperStationArrowUpClick += (_) => { ArrowUp(); ShowHelperState(); };
-
-
-        PlayerInputCommunication.OnHelperStationClick += (_) =>
-        {
-
-            if (!type_state_dict[current_helper].Recharging)
-            {
-                HelperSpawnerManager.Instance().SpawnHelper(current_helper);
-            }
-
-
-
-            Debug.LogError("STARTCOUNTDOWN");
-            var a = type_state_dict[current_helper].StartCountDown();
-
-            
-
-
-
-        };
-        */
 
 
         PlayerInputCommunication.OnHelperStationArrowDownClick += HelperStationArrowDownClick;

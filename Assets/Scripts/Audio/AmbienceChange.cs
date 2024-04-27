@@ -18,7 +18,7 @@ public class AmbienceChange : MonoBehaviour
 
 
 
-    Dictionary<int, float> degree_pitch_dict = new()
+    readonly Dictionary<int, float> degree_pitch_dict = new()
     {
         {5,1f },
         {4,0.8f },
@@ -34,6 +34,11 @@ public class AmbienceChange : MonoBehaviour
 
     const float DEFAULT_VOLUME = 0.386f;
 
+
+
+    /// <summary>
+    /// Sets the volume to a default constant multiplied by UserData volume multiplier, if no such object exists then by 1
+    /// </summary>
     void Start()
     {
         src = GetComponent<AudioSource>();
@@ -56,8 +61,5 @@ public class AmbienceChange : MonoBehaviour
     }
 
     
-    void Update()
-    {
-        
-    }
+    
 }

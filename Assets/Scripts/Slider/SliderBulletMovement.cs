@@ -30,7 +30,6 @@ public class SliderBulletMovement : MonoBehaviour
 
         if (time > bullet_life_time) {
             Destroy(gameObject);
-            Debug.Log("removing bullet");
         }
     }
 }

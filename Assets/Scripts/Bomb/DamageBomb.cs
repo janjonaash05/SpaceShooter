@@ -74,7 +74,6 @@ public class DamageBomb : MonoBehaviour
 
         int  score = GetComponent<IScoreEnumerable>().ScoreReward();
 
-        Debug.Log(score + " score");
 
         UICommunication.Raise_ScoreChange(bombDestructionType switch { BombDestructionType.MANUAL => score, BombDestructionType.AUTO => (score > 0) ? 1:0, BombDestructionType.TARGET => 0 , _ => 0});
 

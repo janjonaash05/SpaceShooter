@@ -84,27 +84,12 @@ public class HarpoonLaunch : MonoBehaviour
 
         start = harpoon_head_transform.position; ;
 
-        Debug.Log(start);
 
         Renderer head_renderer = harpoon_head.GetComponent<Renderer>();
         off_color_head = head_renderer.materials[1];
         off_color_charge = head_renderer.materials[0];
 
-        /*
-        PlayerInputCommunication.OnHarpoonColliderClick += (hit) =>
-        {
-            turnedOff = !turnedOff;
-            Debug.Log(turnedOff + " turned off");
-            harpoon_station_charge.GetComponent<Renderer>().material = (turnedOff) ? off_color_charge : charge_color;
-
-            Material[] head_mats = harpoon_head.GetComponent<Renderer>().materials;
-            head_mats[2] = turnedOff ? off_color_head : charge_color;
-
-            harpoon_head.GetComponent<Renderer>().materials = head_mats;
-
-
-        };
-        */
+      
 
 
 
@@ -136,7 +121,6 @@ public class HarpoonLaunch : MonoBehaviour
         AudioManager.PlayActivitySound(AudioManager.ActivityType.HARPOON_CONTROL_CLICK);
 
         turnedOff = !turnedOff;
-        Debug.Log(turnedOff + " turned off");
         harpoon_station_charge.GetComponent<Renderer>().material = (turnedOff) ? off_color_charge : charge_color;
 
         Material[] head_mats = harpoon_head.GetComponent<Renderer>().materials;
@@ -220,9 +204,7 @@ public class HarpoonLaunch : MonoBehaviour
 
         while (Vector3.Distance(harpoon_head_transform.localPosition, target) > 0.001f)
         {
-            //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
-
-            //  harpoon_head_transform.Translate( Time.deltaTime* launch_speed*(target - harpoon_head_transform.localPosition) );
+           
 
 
             harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, target, launch_speed * Time.deltaTime);
@@ -238,9 +220,7 @@ public class HarpoonLaunch : MonoBehaviour
         AudioManager.PlayActivitySound(AudioManager.ActivityType.HARPOON_RETRACTION);
         while (Vector3.Distance(harpoon_head_transform.localPosition, start) > 0.001f)
         {
-            //  Debug.LogWarning(Vector3.Distance(startPoint, targetPoint));
 
-            //  harpoon_head_transform.Translate( Time.deltaTime* launch_speed*(target - harpoon_head_transform.localPosition) );
 
 
             harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, start, launch_speed * Time.deltaTime);
@@ -253,7 +233,6 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
-        Debug.LogWarning("end");
         Destroy(laser_tether);
     }
 

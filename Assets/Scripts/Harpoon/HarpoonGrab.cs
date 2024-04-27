@@ -28,7 +28,6 @@ public class HarpoonGrab : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("HG coll");
 
         if (collision.transform.CompareTag(Tags.TOKEN)) 
         {

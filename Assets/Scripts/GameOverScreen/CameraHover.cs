@@ -77,7 +77,6 @@ public class CameraHover : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
 
-        Debug.DrawRay(ray.origin, ray.direction, Color.magenta);
 
         if (Physics.Raycast(ray, out var hit))
         {

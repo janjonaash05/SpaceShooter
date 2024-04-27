@@ -160,16 +160,8 @@ public class CoreRingColorChange : MonoBehaviour
         var colorlist = copyHolder.AllMatIndexesByHolder(true);
 
 
-
-
-        //Debug.Log(copyHolder + " pre");
-
         copyHolder.ChangeIndex(0, 1);
 
-
-
-
-        //  Debug.Log(copyHolder + " post");
 
 
         var offlist = copyHolder.AllMatIndexesByHolder(false);

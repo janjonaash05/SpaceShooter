@@ -14,23 +14,10 @@ public class BlackHoleRotation : MonoBehaviour
 
     void Awake()
     {
-
-
-
-       
-
-
         ps = GetComponentInChildren<ParticleSystem>();
 
         StartCoroutine(ScaleUpDown());
-        //StartCoroutine(SpeedUpDown());
         StartCoroutine(EmissionRateGrowShrink());
-        //  StartCoroutine(ParticleSizeGrowShrink());
-
-
-       
-
-
     }
 
 
@@ -50,7 +37,13 @@ public class BlackHoleRotation : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// LERPs localScale from original to target size over a duration
+    /// </summary>
+    /// <param name="original"></param>
+    /// <param name="target"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     IEnumerator ChangeScaleOverTime(Vector3 original, Vector3 target, float duration)
     {
         float counter = 0f;
@@ -65,13 +58,19 @@ public class BlackHoleRotation : MonoBehaviour
         }
     }
 
-  
 
 
 
 
 
 
+    /// <summary>
+    /// LERPs emission <c>rateOverTime</c> from original to target size over a duration
+    /// </summary>
+    /// <param name="original"></param>
+    /// <param name="target"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     IEnumerator ChangeEmissionRateOverTime(float original, float target, float duration)
     {
 
@@ -90,11 +89,14 @@ public class BlackHoleRotation : MonoBehaviour
     }
 
 
-  
 
 
 
 
+    /// <summary>
+    /// Yields <c>ChangeScaleOverTime()</c>  twice, from zero to target scale, then from target scale to zero.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ScaleUpDown()
     {
 
@@ -107,9 +109,12 @@ public class BlackHoleRotation : MonoBehaviour
     }
 
 
-  
 
 
+    /// <summary>
+    /// Yields <c>ChangeEmissionRateOverTime()</c>  twice, from zero to target rate, then from target rate to zero.
+    /// </summary>
+    /// <returns></returns>
 
     IEnumerator EmissionRateGrowShrink() 
     {
@@ -133,9 +138,6 @@ public class BlackHoleRotation : MonoBehaviour
     
     void Update()
     {
-
-   
-
         transform.Rotate(rot_speed * Time.deltaTime);
     }
 }

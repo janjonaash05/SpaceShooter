@@ -101,7 +101,7 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
             _ = gameObject.GetComponent<DamageBomb>().StartDamage(BombDestructionType.TARGET);
 
 
-            Action damageAction = bomb_type == BombType.NORMAL ? () => CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().bomb_color) : CoreCommunication.DamageShieldOnly;
+            Action damageAction = bomb_type == BombType.NORMAL ? () => CoreCommunication.Raise_OnBombFallen(GetComponent<BombColorChange>().BombMaterial) : CoreCommunication.DamageShieldOnly;
             damageAction();
 
         }

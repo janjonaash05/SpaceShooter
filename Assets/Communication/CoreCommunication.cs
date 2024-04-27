@@ -68,7 +68,6 @@ public static class CoreCommunication
 
         CORE_INDEX_HOLDER = new(4, 4, MaterialIndexHolder.Target.CORE, MaterialIndexHolder.Edge.UPPER);
 
-        Debug.LogWarning("INDEX HOLDERS INITS");
 
 
 
@@ -82,13 +81,6 @@ public static class CoreCommunication
 
 
 
-    static void Destroy() 
-    {
-        LaserTurretCommunicationChannels.Channel1.OnManualTargeting -= ManualTargeting;
-        LaserTurretCommunicationChannels.Channel2.OnManualTargeting -= ManualTargeting;
-
-
-    }
 
 
 
@@ -169,13 +161,6 @@ public static class CoreCommunication
     public static void Raise_ValueChange(int parent, int child)
     {
         //   OnValueChangedCore?.Invoke(value);
-
-
-
-        Debug.Log(CORE_INDEX_HOLDER + " PRE ");
-        Debug.Log(SPINNER_INDEX_HOLDER + " PRE ");
-
-        Debug.Log(parent + " " + child);
 
 
 

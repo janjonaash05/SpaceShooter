@@ -56,10 +56,7 @@ public class TokenSpawning : MonoBehaviour
     }
 
     
-    void Update()
-    {
-
-    }
+   
 
     IEnumerator Spawning()
     {

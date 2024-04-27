@@ -107,7 +107,6 @@ public static class UserDataManager
         CURRENT_DATA.SetFullscreen(settings.Fullscreen);
 
 
-        Debug.LogError("SAVING DATA " + CURRENT_DATA);
         Save();
 
     }
@@ -155,7 +154,6 @@ public static class UserDataManager
             int[] time = new int[] { mins, secs, hs };
 
 
-            Debug.LogError(diff_time[0]+" "+ diff_time[1] + " " + diff_time[2] +" Time");
 
             
             
@@ -179,9 +177,8 @@ public static class UserDataManager
 
 
         }
-        catch (Exception e)
+        catch
         {
-            Debug.LogError(e.Message);
 
         }
 
@@ -208,9 +205,8 @@ public static class UserDataManager
             formatter.Serialize(stream, CURRENT_DATA);
             stream.Close();
         }
-        catch (Exception e)
+        catch
         {
-            Debug.LogError(e.Message);
         }
     }
 
@@ -234,14 +230,11 @@ public static class UserDataManager
 
             try
             {
-               // Debug.LogError("successful load");
-                //CURRENT_DATA = GetDefaultData();
                   CURRENT_DATA = formatter.Deserialize(stream) as UserData;
             }
             catch
             {
 
-               // Debug.LogError("failed load");
                 CURRENT_DATA = GetDefaultData();
             }
 

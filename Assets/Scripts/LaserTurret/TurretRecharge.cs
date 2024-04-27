@@ -316,9 +316,8 @@ public class TurretRecharge : MonoBehaviour
 
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.LogError(e);
             }
         }
 
@@ -346,9 +345,8 @@ public class TurretRecharge : MonoBehaviour
                 AudioManager.PlayActivitySound(ID == 1 ? AudioManager.ActivityType.TURRET_CHARGE_SPAWN_1 : AudioManager.ActivityType.TURRET_CHARGE_SPAWN_2);
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.LogError(e);
             }
         }
 

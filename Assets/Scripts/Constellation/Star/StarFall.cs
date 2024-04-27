@@ -21,7 +21,7 @@ public class StarFall : MonoBehaviour, IEMPDisruptable
     {
         target = Vector3.zero + GameObject.FindGameObjectWithTag(Tags.SUPERNOVA).transform.localPosition;
         GetComponent<StarChargeUp>().OnChargeUp += Fall;
-        GetComponent<StarChargeUp>().OnChargeUp += () => Debug.LogError("STAR CHARGED UP");
+        
 
     }
 

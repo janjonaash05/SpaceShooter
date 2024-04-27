@@ -85,7 +85,6 @@ public static class PlayerInputCommunication
         try
         {
             action = TAG_CLICK_DICT[hit.transform.tag];
-            Debug.Log("action " + hit.transform.tag);
 
             valid_click = true;
         }

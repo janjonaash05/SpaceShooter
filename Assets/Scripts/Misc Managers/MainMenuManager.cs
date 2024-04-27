@@ -38,8 +38,5 @@ public class MainMenuManager : MonoBehaviour
 
     
 
-    void Update()
-    {
-
-    }
+    
 }

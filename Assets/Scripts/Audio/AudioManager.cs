@@ -57,14 +57,29 @@ public class AudioManager : MonoBehaviour
 
     const string path = "Sounds/";
 
-    //AudioClip audioClip = Resources.Load <AudioClip> ("Music/Song_Name");
+
+
+
+
+
+
+    /// <summary>
+    /// <para>Loads and converts Resources audio files to AudioClips, adds them to a dictionary with the matching ActivityType.</para>
+    /// <para>If there are some ActivityTypes which aren't present in the dictionary, adds them with an AudioClip with no audio file</para>
+    /// </summary>
     public static void LoadResources()
     {
+
+
+        if (ACTIVITY_CLIP_DICT.Count != 0) return;
+
 
         AudioClip control_click = Resources.Load<AudioClip>(path + "Controls/clicking");
         AudioClip laser_blast = Resources.Load<AudioClip>(path + "Turret/turret_laser_blast");
         AudioClip upgrade = Resources.Load<AudioClip>(path + "Controls/upgrade");
         AudioClip upgrade_final = Resources.Load<AudioClip>(path + "Controls/upgrade_final");
+
+
 
 
 
@@ -151,9 +166,12 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    
 
 
+    /// <summary>
+    /// <para>Adds specific ActivityTypes and SoundSettings to a dictionary </para>
+    /// <para>If there are some ActivityTypes which aren't present in the dictionary, adds them with a SoundSettings of (1,1)</para>
+    /// </summary>
     public static void LoadSettings()
     {
 
@@ -267,7 +285,10 @@ public class AudioManager : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Invokes OnActivitySoundPlay with the specific ActivityType
+    /// </summary>
+    /// <param name="type"></param>
     public static void PlayActivitySound(ActivityType type)
     {
 
@@ -280,7 +301,10 @@ public class AudioManager : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Invokes OnActivitySoundStop with the specific ActivityType
+    /// </summary>
+    /// <param name="type"></param>
     public static void StopActivitySound(ActivityType type)
     {
 
@@ -299,18 +323,5 @@ public class AudioManager : MonoBehaviour
 
 
 
-    void Start()
-    {
 
-
-
-
-
-    }
-
-
-    void Update()
-    {
-
-    }
 }

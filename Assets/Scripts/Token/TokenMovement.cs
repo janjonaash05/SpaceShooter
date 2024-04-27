@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-using static DifficultyManager;
 
 public class TokenMovement : MonoBehaviour, IScoreEnumerable
 {
@@ -121,7 +120,6 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
 
 
-        // Debug.Log(Vector3.Distance(transform.position, target) + " "+dir);
 
         if (Vector3.Distance(transform.position, target.position) < edgeDistance)
         {
@@ -249,7 +247,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
         if (ps_destroyed.emission.enabled) yield break;
         if (type == TokenType.ENEMY)
         {
-            DifficultyManager.ChangeRandomDifficulty(AffectedFeatureCircumstance.TOKEN);
+            DifficultyManager.ChangeRandomDifficulty(DifficultyManager.AffectedFeatureCircumstance.TOKEN);
         }
 
         StartCoroutine(Shrink());

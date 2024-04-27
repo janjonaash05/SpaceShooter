@@ -61,7 +61,6 @@ public class Button : MonoBehaviour
         UserDataManager.SetSettingsData(SettingsManager.NewSettings);
 
 
-     //   Debug.LogError("SAVING " + SettingsManager.NewSettings);
 
 
         UserDataManager.Save();
@@ -272,8 +271,6 @@ public class Button : MonoBehaviour
 
 
 
-    void Update()
-    {
+ 
 
-    }
 }

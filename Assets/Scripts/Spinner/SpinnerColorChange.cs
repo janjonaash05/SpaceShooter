@@ -113,25 +113,7 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
-    void EngageChargeUp(bool start)
-    {
-        if (start)
-        {
-            Debug.Log("Engaging chargeup");
-            charge_up_mode = true;
-            GetComponent<SpinnerChargeUp>().StartCharging();
-        }
-        else
-        {
-            Debug.Log("Disengaging chargeup");
-            charge_up_mode = false;
-            GetComponent<SpinnerChargeUp>().EndCharging();
-        }
-
-
-
-    }
-
+    
 
 
 
@@ -167,7 +149,6 @@ public class SpinnerColorChange : MonoBehaviour
         copyHolder.ChangeIndex(0, 1);
         var offlist = copyHolder.AllMatIndexesByHolder(false);
 
-        Debug.Log(colorlist.Count + " C " + offlist.Count + " O");
 
 
 

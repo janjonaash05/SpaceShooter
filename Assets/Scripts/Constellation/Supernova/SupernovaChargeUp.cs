@@ -108,31 +108,7 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
-    /*
-    public IEnumerator ShrinkAndDie( float duration)
-    {
-        Vector3 original = transform.localScale;
-        Vector3 target = Vector3.zero;
-
-
-        float counter = 0f;
-        while (counter < duration)
-        {
-
-            counter += Time.deltaTime;
-
-            transform.localScale = Vector3.Lerp(original, target, counter / duration);
-
-            yield return null;
-        }
-
-
-
-        Destroy(gameObject);
-
-    }
-
-    */
+    
 
     private void OnDestroy()
     {
@@ -146,7 +122,7 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
         if (index >= 9) return;
         rotation_speed = rotation_speeds[index];
 
-        scale = scales[index];
+        transform.localScale = scales[index];
 
         index++;
 
@@ -205,28 +181,6 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
-        
-
-
-        Debug.LogError(ps_pos + " PS pos");
-
-
-
-
-        /*
-        List<float> size_based_lifetimes = new List<float>();
-
-        float min_lifetime = 0.125f;
-        float lifetime_increase = 0.05f;
-
-        for (int i = 0; i < 8; i++) 
-        {
-            size_based_lifetimes.Add(min_lifetime + lifetime_increase*i);
-        
-        }
-        */
-        
-
 
 
         ps.enableEmission = true;
@@ -263,11 +217,10 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
             rotation_speed = rotation_speeds[index];
 
-            scale = scales[index];
+            transform.localScale = scales[index];
             transform.GetChild(0).position = ps_pos;
             
 
-            Debug.LogError(transform.GetChild(0).position+  "child set PS pos");
 
 
             yield return new WaitForSeconds(ps.main.duration);
@@ -379,7 +332,7 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
     void Update()
     {
 
-        transform.localScale = scale;
+        
         if (can_rotate)
             transform.Rotate(new(0, 0, rotation_speed));
 

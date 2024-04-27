@@ -106,7 +106,6 @@ public class SliderShooting : MonoBehaviour
 
 
 
-        //  Debug.Log(laser_target);
 
 
 
@@ -131,7 +130,6 @@ public class SliderShooting : MonoBehaviour
         if (active_ps != null) { 
             active_ps.enableEmission = false;
         }
-        Debug.Log("CancelShooting");
         CancelMagazine();
         isShooting = false;
 
@@ -152,7 +150,6 @@ public class SliderShooting : MonoBehaviour
         active_ps.enableEmission = true;
         active_ps.Play();
 
-        Debug.Log("StartShooting");
         Shoot();
         isShooting = true;
 

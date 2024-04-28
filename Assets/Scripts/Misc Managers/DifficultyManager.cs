@@ -233,7 +233,11 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Returns a formatted string version of the feature.
+    /// </summary>
+    /// <param name="feature"></param>
+    /// <returns></returns>
     public static string GetCurrentFormattedValue(AffectedFeature feature)
     {
 
@@ -246,6 +250,7 @@ public class DifficultyManager : MonoBehaviour
             AffectedFeature.BOMB_SPAWNERxSPAWN_RATE => GetCurrentBombSpawnerSpawnRateValue() + "s",
             AffectedFeature.BOMB_SPAWNERxFORM => GetCurrentBombSpawnerFormValue() + "/" + MAX_FEATURE_VALUE,
             AffectedFeature.BOMB_CLUSTERxFREQUENCY => GetCurrentBombClusterFrequencyValue() + "s",
+            AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT => GetCurrentBombClusterBurstAmountValue()+"",
             _ => ""
 
         }; ;
@@ -256,8 +261,7 @@ public class DifficultyManager : MonoBehaviour
 
 
 
-    //public delegate void DifficultyChangeEvent(DifficultyEventArgs dea);
-    //  public event DifficultyChangeEvent OnDifficultyValueChange;
+
 
     public static event Action OnBombSpawnerForm;
 
@@ -293,18 +297,9 @@ public class DifficultyManager : MonoBehaviour
     }
 
 
-    void OnDestroy()
-    {
-        
-
-
-
-
-
-       
-
-    }
-
+    /// <summary>
+    /// Resets all values in the feature value dictionary to 0.
+    /// </summary>
     public static void ResetValues()
     {
         var keySet = FEATURE_VALUE_DICT.Keys.ToList(); ;
@@ -317,37 +312,23 @@ public class DifficultyManager : MonoBehaviour
     }
 
 
-    public void EnemyChange()
-    {
-
-        // DifficultyEventArgs dif_event_args = new(AffectedFeature.BOMB_SPAWNER, AffectedFeatureBehaviour.FORM, "", AffectedFeatureCircumstance.ENEMY);
-
-
-
-
-    }
-
-
+    /// <summary>
+    /// <para>Gets a list of AffectedFeatures based on the circumstance, then chooses a random entry from that list.</para>
+    /// <para>Increases the value in the feature value dictionary.</para>
+    /// <para>If popping up is available, raises difficulty value change with created event arguments.</para>
+    /// <para>If not, enques the event arguments.</para>
+    /// <para>If the value in the feature value dictionary reaches the maximum, then:</para>
+    /// <para>if the feature is BOMB_SPAWNERxFORM, then invokes OnBombSpawnerForm and resets its value in the dictinary.</para>
+    /// <para>if not, then just removes it from the list.</para>
+    /// </summary>
+    /// <param name="circumstance"></param>
     public static void ChangeRandomDifficulty(AffectedFeatureCircumstance circumstance)
     {
-
         List<AffectedFeature> list = circumstance == AffectedFeatureCircumstance.TOKEN ? TOKEN_CHANGABLE_FEATURES : TIME_CHANGABLE_FEATURES;
-
 
         AffectedFeature feature = list[new System.Random().Next(list.Count)];
 
-
-
-
-
-
         FEATURE_VALUE_DICT[feature]++;
-
-
-
-
-
-
 
         DifficultyEventArgs dif_event_args = new(feature, circumstance);
 
@@ -355,34 +336,22 @@ public class DifficultyManager : MonoBehaviour
         if (UICommunication.CanPopup)
         {
             UICommunication.Raise_OnDifficultyValueChange(dif_event_args);
-
         }
         else
         {
             UICommunication.Enqueue_PopupArguments(dif_event_args);
-
         }
-
-
-
-
-
 
         if (FEATURE_VALUE_DICT[feature] == MAX_FEATURE_VALUE)
         {
             if (feature == AffectedFeature.BOMB_SPAWNERxFORM)
             {
                 OnBombSpawnerForm?.Invoke();
-
-
                 FEATURE_VALUE_DICT[AffectedFeature.BOMB_SPAWNERxFORM] = 0;
-
-
             }
             else
             {
                 list.Remove(feature);
-
             }
 
 
@@ -405,9 +374,6 @@ public class DifficultyManager : MonoBehaviour
     void Update()
     {
 
-
-
-
         if (UICommunication.Secs == 0) { return; }
 
         if (UICommunication.Secsf % 100 < Time.deltaTime)
@@ -420,19 +386,6 @@ public class DifficultyManager : MonoBehaviour
     }
 
 
-    /*
-
-
-    Queue<DifficultyEventArgs> popup_queue = new();
-    void DequeuePopupCall()
-    {
-        if (popup_queue.Count == 0) { return; }
-        OnDifficultyValueChange?.Invoke(popup_queue?.Dequeue());
-
-    }
-
-
-    */
 
 
 
@@ -465,9 +418,6 @@ public class DifficultyEventArgs : EventArgs
 
 
         string[] split = feature.ToString().Split("x");
-
-
-
 
         string feature_object = split[0].Replace("_", " ");
         string feature_behaviour = split[1].Replace("_", " ");

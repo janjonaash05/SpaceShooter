@@ -35,14 +35,9 @@ public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
     bool movement_locked = false;
 
 
-    private void OnDestroy()
-    {
-
-
-       
-    }
-
-    
+    /// <summary>
+    /// Assigns necessary variables, makes DisruptorStartEndMovement move up, sets initial_movement_phase to true and sets targeting to false.
+    /// </summary>
     void Start()
     {
 
@@ -54,11 +49,10 @@ public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
         z_amplitude = new System.Random().Next((int)amplitude_interval.x, (int)amplitude_interval.y);
 
         float min_period = DifficultyManager.GetCurrentDisruptorSpeedValue().min;
-
         float max_period = DifficultyManager.GetCurrentDisruptorSpeedValue().max;
 
 
-        y_period = UnityEngine.Random.Range(min_period, max_period);//UnityEngine.Random.Range(period_interval.x, period_interval.y);
+        y_period = UnityEngine.Random.Range(min_period, max_period);
         z_period = UnityEngine.Random.Range(min_period, max_period);
 
         movement_y = (new System.Random().Next(0, 2) == 1) ? Mathf.Sin : Mathf.Cos;
@@ -81,40 +75,27 @@ public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
 
         SetTargeting(false);
 
-
-
-
-
     }
 
 
     void EnableMovement()
     {
-
         StartCoroutine(Enable());
-
-
-
-
-
     }
 
-
+    /// <summary>
+    /// Sets the initPos, rotates towards the Camera, sets initial_movement_phase to false and sets the time_difference.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Enable()
     {
         RotateDisruptor rotate = GetComponent<RotateDisruptor>();
 
-
-
         initPos = transform.position + new Vector3(0, -y_amplitude * movement_y(0), -z_amplitude * movement_z(0));
-
-
-
 
         yield return StartCoroutine(rotate.RotateTowards(Camera.main.transform.position));
 
         initial_movement_phase = false;
-
 
         time_difference = Time.time;
     }
@@ -127,7 +108,9 @@ public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
     
     float time_difference;
 
-
+    /// <summary>
+    /// if not targeting, in initial movement phase or if the movement isn't locked, then rotates towards the player and moves according to the movement functions.
+    /// </summary>
     void Update()
     {
 
@@ -136,17 +119,8 @@ public class DisruptorMovement : MonoBehaviour, IEMPDisruptable
         Vector3 rotationDirection = (player.position - transform.position).normalized;
         Quaternion rot = Quaternion.LookRotation(rotationDirection);
         transform.rotation = rot;
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x - 90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + 90);
-
-        //NOTE sin y sin z - wave | sin y cos z - circle
-
-
-
-        transform.position = initPos + new Vector3(0, (y_amplitude * movement_y((Time.time - time_difference) / y_period)), (z_amplitude * movement_z((Time.time - time_difference) / z_period)));
         
-
-
-
+        transform.SetPositionAndRotation(initPos + new Vector3(0, (y_amplitude * movement_y((Time.time - time_difference) / y_period)), (z_amplitude * movement_z((Time.time - time_difference) / z_period))), Quaternion.Euler(transform.rotation.eulerAngles.x - 90, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + 90));
     }
 
 

@@ -151,15 +151,12 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 
     }
 
-void Update()
-{
 
-}
 
-public bool DisabledRewards { get; set; }
 
-    public int ScoreReward()
+   public bool DisabledRewards { get; set; }
+    public int CalculateScoreReward()
     {
-        return (DisabledRewards) ? 0 : 20 - (chargeup_index);
+        return 20 - chargeup_index;
     }
 }

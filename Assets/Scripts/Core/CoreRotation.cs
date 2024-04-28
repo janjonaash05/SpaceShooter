@@ -64,8 +64,6 @@ public class CoreRotation : MonoBehaviour
 
 
 
-
-
     void Start()
     {
         SpinnerChargeUp.OnLaserShotPlayerDeath += OnLaserShotPlayerDeath;
@@ -97,23 +95,6 @@ public class CoreRotation : MonoBehaviour
 
 
         speed = speed_parent_dict[5];
-
-        /*
-        CoreCommunication.OnParentValueChangedCore += () =>
-        {
-
-            speed = speed_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent];
-
-        };
-        */
-
-
-
-
-        //  CoreCommunication.OnParentValueChangedCore += () => { ps_parent_dict[CoreCommunication.CORE_INDEX_HOLDER.Parent](); };
-
-        // CoreRingColorChange.OnMaterialChange += (m) => changing_mat = m;
-
 
         CoreRingColorChange.OnMaterialChange += MaterialChange;
         CoreCommunication.OnParentValueChangedCore += OnParentValueChangedCore;
@@ -149,7 +130,9 @@ public class CoreRotation : MonoBehaviour
 
 
 
-    
+    /// <summary>
+    /// If diabled, returns. Otherwise rotates the transform, sets the materials based on the core index holder parent value, sets the particle system materials to the changing mat.
+    /// </summary>
     void Update()
     {
         if (disabled) return;

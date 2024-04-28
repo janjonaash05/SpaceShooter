@@ -3,17 +3,9 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class GameOverTextColorChange : MonoBehaviour
+public class TextColorChange : MonoBehaviour
 {
     [SerializeField] Material[] mats;
-
-
-
-
-    [SerializeField] bool ground = false;
-
-
-
 
     Renderer rend;
     void Start()
@@ -28,40 +20,26 @@ public class GameOverTextColorChange : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Endlessly cycles through the color materials and assigns them with a delay.
+    /// </summary>
     public void Engage()
     {
-
-        
-
-
 
         IEnumerator cycle()
         {
             int index = Random.Range(0, mats.Length);
             while (true)
             {
-                if (ground)
-                {
-                    rend.materials = new Material[] {   mats[index] , rend.materials[1] };
-                }
-                else 
-                {
-                    rend.material = mats[index];
-                }
-                
+
+                rend.material = mats[index];
+
+
                 index++;
-
-
 
                 yield return new WaitForSeconds(1);
 
                 if (index == mats.Length) index = 0;
-
-
-
-
-
 
             }
 
@@ -78,13 +56,4 @@ public class GameOverTextColorChange : MonoBehaviour
 
 
 
-
-
-
-
-    
-    void Update()
-    {
-
-    }
 }

@@ -30,13 +30,12 @@ public class FlashDisruptorCharge : MonoBehaviour
         DisruptorColorChange.OnColorChange -= FlashColorThenWhite;
     }
 
-    
-    void Update()
-    {
-
-    }
 
 
+    /// <summary>
+    /// Sets the material to m, plays DISRUPTOR_CHARGE_UP sound, calls FlashParticles(), waits a set amount of time and sets the material to white.
+    /// </summary>
+    /// <param name="m"></param>
     public void FlashColorThenWhite(Material m)
     {
 
@@ -60,7 +59,11 @@ public class FlashDisruptorCharge : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>For each color, in an infinite loop:</para>
+    /// Flashes particles, sets the material to color, plays DISRUPTOR_CHARGE_UP sound, waits set amount of time, sets the material back to white and waits again.
+    /// </summary>
+    /// <param name="ms"></param>
     public void FlashAllColors(Material[] ms)
     {
 
@@ -99,7 +102,11 @@ public class FlashDisruptorCharge : MonoBehaviour
 
     ParticleSystem ps;
     ParticleSystemRenderer ps_rend;
-
+    /// <summary>
+    /// If fullArc is true, the changes the particle system settings and sets it to loop, finally sets its material to m and plays it.
+    /// </summary>
+    /// <param name="m"></param>
+    /// <param name="fullArc"></param>
     void FlashParticles(Material m, bool fullArc)
     {
 
@@ -120,11 +127,6 @@ public class FlashDisruptorCharge : MonoBehaviour
             emission.rateOverTime = 2; shape.arc = 360;
         }
         ps_rend.material = m;
-
-
-
-
-
 
         emission.enabled = true;
 

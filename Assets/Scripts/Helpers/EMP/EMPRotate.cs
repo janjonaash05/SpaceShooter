@@ -29,21 +29,34 @@ public class EMPRotate : MonoBehaviour
 
     Vector3 rot_speed = Vector3.zero;
 
+
+    /// <summary>
+    /// LERPs rotation speed over a duration.
+    /// </summary>
+    /// <param name="original"></param>
+    /// <param name="target"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     IEnumerator ChangeSpeedOverTime(Vector3 original, Vector3 target, float duration)
     {
-        float counter = 0f;
-        while (counter < duration)
+        float lerp = 0f;
+        while (lerp < duration)
         {
 
-            counter += Time.deltaTime;
+            lerp += Time.deltaTime;
 
-            rot_speed = Vector3.Lerp(original, target, counter / duration);
+            rot_speed = Vector3.Lerp(original, target, lerp / duration);
 
             yield return null;
         }
     }
 
 
+
+    /// <summary>
+    /// Yields ChangeSpeedOverTime twice, from 0 to target, then from target to 0.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator SpeedUpDown()
     {
 

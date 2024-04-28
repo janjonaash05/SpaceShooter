@@ -16,13 +16,14 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     public BombType BombType => bomb_type;
 
     public float MoveSpeed { get; private set; }
+    public bool DisabledRewards { get; set; }
+
     Vector3 rotation_speed;
     [SerializeField] float rotation_speed_multiplier;
 
 
 
 
-    public bool DisabledRewards { get; set; }
 
     Rigidbody rb;
 
@@ -53,7 +54,6 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
     Vector3 target;
     void Start()
     {
-        DisabledRewards = false;
 
 
 
@@ -121,16 +121,9 @@ public class BombFall : MonoBehaviour, IScoreEnumerable
 
 
 
-    /// <summary>
-    /// If DisabledRewards isn't true, sets it to true and returns a calculated score reward.
-    /// </summary>
-    /// <returns></returns>
-    public int ScoreReward()
+   
+    public int CalculateScoreReward()
     {
-        if (DisabledRewards) { return 0; }
-
-        DisabledRewards = true;
-
         return Mathf.RoundToInt(transform.localScale.x / 50 + VectorSum(rotation_speed) / 75 + MoveSpeed * 75);
     }
 

@@ -3,16 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-
 using UnityEngine;
 
 public class CoreRingColorChange : MonoBehaviour
 {
-    
 
 
 
-     List<Material> mats_storage;
+
+    List<Material> mats_storage;
 
     [SerializeField] Material primary, secondary;
 
@@ -29,15 +28,12 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-    
+    /// <summary>
+    /// <para>Gets the material storage, assigns a function to the OnParentValueChangedCore which sets the changing mat based on the core index holder parent value.</para>
+    /// </summary>
     void Awake()
     {
-
-
-
         mats_storage = MaterialHolder.Instance().PLAYER_HEALTH_SET().ToList();
-
-
         CoreCommunication.OnCommunicationInit += Init;
 
         changing_mat = mats_storage[0];
@@ -59,7 +55,7 @@ public class CoreRingColorChange : MonoBehaviour
             };
 
         };
-        
+
 
 
 
@@ -81,25 +77,18 @@ public class CoreRingColorChange : MonoBehaviour
         StartCoroutine(ColorChange());
     }
 
-    
-    void Update()
-    {
 
-    }
-
-
+    /// <summary>
+    /// Fills the materials array with the mat, then AssignBasicColors.
+    /// </summary>
     void ColorUp(Material mat)
     {
 
         Material[] mats = new Material[rend.materials.Length];
-        for (int i = 0; i < rend.materials.Length; i++)
-        {
-            mats[i] = mat;
-        }
 
-        mats[PRIMARY_INDEX] = primary;
+        Array.Fill(mats, mat);
 
-        mats[SECONDARY_INDEX] = secondary;
+        AssignBasicColors(mats); ;
 
 
         rend.materials = mats;
@@ -107,19 +96,16 @@ public class CoreRingColorChange : MonoBehaviour
     }
 
 
-
-    void ColorUpOff() 
+    /// <summary>
+    /// Fills the materials array with primary color, then AssignBasicColors.
+    /// </summary>
+    void ColorUpOff()
     {
 
         Material[] mats = new Material[rend.materials.Length];
-        for (int i = 0; i < rend.materials.Length; i++)
-        {
-            mats[i] = primary;
-        }
+        Array.Fill(mats, primary);
 
-        mats[PRIMARY_INDEX] = primary;
-
-        mats[SECONDARY_INDEX] = secondary;
+        AssignBasicColors(mats);
 
 
         rend.materials = mats;
@@ -140,35 +126,28 @@ public class CoreRingColorChange : MonoBehaviour
 
 
     const int SECONDARY_INDEX = 1;
-
-
     const int PRIMARY_INDEX = 0;
+
+
+    /// <summary>
+    /// <para>If the index holder is on an edge, calls either ColorUp or ColorUpOff based on the type of edge and returns early.</para>
+    /// <para>Grabs the offlist and the colorlist based on a copy index holder, assigns materials to a new array based on the lists, calls AssignBasicColors and reassigns the renderer materials. </para>
+    /// </summary>
     void ChangeMaterialArray()
     {
 
-        if (index_holder.edge ==MaterialIndexHolder.Edge.UPPER) { ColorUp(changing_mat); return; }
+        if (index_holder.edge == MaterialIndexHolder.Edge.UPPER) { ColorUp(changing_mat); return; }
         else if (index_holder.edge == MaterialIndexHolder.Edge.LOWER) { ColorUpOff(); return; }
         int size = rend.materials.Length;
 
         Material[] newMats = new Material[size];
-
-
-
-        
 
         var copyHolder = new MaterialIndexHolder(index_holder.Parent, index_holder.Child, MaterialIndexHolder.Target.CORE, index_holder.edge);
         var colorlist = copyHolder.AllMatIndexesByHolder(true);
 
 
         copyHolder.ChangeIndex(0, 1);
-
-
-
         var offlist = copyHolder.AllMatIndexesByHolder(false);
-
-
-
-
 
         if (offlist.Count > 0)
         {
@@ -188,37 +167,25 @@ public class CoreRingColorChange : MonoBehaviour
 
             }
         }
-     
+
         AssignBasicColors(newMats);
-
-
         rend.materials = newMats;
-
-
 
     }
 
     public Material changing_mat { get; private set; }
+    /// <summary>
+    /// Invokes OnMaterialChange with the changing material, calls ChangeMaterialArray() and waits a set amount of time. (repeated forever)
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ColorChange()
     {
 
         while (true)
         {
-
-            
-
-
-                
-                OnMaterialChange?.Invoke(changing_mat);
-
-                ChangeMaterialArray();
-
-                yield return new WaitForSeconds(CoreCommunication.CHANGE_TIME);
-
-
-
-            
-
+            OnMaterialChange?.Invoke(changing_mat);
+            ChangeMaterialArray();
+            yield return new WaitForSeconds(CoreCommunication.CHANGE_TIME);
 
         }
 
@@ -231,7 +198,7 @@ public class CoreRingColorChange : MonoBehaviour
 
 
 
-  
+
 
 
 

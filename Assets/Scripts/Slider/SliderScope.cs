@@ -19,7 +19,9 @@ public class SliderScope : MonoBehaviour
         turned_on_mat = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
     }
 
-    
+    /// <summary>
+    /// If it's aiming at something, turn on, if not turn off.
+    /// </summary>
     void Update()
     {
         if (Physics.Raycast(parent_trans.position, -parent_trans.right, out RaycastHit hit))

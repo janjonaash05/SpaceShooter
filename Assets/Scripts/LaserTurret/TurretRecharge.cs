@@ -33,6 +33,9 @@ public class TurretRecharge : MonoBehaviour
 
     ParticleSystem ps;
 
+
+    LaserTurretChannel channel;
+
     void Start()
     {
 
@@ -44,82 +47,9 @@ public class TurretRecharge : MonoBehaviour
 
         ps = transform.GetChild(0).GetComponent<ParticleSystem>();
 
-
-
-        /*
-
-        switch (ID)
-        {
-            case 1:
-
-                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityChanged += () =>
-                {
-                    if (recharging) return;
-                    charges[LaserTurretCommunicationChannels.Channel1.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
-
-
-                };
-
-
-                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityDepleted += () => RechargeOnDepletion();
-
-                break;
-
-            case 2:
-
-                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityChanged += () =>
-                {
-                    if (recharging) return;
-                    charges[LaserTurretCommunicationChannels.Channel2.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
-
-                };
-
-
-                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityDepleted += () => RechargeOnDepletion();
-                break;
-        }
-
-
-
-        UpgradesManager.OnTurretCapacityValueChange += () =>
-        {
-
-
-            if (recharging)
-            {
-                StartCoroutine(UpgradeRecharging());
-                return;
-            }
-
-
-            StartCoroutine(Upgrade());
-
-
-
-        };
-        */
-
-
-        switch (ID)
-        {
-            case 1:
-
-                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityChanged += Turret1CapacityValueChanged;
-
-
-                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityDepleted += TurretCapacityDepleted;
-
-                break;
-
-            case 2:
-
-                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityChanged += Turret2CapacityValueChanged;
-
-
-                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityDepleted += TurretCapacityDepleted;
-                break;
-        }
-
+        channel = LaserTurretCommunicationChannels.GetChannelByID(ID);
+        channel.OnTurretCapacityChanged += Turret1CapacityValueChanged;
+        channel.OnTurretCapacityDepleted += TurretCapacityDepleted;
         UpgradesManager.OnTurretCapacityValueChange += TurretCapacityUpgradeValueChange;
 
     }
@@ -128,16 +58,16 @@ public class TurretRecharge : MonoBehaviour
     void Turret1CapacityValueChanged()
     {
         if (recharging) return;
-        charges[LaserTurretCommunicationChannels.Channel1.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
+        charges[channel.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
     }
 
-
+    /*
     void Turret2CapacityValueChanged()
     {
         if (recharging) return;
         charges[LaserTurretCommunicationChannels.Channel2.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
     }
-
+    */
 
     void TurretCapacityDepleted() => RechargeOnDepletion();
 
@@ -158,25 +88,9 @@ public class TurretRecharge : MonoBehaviour
 
     private void OnDestroy()
     {
-        switch (ID)
-        {
-            case 1:
-
-                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityChanged -= Turret1CapacityValueChanged;
-
-
-                LaserTurretCommunicationChannels.Channel1.OnTurretCapacityDepleted -= TurretCapacityDepleted;
-
-                break;
-
-            case 2:
-
-                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityChanged -= Turret2CapacityValueChanged;
-
-
-                LaserTurretCommunicationChannels.Channel2.OnTurretCapacityDepleted -= TurretCapacityDepleted;
-                break;
-        }
+        
+        channel.OnTurretCapacityChanged -= Turret1CapacityValueChanged;
+        channel.OnTurretCapacityDepleted -= TurretCapacityDepleted;
 
         UpgradesManager.OnTurretCapacityValueChange -= TurretCapacityUpgradeValueChange;
     }

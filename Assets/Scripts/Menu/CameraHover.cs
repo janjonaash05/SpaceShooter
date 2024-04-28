@@ -21,29 +21,30 @@ public class CameraHover : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Locks the cursor, gets all buttons into a list and plays ambience if independent.
+    /// </summary>
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
 
-
-
-
-
         all_buttons = GameObject.FindGameObjectsWithTag(Tags.BUTTON).ToList().Select(x => x.GetComponent<Button>()).ToList();
 
+        if (IndependentFromMainMenuManager) 
+        {
+            PlayAmbience();
+        }
 
-
-
-        if (!IndependentFromMainMenuManager) return;
-
-        PlayAmbience();
+        
     }
 
 
-
+   
     List<Button> all_buttons;
     AudioSource src;
+    /// <summary>
+    /// <para>Gets the audio source and clip, sets its settings and elapsed time, plays it.</para>
+    /// </summary>
     public void PlayAmbience()
     {
         src = GetComponent<AudioSource>();
@@ -58,21 +59,20 @@ public class CameraHover : MonoBehaviour
 
 
 
-
     private void OnDestroy()
     {
         CURRENT_MENU_AMBIENCE_PLAY_TIME = src.time;
     }
 
 
-
-
-
+    /// <summary>
+    /// <para>Casts a ray to the mouse position</para>
+    /// <para>If it hits a BUTTON, sets the current button to the hit objects's button and makes it OnHoverEnter().</para>
+    /// <para>Also, if the left mouse button is pressed, makes it OnClick().</para>
+    /// <para>If it doesn't hit a BUTTON, and the current button exists, then makes all buttons OnHoverExit().</para>
+    /// </summary>
     void Update()
     {
-
-
-
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -80,33 +80,15 @@ public class CameraHover : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hit))
         {
-
-
-
             if (hit.transform.CompareTag(Tags.BUTTON))
             {
                 current_button = hit.transform.gameObject.GetComponent<Button>();
                 current_button.OnHoverEnter();
 
-
-
-
                 if (Input.GetMouseButtonDown(0))
                 {
                     current_button.OnClick();
-
-
                 }
-
-
-
-
-
-
-
-
-
-
             }
 
         }
@@ -118,10 +100,6 @@ public class CameraHover : MonoBehaviour
                 item.OnHoverExit();
             }
         }
-
-
-
-
 
     }
 }

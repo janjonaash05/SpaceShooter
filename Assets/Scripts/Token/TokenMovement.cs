@@ -221,7 +221,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
         }
 
         StartCoroutine(Shrink());
-        UICommunication.Raise_ScoreChange(ScoreReward());
+        UICommunication.Raise_ScoreChange(CalculateScoreReward());
         yield return StartCoroutine(PlayPS(ps_caught));
 
 
@@ -286,12 +286,8 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
     public bool DisabledRewards { get; set; }
 
 
-    public int ScoreReward()
+    public int CalculateScoreReward()
     {
-        if (DisabledRewards) { return 0; }
-
-
-        DisabledRewards = true;
         return HP * 4;
     }
 }

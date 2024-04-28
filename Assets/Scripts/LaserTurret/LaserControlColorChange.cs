@@ -30,11 +30,25 @@ public class LaserControlColorChange : MonoBehaviour
 
 
 
-
+    LaserTurretChannel channel;
 
     private void OnDestroy()
     {
 
+
+        channel.OnColorCollider_ControlColorChange -= StartChange;
+        channel.OnAutoCollider_ControlColorChange -= StartChange;
+
+        channel.OnColorCollider_ControlColorChange -= PlaySound;
+        channel.OnAutoCollider_ControlColorChange -= PlaySound;
+
+        channel.OnAutoTargetingDisabled -= DisableAutoTargeting;
+        channel.OnAutoTargetingEnabled -= EnableAutoTargeting;
+
+
+        channel.OnControlDisabled -= TurnOff;
+        channel.OnControlEnabled -= TurnOn;
+        /*
         switch (ID)
         {
             case 1:
@@ -73,6 +87,8 @@ public class LaserControlColorChange : MonoBehaviour
                 break;
 
         }
+
+        */
     }
 
 
@@ -98,53 +114,27 @@ public class LaserControlColorChange : MonoBehaviour
             try { mat_index_dict.Add(current_mats[i].name, i); } catch (Exception) { };
 
         }
-      
 
-        switch (ID)
-        {
-            case 1:
-                LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange += StartChange;
-                LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange += StartChange;
+        channel = LaserTurretCommunicationChannels.GetChannelByID(ID);
 
-                LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange += PlaySound;
-                LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange += PlaySound;
+        channel.OnColorCollider_ControlColorChange += StartChange;
+        channel.OnAutoCollider_ControlColorChange += StartChange;
 
-                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingDisabled += DisableAutoTargeting;
-                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingEnabled += EnableAutoTargeting;
+        channel.OnColorCollider_ControlColorChange += PlaySound;
+        channel.OnAutoCollider_ControlColorChange += PlaySound;
+
+        channel.OnAutoTargetingDisabled += DisableAutoTargeting;
+        channel.OnAutoTargetingEnabled += EnableAutoTargeting;
 
 
-                LaserTurretCommunicationChannels.Channel1.OnControlDisabled += TurnOff;
-                LaserTurretCommunicationChannels.Channel1.OnControlEnabled += TurnOn;
-
-
-                break;
-
-            case 2:
-
-                LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange += StartChange;
-                LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange += StartChange;
-
-
-                LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange += PlaySound;
-                LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange += PlaySound;
-
-
-                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingDisabled += DisableAutoTargeting;
-                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingEnabled += EnableAutoTargeting;
-
-
-                LaserTurretCommunicationChannels.Channel2.OnControlDisabled += TurnOff;
-                LaserTurretCommunicationChannels.Channel2.OnControlEnabled += TurnOn;
-
-                break;
-
-        }
+        channel.OnControlDisabled += TurnOff;
+        channel.OnControlEnabled += TurnOn;
 
 
 
 
 
-       
+
 
         off_mat = MaterialHolder.Instance().TURRET_CONTROL_AUTO_COLOR_OFF();
        

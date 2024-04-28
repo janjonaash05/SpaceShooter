@@ -14,10 +14,12 @@ public class DestroyDisruptor : MonoBehaviour
 
 
     [SerializeField] float color_change_delay;
-    [SerializeField] Material white;
 
+    Material color_mat;
     void Start()
     {
+
+        color_mat = MaterialHolder.Instance().SIDE_TOOLS_COLOR();
         index_order_dict = new Dictionary<int, int>() { { 1, 8 }, { 2, 7 }, { 3, 6 }, { 4, 5 }, { 5, 4 }, { 6, 3 }, { 7, 2 }, { 8, 9 }, { 9, 1 }, { 10, 0 } };
     }
 
@@ -35,6 +37,15 @@ public class DestroyDisruptor : MonoBehaviour
         Destroy(gameObject);
     }
 
+
+    /// <summary>
+    /// <para>Plays DISRUPTOR_DESTROYED sound.</para>
+    /// <para>Destroys AfterEMP and Collider, enagages in RotateDisruptor and destroys it.</para>
+    /// <para>Destroys the charges</para>
+    /// <para>Cancels MovingUp, Destroys StartEndMovement, DisruptorColorChange and Renderer.</para>
+    /// <para>Raises ScoreChange.</para>
+    /// <para>Plays the destruction particle system, waits for it to finish and destroys the gameObject.</para>
+    /// </summary>
     public void Engage()
     {
 
@@ -60,30 +71,11 @@ public class DestroyDisruptor : MonoBehaviour
 
 
 
-
-
-
-
-
-
-        // if (transform.GetChild(0) != null) { Destroy(transform.GetChild(0).gameObject); }
-        // if (transform.GetChild(1) != null) { Destroy(transform.GetChild(1).gameObject); }
-
-
         for(int i = 0; i< transform.childCount; i++) 
         {
             if (transform.GetChild(i).GetComponent<MoveDisruptorCharge>() != null) { Destroy(transform.GetChild(i).gameObject); }
         
         }
-
-
-
-        // Destroy(transform.GetChild(transform.childCount-2).gameObject);
-
-
-
-
-
 
 
         GetComponent<DisruptorStartEndMovement>().CancelMovingUp();
@@ -92,16 +84,7 @@ public class DestroyDisruptor : MonoBehaviour
         Destroy(GetComponent<Renderer>());
 
 
-        UICommunication.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ScoreReward());
-        GetComponent<IScoreEnumerable>().DisabledRewards = true;
-
-      
-
-
-/*
-       
-*/
-
+        UICommunication.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ValidateScoreReward());
 
 
         var system = transform.GetChild(transform.childCount - 1).GetComponent<ParticleSystem>();
@@ -114,28 +97,22 @@ public class DestroyDisruptor : MonoBehaviour
 
         Invoke(nameof(DestroyObj), system.main.duration);
 
-        
-
-
-
-     
-
-        
-
     }
 
 
 
 
 
-
+    /// <summary>
+    /// Fills the renderer materials with color_mat.
+    /// </summary>
     void ColorChange()
     {
 
         Material[] mats = new Material[GetComponent<Renderer>().materials.Length];
 
 
-        Array.Fill(mats, white);
+        Array.Fill(mats, color_mat);
 
 
         GetComponent<Renderer>().materials = mats;

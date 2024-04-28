@@ -18,32 +18,17 @@ public class FormConstellation : MonoBehaviour
     [SerializeField]
 
     Vector3[] constellation_star_offsets = {
-        new Vector3(1, 0, 0),
-        new Vector3(Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2,0 ),
-        new Vector3(0, 1,0),
-        new Vector3(-Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2,0 ),
-        new Vector3(-1, 0, 0),
-        new Vector3(-Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2, 0),
-        new Vector3(0, -1, 0),
-        new Vector3(Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2, 0),
+        new(1, 0, 0),
+        new(Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2,0 ),
+        new(0, 1,0),
+        new(-Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2,0 ),
+        new(-1, 0, 0),
+        new(-Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2, 0),
+        new(0, -1, 0),
+        new(Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2, 0),
     };
 
 
-
-    
-
-    /*
-    Vector3[] constellation_star_offsets = {
-        new Vector3(0, 0, 1),
-        new Vector3(0, Mathf.Sqrt(2) / 2,Mathf.Sqrt(2) / 2 ),
-        new Vector3(0, 1,0),
-        new Vector3(0, Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2),
-        new Vector3(0, 0, -1),
-        new Vector3(0, -Mathf.Sqrt(2) / 2, -Mathf.Sqrt(2) / 2),
-        new Vector3(0, -1, 0),
-        new Vector3(0, -Mathf.Sqrt(2) / 2, Mathf.Sqrt(2) / 2),
-    };
-    */
 
     List<GameObject> star_list;
 
@@ -81,9 +66,19 @@ public class FormConstellation : MonoBehaviour
 
 
 
+    System.Random rand;
 
+
+    /// <summary>
+    /// <para>Creates the supernova, star list and pools of color and position indexes.</para>
+    /// <para>For STAR_AMOUNT of times, gets a random entry from the pools, calls CreateStar() and removes the entries from the pools. Waits for a set amount of time.</para>
+    /// <para>Calls CheckForCompletedFalls().</para>
+    /// </summary>
+    /// <returns></returns>
     async Task Form()
     {
+
+        rand = new();
 
 
         if (spawn_locked || perma_spawn_locked) return;
@@ -95,11 +90,9 @@ public class FormConstellation : MonoBehaviour
 
 
 
-        var nova = Instantiate(supernova_prefab, transform, false);
-        nova.transform.parent = transform;
-        nova.transform.localPosition = new Vector3(-86.5f, 0, 0);
-
-
+        var supenova = Instantiate(supernova_prefab, transform, false);
+        supenova.transform.parent = transform;
+        supenova.transform.localPosition = new Vector3(-86.5f, 0, 0);
 
 
 
@@ -115,37 +108,11 @@ public class FormConstellation : MonoBehaviour
             if(spawn_locked || perma_spawn_locked) return ;
 
 
+            int color_index = color_index_pool[rand.Next(0, STAR_AMOUNT - i)];
+            int pos_index = pos_index_pool[rand.Next(0, STAR_AMOUNT - i)];
 
-            var star = Instantiate(star_prefab, transform, false);
-
-            star.transform.parent = transform;
-            star.transform.localPosition = Vector3.zero;
-
-
-            star_list.Add(star);
-
-            System.Random r = new();
-
-            int color_index = color_index_pool[r.Next(0, STAR_AMOUNT - i)];
-            int pos_index = pos_index_pool[r.Next(0, STAR_AMOUNT - i)];
-
-
-
-            float rand_multiplier = (float)(r.NextDouble() * random_distance_factor) + 1;
-
-
-            star.transform.Translate(rand_multiplier *0.5f * constellation_star_offsets[pos_index].y * Vector3.up);
-            star.transform.Translate(rand_multiplier * constellation_star_offsets[pos_index].x * Vector3.forward);
-
-            star.GetComponent<StarChargeUp>().Setup(mats[color_index]);
-            star.GetComponent<StarEmergence>().RotateTowardsPlayer();
-
-
-            _ = star.GetComponent<StarChargeUp>().ChargeUp();
-
-
-            star.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>().material = mats[color_index];
-
+           
+            CreateStar(color_index, pos_index);
 
 
             color_index_pool.Remove(color_index);
@@ -167,12 +134,54 @@ public class FormConstellation : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// <para>Creates a star and adds it to the star list.</para>
+    /// <para>Offsets it's position up and left using the pos_index.</para>
+    /// <para>Sets up the StarChargeUp using the color_index.</para>
+    /// <para>Calls RotateTowardsPlayer() and begins ChargeUp().</para>
+    /// <para>Sets the star's particle system material to color_index material.</para>
+    /// </summary>
+    /// <param name="color_index"></param>
+    /// <param name="pos_index"></param>
+    void CreateStar(int color_index, int pos_index) 
+    {
+        var star = Instantiate(star_prefab, transform, false);
+
+        star.transform.parent = transform;
+        star.transform.localPosition = Vector3.zero;
+
+
+        star_list.Add(star);
 
 
 
 
 
+        float rand_multiplier = (float)(rand.NextDouble() * random_distance_factor) + 1;
 
+
+        star.transform.Translate(rand_multiplier * 0.5f * constellation_star_offsets[pos_index].y * Vector3.up);
+        star.transform.Translate(rand_multiplier * constellation_star_offsets[pos_index].x * Vector3.forward);
+
+        star.GetComponent<StarChargeUp>().Setup(mats[color_index]);
+        star.GetComponent<StarEmergence>().RotateTowardsPlayer();
+
+
+        _ = star.GetComponent<StarChargeUp>().ChargeUp();
+
+
+        star.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>().material = mats[color_index];
+
+
+    }
+
+
+
+
+
+    /// <summary>
+    /// Endlessly checks if all stars in the star list are null, if yes, then breaks and invokes OnAllStarsGone.
+    /// </summary>
     void CheckForCompletedFalls()
     {
         IEnumerator checkForCompletedFalls()

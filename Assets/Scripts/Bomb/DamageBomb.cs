@@ -67,12 +67,18 @@ public class DamageBomb : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Gets the ScoreReward, Raises ScoreChange with the score, modified based on the destruction type.</para>
+    /// <para>Destroys the collider, and if the destruction type isn't BLACK_HOLE, destroys BombFall and awaits CoverInColor().</para>
+    /// <para>Executes a method based on the destruction type from the dictionary.</para>
+    /// </summary>
+    /// <param name="bombDestructionType"></param>
+    /// <returns></returns>
     public virtual async Task StartDamage( BombDestructionType bombDestructionType)
     {
 
 
-        int  score = GetComponent<IScoreEnumerable>().ScoreReward();
+        int  score = GetComponent<IScoreEnumerable>().ValidateScoreReward();
 
 
         UICommunication.Raise_ScoreChange(bombDestructionType switch { BombDestructionType.MANUAL => score, BombDestructionType.AUTO => (score > 0) ? 1:0, BombDestructionType.TARGET => 0 , _ => 0});
@@ -109,7 +115,10 @@ public class DamageBomb : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Awaits ScaleDown and destroys the gameObject.
+    /// </summary>
+    /// <returns></returns>
     async Task DamageByBlackHole()
     {
         var scaledown = ScaleDown(token);
@@ -119,16 +128,12 @@ public class DamageBomb : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Starts ScaleDown, plays the dissolve particle system, awaits its end and destroys the gameObject.
+    /// </summary>
     void DamageByTarget()
     {
 
-
-        Vector3 target = GameObject.FindGameObjectWithTag(Tags.BOMB_TARGET).transform.position;
-
-        Vector3 rotationDirection = (target - transform.position);
-
-        transform.rotation = Quaternion.LookRotation(rotationDirection);
 
         _ = ScaleDown(token);
 
@@ -143,7 +148,10 @@ public class DamageBomb : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Destroys the renderer, plays the explode particle system, awaits its end and destroys the gameObject.
+    /// </summary>
+    /// <param name="bombDestructionType"></param>
     void DamageByPlayer(BombDestructionType bombDestructionType)
     {
         
@@ -162,7 +170,11 @@ public class DamageBomb : MonoBehaviour
 
     float scale_down_duration = 0.2f;
 
-
+    /// <summary>
+    /// LERPS the localScale from start to 0 ver a set amount of time.
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     protected async Task ScaleDown(CancellationToken token)
     {
         float duration = scale_down_duration;

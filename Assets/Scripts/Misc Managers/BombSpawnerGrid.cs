@@ -23,7 +23,7 @@ public class BombSpawnerGrid : MonoBehaviour
     Vector3[,] positions;
 
     int size;
-    int size_y;
+    
 
 
 
@@ -67,6 +67,7 @@ public class BombSpawnerGrid : MonoBehaviour
                 var pairs = tag.Equals(Tags.LASER_TARGET_1) ? MaterialHolder.Instance().NAMED_COLOR_SET_1() : MaterialHolder.Instance().NAMED_COLOR_SET_2();
                 var pair = pairs[UnityEngine.Random.Range(0, pairs.Length)];
 
+                
                 OnClusterEventSpawn?.Invoke(tag, pair);
 
                 yield return one_second_wait;
@@ -118,11 +119,11 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
         size = DifficultyManager.BOMB_GRIDxSIZE_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY];
-        size_y = size;
+
 
 
         start_amount = (size * size) / 3;
-        positions = new Vector3[size, size_y];
+        positions = new Vector3[size, size];
 
         GenerateGrid();
         StartCoroutine(ClusterEventTimer());
@@ -131,7 +132,12 @@ public class BombSpawnerGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// TODO
+    /// <para>Creates a set of random pairs of array coordinates.</para>
+    /// <para>Gets the center position, adjust based on parity, and calculates the top left corner.</para>
+    /// <para>Iterates through all array coordinates, calculates x and y coordinates</para>
+    /// <para>If the array coordinates are present in the set, spawns a spawner object and removes the pair from the set.</para>
+    /// <para>If not, spawns spawns the placeholder object and adds it to a list.</para>
+    /// <para>Finally, sets the spawned object parent as this object and its localPosition to (x,y,0) coordinates.</para>
     /// </summary>
     void GenerateGrid()
     {
@@ -144,36 +150,21 @@ public class BombSpawnerGrid : MonoBehaviour
 
         while (loop_coordinates_for_spawns.Count < start_amount)
         {
-            loop_coordinates_for_spawns.Add((new Random().Next(0, size), new Random().Next(0, size_y)));
+            loop_coordinates_for_spawns.Add((new Random().Next(0, size), new Random().Next(0, size)));
 
         }
 
-
-
-
-
-
-
-
         Vector3 center_position = transform.position;
-
-
         (int size, int margin) adjust = (odd) ? (1, 0) : (0, 1);
 
-
-
-
         Vector3 top_left_corner = center_position + new Vector3(-MARGIN * (size - adjust.size) / 2 + MARGIN * adjust.margin / 2, -MARGIN * (size - adjust.size) / 2 + MARGIN * adjust.margin / 2, 0);
-
-
-
-
 
         for (int i = 0; i < size; i++)
         {
             float x = top_left_corner.x + MARGIN * i;
             for (int j = 0; j < size; j++)
             {
+               
                 GameObject toSpawn;
                 if (loop_coordinates_for_spawns.Contains((i, j)))
                 {
@@ -191,9 +182,6 @@ public class BombSpawnerGrid : MonoBehaviour
                 }
 
                 float y = top_left_corner.y + MARGIN * j;
-
-
-
 
                 positions[i, j] = new Vector3(x, y, 0);
                 toSpawn.transform.parent = transform;

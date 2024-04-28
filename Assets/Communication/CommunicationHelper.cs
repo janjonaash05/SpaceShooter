@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class CommunicationHelper : MonoBehaviour
 {
-    
+    /// <summary>
+    /// Awakes communication channels and certain managers, Assigns functions to appropriate events
+    /// </summary>
     void Awake()
     {
         MaterialHolder.Awake();

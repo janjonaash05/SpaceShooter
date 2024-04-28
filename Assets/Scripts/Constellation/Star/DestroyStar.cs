@@ -6,23 +6,22 @@ using UnityEngine;
 
 public class DestroyStar : MonoBehaviour
 {
-    
-    void Start()
-    {
 
-    }
     [SerializeField] Material white;
     [SerializeField] float min_scale_down_size, scale_down_increment;
 
 
-
+    /// <summary>
+    /// Destroys StarFall, fills the Renderer materials with white.
+    /// </summary>
     void CoverInWhite()
     {
-       TryGetComponent(out StarFall b);
+        TryGetComponent(out StarFall b);
         Destroy(b);
 
 
-        Material[] mats = new Material[GetComponent<Renderer>().materials.Length]; Array.Fill(mats, white);
+        Material[] mats = new Material[GetComponent<Renderer>().materials.Length]; 
+        Array.Fill(mats, white);
         GetComponent<Renderer>().materials = mats;
 
        
@@ -33,7 +32,13 @@ public class DestroyStar : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Plays the STAR_DESTROYED sound.</para>
+    /// <para>Destroys StarChargeUp, StarEmergence and calls to CoverInColor().</para>
+    /// <para>Raises Score Change.</para>
+    /// <para>Starts ScaleDown.</para>
+    /// <para>Plays the particle system, waits for it to finish and destroys the gameObject.</para>
+    /// </summary>
     public void Destroy()
     {
 
@@ -47,10 +52,8 @@ public class DestroyStar : MonoBehaviour
 
         // ScoreCounter.Increase();
 
-        UICommunication.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ScoreReward());
+        UICommunication.Raise_ScoreChange(GetComponent<IScoreEnumerable>().ValidateScoreReward());
 
-
-        GetComponent<IScoreEnumerable>().DisabledRewards = true;
         _ = ScaleDown();
 
 
@@ -63,22 +66,25 @@ public class DestroyStar : MonoBehaviour
     }
 
 
-
-    public void DestroyByEMP() 
-    {
-    
-    
-    }
-
+    /// <summary>
+    /// LERPs the localScale from start to zero over time, destroys the gameObject after.
+    /// </summary>
+    /// <returns></returns>
     async Task ScaleDown()
     {
 
 
 
+        float lerp = 0;
+        float duration = 0.5f;
+
+        Vector3 start = transform.localScale;
+
+
         while (transform.localScale.y > min_scale_down_size)
         {
-
-            transform.localScale = new Vector3(transform.localScale.x - scale_down_increment, transform.localScale.y - scale_down_increment, transform.localScale.z - scale_down_increment);
+            lerp += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(start, Vector3.zero, lerp / duration);
             
             await Task.Yield();
         }

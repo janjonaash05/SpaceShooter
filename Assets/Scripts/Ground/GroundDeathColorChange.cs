@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GroundDeathColorChange : MonoBehaviour
 {
-    
+
 
 
 
@@ -78,37 +78,37 @@ public class GroundDeathColorChange : MonoBehaviour
             DeathTarget.CONTROL_PAD => () => { GroundDeathManager.OnControlPadsDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.GROUND_SIDE_PRIMARY => () => {GroundDeathManager.OnGroundSidePrimaryDeath -= UnlockAndChange; }
+            DeathTarget.GROUND_SIDE_PRIMARY => () => { GroundDeathManager.OnGroundSidePrimaryDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.GROUND_SIDE_SECONDARY => () => {GroundDeathManager.OnGroundSideSecondaryDeath -= UnlockAndChange; }
+            DeathTarget.GROUND_SIDE_SECONDARY => () => { GroundDeathManager.OnGroundSideSecondaryDeath -= UnlockAndChange; }
             ,
 
             DeathTarget.CONTROL_STAND => () => { GroundDeathManager.OnControlStandsDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.SLIDER_RECHARGE_STATION => () => {GroundDeathManager.OnSliderRechargeStationDeath -= UnlockAndChange; }
+            DeathTarget.SLIDER_RECHARGE_STATION => () => { GroundDeathManager.OnSliderRechargeStationDeath -= UnlockAndChange; }
             ,
 
             DeathTarget.TURRET_PILLAR => () => { GroundDeathManager.OnTurretPillarsDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.CONTROL_HEAD => () => {GroundDeathManager.OnControlHeadsDeath -= UnlockAndChange; }
+            DeathTarget.CONTROL_HEAD => () => { GroundDeathManager.OnControlHeadsDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.HARPOON_CONTROL_HEAD => () => {GroundDeathManager.OnHarpoonControlHeadsDeath -= UnlockAndChange; }
+            DeathTarget.HARPOON_CONTROL_HEAD => () => { GroundDeathManager.OnHarpoonControlHeadsDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.SLIDER_RECHARGE_HEAD => () => {GroundDeathManager.OnSliderRechargeHeadsDeath -= UnlockAndChange; }
+            DeathTarget.SLIDER_RECHARGE_HEAD => () => { GroundDeathManager.OnSliderRechargeHeadsDeath -= UnlockAndChange; }
             ,
 
             DeathTarget.TURRET_STATION => () => { GroundDeathManager.OnTurretStationsDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.SLIDER_HEAD => () => {GroundDeathManager.OnSliderHeadDeath -= UnlockAndChange; }
+            DeathTarget.SLIDER_HEAD => () => { GroundDeathManager.OnSliderHeadDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.HARPOON_HEAD => () => {GroundDeathManager.OnHarpoonHeadDeath -= UnlockAndChange; }
+            DeathTarget.HARPOON_HEAD => () => { GroundDeathManager.OnHarpoonHeadDeath -= UnlockAndChange; }
             ,
 
             DeathTarget.TURRET_HEAD => () => { GroundDeathManager.OnTurretHeadsDeath -= UnlockAndChange; }
@@ -123,7 +123,7 @@ public class GroundDeathColorChange : MonoBehaviour
             DeathTarget.SHIELD_EMITTER => () => { GroundDeathManager.OnShieldEmitterDeath -= UnlockAndChange; }
             ,
 
-            DeathTarget.TOKEN_TRANSPORTER => () => {GroundDeathManager.OnTokenTransporterDeath -= UnlockAndChange; }
+            DeathTarget.TOKEN_TRANSPORTER => () => { GroundDeathManager.OnTokenTransporterDeath -= UnlockAndChange; }
             ,
 
         };
@@ -186,11 +186,6 @@ public class GroundDeathColorChange : MonoBehaviour
 
 
 
-    void Update()
-    {
-
-
-    }
 
 
 

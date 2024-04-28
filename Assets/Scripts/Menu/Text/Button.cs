@@ -59,12 +59,7 @@ public class Button : MonoBehaviour
     {
 
         UserDataManager.SetSettingsData(SettingsManager.NewSettings);
-
-
-
-
         UserDataManager.Save();
-
         SceneManager.LoadScene(0);
 
     }
@@ -72,13 +67,8 @@ public class Button : MonoBehaviour
 
     void DISCARD()
     {
-
         SettingsManager.DiscardSettings();
         SceneManager.LoadScene(0);
-        
-
-
-
     }
 
    
@@ -175,7 +165,10 @@ public class Button : MonoBehaviour
 
     const float DEFAULT_VOLUME = 0.5f;
 
-
+    /// <summary>
+    /// <para>Gets the audio source and the off material, assigns ButtonFunctions to functions in a dictionary</para>
+    /// <para>Assigns an OnClick function to set the pitch, volume, play sound and call the appropriate ButtonFunction function.</para>
+    /// </summary>
     void Start()
     {
 
@@ -218,7 +211,12 @@ public class Button : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>If isHovering is true, returns early.</para>
+    /// <para>Sets the source pitch and sets the volume based on user data, plays.</para>
+    /// <para>Assigns the off and on materials to the renderer.</para>
+    /// <para>Sets isHovering to true.</para>
+    /// </summary>
     public void OnHoverEnter()
     {
         if (isHovering) return;
@@ -251,6 +249,11 @@ public class Button : MonoBehaviour
 
 
 
+    /// <summary>
+    /// <para>If isHovering is false, returns early.</para>
+    /// <para>Assigns the on and off materials to the renderer.</para>
+    /// <para>Sets isHovering to false.</para>
+    /// </summary>
     public void OnHoverExit()
     {
 

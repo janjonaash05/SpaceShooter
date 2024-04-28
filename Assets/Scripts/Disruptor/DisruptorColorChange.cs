@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 {
-    
+
 
 
     Material[] mats_storage;
@@ -23,9 +23,9 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisrupt
 
     public static event Action<Material> OnColorChange;
 
- 
 
-  
+
+
 
     void Awake()
     {
@@ -44,32 +44,30 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisrupt
         GetComponent<DisruptorStartEndMovement>().OnMoveUpFinish += StartColorChange;
     }
 
-
-    //CAUSES A CRASH
-   public void OnEMP()
+    /// <summary>
+    /// Stops all Coroutines and destroys all children.
+    /// </summary>
+    public void OnEMP()
     {
         StopAllCoroutines();
-
 
         for (int i = 0; i < transform.childCount; i++)
         {
 
             Destroy(transform.GetChild(i).gameObject);
         }
-        
-
-        
-
     }
 
     void StartColorChange()
     {
-
-
-
         StartCoroutine(ColorChange());
     }
 
+
+
+    /// <summary>
+    /// Assigns the materials to primary, secondary and the rest white.
+    /// </summary>
     void InitialColorSetup()
     {
 
@@ -81,21 +79,22 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisrupt
 
         for (int i = 2; i < mats.Length; i++)
         {
-
             mats[i] = white;
-
-
         }
 
         rend.materials = mats;
-
     }
 
 
     int i = 0;
 
 
-
+    /// <summary>
+    /// <para>Changes all white bars to colored ones over time, invoking OnColorChange for each color.</para>
+    /// <para>Starts flashing the charges.</para>
+    /// <para>Sets DisruptorMovement targeting and initiates the DisruptorTargetTurretHeads rotations. </para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ColorChange()
     {
 
@@ -121,33 +120,19 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisrupt
 
                 color_mats[index_order_dict[k + 1]] = mats_storage[k];
 
-                //charge1_flash_charge.FlashColorThenWhite(mats_storage[k]);
-                //charge2_flash_charge.FlashColorThenWhite(mats_storage[k]);
-
-
                 OnColorChange?.Invoke(mats_storage[k]);
 
             }
 
-
-
-
             rend.materials = color_mats;
 
-
-
             yield return new WaitForSeconds(delay);
-
-
-
-
-
 
         }
 
 
-        charge1.GetComponent<FlashDisruptorCharge>().FlashAllColors(mats_storage);
-        charge2.GetComponent<FlashDisruptorCharge>().FlashAllColors(mats_storage);
+        charge1_flash_charge.FlashAllColors(mats_storage);
+        charge2_flash_charge.FlashAllColors(mats_storage);
 
 
 
@@ -155,19 +140,13 @@ public class DisruptorColorChange : MonoBehaviour, IScoreEnumerable, IEMPDisrupt
         GetComponent<DisruptorTargetTurretHeads>().InitiateRotations();
     }
 
-    
-    void Update()
+
+ 
+    public bool DisabledRewards { get; set; }
+    public int CalculateScoreReward()
     {
-
-    }
-
-    public int ScoreReward()
-    {
-        if (DisabledRewards) return 0;
-
         return (9 - i) * 5;
     }
 
 
-    public bool DisabledRewards { get; set; }
 }

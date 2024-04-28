@@ -26,31 +26,21 @@ public class TurretChargeColorChange : MonoBehaviour
 
     private void OnDestroy()
     {
-        LaserTurretCommunicationChannels.Channel1.OnTurretChargeColorChange -= AssignMats;
-        LaserTurretCommunicationChannels.Channel2.OnTurretChargeColorChange -= AssignMats;
-
+        channel.OnTurretChargeColorChange -= AssignMats;
 
     }
 
-
+    LaserTurretChannel channel;
     private void Awake()
     {
 
         rend = GetComponent<Renderer>();
         off_mat = rend.material;
 
+        channel = LaserTurretCommunicationChannels.GetChannelByID(ID);
+        channel.OnTurretChargeColorChange += AssignMats;
 
-
-        switch (ID)
-        {
-            case 1:
-                LaserTurretCommunicationChannels.Channel1.OnTurretChargeColorChange += AssignMats;
-                break;
-            case 2:
-                LaserTurretCommunicationChannels.Channel2.OnTurretChargeColorChange += AssignMats;
-                break;
-        }
-
+     
 
 
 

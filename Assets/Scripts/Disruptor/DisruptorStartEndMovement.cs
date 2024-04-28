@@ -32,10 +32,7 @@ public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
         OnMoveDownFinish += Kill;
     }
 
-    private void Awake()
-    {
-        AudioManager.PlayActivitySound(AudioManager.ActivityType.DISRUPTOR_SPAWN);
-    }
+
 
 
     void Kill()
@@ -45,11 +42,6 @@ public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
 
     }
 
-    
-    void Update()
-    {
-
-    }
 
     public void MoveUp()
     {
@@ -66,7 +58,10 @@ public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
 
 
 
-
+    /// <summary>
+    /// Moves the disruptor downwards until it hits the limit, then invokes OnMoveDownFinish.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator MovingDown()
     {
 
@@ -88,6 +83,12 @@ public class DisruptorStartEndMovement : MonoBehaviour, IEMPDisruptable
     }
 
 
+
+
+    /// <summary>
+    /// Moves the disruptor upwards until it either hits the limit, or cancelMoveUpExternally is true. Afterwards, if cancelMoveUpExternally isn't true, invokes OnMoveUpFinish.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator MovingUp()
     {
         while (transform.position.y < max_y)

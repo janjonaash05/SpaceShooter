@@ -9833,7 +9833,7 @@ MonoBehaviour:
   primary: {fileID: 2100000, guid: e1a96947f0c1d83428bae84090341388, type: 2}
   secondary: {fileID: 2100000, guid: 33f039474b80cb7428832a87221f915d, type: 2}
   cover_in_color_delay: 20
-  bomb_type: 1
+  BombType: 1
 --- !u!114 &4688707995641087795
 MonoBehaviour:
   m_ObjectHideFlags: 0

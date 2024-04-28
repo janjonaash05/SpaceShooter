@@ -68,7 +68,7 @@ public static class UICommunication
 
 
 
-    //TimeCounter script calls this every frame
+    
     public static void Assign_TimeValues(float sf, int s, float mf, int m, int h)
     {
 
@@ -92,7 +92,9 @@ public static class UICommunication
 
 
 
-
+    /// <summary>
+    /// If the popup queue isn't empty, then invokes OnDifficultyValueChange with dequeued popup queue entry.
+    /// </summary>
     public static void Dequeue_PopupCall() 
     {
         if (popup_queue.Count == 0) { return; }

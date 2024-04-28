@@ -18,7 +18,10 @@ public class DamageDisruptor : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Subtracts from health, if health is 0, Destroys this object and engages in DestroyDisruptor object.
+    /// </summary>
+    /// <param name="amount"></param>
     public void Damage(float amount)
     {
 

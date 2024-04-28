@@ -125,14 +125,11 @@ public class UpgradesManager
 
 
 
-
-
-
-
-
-
-
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public static bool IncreaseValue(UpgradeType type)
     {
         if (UPGRADE_VALUE_DICT[type] == MAX_VALUE) { return false; }
@@ -168,8 +165,5 @@ public class UpgradesManager
     }
 
     
-    void Update()
-    {
-
-    }
+   
 }

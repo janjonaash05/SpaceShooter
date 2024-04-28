@@ -5,7 +5,19 @@ using UnityEngine;
 public interface IScoreEnumerable
 {
     
-    int ScoreReward();
-    public bool DisabledRewards { get; set; }
+    int CalculateScoreReward();
+    bool DisabledRewards { get; set; }
+
+
+    public int ValidateScoreReward()
+    {
+        if (!DisabledRewards) 
+        {
+            DisabledRewards = true;
+            return CalculateScoreReward();
+        }
+
+        return 0;
+    }
 
 }

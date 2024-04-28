@@ -62,15 +62,23 @@ public class DecreaseStationChargePower : MonoBehaviour
         OnRechargeEnd += () => recharging = false;
 
 
+        LaserTurretChannel channel = LaserTurretCommunicationChannels.GetChannelByID(ID);
+        channel.OnAutoTargetingSuccess += Decrease;
+
+        channel.OnControlDisabled += () => paused = true;
+        channel.OnControlEnabled += () => paused = false;
+
+
+        channel.OnControlDisabled += EndEmission;
+        channel.OnControlEnabled += () => { if (recharging) StartEmission(); };
+
+
+        /*
+
         switch (ID)
         {
             case 1:
                 LaserTurretCommunicationChannels.Channel1.OnAutoTargetingSuccess += Decrease;
-
-
-
-             //   OnRechargeStart += LaserTurretCommunicationChannels.Channel1.Raise_DisableAutoTargeting;
-              //  OnRechargeEnd += LaserTurretCommunicationChannels.Channel1.Raise_EnableAutoTargeting;
 
                 LaserTurretCommunicationChannels.Channel1.OnControlDisabled += () => paused = true;
                 LaserTurretCommunicationChannels.Channel1.OnControlEnabled += () => paused = false;
@@ -87,10 +95,6 @@ public class DecreaseStationChargePower : MonoBehaviour
                 LaserTurretCommunicationChannels.Channel2.OnAutoTargetingSuccess += Decrease;
 
 
-
-             //   OnRechargeStart += LaserTurretCommunicationChannels.Channel2.Raise_DisableAutoTargeting;
-             //   OnRechargeEnd += LaserTurretCommunicationChannels.Channel2.Raise_EnableAutoTargeting;
-
                 LaserTurretCommunicationChannels.Channel2.OnControlDisabled += () => paused = true;
                 LaserTurretCommunicationChannels.Channel2.OnControlEnabled += () => paused = false;
 
@@ -104,7 +108,7 @@ public class DecreaseStationChargePower : MonoBehaviour
 
         }
 
-
+        */
 
         ps = transform.parent.GetChild(1).GetComponent<ParticleSystem>();
         ps_rend = ps.GetComponent<ParticleSystemRenderer>();
@@ -143,14 +147,6 @@ public class DecreaseStationChargePower : MonoBehaviour
     }
 
     
-    void Update()
-    {
-
-    }
-
-
-
-
 
 
     public void Decrease()

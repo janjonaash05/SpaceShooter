@@ -27,6 +27,8 @@ public class LaserControlParticles : MonoBehaviour
         SpinnerChargeUp.OnLaserShotPlayerDeath -= LaserShotPlayerDeath;
 
 
+
+
         switch (ID)
         {
             case 1:

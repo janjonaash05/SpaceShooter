@@ -53,7 +53,11 @@ public class GroundDeathManager : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Gets all blocker gameObjects and moves them to player level.</para>
+    /// <para>Starts the executions along the execution order dictionary, with a time delay.</para>
+    /// <para>Calls ResetValuesAndSaveScore(). </para>
+    /// </summary>
     void Die()
     {
         IEnumerator StartDeath()
@@ -66,9 +70,6 @@ public class GroundDeathManager : MonoBehaviour
                 blocker.transform.position = new Vector3(blocker.transform.position.x, 13, blocker.transform.position.z);
             }
 
-
-
-
             for (int i = 1; i <= execution_order_dict.Count; i++)
             {
                 execution_order_dict[i]();
@@ -76,20 +77,10 @@ public class GroundDeathManager : MonoBehaviour
 
             }
 
-
-
-
-
-
             ResetValuesAndSaveScore();
-
-
-            
         }
 
         StartCoroutine(StartDeath());
-
-
 
     }
 
@@ -97,24 +88,17 @@ public class GroundDeathManager : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Sets the UserData, resets value on the Upgrades and Difficulty managers, loads GameOverScreen.
+    /// </summary>
     public static void ResetValuesAndSaveScore() 
     {
-
-
-
-
-
         UserDataManager.SetScoreTimeDifficulty(UICommunication.Score, UICommunication.Mins, UICommunication.Secs, UICommunication.Hundredths, DifficultyManager.DIFFICULTY);
-
-
-        
 
         UpgradesManager.ResetValues();
         DifficultyManager.ResetValues();
 
         SceneManager.LoadScene(2);
-
 
     }
 

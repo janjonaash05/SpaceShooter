@@ -37,9 +37,9 @@ public class GroundDeathColorChange : MonoBehaviour
     bool locked = true;
 
 
-    Dictionary<DeathTarget, (Action color_change_type, Action manager_listener)> target_actions_dict;
+     Dictionary<DeathTarget, (Action color_change_type, Action manager_listener)> TARGET_ACTIONS_DICT;
 
-
+   
 
 
     void MaterialChange(Material m)
@@ -138,12 +138,13 @@ public class GroundDeathColorChange : MonoBehaviour
 
     }
 
-
-    void Start()
+    /// <summary>
+    /// Assigns color change and listener manager functions to the dictionary.
+    /// </summary>
+    /// 
+    void InitTargetActions()
     {
-        rend = GetComponent<Renderer>();
-        SpinnerColorChange.OnMaterialChange += MaterialChange;
-        target_actions_dict = new()
+        TARGET_ACTIONS_DICT = new()
         {
 
             {DeathTarget.CORE,( NonChildrenFull, () => {GroundDeathManager.OnCoreDeath +=  UnlockAndChange; } ) },
@@ -171,9 +172,23 @@ public class GroundDeathColorChange : MonoBehaviour
 
 
 
-        target_actions_dict[death_target].manager_listener?.Invoke();
+    }
 
-        color_change = target_actions_dict[death_target].color_change_type;
+
+
+
+
+    void Start()
+    {
+        rend = GetComponent<Renderer>();
+        SpinnerColorChange.OnMaterialChange += MaterialChange;
+
+        InitTargetActions();
+
+
+        TARGET_ACTIONS_DICT[death_target].manager_listener?.Invoke();
+
+        color_change = TARGET_ACTIONS_DICT[death_target].color_change_type;
 
 
 
@@ -188,7 +203,9 @@ public class GroundDeathColorChange : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Sets locked to false and calls color_change().
+    /// </summary>
     void UnlockAndChange()
     {
         locked = false;
@@ -196,6 +213,11 @@ public class GroundDeathColorChange : MonoBehaviour
     }
 
 
+
+    /// <summary>
+    /// Fills a renderer's materials to the changing_mat.
+    /// </summary>
+    /// <param name="renderer"></param>
     void _UTIL_FILL_MATERIALS(Renderer renderer)
     {
         Material[] mats = renderer.materials;
@@ -216,7 +238,9 @@ public class GroundDeathColorChange : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Changes the material at primary index to changing_mat, leaves the rest.
+    /// </summary>
     void GroundPrimary()
     {
         int primary_index = 1;
@@ -228,6 +252,10 @@ public class GroundDeathColorChange : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Changes the material at secondary index to changing_mat, leaves the rest.
+    /// </summary>
     void GroundSecondary()
     {
         int secondary_index = 0;
@@ -235,6 +263,11 @@ public class GroundDeathColorChange : MonoBehaviour
         mats[secondary_index] = changing_mat;
         rend.materials = mats;
     }
+
+
+    /// <summary>
+    /// Attempts to call _UTIL_FILL_MATERIALS() on the object and each of its children.
+    /// </summary>
     void ChildrenFull()
     {
 

@@ -58,7 +58,12 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
 
 
-
+        /// <summary>
+        /// <para>Returns if Recharging, and if not, sets it to true.</para>
+        /// <para>Counts down to 0, on each iterations sets the CountDownValues, invokes OnCountDownValueChange, waits and plays HELPER_STATION_HELPER_COUNTDOWN sound if not at 0.  </para>
+        /// <para>When finished, sets Recharging to false, invokes OnCountDownValueChange and OnCountDownFinished. </para>
+        /// </summary>
+        /// <returns></returns>
         public async Task StartCountDown()
         {
 
@@ -76,7 +81,7 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
                 OnCountDownValueChange?.Invoke();
                 await Task.Delay(WAIT_TIME);
-                AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_HELPER_COUNTDOWN);
+                if(i!=0) AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_HELPER_COUNTDOWN);
             }
 
 
@@ -151,7 +156,12 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
     }
 
 
-
+    /// <summary>
+    /// If the helper state isn't recharging or the Token amount is bigger than 4:
+    /// <para>Plays HELPER_STATION_HELPER_SPAWN sound, decreases the amount of tokens by 4. </para>
+    /// <para>Spawn the helper via a HelperSpawnerManager instance, starts countdown on the current helper state.</para>
+    /// </summary>
+    /// <param name="_"></param>
     void HelperStationClick(RaycastHit _) 
     {
         if (!type_state_dict[current_helper].Recharging && UICommunication.Tokens >= 4)
@@ -231,15 +241,4 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
     }
 
-
-
-
-
-
-
-    
-    void Update()
-    {
-
-    }
 }

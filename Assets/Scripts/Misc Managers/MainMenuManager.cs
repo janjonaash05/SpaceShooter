@@ -12,16 +12,11 @@ public class MainMenuManager : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Loads UserData, sets the resolution and fullscreen, plays ambience.</para>
+    /// </summary>
     void Start()
     {
-
-        if (CameraHover.CURRENT_MENU_AMBIENCE_PLAY_TIME == 0) 
-        {
-            CameraHover.CURRENT_MENU_AMBIENCE_PLAY_TIME = 0;
-
-
-        }
 
         UserDataManager.Load();
 

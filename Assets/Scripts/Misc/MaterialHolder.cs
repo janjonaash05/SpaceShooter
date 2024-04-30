@@ -103,7 +103,6 @@ public class MaterialHolder : MonoBehaviour
         foreach (var item in _NAMED_MATERIAL_PAIRS)
         {
 
-            Debug.Log("Adding "+item.ColorName);
             NAME_MATERIAL_DICT.Add(item.ColorName, item.Material);
 
         }

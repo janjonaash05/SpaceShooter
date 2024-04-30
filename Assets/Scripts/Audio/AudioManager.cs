@@ -211,6 +211,10 @@ public class AudioManager : MonoBehaviour
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.STAR_DESTROYED, new(0.5f, 0.5f));
         ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.STAR_FALL, new(1f, 0.75f));
 
+
+
+        ACTIVITY_SOUND_SETTINGS_DICT.Add(ActivityType.TOKEN_SPAWN, new(0.25f, 0.75f));
+
         foreach (ActivityType activity in Enum.GetValues(typeof(ActivityType)))
         {
             if (!ACTIVITY_SOUND_SETTINGS_DICT.ContainsKey(activity))

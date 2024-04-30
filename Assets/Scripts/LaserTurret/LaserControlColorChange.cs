@@ -55,7 +55,10 @@ public class LaserControlColorChange : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// <para>Creates a deep copy of the renderer materials into normal_mats.</para>
+    /// <para>Adds all renderer materials into the dictionary as a name-index pair.</para>
+    /// <para>Assigns events and handlers.</para>
+    /// <para>Creates an off_mats array for when the control is disabled.</para>
     /// </summary>
     public void Start()
     {
@@ -70,6 +73,8 @@ public class LaserControlColorChange : MonoBehaviour
         {
             normal_mats[i] = new Material(rend.materials[i]);
         }
+
+        
 
 
 

@@ -155,15 +155,8 @@ public class MaterialIndexHolder : IndexHolder
     public override int ChangeIndex(int parentDelta, int childDelta)
     {
 
-        // child = (childDelta > 0 || parent > minParent - 1) ? child + childDelta : child;
-
-
-
-
         if (IsAtMax() && childDelta >= 0) {  SetEdge(Edge.UPPER); return 1; }
-
         if (IsAtMin() && childDelta <= 0) { SetEdge(Edge.LOWER); return -1; }
-
 
         if (edge == Edge.UPPER)
         {
@@ -259,7 +252,14 @@ public class MaterialIndexHolder : IndexHolder
 
 
 
-
+    /// <summary>
+    /// <para>Gets the direction based on if color is desired or not.</para>
+    /// <para>Creates an identical copy holder.</para>
+    /// <para>While the result isn't the desired direction, adds GetCurrentMatIndex() with the copyHolder to the list, sets the result to ChangeIndex with 0 as Parent and direction as Child.</para>
+    /// <para>Removes -1 from the list (end point).</para>
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns>The list of indexes</returns>
     public List<int> AllMatIndexesByHolder(bool color)
     {
 
@@ -298,7 +298,13 @@ public class MaterialIndexHolder : IndexHolder
 
 
 
-
+    /// <summary>
+    /// If the holder parent value is lesser than minimum or bigger than maximum, returns -1.
+    /// <para>Returns a result from a either of two dictionaries, based on the target.</para>
+    /// <para>Finds an index from the combined values of parent and child in a string.</para>
+    /// </summary>
+    /// <param name="holder"></param>
+    /// <returns>The index</returns>
     int GetCurrentMatIndex(MaterialIndexHolder holder)
     {
 

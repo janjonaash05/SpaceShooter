@@ -26,33 +26,17 @@ public class LaserControlParticles : MonoBehaviour
     {
         SpinnerChargeUp.OnLaserShotPlayerDeath -= LaserShotPlayerDeath;
 
+        channel.OnControlDisabled -= EnableParticles;
+        channel.OnControlEnabled -= DisableParticles;
 
 
 
-        switch (ID)
-        {
-            case 1:
-                LaserTurretCommunicationChannels.Channel1.OnControlDisabled -= EnableParticles;
-                LaserTurretCommunicationChannels.Channel1.OnControlEnabled -= DisableParticles;
-
-
-                break;
-
-            case 2:
-
-                LaserTurretCommunicationChannels.Channel2.OnControlDisabled -= EnableParticles;
-                LaserTurretCommunicationChannels.Channel2.OnControlEnabled -= DisableParticles;
-
-
-                break;
-
-        }
     }
 
 
 
 
-
+    LaserTurretChannel channel;
 
     void Start()
     {
@@ -63,30 +47,21 @@ public class LaserControlParticles : MonoBehaviour
 
         SpinnerChargeUp.OnLaserShotPlayerDeath += LaserShotPlayerDeath;
 
-
-        switch (ID)
-        {
-            case 1:
-                LaserTurretCommunicationChannels.Channel1.OnControlDisabled += EnableParticles;
-                LaserTurretCommunicationChannels.Channel1.OnControlEnabled += DisableParticles;
-
-                mats_storage = MaterialHolder.Instance().COLOR_SET_1();
-
-                break;
-
-            case 2:
-
-                LaserTurretCommunicationChannels.Channel2.OnControlDisabled += EnableParticles;
-                LaserTurretCommunicationChannels.Channel2.OnControlEnabled += DisableParticles;
+        channel = LaserTurretCommunicationChannels.GetChannelByID(ID);
+        channel.OnControlDisabled += EnableParticles;
+        channel.OnControlEnabled += DisableParticles;
 
 
-                mats_storage = MaterialHolder.Instance().COLOR_SET_2();
-                break;
+        mats_storage = ID == 1 ? MaterialHolder.Instance().COLOR_SET_1() : MaterialHolder.Instance().COLOR_SET_2();
 
-        }
+
+
+
+
 
 
     }
+
 
 
     ParticleSystem ps;
@@ -94,12 +69,22 @@ public class LaserControlParticles : MonoBehaviour
     ParticleSystem.EmissionModule ps_emission;
 
 
-
+    /// <summary>
+    /// Plays the TURRET_CONTROLS_DISABLED sound, enables the particle system emission, starts the ColorChange coroutine.
+    /// </summary>
     void EnableParticles() { AudioManager.PlayActivitySound(AudioManager.ActivityType.TURRET_CONTROLS_DISABLED); ps_emission.enabled = true; StartCoroutine(ColorChange()); }
 
+    /// <summary>
+    /// Stops the TURRET_CONTROLS_DISABLED sound, disables the particle system emission, stops all coroutines.
+    /// </summary>
     void DisableParticles() { AudioManager.StopActivitySound(AudioManager.ActivityType.TURRET_CONTROLS_DISABLED); ps_emission.enabled = false; StopAllCoroutines(); }
 
 
+
+    /// <summary>
+    /// Endlessly loops over all materials in mat storage and sets them as the particle system's renderer, with a set time delay.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ColorChange()
     {
         while (true)
@@ -117,10 +102,4 @@ public class LaserControlParticles : MonoBehaviour
 
     }
 
-
-    
-    void Update()
-    {
-
-    }
 }

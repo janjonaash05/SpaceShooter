@@ -14,7 +14,11 @@ public class TurretChargeColorChange : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Sets the renderer material to either off_mat or arg mat, based on the arg turn_off.
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <param name="turn_off"></param>
     void AssignMats(Material mat, bool turn_off)
     {
         rend.material = (turn_off) ? off_mat : mat;
@@ -31,6 +35,11 @@ public class TurretChargeColorChange : MonoBehaviour
     }
 
     LaserTurretChannel channel;
+
+
+    /// <summary>
+    /// Assigns essential variables, sets the renderer material to either the turret head charge 1 or 2 material, based on ID.
+    /// </summary>
     private void Awake()
     {
 
@@ -56,16 +65,4 @@ public class TurretChargeColorChange : MonoBehaviour
 
     }
 
-
-    void Start()
-    {
-
-      
-
-
-
-
-
-
-    }
 }

@@ -139,7 +139,10 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
 
 
-
+    /// <summary>
+    /// Plays HELPER_STATION_CLICK sound, calls ArrowDown() and ShowHelperState().
+    /// </summary>
+    /// <param name="_"></param>
     void HelperStationArrowDownClick(RaycastHit _)
     {
         AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_CLICK);
@@ -147,7 +150,10 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
     }
 
-
+    /// <summary>
+    /// Plays HELPER_STATION_CLICK sound, calls ArrowUp() and ShowHelperState().
+    /// </summary>
+    /// <param name="_"></param>
     void HelperStationArrowUpClick(RaycastHit _)
     {
         AudioManager.PlayActivitySound(AudioManager.ActivityType.HELPER_STATION_CLICK);
@@ -197,7 +203,12 @@ public class HarpoonHelperFaceSwitch : HarpoonFaceSwitch
 
 
 
-
+    /// <summary>
+    /// Assigns the current helper and state.
+    /// <para>Assigns the degree and the on material, based on the state Recharging value.</para>
+    /// <para>Sets all materials in the index order dictionary. to off, then changes some to on according to the degree. Changes the materials on the arrow up/down index to their appropriate colors.</para>
+    /// <para>Assigns the materials to the child renderer.</para>
+    /// </summary>
     void ShowHelperState()
     {
         current_helper = helpers_list[face_index];

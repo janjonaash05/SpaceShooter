@@ -27,23 +27,27 @@ public class HelperSpawnerManager : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Gets the tuple from the type management dictionary.</para>
+    /// <para>Calls SpawnInvoke() on the tuple, instantiates the tuples prefab, waits a certain amount, Destroys the prefab and calls DestroyInvoke() on the tuple. </para>
+    /// </summary>
+    /// <param name="type"></param>
     public void SpawnHelper(HelperType type)
     {
 
 
         IEnumerator spawnHelper()
         {
-            var _ = type_management_dict[type];
+            var set = type_management_dict[type];
 
-            _.SpawnInvoke();
+            set.SpawnInvoke();
 
-            var prefab = Instantiate(_.prefab);
+            var prefab = Instantiate(set.prefab);
             yield return new WaitForSeconds(LIFETIME);
 
             Destroy(prefab);
 
-            _.DestroyInvoke();
+            set.DestroyInvoke();
 
 
 
@@ -71,20 +75,6 @@ public class HelperSpawnerManager : MonoBehaviour
 
 
     }
-
-    
-    void Update()
-    {
-
-    }
-
-
-
-
-
-
-
-
 
 
 

@@ -32,6 +32,17 @@ public class HarpoonLaunch : MonoBehaviour
 
     bool successfulGrab;
 
+
+
+
+    /// <summary>
+    /// <para>Breaks if readyToLaunch is false.</para>
+    /// <para>Sets readyToLaunch to false, assigns the target and start positions.</para>
+    /// <para>Calls SetupTether() and yields the LaunchProcess coroutine.</para>
+    /// <para>If successfulGrab is true, then sets readyToLaunch to true and successfulGrab to false.</para>
+    /// <para>Else, yields the Recharge coroutine.</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Launch()
     {
         if (!readyToLaunch) yield break;
@@ -57,17 +68,13 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
-      
 
 
 
-    }
-
-    
-    void Update()
-    {
 
     }
+
+
 
 
     void Start()
@@ -89,7 +96,7 @@ public class HarpoonLaunch : MonoBehaviour
         off_color_head = head_renderer.materials[1];
         off_color_charge = head_renderer.materials[0];
 
-      
+
 
 
 
@@ -114,7 +121,13 @@ public class HarpoonLaunch : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// <para>Plays the HARPOON_CONTROL_CLICK sound.</para>
+    /// <para>Switches the boolean value of turnedOff.</para>
+    /// <para>Sets the harpoon station charge's material to either off or charge color, based on turnedOff.</para>
+    /// <para>Sets the head mats material to either off or charge color, based on turnedOff.</para>
+    /// </summary>
+    /// <param name="hit"></param>
     void HarpoonColliderClick(RaycastHit hit)
     {
 
@@ -129,7 +142,11 @@ public class HarpoonLaunch : MonoBehaviour
         harpoon_head.GetComponent<Renderer>().materials = head_mats;
     }
 
-
+    /// <summary>
+    /// Yields ChangeScale twice, once from the start scale to zero, then back to start scale.
+    /// <para>Sets readyToLaunch to true afterwards.</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Recharge()
     {
 
@@ -147,27 +164,25 @@ public class HarpoonLaunch : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// LERPs the charge's localScale from start to end over a duration.
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     IEnumerator ChangeScale(Vector3 start, Vector3 end, float duration)
     {
         float lerp = 0;
 
-
         while (lerp < duration)
         {
             lerp += Time.deltaTime;
-
-
-
             charge.transform.localScale = Vector3.Lerp(start, end, lerp / duration);
 
             yield return null;
 
-
-
         }
-
-
 
 
     }
@@ -182,21 +197,16 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Plays the HARPOON_LAUNCH sound.</para>
+    /// <para>Moves the harpoon head towards the target and calls Track() in the process.</para>
+    /// <para>Plays the HARPOON_RETRACTION sound. </para>
+    /// <para>Moves the harpoon head back towards the start and calls Track() in the process.</para>
+    /// <para>Destroys the laser tether gameObject.</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LaunchProcess()
     {
-
-
-
-
-
-        // Vector3 start_point = transform.position;
-
-        //Vector3 targetPoint = (backwards) ? start : target;
-        //Vector3 startPoint = harpoon_head_transform.localPosition;
-
-
-        //
 
 
 
@@ -204,11 +214,7 @@ public class HarpoonLaunch : MonoBehaviour
 
         while (Vector3.Distance(harpoon_head_transform.localPosition, target) > 0.001f)
         {
-           
-
-
             harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, target, launch_speed * Time.deltaTime);
-
 
             Track(harpoon_head_transform.position);
             yield return new WaitForEndOfFrame();
@@ -220,11 +226,7 @@ public class HarpoonLaunch : MonoBehaviour
         AudioManager.PlayActivitySound(AudioManager.ActivityType.HARPOON_RETRACTION);
         while (Vector3.Distance(harpoon_head_transform.localPosition, start) > 0.001f)
         {
-
-
-
             harpoon_head_transform.localPosition = Vector3.MoveTowards(harpoon_head_transform.localPosition, start, launch_speed * Time.deltaTime);
-
 
             Track(harpoon_head_transform.position);
             yield return new WaitForEndOfFrame();
@@ -244,6 +246,9 @@ public class HarpoonLaunch : MonoBehaviour
 
 
     Vector3 originVector;
+    /// <summary>
+    /// Creates the laser tether gameObjects, destroys its collider, sets localScale, angle and originVector.
+    /// </summary>
     public void SetupTether()
     {
 
@@ -260,12 +265,19 @@ public class HarpoonLaunch : MonoBehaviour
 
 
 
-        //  isTargeting = true;
 
 
     }
 
-
+    /// <summary>
+    /// <para>Calculates the distance between the originVector and the arg targetVector.</para>
+    /// <para>Sets length to the half of the distance.</para>
+    /// <para>Calculates the middle vector as the half of the sum of target and origin vectors.</para>
+    /// <para>Sets the tether position as the middle vector.</para>
+    /// <para>Calculates the rotation direction as the subtraction of target and origin vector.</para>
+    /// <para>Sets the tether up alignment as the rotation direction.</para>
+    /// </summary>
+    /// <param name="targetVector"></param>
     void Track(Vector3 targetVector)
     {
 

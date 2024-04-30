@@ -17,7 +17,6 @@ public class LaserControlColorChange : MonoBehaviour
     [SerializeField] int ID;
 
 
-    private readonly List<int> COLOR_INDEXES = new() { 2, 3, 4, 5 };
     public const int AUTO_INDEX = 6;
 
 
@@ -48,61 +47,28 @@ public class LaserControlColorChange : MonoBehaviour
 
         channel.OnControlDisabled -= TurnOff;
         channel.OnControlEnabled -= TurnOn;
-        /*
-        switch (ID)
-        {
-            case 1:
-                LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange -= StartChange;
-                LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange -= StartChange;
 
-                LaserTurretCommunicationChannels.Channel1.OnColorCollider_ControlColorChange -= PlaySound;
-                LaserTurretCommunicationChannels.Channel1.OnAutoCollider_ControlColorChange -= PlaySound;
-
-                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingDisabled -= DisableAutoTargeting;
-                LaserTurretCommunicationChannels.Channel1.OnAutoTargetingEnabled += EnableAutoTargeting;
-
-
-                LaserTurretCommunicationChannels.Channel1.OnControlDisabled -= TurnOff;
-                LaserTurretCommunicationChannels.Channel1.OnControlEnabled -= TurnOn;
-
-
-                break;
-
-            case 2:
-
-                LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange -= StartChange;
-                LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange -= StartChange;
-
-                LaserTurretCommunicationChannels.Channel2.OnColorCollider_ControlColorChange -= PlaySound;
-                LaserTurretCommunicationChannels.Channel2.OnAutoCollider_ControlColorChange -= PlaySound;
-
-
-                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingDisabled -= DisableAutoTargeting;
-                LaserTurretCommunicationChannels.Channel2.OnAutoTargetingEnabled -= EnableAutoTargeting;
-
-
-                LaserTurretCommunicationChannels.Channel2.OnControlDisabled -= TurnOff;
-                LaserTurretCommunicationChannels.Channel2.OnControlEnabled -= TurnOn;
-
-                break;
-
-        }
-
-        */
     }
 
 
+    Renderer rend;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void Start()
     {
-        current_mats = GetComponent<Renderer>().materials;
+        rend = GetComponent<Renderer>();
+        current_mats = rend.materials;
 
 
 
-        normal_mats = new Material[GetComponent<Renderer>().materials.Length];
+        normal_mats = new Material[rend.materials.Length];
+
         for (int i = 0; i < normal_mats.Length; i++)
         {
-            normal_mats[i] = new Material(GetComponent<Renderer>().materials[i]);
+            normal_mats[i] = new Material(rend.materials[i]);
         }
 
 
@@ -155,6 +121,12 @@ public class LaserControlColorChange : MonoBehaviour
     Material off_mat;
 
 
+
+
+    /// <summary>
+    /// Plays either TURRET_CONTROL_CLICK_1 or TURRET_CONTROL_CLICK_2 sound based on ID.
+    /// </summary>
+    /// <param name="_"></param>
     void PlaySound(Material _)
     {
         var activity_type = (ID == 1) ? AudioManager.ActivityType.TURRET_CONTROL_CLICK_1 : AudioManager.ActivityType.TURRET_CONTROL_CLICK_2;
@@ -167,7 +139,9 @@ public class LaserControlColorChange : MonoBehaviour
 
 
    
-
+    /// <summary>
+    /// Sets turned_off to true, stops all coroutines, sets the renderer materials to off mats.
+    /// </summary>
     void TurnOff()
     {
         turned_off = true;
@@ -176,34 +150,34 @@ public class LaserControlColorChange : MonoBehaviour
 
         StopAllCoroutines();
 
-        GetComponent<Renderer>().materials = off_mats;
+        rend.materials = off_mats;
 
 
     }
 
+
+    /// <summary>
+    /// Sets turned_off to true, sets the renderer materials to normal mats.
+    /// </summary>
     void TurnOn()
     {
 
         turned_off = false;
-        GetComponent<Renderer>().materials = normal_mats;
+        rend.materials = normal_mats;
     }
 
+
+    /// <summary>
+    /// Stops all coroutines.
+    /// <para>Sets the auto_collider's renderer materia to block_material.</para>
+    /// <para>Sets the object's renderer material at AUTO_INDEX to off mat.</para> 
+    /// </summary>
     void DisableAutoTargeting()
     {
 
-
-
-
-
-
         StopAllCoroutines();
-
         auto_collider.GetComponent<Renderer>().material = block_material;
 
-
-
-
-        Renderer rend = GetComponent<Renderer>();
 
         Material[] mats = rend.materials; ;
 
@@ -221,15 +195,15 @@ public class LaserControlColorChange : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Sets the auto_collider's renderer material to allow_material.</para>
+    /// <para>If turned_off, returns.</para>
+    /// <para>Sets the renderer materials at AUTO_INDEX to</para>
+    /// </summary>
     void EnableAutoTargeting()
     {
         auto_collider.GetComponent<Renderer>().material = allow_material;
         if (turned_off) { return; }
-
-
-        Renderer rend = GetComponent<Renderer>();
-
 
         Material[] mats = rend.materials;
 
@@ -272,15 +246,16 @@ public class LaserControlColorChange : MonoBehaviour
     protected const string EMISSION_COLOR = "_EmissionColor";
 
 
-
+    /// <summary>
+    /// <para>Assigns the current mats as a copy of the renderer materials.</para>
+    /// <para>Attempts to get the index from the mat_index_dict using the material name</para>
+    /// <para>Starts the Change coroutine with the index.</para>
+    /// </summary>
+    /// <param name="mat"></param>
     public void StartChange(Material mat)
     {
-        // Material mat = hit.transform.GetComponent<Renderer>().material;
-        current_mats = new Material[GetComponent<Renderer>().materials.Length];
-        for (int i = 0; i < current_mats.Length; i++)
-        {
-            current_mats[i] = GetComponent<Renderer>().materials[i];
-        }
+        current_mats = new Material[rend.materials.Length];
+        Array.Copy(rend.materials, current_mats, current_mats.Length);
 
         if (mat_index_dict.ContainsKey(mat.name))
         {
@@ -298,13 +273,22 @@ public class LaserControlColorChange : MonoBehaviour
 
 
 
-  
 
 
 
 
-    
 
+
+    /// <summary>
+    /// <para>Gets the old color as the current mats emission color at arg index.</para>
+    /// <para>Sets the emission color at arg index to the same one, multiplied by darkening intensity.</para>
+    /// <para>Assigns the materials to the renderer.</para>
+    /// <para>Waits a set amount of time.</para>
+    /// <para><para>Sets the emission color at arg index to the old color.</para>
+    /// <para>Assigns the materials to the renderer.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
     IEnumerator Change(int index)
     {
 
@@ -313,12 +297,12 @@ public class LaserControlColorChange : MonoBehaviour
 
         current_mats[index].SetColor(EMISSION_COLOR, current_mats[index].color * darkening_intensity);
 
-        GetComponent<Renderer>().materials = current_mats;
+        rend.materials = current_mats;
 
         yield return new WaitForSeconds(DARKENING_WAIT_TIME);
 
         current_mats[index].SetColor(EMISSION_COLOR, old);
-        GetComponent<Renderer>().materials = current_mats;
+        rend.materials = current_mats;
 
 
 

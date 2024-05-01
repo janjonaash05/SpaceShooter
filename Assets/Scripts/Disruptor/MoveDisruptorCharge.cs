@@ -44,11 +44,9 @@ public class MoveDisruptorCharge : MonoBehaviour
     /// <returns></returns>
     IEnumerator Move()
     {
-        Debug.Log("targetpos "+target);
         while ((Vector3.Distance(transform.position, target.position)) > EDGE_DSITANCE)
         {
 
-            Debug.Log(Vector3.Distance(transform.position, target.position));
 
 
             transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
@@ -57,7 +55,6 @@ public class MoveDisruptorCharge : MonoBehaviour
         }
 
 
-        Debug.Log("Disablin");
 
         float disable_duration = DifficultyManager.DISRUPTORxDISABLE_TIME_DIFFICULTY_DICT[DifficultyManager.DIFFICULTY] * 1000;
 

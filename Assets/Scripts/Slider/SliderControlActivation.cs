@@ -52,25 +52,25 @@ public class SliderControlActivation : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// If inactive, returns.
+    /// <para>Gets the camPos at the camera's position + it's front times the targeting distance.</para>
+    /// <para>Gets the rotation direction as the normalized difference of the camPos and the pivots position.</para>
+    /// <para>Assigns the pivot rotation as the Quaternion LookRotation result of the rotationDirection.</para>
+    /// <para>Adjusts the y rotation.</para>
+    /// <para>Manually clamps the zRot based on cones of vision. </para>
+    /// <para>Reassigns the pivot rotation.</para>
+    /// </summary>
     void Update()
     {
 
         if (!active)
         {
-
-
             return;
         }
 
 
-
-
-
-
         Vector3 camPos = Camera.main.transform.position + Camera.main.transform.forward * targeting_distance;
-
-
 
         Vector3 rotationDirection = (camPos - slider_pivot_transform.position).normalized;
         Quaternion rot = Quaternion.LookRotation(rotationDirection);
@@ -78,11 +78,7 @@ public class SliderControlActivation : MonoBehaviour
 
 
         float yRot = slider_pivot_transform.rotation.eulerAngles.y + 90; // rotate turret front to actually be infront
-
-
-
-
-        float zRot = slider_pivot_transform.rotation.eulerAngles.x; //z for final quat, x is because cam rot doesnt work and had to replace z with x, yRot is for vertical lock
+        float zRot = slider_pivot_transform.rotation.eulerAngles.x; //z for final quat, x is because cam rot doesn't work and had to replace z with x, yRot is for vertical lock
 
 
         zRot = zRot switch
@@ -116,7 +112,12 @@ public class SliderControlActivation : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Plays the SLIDER_CONTROL_CLICK sound.
+    /// <para>Switches variable active's value and invokes OnEngagement. </para>
+    /// <para>If inactive, calls CancelMagazine. </para>
+    /// <para>Sets the slider charge material to on/off based on active's value.</para>
+    /// </summary>
     public void EngageActivation()
     {
 

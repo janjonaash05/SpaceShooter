@@ -15,21 +15,16 @@ public class SliderBulletMovement : MonoBehaviour
     void Start()
     {
         transform.position = origin;
+        Destroy(gameObject, bullet_life_time);
     }
 
-    
+    /// <summary>
+    /// Moves towards a position at a set speed.
+    /// </summary>
     void Update()
     {
-        time += Time.deltaTime;
         origin = transform.position;
         transform.position = Vector3.MoveTowards(origin, target, speed * Time.deltaTime);
-       
 
-
-
-
-        if (time > bullet_life_time) {
-            Destroy(gameObject);
-        }
     }
 }

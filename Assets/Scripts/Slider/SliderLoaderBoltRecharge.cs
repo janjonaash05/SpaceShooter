@@ -84,9 +84,5 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
 
     }
 
-    
-    void Update()
-    {
 
-    }
 }

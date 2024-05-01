@@ -15,6 +15,10 @@ public class ScoreCounter : MonoBehaviour
 
 
 
+
+    /// <summary>
+    /// Assigns ghe anchored position and if the object isn't OnGameOverScreen, sets up functionality to change the text on score change.
+    /// </summary>
     void Start()
     {
 
@@ -31,21 +35,5 @@ public class ScoreCounter : MonoBehaviour
         UICommunication.OnScoreChange += () => txt.text = "Score: " + UICommunication.Score;
     }
 
-    
-    void Update()
-    {
-        
-    }
-
-    
-
-    /*
-  public static void Increase(int amount) {
-
-       
-    score += amount;
-      
-        txt.text = "Score " + score;
-    }
-    */
+ 
 }

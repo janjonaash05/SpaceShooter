@@ -58,26 +58,18 @@ public class SettingsManager : MonoBehaviour
 
     [SerializeField] AudioSource menu_ambience;
 
-
-
-
     Resolution[] resolutions;
 
-
     AudioSource src;
-
-
-
-
-
-    float start_ambience_volume;
-
 
 
     public static SettingsData LoadSettings { get; private set; }
     public static SettingsData NewSettings { get; private set; }
 
 
+    /// <summary>
+    /// Sets the CURRENT_DATA volume multiplier back to the one which was assigned on scene load, sets the NewSettings as a shallow copy of LoadSettings.
+    /// </summary>
     public static void DiscardSettings()
     {
         UserDataManager.CURRENT_DATA.SetVolumeMultiplier(LoadSettings.Volume);
@@ -87,10 +79,10 @@ public class SettingsManager : MonoBehaviour
     }
 
 
-
-
-
-
+    /// <summary>
+    /// <para>Loads the CURRENT_DATA from UserDataManager.</para>
+    /// <para>TODO</para>
+    /// </summary>
     void Load()
     {
 
@@ -109,20 +101,11 @@ public class SettingsManager : MonoBehaviour
         fullscreen_toggle.isOn = data.Fullscreen;
 
 
-
-        start_ambience_volume = menu_ambience.volume;
-
-
-
-
-
-
-
         resolutions = Screen.resolutions;
 
         resolutions_dropdown.ClearOptions();
 
-        List<string> options = resolutions.ToList().Select(x => x.width + " x " + x.height).ToList();
+        List<string> options = resolutions.ToList().Select(x => x.width + " x " + x.height).Distinct().ToList();
 
         int current_res_index = Array.IndexOf(options.ToArray(), data.Resolution[0]+" x "+ data.Resolution[1]);
 
@@ -130,15 +113,8 @@ public class SettingsManager : MonoBehaviour
 
         resolutions_dropdown.value = current_res_index;
 
-
-
-
         resolutions_dropdown.RefreshShownValue();
 
-
-
-
-        Console.WriteLine("OnSettingsLoad "+ LoadSettings);
 
     }
 
@@ -149,22 +125,15 @@ public class SettingsManager : MonoBehaviour
         src = GetComponent<AudioSource>();
         Load();
 
-
-
-       
-
-
-
-      
-
-
-        
-
-
     }
 
 
-
+    /// <summary>
+    /// <para>Plays the audio source.</para>
+    /// <para>Sets the screen resolution to the resolution dimensions at the index, and fullscreen according to NewSettings.</para>
+    /// <para>Assigns the NewSettings resolution as a copy of the resolution dimensions</para>
+    /// </summary>
+    /// <param name="index"></param>
     public void SetResolution(int index)
     {
         src.Play();
@@ -178,7 +147,12 @@ public class SettingsManager : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Plays the audio source.</para>
+    /// <para>Sets screen fullscreen according to arg val.</para>
+    /// <
+    /// </summary>
+    /// <param name="val"></param>
     public void ChangeFullScreen(bool val)
     {
         src.Play();
@@ -187,20 +161,21 @@ public class SettingsManager : MonoBehaviour
 
     }
 
+    
+    /// <summary>
+    /// <para>Updates the volume label with the arg val converted to percentage and rounded.</para>
+    /// <para>Sets the audio source and NewSettings volume as arg val.</para>
+    /// <para>Sets the CURRENT_DATA volume multiplier as the NewSettings one.</para>
+    /// </summary>
+    /// <param name="val"></param>
     public void SetVolume(float val)
     {
         volume_label.text = "Volume: " + Mathf.RoundToInt(val * 100);
-
-
-
-        
-
         src.volume = val;
         menu_ambience.volume = val;
         
 
         NewSettings.SetVolume(val);
-
 
         UserDataManager.CURRENT_DATA.SetVolumeMultiplier(NewSettings.Volume);
 

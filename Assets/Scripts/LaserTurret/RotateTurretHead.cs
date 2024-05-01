@@ -16,7 +16,8 @@ public class RotateTurretHead : MonoBehaviour
 
     Vector3 idleRotation;
     Vector3 activeRotation;
-    //  bool lockedOn = false;
+
+
     void Start()
     {
         rotation = new(100,100, ID == 1 ? 100: -100);
@@ -32,13 +33,15 @@ public class RotateTurretHead : MonoBehaviour
         GetComponent<TargetBomb>().OnTargetingStart += EngageShootMode;
     }
 
-
+    /// <summary>
+    /// Rotates the transform and the charge in opposite directions.
+    /// </summary>
     void Update()
     {
-        //    if(!lockedOn){
+      
         transform.Rotate(rotation * Time.deltaTime);
         turret_head_charge.transform.Rotate(CHARGE_SPEED_MULT * Time.deltaTime * -rotation);
-        //  }
+
 
 
     }

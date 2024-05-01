@@ -152,6 +152,17 @@ public class MaterialIndexHolder : IndexHolder
     public bool IsAtMax() { return Parent == maxParent && Child == maxChild; }
     public bool IsAtMin() { return Parent == minParent && Child == minChild; }
 
+
+
+
+    /// <summary>
+    /// <para>Early returns 1/-1 and sets the edge to UPPER/LOWER, based on if childDelta is nonnegative or nonpositive, and if IsAtMax/IsAtMin are true.</para>
+    /// <para></para>
+    /// TODO
+    /// </summary>
+    /// <param name="parentDelta"></param>
+    /// <param name="childDelta"></param>
+    /// <returns></returns>
     public override int ChangeIndex(int parentDelta, int childDelta)
     {
 

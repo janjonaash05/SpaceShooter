@@ -7472,9 +7472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a4eb9793d067c4b8baa75bd4d39831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation: {x: 100, y: 100, z: 100}
-  charge_speed_multiplier: 3
-  ShootModeMultiplier: 60
+  ID: 1
 --- !u!114 &463007758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31380,9 +31378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a4eb9793d067c4b8baa75bd4d39831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotation: {x: 100, y: -100, z: -100}
-  charge_speed_multiplier: 3
-  ShootModeMultiplier: 60
+  ID: 2
 --- !u!114 &1064589244
 MonoBehaviour:
   m_ObjectHideFlags: 0

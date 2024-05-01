@@ -7,8 +7,16 @@ public class RotateDisruptor : MonoBehaviour, IEMPDisruptable
 {
     
 
-    [SerializeField] float lerp_speed;
+    
 
+
+    /// <summary>
+    /// <para>Calculates the direction as the normalized difference of the target and this transform's position.</para>
+    /// <para>Gets the Quaternion rotation as LookRotation of the direction.</para>
+    /// <para>Adjusts the rotation.</para>
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns>The adjusted rotation</returns>
     public Quaternion GetRotation(Vector3 target)
     {
 
@@ -21,11 +29,6 @@ public class RotateDisruptor : MonoBehaviour, IEMPDisruptable
     }
 
 
-
-    private void Awake()
-    {
-    }
-
    public void OnEMP() => StopAllCoroutines();
 
  
@@ -36,18 +39,24 @@ public class RotateDisruptor : MonoBehaviour, IEMPDisruptable
     }
 
 
-
+    /// <summary>
+    /// Gets target rotation as GetRotation with the target.
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
     public IEnumerator RotateTowards(Vector3 target)
     {
 
         Quaternion targetRot = GetRotation(target);
+        Quaternion startRot = transform.rotation;
 
+        float duration = 0.35f;
         float lerp = 0;
-        while (lerp <= 1)
+        while (lerp <= duration)
         {
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, lerp);
-            lerp += Time.deltaTime * lerp_speed;
+            lerp += Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(startRot, targetRot, lerp/duration);
+            
             yield return null;
 
 

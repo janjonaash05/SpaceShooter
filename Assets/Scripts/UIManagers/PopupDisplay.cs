@@ -21,25 +21,12 @@ public class PopupDisplay : MonoBehaviour
     void Start()
     {
 
-
-      
-
-
-
-
-
         GetComponent<RectTransform>().anchoredPosition = new Vector3(-122, -80, 0);
         txt = GetComponent<TextMeshProUGUI>();
         txt.color = default_color;
         txt.text = "";
 
-
-
-
-
         UICommunication.OnDifficultyValueChange += Popup;
-
-
 
     }
 
@@ -53,74 +40,74 @@ public class PopupDisplay : MonoBehaviour
     }
 
 
-    void Update()
+
+    /// <summary>
+    /// Assigns the text and starts the PopupProcess coroutine.
+    /// </summary>
+    /// <param name="e"></param>
+    void Popup(DifficultyEventArgs e)
     {
+       
+
+
+
+
+       
+        txt.text = e.Message;
+        StartCoroutine(PopupProcess(e));
 
     }
 
 
-    void Popup(DifficultyEventArgs e)
+
+    /// <summary>
+    /// <para>Sets CanPopup to false.</para>
+    /// <para>Sets the font size to min, keeps increasing it by popup_speed until it's near max, then sets it to max. </para>
+    /// <para>Assigns the alert color based on the AffectedFeatureCircumstance.</para>
+    /// <para>Alternates between the alert and default color with a time delay.</para>
+    /// <para>Keeps decreasing the font size by popup_speed until it's near min, then sets it to min. </para>
+    /// <para>Sets CanPopup to true and calls Dequeue_PopupCall.</para>
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    IEnumerator PopupProcess(DifficultyEventArgs e)
     {
-        IEnumerator popup()
+        UICommunication.CanPopup = false;
+
+        txt.fontSize = font_size_range.x;
+        while (txt.fontSize < font_size_range.y)
         {
 
-            txt.fontSize = font_size_range.x;
-            while (txt.fontSize < font_size_range.y)
-            {
+            txt.fontSize += popup_speed;
 
-                txt.fontSize += popup_speed;
-
-                yield return null;
-            }
-            txt.fontSize = font_size_range.y;
+            yield return null;
+        }
+        txt.fontSize = font_size_range.y;
 
 
-            Color alert_color = (e.Target == DifficultyManager.AffectedFeatureCircumstance.TOKEN) ? alert_token : alert_time;
-            for (int i = 0; i < 19; i++)
-            {
-                txt.color = (i % 2 == 0) ? alert_color : default_color;
-                yield return new WaitForSeconds(0.15f);
-            }
-
-
-            while (txt.fontSize > font_size_range.x)
-            {
-
-                txt.fontSize -= popup_speed;
-
-                yield return null;
-            }
-
-            txt.fontSize = font_size_range.x;
-
-
-            UICommunication.CanPopup = true; 
-            UICommunication.Dequeue_PopupCall();
-
-
-         
-
-
-
-
-
-
-
-
-
+        Color alert_color = (e.Target == DifficultyManager.AffectedFeatureCircumstance.TOKEN) ? alert_token : alert_time;
+        for (int i = 0; i < 19; i++)
+        {
+            txt.color = (i % 2 == 0) ? alert_color : default_color;
+            yield return new WaitForSeconds(0.15f);
         }
 
 
+        while (txt.fontSize > font_size_range.x)
+        {
+
+            txt.fontSize -= popup_speed;
+
+            yield return null;
+        }
+
+        txt.fontSize = font_size_range.x;
 
 
-        UICommunication.CanPopup = false;
-        txt.text = e.Message;
-        StartCoroutine(popup());
+        UICommunication.CanPopup = true;
+        UICommunication.Dequeue_PopupCall();
 
     }
-
-
-    
 
 
 

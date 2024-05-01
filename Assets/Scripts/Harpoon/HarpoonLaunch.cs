@@ -274,7 +274,7 @@ public class HarpoonLaunch : MonoBehaviour
     /// <para>Sets length to the half of the distance.</para>
     /// <para>Calculates the middle vector as the half of the sum of target and origin vectors.</para>
     /// <para>Sets the tether position as the middle vector.</para>
-    /// <para>Calculates the rotation direction as the subtraction of target and origin vector.</para>
+    /// <para>Calculates the rotation direction as the difference of target and origin vector.</para>
     /// <para>Sets the tether up alignment as the rotation direction.</para>
     /// </summary>
     /// <param name="targetVector"></param>

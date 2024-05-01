@@ -7,22 +7,22 @@ public class RotateTurretHead : MonoBehaviour
     
 
     GameObject turret_head_charge;
-    public Vector3 rotation;
-    public float charge_speed_multiplier;
-    public float ShootModeMultiplier;
+    Vector3 rotation;
+    const float CHARGE_SPEED_MULT = 3;
+    const  float SHOOT_MODE_MULT = 600;
 
 
-
+    [SerializeField] int ID;
 
     Vector3 idleRotation;
     Vector3 activeRotation;
     //  bool lockedOn = false;
     void Start()
     {
-
+        rotation = new(100,100, ID == 1 ? 100: -100);
 
         idleRotation = rotation;
-        activeRotation = rotation + Vector3.one* ShootModeMultiplier;
+        activeRotation = rotation + Vector3.one* SHOOT_MODE_MULT;
 
       
 
@@ -37,7 +37,7 @@ public class RotateTurretHead : MonoBehaviour
     {
         //    if(!lockedOn){
         transform.Rotate(rotation * Time.deltaTime);
-        turret_head_charge.transform.Rotate(charge_speed_multiplier * Time.deltaTime * -rotation);
+        turret_head_charge.transform.Rotate(CHARGE_SPEED_MULT * Time.deltaTime * -rotation);
         //  }
 
 

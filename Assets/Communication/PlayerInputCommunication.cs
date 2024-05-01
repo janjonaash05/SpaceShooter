@@ -74,6 +74,13 @@ public static class PlayerInputCommunication
     
     }
 
+    /// <summary>
+    /// <para>Sets the action as an empty one.</para>
+    /// <para>Tries to set the action to the one in the tag click dictionary using the arg hit's tag. Assigns valid_click to true at success and false at fail.</para>
+    /// <para>Invokes the action.</para>
+    /// </summary>
+    /// <param name="hit"></param>
+    /// <returns>valid_click</returns>
     public static bool Raise_RaycastClick(RaycastHit hit)
     {
         Action<RaycastHit> action = (hit) => { };
@@ -85,16 +92,12 @@ public static class PlayerInputCommunication
         try
         {
             action = TAG_CLICK_DICT[hit.transform.tag];
-
             valid_click = true;
         }
         catch (Exception)
         {
             valid_click = false;
-           // action(hit); 
         }
-
-
         action?.Invoke(hit);
 
         return valid_click;

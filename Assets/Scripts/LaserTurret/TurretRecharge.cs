@@ -8,26 +8,24 @@ using System.Threading.Tasks;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
-public class TurretRecharge : MonoBehaviour
+public class TurretRecharge : AbstractChargeRecharge
 {
 
-    int max_capacity;
-
-
-    [SerializeField] GameObject charge_prefab;
-
-    List<GameObject> charges;
+    
 
     [SerializeField]
     int ID;
 
-    int ARBITRARY_TURRET_RECHARGED_CAPACITY;
 
-    Coroutine current_recharge_coroutine;
 
-    const float POSITION_FOR_SIZE_DIVIDER = 75;
+    //const float POSITION_FOR_SIZE_DIVIDER = 75;
 
-    bool recharging = false;
+    protected override Func<float, Vector3> FormPlacementVector => (x) => new(0, 0, x);
+
+
+    protected override List<GameObject> GetChargesAsSortedList() => charges.OrderBy(x => x.transform.localPosition.z).ToList();
+
+
 
     public event Action OnRechargeStart, OnRechargeEnd;
 
@@ -35,6 +33,8 @@ public class TurretRecharge : MonoBehaviour
 
 
     LaserTurretChannel channel;
+
+    protected override float POSITION_FOR_SIZE_DIVIDER => 75;
 
     void Start()
     {
@@ -48,14 +48,14 @@ public class TurretRecharge : MonoBehaviour
         ps = transform.GetChild(0).GetComponent<ParticleSystem>();
 
         channel = LaserTurretCommunicationChannels.GetChannelByID(ID);
-        channel.OnTurretCapacityChanged += Turret1CapacityValueChanged;
+        channel.OnTurretCapacityChanged += TurretCapacityValueChanged;
         channel.OnTurretCapacityDepleted += TurretCapacityDepleted;
         UpgradesManager.OnTurretCapacityValueChange += TurretCapacityUpgradeValueChange;
 
     }
 
 
-    void Turret1CapacityValueChanged()
+    void TurretCapacityValueChanged()
     {
         if (recharging) return;
         charges[channel.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
@@ -82,7 +82,7 @@ public class TurretRecharge : MonoBehaviour
     private void OnDestroy()
     {
 
-        channel.OnTurretCapacityChanged -= Turret1CapacityValueChanged;
+        channel.OnTurretCapacityChanged -= TurretCapacityValueChanged;
         channel.OnTurretCapacityDepleted -= TurretCapacityDepleted;
 
         UpgradesManager.OnTurretCapacityValueChange -= TurretCapacityUpgradeValueChange;
@@ -91,7 +91,7 @@ public class TurretRecharge : MonoBehaviour
 
 
 
-
+    /*
     void RechargeOnDepletion()
     {
         if (!recharging) current_recharge_coroutine = StartCoroutine(Recharge(0));
@@ -230,13 +230,11 @@ public class TurretRecharge : MonoBehaviour
         charges = charges.OrderBy(x => x.transform.localPosition.z).ToList();
     }
 
+     protected override AudioManager.ActivityType CHARGE_SPAWN_SOUND_ACTIVITY_TYPE => ID ==1 ? AudioManager.ActivityType.TURRET_CHARGE_SPAWN_1 : AudioManager.ActivityType.TURRET_CHARGE_SPAWN_2;
 
-
-
-
-    IEnumerator Recharge(int skips_amount)
+    protected override IEnumerator Recharge(int skips_amount)
     {
-        ARBITRARY_TURRET_RECHARGED_CAPACITY = 0;
+        ARBITRARY_CHARGES_RECHARGED_CAPACITY = 0;
         recharging = true;
 
         foreach (GameObject charge in charges)
@@ -262,10 +260,10 @@ public class TurretRecharge : MonoBehaviour
 
 
 
-            ARBITRARY_TURRET_RECHARGED_CAPACITY++;
+            ARBITRARY_CHARGES_RECHARGED_CAPACITY++;
 
             i++;
-            float recharge_delay = (i <= skips_amount) ? 0 : UpgradesManager.GetCurrentTurretRechargeValue();
+            float recharge_delay = (i <= skips_amount) ? 0 : CalculateRechargeDelay();
 
 
             yield return new WaitForSeconds(recharge_delay);
@@ -287,8 +285,77 @@ public class TurretRecharge : MonoBehaviour
         toExecute();
 
 
-        ARBITRARY_TURRET_RECHARGED_CAPACITY = LaserTurretChannel.MAX_TURRET_CAPACITY;
+        ARBITRARY_CHARGES_RECHARGED_CAPACITY = LaserTurretChannel.MAX_TURRET_CAPACITY;
         ps.enableEmission = false;
     }
 
+
+    */
+
+    protected override AudioManager.ActivityType CHARGE_SPAWN_SOUND_ACTIVITY_TYPE => ID ==1 ? AudioManager.ActivityType.TURRET_CHARGE_SPAWN_1 : AudioManager.ActivityType.TURRET_CHARGE_SPAWN_2;
+
+    protected override IEnumerator Recharge(int skips_amount)
+    {
+        ARBITRARY_CHARGES_RECHARGED_CAPACITY = 0;
+        recharging = true;
+
+        foreach (GameObject charge in charges)
+        {
+            try
+            {
+                charge.GetComponent<Renderer>().enabled = false;
+
+
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+
+
+        ps.enableEmission = true;
+
+        int i = 0;
+        yield return StartCoroutine(RegenerateCharges(skips_amount));
+
+        recharging = false;
+
+        Action toExecute = ((ID == 1) ? LaserTurretCommunicationChannels.Channel1.Raise_TurretCapacityRecharged : LaserTurretCommunicationChannels.Channel2.Raise_TurretCapacityRecharged);
+        toExecute();
+
+
+        ARBITRARY_CHARGES_RECHARGED_CAPACITY = LaserTurretChannel.MAX_TURRET_CAPACITY;
+        ps.enableEmission = false;
+    }
+
+
+    protected override (float position_unit, Vector3 scale) GetPositionUnitAndScale()
+    {
+        float start_size = charge_prefab.transform.localScale.z;
+        float size = start_size / max_capacity;
+        float position_unit = size / (POSITION_FOR_SIZE_DIVIDER);
+
+        float scaled_size = start_size / (max_capacity + (position_unit * max_capacity * POSITION_FOR_SIZE_DIVIDER));
+
+        Vector3 scale = new(start_size, start_size, scaled_size);
+
+
+        return (position_unit, scale);
+    }
+
+    protected override int GetMaxCapacityToSet()
+    {
+        return LaserTurretChannel.MAX_TURRET_CAPACITY;
+    }
+
+    protected override string GetTagForList()
+    {
+        return (ID == 1) ? Tags.TURRET_CHARGE_1 : Tags.TURRET_CHARGE_2;
+    }
+
+    protected override float CalculateRechargeDelay()
+    {
+        return UpgradesManager.GetCurrentTurretRechargeValue();
+    }
 }

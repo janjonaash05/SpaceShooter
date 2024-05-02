@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,15 @@ using UnityEngine.Rendering;
 
 public abstract class AbstractChargeRecharge : MonoBehaviour
 {
-    List<GameObject> charges;
+    protected List<GameObject> charges;
 
-    int max_capacity;
-    bool recharging = false;
-    Coroutine current_recharge_coroutine;
-    [SerializeField] GameObject charge_prefab;
+    protected int max_capacity;
+    protected bool recharging = false;
+    protected Coroutine current_recharge_coroutine;
+    [SerializeField] protected GameObject charge_prefab;
 
-
-    protected abstract float POSITION_FOR_SIZE_DIVIDER { get; set; }
+    protected int ARBITRARY_CHARGES_RECHARGED_CAPACITY;
+    protected abstract float POSITION_FOR_SIZE_DIVIDER { get; }
 
     /// <summary>
     /// If not recharging, sets the current_recharge_coroutine to the start of the Recharge coroutine with 0 skips.
@@ -102,7 +103,11 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
 
                     float pos = position_unit + position_unit * 2 * j;
 
-                    CreateCharge(new(0, pos * mult, 0), scale);
+
+
+                    //CreateCharge(new(0, pos * mult, 0), scale);
+
+                    CreateCharge(FormPlacementVector(pos * mult), scale);
                 }
 
             }
@@ -115,7 +120,7 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
                 for (int j = 1; j <= (max_capacity - 1) / 2; j++)
                 {
                     float pos = position_unit * 2 * j;
-                    CreateCharge(new(0, pos * mult, 0), scale);
+                    CreateCharge(FormPlacementVector(pos * mult), scale);
 
 
                 }
@@ -154,10 +159,20 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
             }
         }
 
-        charges = charges.OrderByDescending(x => x.transform.localPosition.y).ToList();
+        charges = GetChargesAsSortedList();
+
+
+
+
+
+
+
     }
 
 
+
+
+    protected abstract List<GameObject> GetChargesAsSortedList();
     protected abstract string GetTagForList();
 
     /// <summary>
@@ -196,14 +211,14 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
 
 
 
-    int ARBITRARY_CHARGES_RECHARGED_CAPACITY;
 
 
 
+   protected abstract Func<float, Vector3> FormPlacementVector { get; }
 
 
 
-
+    protected abstract AudioManager.ActivityType CHARGE_SPAWN_SOUND_ACTIVITY_TYPE { get; }
 
 
     /// <summary>

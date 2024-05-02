@@ -67,7 +67,9 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
 
 
-
+    /// <summary>
+    /// Fills the grid.
+    /// </summary>
     void InitialChargeUp()
     {
 
@@ -80,6 +82,10 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
 
 
+    /// <summary>
+    /// <para>Waits a set amount of time.</para>
+    /// <para>While calling ChangeIndex() with one doesn't result in -1, plays the SLIDER_FULL_AUTO_CHARGE_SPAWN sound and waits again. </para>
+    /// </summary>
     async void Recharge()
     {
 
@@ -97,18 +103,25 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
 
     }
-
-    delegate void Executable();
+    /// <summary>
+    /// Calls either CreateChargeAtHolder() or DestroyChargeAtHolder(), based on if the childDelta is positive.
+    /// <para>Gets the result of calling ChangeIndex on the holder with the childDelta.</para>
+    /// <para>If the result is -1, calls OnDepletionInvoke(), and if it 1, calls OnFullRechargeInvoke().</para>
+    /// <para></para>
+    /// </summary>
+    /// <param name="childDelta"></param>
+    /// <returns></returns>
     public int ChangeIndex(int childDelta)
     {
 
 
 
-        Executable exec = (childDelta > 0) ? CreateChargeAtHolder : DestroyChargeAtHolder;
+        Action exec = (childDelta > 0) ? CreateChargeAtHolder : DestroyChargeAtHolder;
         exec();
 
         int result = holder.ChangeIndex(0, childDelta);
 
+        
         if (result == -1)
         {
             OnDepletionInvoke();
@@ -123,6 +136,12 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
     }
 
+
+    /// <summary>
+    /// Creates the charge gameObject, sets its material to On/Off based on IsActive.
+    /// <para>Assigns it as a grid value at holder Parent and Child indexes.</para>
+    /// <para>Assigns localPosition to the values at y_positons with Parent and z_positions with Child as indexes.</para>
+    /// </summary>
     void CreateChargeAtHolder()
     {
         GameObject charge = null;
@@ -130,7 +149,9 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
         {
             charge = Instantiate(charge_prefab, transform, false);
 
-            Material mat = (IsActive) ? charge.GetComponent<SliderLoaderChargeColorChange>().On : charge.GetComponent<SliderLoaderChargeColorChange>().Off;
+
+            var color_change = charge.GetComponent<SliderLoaderChargeColorChange>();
+            Material mat = (IsActive) ? color_change.On : color_change .Off;
 
 
             charge.GetComponent<Renderer>().material = mat;
@@ -142,15 +163,17 @@ public class SliderLoaderFullAutoRecharge : SliderLoaderRecharge
 
 
         }
-        catch (Exception)
+        catch
         {
-            DestroyImmediate(charge);
+            Destroy(charge);
         }
 
 
     }
 
-
+    /// <summary>
+    /// If exists, destroys the charge gameObject at the current holder indexes in the grid.
+    /// </summary>
     void DestroyChargeAtHolder()
     {
         Destroy(charge_grid?[holder.Parent, holder.Child]);

@@ -87,13 +87,13 @@ public class DifficultyManager : MonoBehaviour
 
     public static Dictionary<AffectedFeature, int> FEATURE_VALUE_DICT = new()
     {
-        {AffectedFeature.DISRUPTORxSPAWN_CHANCE,3 },
+        {AffectedFeature.DISRUPTORxSPAWN_CHANCE,0 },
         {AffectedFeature.DISRUPTORxSPEED,0 },
 
         {AffectedFeature.BOMB_SPAWNERxSPAWN_RATE,0 },
         {AffectedFeature.BOMB_SPAWNERxFORM, 0},
 
-        {AffectedFeature.CONSTELLATIONxSPAWN_RATE,3 },
+        {AffectedFeature.CONSTELLATIONxSPAWN_RATE,0 },
         {AffectedFeature.CONSTELLATIONxMAX_STARS,0 },
 
 
@@ -104,7 +104,7 @@ public class DifficultyManager : MonoBehaviour
     };
 
 
-    public const int MAX_FEATURE_VALUE = 1;
+    public const int MAX_FEATURE_VALUE = 4;
 
     public static List<AffectedFeature> TOKEN_CHANGABLE_FEATURES = new() { AffectedFeature.DISRUPTORxSPEED, AffectedFeature.BOMB_SPAWNERxFORM, AffectedFeature.CONSTELLATIONxMAX_STARS, AffectedFeature.BOMB_CLUSTERxBURST_AMOUNT };
 
@@ -217,11 +217,11 @@ public class DifficultyManager : MonoBehaviour
 
     public static Dictionary<int, int> BOMB_CLUSTER_BURST_AMOUNT_DEGREE_VALUE_DICT = new()
     {
-        {0,5 },
+        {0,1 },
         {1,2 },
-        {2,3 },
-        {3,4 },
-        {4,5 },
+        {2,2 },
+        {3,3 },
+        {4,3 },
 
 
     };
@@ -272,7 +272,7 @@ public class DifficultyManager : MonoBehaviour
 
     public static float BOMB_SPAWN_DELAY = 20f, DISRUPTOR_SPAWN_DELAY = 20, BOMB_SPEED_MULTIPLIER = 20;
     public static float DISRUPTOR_DISABLE_TIME = 10;
-    public static int DISRUPTOR_SPAWN_CHANCE = 100;
+
 
 
 
@@ -282,13 +282,6 @@ public class DifficultyManager : MonoBehaviour
 
 
     public static int DISRUPTOR_DEFAULT_START_HEALTH = 100, DISRUPTOR_START_HEALTH;
-
-
-
-
-
-
-    static int bomb_spawner_value = 0;
 
 
     private void Start()
@@ -369,14 +362,26 @@ public class DifficultyManager : MonoBehaviour
 
 
 
+    public readonly Dictionary<Difficulty, int> DIFFICULTY_TIME_CIRCUMSTANCE_DELAY_DICT = new()
+    {
+        {Difficulty.EASY,30 },
+        {Difficulty.NORMAL,20 },
+        {Difficulty.HARD,10 },
 
-   
+
+
+    };
+
+
+    /// <summary>
+    /// Each elapsed set of seconds determined by difficulty, calls ChangeRandomDifficulty.
+    /// </summary>
     void Update()
     {
 
         if (UICommunication.Secs == 0) { return; }
 
-        if (UICommunication.Secsf % 100 < Time.deltaTime)
+        if (UICommunication.Secsf % DIFFICULTY_TIME_CIRCUMSTANCE_DELAY_DICT[DIFFICULTY] < Time.deltaTime)
         {
 
             ChangeRandomDifficulty(AffectedFeatureCircumstance.TIME);

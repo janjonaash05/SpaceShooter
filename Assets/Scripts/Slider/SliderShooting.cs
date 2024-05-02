@@ -80,10 +80,7 @@ public class SliderShooting : MonoBehaviour
         isShooting = false;
 
 
-
-        //   PlayerInputCommunication.OnSliderBoltClick += (_) => { loader_recharge = pivot_source_bolt_recharge; active_ps = bolt_ps; };
-        //  PlayerInputCommunication.OnSliderFullAutoClick += (_) => { loader_recharge = pivot_source_full_auto_recharge; active_ps = full_auto_ps; };
-
+  
         PlayerInputCommunication.OnSliderBoltClick += SliderBoltClick;
         PlayerInputCommunication.OnSliderFullAutoClick += SliderFullAutoClick;
 
@@ -94,11 +91,7 @@ public class SliderShooting : MonoBehaviour
       (bullet_speed_full_auto, bullet_speed_bolt)
         = UpgradesManager.SLIDER_SPEED_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.SLIDER_SPEED]];
 
-        /*
-                UpgradesManager.OnSliderSpeedValueChange += () => 
-                (bullet_speed_full_auto, bullet_speed_bolt) 
-                = UpgradesManager.SLIDER_SPEED_DEGREE_VALUE_DICT[UpgradesManager.UPGRADE_VALUE_DICT[UpgradesManager.UpgradeType.SLIDER_SPEED]];
-        */
+
 
         UpgradesManager.OnSliderSpeedValueChange += SliderSpeedValueChange;
 
@@ -123,7 +116,9 @@ public class SliderShooting : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// If the particle system isn't null, disables its emission. Then calls CancelMagazine() and sets isShooting to false.
+    /// </summary>
     void CancelShooting()
     {
 
@@ -136,15 +131,17 @@ public class SliderShooting : MonoBehaviour
     }
 
 
-    void PlayPS()
-    {
-    }
-
+    /// <summary>
+    /// If the loader_recharge is null, returns.
+    /// <para>Also, if either the slider control head isn't active, isShooting, isRecharging, or loader recharge isn't active, returns. </para>
+    /// <para>Enables emission and plays the particle system, calls Shoot() and sets isShooting to true.</para>
+    /// </summary>
     void StartShooting()
     {
         if (loader_recharge == null) return;
-        if (!(slider_control_head.GetComponent<SliderControlActivation>().active && !isShooting && !loader_recharge.IsRecharging && loader_recharge.IsActive)) return;
+       // if (!(slider_control_head.GetComponent<SliderControlActivation>().active && !isShooting && !loader_recharge.IsRecharging && loader_recharge.IsActive)) return;
 
+        if (!(slider_control_head.GetComponent<SliderControlActivation>().active) || isShooting || loader_recharge.IsRecharging || !loader_recharge.IsActive) return;
 
 
         active_ps.enableEmission = true;
@@ -163,6 +160,16 @@ public class SliderShooting : MonoBehaviour
         StartCoroutine(EmptyMagazine());
     }
 
+
+
+    /// <summary>
+    /// Based on the loader_recharge type:
+    /// If SliderLoaderFullAutoRecharge:
+    /// <para>- Calls ChangeIndex on auto recharge with -1 until reaching -1 (depleting), meanwhile calls CreateBullet, plays SLIDER_FULL_AUTO_SHOT sound and waits firing_delay.</para>
+    /// <para>If SliderLoaderBoltRecharge:</para>
+    /// <para>- Calls Use() on bolt recharge, calls CreateBullet() and plays the SLIDER_BOLT_SHOT sound. </para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator EmptyMagazine()
     {
         switch (loader_recharge)
@@ -178,6 +185,8 @@ public class SliderShooting : MonoBehaviour
                 }
                 CancelShooting();
                 break;
+
+
             case SliderLoaderBoltRecharge bolt:
                 bolt.Use();
                 CreateBullet();
@@ -193,7 +202,13 @@ public class SliderShooting : MonoBehaviour
     {
         StopAllCoroutines();
     }
-
+    /// <summary>
+    /// <para>Create a capsule gameObject, assigns its material and scale based on loader_recharge type.</para>
+    /// <para>Aligns its direction tith the laser_target, sets its tag and layer.</para>
+    /// <para>Adds a RigidBody component, disables its gravity and sets its collision detection mode to ContinuousDynamic.</para>
+    /// <para>Adds a SliderBulletMovement, sets it origin infront of the turret, sets its target, sets its speed based on loader_recharge type. </para>
+    /// <para>Adds a SliderBulletCollision component, sets its damage potential based on loader_recharge type.</para>
+    /// </summary>
     void CreateBullet()
     {
         bullet = GameObject.CreatePrimitive(PrimitiveType.Capsule);

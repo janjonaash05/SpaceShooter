@@ -34,7 +34,9 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
 
 
 
-
+    /// <summary>
+    /// Invokes OnDepletionInvoke, yields Drain and Recharge coroutines, invokes OnFullRechargeInvoke.
+    /// </summary>
     public void Use()
     {
 
@@ -53,6 +55,11 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
 
 
     float init_y_scale;
+
+    /// <summary>
+    /// Keeps decreasing the charge's localScale y value by drain_rate, until it reaches zero. 
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Drain()
     {
 
@@ -68,6 +75,10 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
 
     }
 
+    /// <summary>
+    /// Keeps increasing the charge's localScale y value by recharge_rate, until it reaches initial value. Gets recharge_rate from the UpgradesManager.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Recharge()
     {
         while (charge.transform.localScale.y < init_y_scale)
@@ -79,7 +90,7 @@ public class SliderLoaderBoltRecharge : SliderLoaderRecharge
 
 
         }
-        charge.transform.localScale = charge.transform.localScale = new Vector3(charge.transform.localScale.x, init_y_scale, charge.transform.localScale.z);
+        charge.transform.localScale = new Vector3(charge.transform.localScale.x, init_y_scale, charge.transform.localScale.z);
 
 
     }

@@ -22,7 +22,15 @@ public class StatsManager : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Returns a string in form of
+    /// <para>Score: [score]</para>
+    /// <para>Time: [MM]:[SS]:[HH]</para>
+    /// <para>containing the score and time values.</para>
+    /// </summary>
+    /// <param name="score"></param>
+    /// <param name="time"></param>
+    /// <returns></returns>
     string GenerateText(int score, int[] time) 
     {
         return "Score: " + score + "\n" + "Time: " + string.Format("{0:00}:{1:00}:{2:00}", time[0], time[1], time[2]);

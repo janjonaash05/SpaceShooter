@@ -29,10 +29,6 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 
     }
 
-    private void OnDestroy()
-    {
-    }
-
 
     public void OnEMP() 
     {
@@ -54,6 +50,10 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 
     }
 
+
+    /// <summary>
+    /// Creates the order index dictionary, sets up the star materials to start values.
+    /// </summary>
     void InitialColorUp()
     {
 
@@ -89,6 +89,20 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 
 
     int chargeup_index = 0;
+
+
+    /// <summary>
+    /// Starts chargeup_index at 1, goes up to the order_index_dict size.
+    /// For each iteration:
+    /// <para>- Returns and breaks, if cancellation is requested on the token.</para>
+    /// <para>- Creates a new material array, sets primary, secondary and white at their appropriate indexes.</para>
+    /// <para>- Sets all materials equal and backawards of chargeup_index to color. </para>
+    /// <para>- Sets all materials forward of chargeup_index to either secondary or white.</para>
+    /// <para>- Assigns the materials back to the renderer.</para>
+    /// <para>- Waits a set amount of time.</para>
+    /// <para>Afterwards, invokes OnChargeUp. </para>
+    /// </summary>
+    /// <returns></returns>
     public async Task ChargeUp()
     {
 
@@ -114,7 +128,7 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
 
 
                 }
-                catch (Exception) { }
+                catch { }
 
                 mats[order_index_dict[chargeup_index]] = color;
 
@@ -135,7 +149,7 @@ public class StarChargeUp : MonoBehaviour, IScoreEnumerable, IEMPDisruptable
                     }
 
                 }
-                catch (Exception) { }
+                catch{ }
 
                 GetComponent<Renderer>().materials = mats;
 

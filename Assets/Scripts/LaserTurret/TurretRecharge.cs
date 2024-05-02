@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class TurretRecharge : MonoBehaviour
 {
-    
+
     int max_capacity;
 
 
@@ -61,18 +61,11 @@ public class TurretRecharge : MonoBehaviour
         charges[channel.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
     }
 
-    /*
-    void Turret2CapacityValueChanged()
-    {
-        if (recharging) return;
-        charges[LaserTurretCommunicationChannels.Channel2.TURRET_CAPACITY].GetComponent<Renderer>().enabled = false;
-    }
-    */
 
     void TurretCapacityDepleted() => RechargeOnDepletion();
 
 
-    void TurretCapacityUpgradeValueChange() 
+    void TurretCapacityUpgradeValueChange()
     {
         if (recharging)
         {
@@ -88,7 +81,7 @@ public class TurretRecharge : MonoBehaviour
 
     private void OnDestroy()
     {
-        
+
         channel.OnTurretCapacityChanged -= Turret1CapacityValueChanged;
         channel.OnTurretCapacityDepleted -= TurretCapacityDepleted;
 
@@ -132,7 +125,19 @@ public class TurretRecharge : MonoBehaviour
 
     }
 
+    public (float position_unit, Vector3 scale) GetCalculationValues()
+    {
+        float start_size = charge_prefab.transform.localScale.z;
+        float size = start_size / max_capacity;
+        float position_unit = size / (POSITION_FOR_SIZE_DIVIDER);
 
+        float scaled_size = start_size / (max_capacity + (position_unit * max_capacity * POSITION_FOR_SIZE_DIVIDER));
+
+        Vector3 scale = new(start_size, start_size, scaled_size);
+
+
+        return (position_unit, scale);
+    }
 
     IEnumerator GenerateCharges()
     {
@@ -143,19 +148,18 @@ public class TurretRecharge : MonoBehaviour
                 Destroy(charge);
             }
             catch { }
-            
+
             yield return null;
 
         }
 
 
         max_capacity = LaserTurretChannel.MAX_TURRET_CAPACITY;
- 
-        float start_size = charge_prefab.transform.localScale.z;
-        float size = start_size / max_capacity;
-        float positionUnit = size / (POSITION_FOR_SIZE_DIVIDER);
 
-        float scaled_size = start_size / (max_capacity + (positionUnit * max_capacity * POSITION_FOR_SIZE_DIVIDER));
+
+        (float position_unit, Vector3 scale) = GetCalculationValues();
+
+
 
         if (max_capacity % 2 == 0)
         {
@@ -165,11 +169,11 @@ public class TurretRecharge : MonoBehaviour
                 for (int j = 0; j < max_capacity / 2; j++)
                 {
                     GameObject charge = Instantiate(charge_prefab, transform, false);
-                    float pos = positionUnit + positionUnit * 2 * j;
+                    float pos = position_unit + position_unit * 2 * j;
 
 
                     charge.transform.localPosition = new(0, 0, pos * mult);
-                    charge.transform.localScale = new(start_size, start_size, scaled_size);
+                    charge.transform.localScale = scale;
                 }
 
             }
@@ -182,10 +186,10 @@ public class TurretRecharge : MonoBehaviour
                 for (int j = 1; j <= (max_capacity - 1) / 2; j++)
                 {
                     GameObject charge = Instantiate(charge_prefab, transform, false);
-                    float pos = positionUnit * 2 * j;
+                    float pos = position_unit * 2 * j;
 
                     charge.transform.localPosition = new(0, 0, pos * mult);
-                    charge.transform.localScale = new(start_size, start_size, scaled_size);
+                    charge.transform.localScale = scale;
 
                 }
             }
@@ -194,9 +198,18 @@ public class TurretRecharge : MonoBehaviour
 
 
             charge_center.transform.localPosition = Vector3.zero;
-            charge_center.transform.localScale = new(start_size, start_size, scaled_size);
+            charge_center.transform.localScale = scale;
         }
 
+
+        yield return StartCoroutine(CreateChargesList());
+    }
+
+
+
+
+    IEnumerator CreateChargesList()
+    {
 
         charges = new();
 
@@ -216,6 +229,10 @@ public class TurretRecharge : MonoBehaviour
         }
         charges = charges.OrderBy(x => x.transform.localPosition.z).ToList();
     }
+
+
+
+
 
     IEnumerator Recharge(int skips_amount)
     {

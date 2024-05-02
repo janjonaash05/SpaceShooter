@@ -78,32 +78,15 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
         
 
 
-        /*
-        for (int i = 1; i <= 8; i++)
-        {
-            scales[i] = target_scale - 50 * Mathf.Abs(8 - i) * target_scale.normalized;
-
-
-        }
-        */
-
-
         rotation_speed = rotation_speeds[0];
 
         scale = scales[0];
 
 
 
-
-
         StarFall.OnStarFallen += StarFallen;
 
-
-
-
-
         GetComponent<SupernovaColorChange>().OnColorUpFinished += () => StartCoroutine(RotateTowardsCore());
-       // GetComponent<SupernovaColorChange>().OnDeathColorUpFinished += () => StartCoroutine(ShrinkAndDie(0.75f));
     }
 
 

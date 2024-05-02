@@ -20,12 +20,9 @@ public abstract class SliderLoaderRecharge : MonoBehaviour
     public bool IsActive { get { return _isActive; } }
 
 
-    public void Awake()
-    {
-        
-    }
-
-
+    /// <summary>
+    /// Plays the SLIDER_BOLT_RECHARGE_START sound, invokes OnDepletion, sets is_isRecharging to true.
+    /// </summary>
     protected void OnDepletionInvoke()
     {
 
@@ -36,6 +33,9 @@ public abstract class SliderLoaderRecharge : MonoBehaviour
     
     
     }
+    /// <summary>
+     /// Stops the SLIDER_BOLT_RECHARGE_START sound, invokes OnDepletion, sets is_isRecharging to true.
+     /// </summary>
     protected void OnFullRechargeInvoke()
     {
         AudioManager.StopActivitySound(AudioManager.ActivityType.SLIDER_BOLT_RECHARGE_START);

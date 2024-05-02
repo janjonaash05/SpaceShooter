@@ -23,9 +23,11 @@ public class SpinnerChargeUp : MonoBehaviour
 
     bool charging_up = false;
 
+    /// <summary>
+    /// Assigns the changing mat and if laserRend isn't null to arg m.
+    /// </summary>
     void Start()
     {
-        //problematic
         SpinnerColorChange.OnMaterialChange += (m) =>
         {
             changing_mat = m;
@@ -69,13 +71,18 @@ public class SpinnerChargeUp : MonoBehaviour
         StartCoroutine(Charge());
     }
 
+
+    /// <summary>
+    /// Sets charging_up to false, stops playing the SPINNER_CHARGE_UP sound.
+    /// <para>Stops all coroutines, sets the charge localScale and size_unit to 0. </para>
+    /// </summary>
     public void EndCharging()
     {
 
         charging_up = false;
         AudioManager.StopActivitySound(AudioManager.ActivityType.SPINNER_CHARGE_UP);
         StopAllCoroutines();
-        charge.transform.localScale = new Vector3(0, 0, 0);
+        charge.transform.localScale = Vector3.zero;
         size_unit = 0;
 
 
@@ -85,6 +92,15 @@ public class SpinnerChargeUp : MonoBehaviour
 
     public const float CHARGE_UP_TIME = 6f;
 
+
+
+    /// <summary>
+    /// If already charging up, returns.
+    /// <para>Sets charging to true, plays the SPINNER_CHARGE_UP sound. </para>
+    /// <para>LERPs the charge's localScale from zero to max size over a set duration (CHARGE_UP_TIME).</para>
+    /// <para>Sets the charge's scale to max, starts the Shoot coroutine.</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Charge()
     {
 
@@ -124,7 +140,13 @@ public class SpinnerChargeUp : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// LERPs the laser transform localScale from origin to target over a duration. Calls AdjustLaser() after each change.
+    /// </summary>
+    /// <param name="origin"></param>
+    /// <param name="target"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     IEnumerator LaserScaleChange(Vector3 origin, Vector3 target, float duration) 
     {
 
@@ -151,7 +173,9 @@ public class SpinnerChargeUp : MonoBehaviour
     Renderer laserRend;
 
 
-
+    /// <summary>
+    /// Adjusts the laser so it is in the middle and facing the targetVector.
+    /// </summary>
     void AdjustLaser()
     {
 
@@ -171,7 +195,12 @@ public class SpinnerChargeUp : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>Assigns the index holder, sets charge_up_mode to false.</para>
+    /// <para>While the result of calling ChangeIndex(-1) on the index holder doesn't result in -1, calls ChangeMaterialArray() and waits a set amount of time. </para>
+    /// <para>Calls InitialColorSetup afterwards.</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Deplete()
     {
         var index_holder = CoreCommunication.SPINNER_INDEX_HOLDER;
@@ -214,7 +243,18 @@ public class SpinnerChargeUp : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Plays the SPINNER_SHOOT sound.
+    /// <para>If the laser isn't null, returns.</para>
+    /// <para>Creates the laser as a cylinder, assigns changing_mat to its renderer and sets its position to the charge's position.</para>
+    /// <para>Assigns the originVector as the laser position, calculates the targetVector as the CORE tagged gameObject's position with an offset. </para>
+    /// <para>Sets laser scale to 0, calculates the distance from the origin to target vector.</para>
+    /// <para>Starts the Deplete coroutine.</para>
+    /// <para>Calculates the start and target scales.</para>
+    /// <para>Yields LaserScaleChange coroutine with start and target scales, disables the charge, yields it again but with opposite scale order.</para>
+    /// <para>Invokes OnLaserShotPlayerDeath and destroys the laser.         w</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Shoot()
     {
 

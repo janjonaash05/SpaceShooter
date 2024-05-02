@@ -107,17 +107,16 @@ public class UpgradesManager
 
 
 
-   
 
+    /// <summary>
+    /// Sets all values in the UPGRADE_VALUE_DICT to 0.
+    /// </summary>
     public static void ResetValues()
     {
         var keySet = UPGRADE_VALUE_DICT.Keys.ToList();
 
         foreach (var key in keySet)
         {
-
-
-
             UPGRADE_VALUE_DICT[key] = 0;
         }
 
@@ -126,7 +125,12 @@ public class UpgradesManager
 
 
     /// <summary>
-    /// 
+    /// If the upgrade is at max, returns false.
+    /// <para> Sets the activity_type to UPGRADE_STATION_UPGRADE_CLICK. </para>
+    /// <para>Increases the upgrade's value in the dictionary.</para>
+    /// <para>If the increased value reaches max, increases SHIELD_MAX_CAPACITY, invokes OnShieldMaxCapacityValueChange, sets the activity_type to UPGRADE_STATION_FINAL_UPGRADE_CLICK.  </para>
+    /// <para>Chooses a which event to invoke to execute based on the UpgradeType.</para>
+    /// <para>Plays the activity_type sound, returns true. </para>
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>

@@ -122,6 +122,18 @@ public class BombSpawnerGrid : MonoBehaviour
 
 
 
+        float y_pos_offset = DifficultyManager.DIFFICULTY switch
+        {
+            DifficultyManager.Difficulty.EASY => 0,
+            DifficultyManager.Difficulty.NORMAL => 20,
+            DifficultyManager.Difficulty.HARD => 25,
+
+
+        };
+
+        transform.Translate(new(0, y_pos_offset, 0));
+
+
         start_amount = (size * size) / 3;
         positions = new Vector3[size, size];
 

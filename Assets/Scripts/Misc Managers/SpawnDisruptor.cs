@@ -30,7 +30,16 @@ public class SpawnDisruptor : MonoBehaviour
 
     
 
-
+    /// <summary>
+    /// In an endless loop, unless spawn_locked or perma_spawn_locked:
+    /// <para>If there are no gameObjects with the DISRUPTOR tag:</para>
+    /// <para>Calculates the spawn chance and attempts to roll 0, if unsuccessful, skips the iteration.</para>
+    /// <para>Instantiates the disruptor prefab at this gameObjects position with the prefab's rotation.</para>
+    /// <para>Assigns targets to its charges.</para>
+    /// <para>Waits a spawn delay.</para>
+    ///
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Spawn()
     {
 

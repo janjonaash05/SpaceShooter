@@ -87,6 +87,10 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Assigns materials at specific indexes, sets the one at CHARGING_INDEX to either CHANGING_MAT or secondary, based on if charge_up_mode is true.
+    /// </summary>
+    /// <param name="newMats"></param>
     void AssignBasicColors(Material[] newMats)
     {
 
@@ -95,16 +99,15 @@ public class SpinnerColorChange : MonoBehaviour
         newMats[CHARGING_INDEX] = charge_up_mode ? CHANGING_MAT : secondary;
     }
 
+
+    /// <summary>
+    /// Fills the new material[] with the primary material, calls AssignBasicColors with the new materials, assigns them as the renderer materials.
+    /// </summary>
     public void InitialColorSetup()
     {
-        // Renderer rend = GetComponent<Renderer>();
         Material[] newMats = new Material[rend.materials.Length];
+        Array.Fill(newMats, primary);
 
-        for (int i = 0; i < rend.materials.Length; i++)
-        {
-
-            newMats[i] = primary;
-        }
 
         AssignBasicColors(newMats);
         rend.materials = newMats;
@@ -113,7 +116,6 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
-    
 
 
 
@@ -127,6 +129,13 @@ public class SpinnerColorChange : MonoBehaviour
 
 
 
+    /// <summary>
+    /// If the index holder Parent is at 0, returns.
+    /// <para>Creates a copy index holder, gets the colorList, changes its index by 1, gets the offList (lists of indexes).</para>
+    /// <para>Assigns the changing mat and the off mat according to the color/off lists, if their count isn't 0.</para>
+    /// <para>Calls AssignBasicColors() with the new materials, assigns the new materials to the renderer.</para>
+    /// <para>Sets the charge's materials to consist only of changing mat.</para>
+    /// </summary>
     public void ChangeMaterialArray()
     {
 
@@ -137,15 +146,10 @@ public class SpinnerColorChange : MonoBehaviour
         Material[] newMats = new Material[size];
 
 
-
-
-
         var copyHolder = new MaterialIndexHolder(index_holder.Parent, index_holder.Child, MaterialIndexHolder.Target.SPINNER, index_holder.edge);
 
 
-
         var colorlist = copyHolder.AllMatIndexesByHolder(true);
-
         copyHolder.ChangeIndex(0, 1);
         var offlist = copyHolder.AllMatIndexesByHolder(false);
 
@@ -185,6 +189,12 @@ public class SpinnerColorChange : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// In an endless loop:
+    /// <para>Iterates through all materials in the material storage, for each of them:</para>
+    /// <para>Assigns CHANGING_MAT to the current material, invokes OnMaterialChange with the current material, calls ChangeMaterialArray() and waits a set amount of time.  </para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ColorChange()
     {
 

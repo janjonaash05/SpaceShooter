@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
 public class SliderLoaderControlColorChange : MonoBehaviour
 {
     public enum SliderLoaderControlType:int { BOLT =4, FULL_AUTO = 6 }
 
+
+
+    
 
     
     [SerializeField] Material off_mat;
@@ -85,7 +91,11 @@ public class SliderLoaderControlColorChange : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Copies the renderer materials, changes the material at index which matches to the SliderLoaderControlType in value to change_mat, reassigns them.
+    /// </summary>
+    /// <param name="change_mat"></param>
+    /// <param name="control_type"></param>
     void Engage(Material change_mat, SliderLoaderControlType control_type) 
     {
 

@@ -164,7 +164,7 @@ public class FormConstellation : MonoBehaviour
         star.transform.Translate(rand_multiplier * constellation_star_offsets[pos_index].x * Vector3.forward);
 
         star.GetComponent<StarChargeUp>().Setup(mats[color_index]);
-        star.GetComponent<StarEmergence>().RotateTowardsPlayer();
+        star.GetComponent<StarEmergence>().InitAndRotateTowardsPlayer();
 
 
         _ = star.GetComponent<StarChargeUp>().ChargeUp();

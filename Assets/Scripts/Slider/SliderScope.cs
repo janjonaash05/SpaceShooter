@@ -20,7 +20,7 @@ public class SliderScope : MonoBehaviour
     }
 
     /// <summary>
-    /// If it's aiming at something, turn on, if not turn off.
+    /// If it's aiming at something, set the material to on, if not, off.
     /// </summary>
     void Update()
     {

@@ -20,15 +20,18 @@ public class SliderLoaderChargeColorChange : MonoBehaviour
     }
 
 
-    private void Awake()
-    {
-    }
-
+  
+    /// <summary>
+    /// If this component isn't null, sets the renderer material to On.
+    /// </summary>
     void Activate()
     {
         if (this != null) { GetComponent<Renderer>().material = On; }
     }
 
+    /// <summary>
+    /// If this component isn't null, sets the renderer material to Off.
+    /// </summary>
     void Deactivate()
     {
         if (this != null) GetComponent<Renderer>().material = Off;

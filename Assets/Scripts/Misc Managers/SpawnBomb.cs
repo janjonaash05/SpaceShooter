@@ -107,6 +107,11 @@ public class SpawnBomb : MonoBehaviour
 
     const int TILE_COLOR_INDEX = 2;
     const int TILE_SECONDARY_INDEX = 1;
+
+    /// <summary>
+    /// Sets the gameObject's parent's materials to arg m at the TILE_COLOR_INDEX.
+    /// </summary>
+    /// <param name="m"></param>
     void ChangeTileToColor(Material m)
     {
 
@@ -118,7 +123,10 @@ public class SpawnBomb : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Sets the gameObject's parent's materials to arg m at the TILE_SECONDARY_INDEX.
+    /// </summary>
+    /// <param name="m"></param>
     void ChangeTileToOff()
     {
         GameObject tile = transform.parent.gameObject;
@@ -128,6 +136,10 @@ public class SpawnBomb : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Sets the spawner particle system renderer material to arg m, enables its emission.
+    /// </summary>
+    /// <param name="m"></param>
     void StartTileEmission(Material m)
     {
 
@@ -135,7 +147,10 @@ public class SpawnBomb : MonoBehaviour
         var emission = spawner_ps.emission;
         emission.enabled = true;
     }
-
+    /// <summary>
+    /// Disables the spawner particle system emission.
+    /// </summary>
+    /// <param name="m"></param>
     void EndTileEmission()
     {
 
@@ -145,7 +160,13 @@ public class SpawnBomb : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// <para>If unable to spawn, returns.</para>
+    /// <para>Generates a random tag from 2 options.</para>
+    /// <para>Based on the tag, chooses a random NameMaterialPair from the appropriate array.</para>
+    /// <para>Gets a random size based on an interval.</para>
+    /// <para>Calls ConstructBomb() with the normal bomb prefab, the attained tag, pair and size.</para>
+    /// </summary>
     void SpawnRegular()
     {
 
@@ -178,6 +199,18 @@ public class SpawnBomb : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Gets the material from the arg pair, invokes OnBombSpawnStart with it.
+    /// <para>Instantiates the arg prefab on this gameObjects position and rotation, sets its localScale to a set small scale.</para>
+    /// <para>Assigns the arg tag to the created bomb.</para>
+    /// <para>Starts the ScaleUp coroutine with the bomb and arg scale.</para>
+    /// <para>Gets the bomb's particle systems and assigns scale relative to the arg scale, and renderer material as the material from the arg pair.</para>
+    /// <para>Calls Init on the BombColorChange component with the arg pair.</para>
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <param name="tag"></param>
+    /// <param name="pair"></param>
+    /// <param name="size"></param>
     void ConstructBomb(GameObject prefab,string tag, NameMaterialPair pair, float size)
     {
 
@@ -185,14 +218,12 @@ public class SpawnBomb : MonoBehaviour
         OnBombSpawnStart?.Invoke(mat);
 
 
-        Vector3 spawn = transform.position;
-        GameObject bomb = Instantiate(prefab, spawn, transform.rotation);
+        
+        GameObject bomb = Instantiate(prefab, transform.position, transform.rotation);
         bomb.transform.localScale = new(0.1f, 0.1f, 0.1f);
 
 
         bomb.tag = tag;
-      //  float size = Random.Range(min_size, max_size);
-
 
         StartCoroutine(ScaleUp(bomb, size));
 
@@ -226,15 +257,21 @@ public class SpawnBomb : MonoBehaviour
 
     Vector3 target_scale;
 
-
+    /// <summary>
+    /// <para>Calculates the target scale.</para>
+    /// <para>if the bomb is null, invokes OnBombSpawnEnd and returns. </para>
+    /// <para>LERPs the bomb's localScale from zero to target over a druation, if anything fails invokes OnBombSpawnEnd and returns. </para>
+    /// <para>If the bomb is null or its BombFall component is null, invokes OnBombSpawnEnd and returns.</para>
+    /// <para>Else, sets it scaled up, invokes OnBombSpawnEnd.</para>
+    /// </summary>
+    /// <param name="bomb"></param>
+    /// <param name="target_size"></param>
+    /// <returns></returns>
     IEnumerator ScaleUp(GameObject bomb, float target_size)
     {
 
         target_scale = target_size * Vector3.one;
-
-        if (bomb == null) { OnBombSpawnEnd?.Invoke(); }
-
-
+        if (bomb == null) { OnBombSpawnEnd?.Invoke(); yield break; }
 
         float duration = 0.5f;
         float lerp = 0f;
@@ -248,16 +285,10 @@ public class SpawnBomb : MonoBehaviour
             {
                 lerp += Time.deltaTime;
                 bomb.transform.localScale = Vector3.Lerp(Vector3.zero, target_scale, lerp / duration) ; //new Vector3(bomb.transform.localScale.x + scale_up_increment, bomb.transform.localScale.y + scale_up_increment, bomb.transform.localScale.z + scale_up_increment);
-
-
- 
-
             }
-            catch (Exception)
+            catch
             {
-
                 OnBombSpawnEnd?.Invoke();
-
                 yield break;
             }
 
@@ -268,7 +299,8 @@ public class SpawnBomb : MonoBehaviour
 
 
         if (bomb == null || bomb.GetComponent<BombFall>() == null) { OnBombSpawnEnd?.Invoke(); yield break; }
-        bomb.GetComponent<BombFall>().SetScaledUp(); OnBombSpawnEnd?.Invoke();
+        bomb.GetComponent<BombFall>().SetScaledUp(); 
+        OnBombSpawnEnd?.Invoke();
 
 
     }

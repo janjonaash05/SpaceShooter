@@ -6,15 +6,11 @@ using UnityEngine;
 
 public class StarEmergence : MonoBehaviour, IEMPDisruptable
 {
-    
 
 
-     Vector3 target_scale;
-    void Start()
-    {
-      
 
-    }
+    Vector3 target_scale;
+
 
 
     private void Awake()
@@ -29,13 +25,13 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
         AudioManager.PlayActivitySound(AudioManager.ActivityType.STAR_SPAWN);
 
 
-       
-        
+
+
     }
 
 
 
-  
+
 
 
 
@@ -45,33 +41,19 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
         StopAllCoroutines();
     }
 
- 
 
 
-   public void RotateTowardsPlayer()
+    /// <summary>
+    /// Aligns and adjusts the transform rotation so that it faces the player, sets localScale to 0.
+    /// </summary>
+    public void InitAndRotateTowardsPlayer()
     {
 
 
-
-        /*
-        Vector3 rotationDirection = (Camera.main.transform.position - transform.position);
-
-        Quaternion targetRot = Quaternion.LookRotation(Camera.main.transform.position - transform.position);
-        */
-
-
-
-          transform.rotation = Quaternion.LookRotation(GameObject.FindWithTag(Tags.PLAYER).transform.position - transform.position);
-
-
-
+        transform.rotation = Quaternion.LookRotation(GameObject.FindWithTag(Tags.PLAYER).transform.position - transform.position);
 
         transform.Rotate(Vector3.up, 90);
-
-
-
-
-
+ 
         transform.localScale = Vector3.zero;
 
 
@@ -79,20 +61,22 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
     }
 
 
-   
 
 
 
 
 
-    //FIX
-    void Emerge(float duration) 
+
+    /// <summary>
+    /// LERPs the localScale from 0 to target over arg duration.
+    /// </summary>
+    /// <param name="duration"></param>
+    void Emerge(float duration)
     {
         IEnumerator scaleChange()
         {
 
             float lerp = 0f;
-            Vector3 original = Vector3.zero;
             Vector3 target = target_scale;
 
 
@@ -103,7 +87,7 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
 
 
                 lerp += Time.deltaTime;
-                transform.localScale = Vector3.Lerp(original, target, lerp / duration);
+                transform.localScale = Vector3.Lerp(Vector3.zero, target, lerp / duration);
                 yield return null;
 
             }
@@ -132,13 +116,18 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
         {
 
             float lerp = 0f;
-            target_scale = Vector3.zero;
+            float duration = 0.35f;
+
             Vector3 original_scale = transform.localScale;
-            while (transform.localScale.z > target_scale.z)
+
+
+
+
+            while (lerp < duration)
             {
 
-                lerp += Time.deltaTime / 100;
-                transform.localScale = Vector3.Lerp(original_scale, target_scale, lerp);
+                lerp += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(original_scale, Vector3.zero, lerp / duration);
                 yield return null;
 
             }
@@ -151,10 +140,4 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
     }
 
 
-
-    
-    void Update()
-    {
-
-    }
 }

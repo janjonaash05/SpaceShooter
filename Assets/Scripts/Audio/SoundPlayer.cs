@@ -56,6 +56,13 @@ public class SoundPlayer : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Goes through all activites assigned to this component.
+    /// <para>If one matches to the arg activity_type, sets its clip and gets settings through the dictionary. </para>
+    /// <para>Assigns pitch. Volume is determined if CURRENT_DATA exists or not.</para>
+    /// <para>Plays the sound.</para>
+    /// </summary>
+    /// <param name="activity_type"></param>
     void VerifyAndPlaySound(ActivityType activity_type)
     {
 
@@ -85,6 +92,12 @@ public class SoundPlayer : MonoBehaviour
 
 
 
+
+    /// <summary>
+    /// Goes through all activites assigned to this component.
+    /// <para>If one matches to the arg activity_type, stops it. </para>
+    /// </summary>
+    /// <param name="activity_type"></param>
     void StopSound(ActivityType activity_type)
     {
         foreach (var activity in activity_types)

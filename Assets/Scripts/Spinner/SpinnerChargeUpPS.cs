@@ -41,6 +41,10 @@ public class SpinnerChargeUpPS : MonoBehaviour
         StartCoroutine(ScaleUp());
     
     }
+
+    /// <summary>
+    /// Disables emission, sets startSpeed, radius and rateOverTime to their min values from their intervals.
+    /// </summary>
     void SpinnerChargeUpEnd() 
     {
         StopAllCoroutines();
@@ -67,7 +71,10 @@ public class SpinnerChargeUpPS : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Assigns the particle system renderer material to arg m.
+    /// </summary>
+    /// <param name="m"></param>
     void OnMaterialChange(Material m) 
     {
         ps_rend.material = m;
@@ -79,6 +86,12 @@ public class SpinnerChargeUpPS : MonoBehaviour
     (float min, float max) speed_interval = (-5, -150);
 
     (float min, float max) rate_interval = (10, 100);
+
+
+    /// <summary>
+    /// Enables emission, LERPs the particle system startSpeed, radius and rateOverTime from set intervals over a duration (CHARGE_UP_TIME).
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ScaleUp() 
     {
         var main = ps.main;
@@ -86,15 +99,7 @@ public class SpinnerChargeUpPS : MonoBehaviour
         var shape = ps.shape;
         emission.enabled = true;
 
-
-
-
         float duration = SpinnerChargeUp.CHARGE_UP_TIME;
-
-
-
-
-      
 
         float lerp = 0;
 
@@ -115,22 +120,10 @@ public class SpinnerChargeUpPS : MonoBehaviour
 
         }
 
-
         emission.enabled = false;
 
 
-
     }
 
 
-
-
-
-
-
-    
-    void Update()
-    {
-        
-    }
 }

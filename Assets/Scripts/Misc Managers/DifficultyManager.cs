@@ -416,7 +416,7 @@ public class DifficultyEventArgs : EventArgs
 
     public DifficultyManager.AffectedFeatureCircumstance Target { get; private set; }
 
-    //TODO
+   
     public DifficultyEventArgs(DifficultyManager.AffectedFeature feature, DifficultyManager.AffectedFeatureCircumstance target)
     {
 

@@ -6,7 +6,6 @@ public class TokenTransportColorChange : MonoBehaviour
 {
     
 
-    const int SPAWN_WAIT_TIME = 4;
 
     Material default_color;
 
@@ -46,6 +45,15 @@ public class TokenTransportColorChange : MonoBehaviour
 
 
 
+
+    /// <summary>
+    /// For a set number of iterations:
+    /// <para>- Breaks and returns if perma_stopped is true.</para>
+    /// <para>- If the current iteration is even, plays the TOKEN_SPAWN sound. </para>
+    /// <para>- Sets the renderer material at a specific index to either the arg mat or the default color, based on if the current iteration is even. </para>
+    /// </summary>
+    /// <param name="material"></param>
+    /// <returns></returns>
     public IEnumerator Flash(Material material)
     {
 
@@ -67,6 +75,12 @@ public class TokenTransportColorChange : MonoBehaviour
 
 
 
+
+    /// <summary>
+    /// At a specific index, sets the material to arg material, waits arg delay, sets the material back to SIDE_TOOLS_COLOR.
+    /// </summary>
+    /// <param name="material"></param>
+    /// <param name="delay"></param>
     public void SetColorDelayed(Material material, float delay) 
     {
 

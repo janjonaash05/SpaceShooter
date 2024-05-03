@@ -13,28 +13,11 @@ public class TurretHeadColorChange : MonoBehaviour
     {
 
         rend = GetComponent<Renderer>();
-    
 
-        switch (ID) 
-        {
-            case 1:
+        var channel = LaserTurretCommunicationChannels.GetChannelByID(ID);
+        channel.OnGeneralTargetingStart += ActivateColor;
+        channel.OnGeneralTargetingEnd += DeactivateColor;
 
-                LaserTurretCommunicationChannels.Channel1.OnGeneralTargetingStart += ActivateColor;
-                LaserTurretCommunicationChannels.Channel1.OnGeneralTargetingEnd += DeactivateColor;
-
-                break;
-
-
-
-
-            case 2:
-
-                LaserTurretCommunicationChannels.Channel2.OnGeneralTargetingStart += ActivateColor;
-                LaserTurretCommunicationChannels.Channel2.OnGeneralTargetingEnd += DeactivateColor;
-
-                break;
-
-        }
 
 
 
@@ -46,12 +29,20 @@ public class TurretHeadColorChange : MonoBehaviour
 
 
 
+
+    /// <summary>
+    /// Gets the on material from the child, assigns it at a specific index.
+    /// </summary>
     void ActivateColor()
     {
         Material on_mat = transform.GetChild(0).GetComponent<Renderer>().material;
         rend.materials = new Material[] { rend.materials[0], rend.materials[1], on_mat };
     }
 
+
+    /// <summary>
+    /// Assigns the off material at the specific index.
+    /// </summary>
     void DeactivateColor()
     {
 

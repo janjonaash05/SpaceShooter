@@ -41,6 +41,10 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
    public void OnEMP() => StopAllCoroutines();
 
    
+
+    /// <summary>
+    /// Calculates the rotation speeds and scales.
+    /// </summary>
     void Awake()
     {
         
@@ -99,10 +103,15 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
     }
 
 
-
+    /// <summary>
+    /// <para>If the index is higher than 8, returns.</para>
+    /// <para>Assigns the rotation speed and localScale based on the index.</para>
+    /// <para>Increases the index by 1, adds arg m to shoot_mats.</para>
+    /// </summary>
+    /// <param name="m"></param>
     void StarFallen(Material m) 
     {
-        if (index >= 9) return;
+        if (index > 8) return;
         rotation_speed = rotation_speeds[index];
 
         transform.localScale = scales[index];
@@ -118,6 +127,11 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
     }
 
     float lerp_speed = 2;
+
+    /// <summary>
+    /// Calculates the target rotation of looking at the CORE, LERPs the rotation over time, sets can_rotate to true and starts the Shoot coroutine.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator RotateTowardsCore()
     {
 
@@ -148,22 +162,25 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
-
+    /// <summary>
+    /// Enables and scales the particle system, gets the particle system position at the start.
+    /// <para>For each material in shoot_mats:</para>
+    /// <para>- Plays the SUPERNOVA_SHOOT sound.</para>
+    /// <para>- Assigns the particle system renderer and trail renderer material to the current material, plays the particle system.</para>
+    /// <para>- Calls Raise_ValueChange on CoreCommunication with 0;1 as values. </para>
+    /// <para>- Yields the ShootLaser coroutine with the current material.</para>
+    /// <para>- Decreases the index, based on it assigns the rotation speed and localScale.</para>
+    /// <para>- Resets the particle system back to its start position.</para>
+    /// <para>- Waits for the particle system to end.</para>
+    /// Destroys the gameObject after.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Shoot()
     {
 
-
-
-
-
         ParticleSystem ps = transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
 
-
-
         Vector3 ps_pos = transform.GetChild(0).position;
-
-
-
 
 
         ps.enableEmission = true;
@@ -185,11 +202,6 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
             CoreCommunication.Raise_ValueChange(0, 1);
 
-
-           
-
-
-
             supernova_color_change.RemoveColor();
 
 
@@ -202,36 +214,21 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
             transform.localScale = scales[index];
             transform.GetChild(0).position = ps_pos;
-            
-
-
 
             yield return new WaitForSeconds(ps.main.duration);
 
 
 
-
-
-
-
-
-
         }
 
-
-
-
         Destroy(gameObject);
-
-
-
-
-
 
     }
 
 
-
+    /// <summary>
+    /// Adjusts the laser so it is in the middle and facing the targetVector.
+    /// </summary>
     void AdjustLaser()
     {
 
@@ -247,6 +244,14 @@ public class SupernovaChargeUp : MonoBehaviour, IEMPDisruptable
 
 
 
+
+    /// <summary>
+    /// LERPs the laser transform localScale from origin to target over a duration. Calls AdjustLaser() after each change.
+    /// </summary>
+    /// <param name="origin"></param>
+    /// <param name="target"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     IEnumerator LaserScaleChange(Vector3 origin, Vector3 target, float duration)
     {
 

@@ -40,32 +40,42 @@ public class TokenColorChange : MonoBehaviour
         color = rend.materials[^1];
 
 
-        GetComponent<TokenMovement>().OnHealthDecrease += (HP) => 
-        {
-
-           Material[] mats = rend.materials;
-
-
-            for (int i = 1; i<=4; i++)
-            {
-                mats[HP_index_map[i]] = off;
-            }
-
-            for (int i = 1; i <= HP; i++) 
-            {
-                mats[HP_index_map[i]] = timer_color;
-            
-            }
-
-          
-
-            rend.materials = mats;
-        
-        };
+        GetComponent<TokenMovement>().OnHealthDecrease += DecreaseHealth;
     }
 
 
 
+
+    /// <summary>
+    /// Fills the mats with off materials, then changes some of them back to timer_color based on HP.
+    /// </summary>
+    /// <param name="HP"></param>
+    void DecreaseHealth(int HP) 
+    {
+        Material[] mats = rend.materials;
+
+
+        for (int i = 1; i <= 4; i++)
+        {
+            mats[HP_index_map[i]] = off;
+        }
+
+        for (int i = 1; i <= HP; i++)
+        {
+            mats[HP_index_map[i]] = timer_color;
+
+        }
+
+
+
+        rend.materials = mats;
+    }
+
+
+
+    /// <summary>
+    /// Fills the renderer materials with the color material.
+    /// </summary>
     public void CoverInColor() 
     {
         var mats = new Material[rend.materials.Length];

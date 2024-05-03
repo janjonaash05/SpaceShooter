@@ -26,8 +26,4 @@ public class TokenCounter : MonoBehaviour
     }
 
     
-    void Update()
-    {
-        
-    }
 }

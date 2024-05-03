@@ -20,8 +20,6 @@ public class TokenTransportRotation : MonoBehaviour
         transform.rotation = rot;
 
         transform.Rotate(Vector3.up, 90*mult);
-       // transform.Rotate(Vector3.right, -90);
-     //   transform.Rotate(0, 46, 0, Space.Self);
     }
 
     

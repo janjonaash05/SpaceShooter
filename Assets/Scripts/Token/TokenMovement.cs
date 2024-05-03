@@ -66,7 +66,7 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
 
 
-    void StopOnDeath() 
+    void StopOnDeath()
     {
         speed = 0;
     }
@@ -78,8 +78,19 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
     }
 
 
+
+    Dictionary<TokenDirection, Action> token_collision_action_dict;
+
     void Awake()
     {
+        token_collision_action_dict = new()
+        {
+            {TokenDirection.TRANSPORTER, TransporterCollision },
+            {TokenDirection.CENTER, CenterCollision },
+            {TokenDirection.HARPOON_STATION, HarpoonStationCollision },
+
+
+        };
 
 
         SpinnerChargeUp.OnLaserShotPlayerDeath += StopOnDeath;
@@ -97,9 +108,20 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
         speed = UnityEngine.Random.Range(0, 3) switch { 0 => TokenSpeed.SLOW, 1 => TokenSpeed.MEDIUM, 2 => TokenSpeed.FAST, _ => TokenSpeed.SLOW };
 
         dir = TokenDirection.CENTER;
-        target = TokenSpawning.center_transform;
+        target = TokenSpawning.CENTER_TRANSFORM;
+
+
+
+
+
+
     }
 
+    /// <summary>
+    /// Moves towards the target position at speed.
+    /// <para>Calculates the edge distance based on the direction.</para>
+    /// <para>When reached the edge distance, sets speed to a random one from selection and calls the collision action based on the direction.</para>
+    /// </summary>
     void Update()
     {
 
@@ -134,42 +156,9 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
             };
 
+            token_collision_action_dict[dir]();
 
 
-
-            Action toExecute = dir switch
-            {
-                TokenDirection.TRANSPORTER => () =>
-                {
-                    dir = TokenDirection.CENTER;
-                    AudioManager.PlayActivitySound(AudioManager.ActivityType.TOKEN_TRANSPORTED);
-
-                    HP--;
-                    OnHealthDecrease?.Invoke(HP);
-                    if (HP == 0)
-                    {
-                        StartCoroutine(PlayDestroyed());
-                        return;
-                    }
-                    target = TokenSpawning.center_transform;
-                    transform.position = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)].position;
-                }
-                ,
-                TokenDirection.CENTER => () =>
-                {
-                    dir = TokenDirection.TRANSPORTER;
-                    target = TokenSpawning.transporter_collider_transforms[UnityEngine.Random.Range(0, 4)];
-                }
-                ,
-                TokenDirection.HARPOON_STATION => () =>
-                {
-                    StartCoroutine(PlayCaught());
-                }
-                ,
-                _ => () => { }
-            };
-
-            toExecute();
         }
 
 
@@ -179,39 +168,93 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
     }
 
 
+
+
+
+    /// <summary>
+    /// Sets the direction to CENTER.
+    /// <para>Plays the TOKEN_TRANSPORTED sound. </para>
+    /// <para>Decreases HP.</para>
+    /// <para>If the HP reaches 0, starts the PlayDestroyed coroutine and returns.</para>
+    /// <para>Sets the target as the CENTER_TRANSFORM.</para>
+    /// <para>Sets the position as a random TRANSPORTER_COLLIDER_TRANSFORM.</para>
+    /// </summary>
+    void TransporterCollision()
+    {
+        dir = TokenDirection.CENTER;
+        AudioManager.PlayActivitySound(AudioManager.ActivityType.TOKEN_TRANSPORTED);
+
+        HP--;
+        OnHealthDecrease?.Invoke(HP);
+        if (HP == 0)
+        {
+            StartCoroutine(PlayDestroyed());
+            return;
+        }
+        target = TokenSpawning.CENTER_TRANSFORM;
+        transform.position = TokenSpawning.TRANSPORTER_COLLIDER_TRANSFORMS[UnityEngine.Random.Range(0, 4)].position;
+    }
+
+    /// <summary>
+    /// Sets the direction to TRANSPORTER, assigns the target as a random TRANSPORTER_COLLIDER_TRANSFORM.
+    /// </summary>
+    void CenterCollision()
+    {
+        dir = TokenDirection.TRANSPORTER;
+        target = TokenSpawning.TRANSPORTER_COLLIDER_TRANSFORMS[UnityEngine.Random.Range(0, 4)];
+    }
+
+
+    void HarpoonStationCollision() => StartCoroutine(PlayCaught());
+
+
+    /// <summary>
+    /// Sets speed to 0, direction to HARPOON_STATION, target to the HARPOON_STATION_TRANSFORM.
+    /// </summary>
     public void Stop()
     {
         speed = 0;
         dir = TokenDirection.HARPOON_STATION;
-        target = TokenSpawning.harpoon_station_transform;
+        target = TokenSpawning.HARPOON_STATION_TRANSFORM;
 
 
     }
 
 
 
-
+    /// <summary>
+    /// Enables the arg particle system's emission, plays it, waits for it to finish.
+    /// </summary>
+    /// <param name="ps"></param>
+    /// <returns></returns>
     IEnumerator PlayPS(ParticleSystem ps)
     {
 
         ps.enableEmission = true;
         ps.Play();
-
-
-
-
         yield return new WaitForSeconds(ps.main.duration);
 
 
 
     }
 
+
+    /// <summary>
+    /// If the caught particle system emission is already enabled, returns.
+    /// <para>Plays either the TOKEN_CAUGHT_FRIENDLY or TOKEN_CAUGHT_ENEMY sound based on the TokenType.</para>
+    /// <para>If the type is FRIENDLY, calls Raise_TokenChange with 1 on UICommunication.</para>
+    /// <para>Starts the Shrink coroutine.</para>
+    /// <para>calls Raise_ScoreChange with CalculateScoreReward() on UICommunication.</para>
+    /// <para>Yields the PlayPS coroutine with the caught particle system.</para>
+    /// <para>Destroys the gameObject.</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator PlayCaught()
     {
 
 
-        
-        
+
+
         if (ps_caught.emission.enabled) { yield break; }
         AudioManager.PlayActivitySound(type == TokenType.FRIENDLY ? AudioManager.ActivityType.TOKEN_CAUGHT_FRIENDLY : AudioManager.ActivityType.TOKEN_CAUGHT_ENEMY);
 
@@ -233,6 +276,21 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
     }
 
 
+
+
+
+    /// <summary>
+    /// Sets speed to 0.
+    /// <para>Plays either the TOKEN_DESTROYED_FRIENDLY or TOKEN_DESTROYED_ENEMY sound based on the TokenType.</para>
+    /// <para>If the destroyed particle system emission is already enabled, returns.</para>
+    /// <para>If the type is ENEMY, ChangeRandomDifficulty with TOKEN on DifficultyManager.</para>
+    /// <para>Starts the Shrink coroutine.</para>
+    /// <para>Calls SetColorDelayed on the target this gameObject's color material and the destroyed particle system duration. </para>
+    /// <para>Disables this gameObject's renderer. </para>
+    /// <para>Yields the PlayPS coroutine with the destroyed particle system.</para>
+    /// <para>Destroys the gameObject.</para>
+    /// </summary>
+    /// <returns></returns>
     IEnumerator PlayDestroyed()
     {
         speed = 0;
@@ -265,20 +323,31 @@ public class TokenMovement : MonoBehaviour, IScoreEnumerable
 
     }
 
-    readonly float min_scale_down_size = 0.0001f;
-    readonly float scale_down_increment_width = 0.1f;
-    readonly float scale_down_increment_length = 0.1f / 5f;
 
 
+
+    /// <summary>
+    /// LERPs the localScale from start to 0 over a set duration.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Shrink()
     {
-        while (transform.localScale.x > min_scale_down_size)
+        float lerp = 0;
+        float duration = 0.25f;
+
+
+
+        Vector3 start = transform.localScale;
+
+
+        while (lerp < duration) 
         {
-            transform.localScale += new Vector3(-scale_down_increment_width, -scale_down_increment_length, -scale_down_increment_width);
-
-
+            lerp += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(start, Vector3.zero, lerp / duration);
             yield return null;
+
         }
+
 
     }
 

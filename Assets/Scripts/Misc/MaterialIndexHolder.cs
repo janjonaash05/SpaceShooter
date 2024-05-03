@@ -157,8 +157,20 @@ public class MaterialIndexHolder : IndexHolder
 
     /// <summary>
     /// <para>Early returns 1/-1 and sets the edge to UPPER/LOWER, based on if childDelta is nonnegative or nonpositive, and if IsAtMax/IsAtMin are true.</para>
-    /// <para></para>
-    /// TODO
+    /// <para>If the edge is UPPER:</para>
+    /// <para>- If the childDelta is nonpositive: Calls SetEdge() with NONE, calls SetToMax(), returns 0. Else, returns 1.</para>
+    /// <para>If the edge is LOWER:</para>
+    /// <para>- If the childDelta is nonnegative: Calls SetEdge() with NONE, calls SetToMin(), returns 0. Else, returns -1.</para>
+    /// 
+    /// <para>Increases the Child by childDelta.</para>
+    /// <para>If the Child is bigger or equal to maxChild + 1, increases the Parent by 1, sets Child to minChild.</para>
+    /// <para>If the Child is smaller than minChild, decreases the Parent by 1, sets Child to maxChild.</para>
+    /// 
+    /// <para>Increases the Parent by parentDelta.</para>
+    /// <para>If the Parent is bigger or equal to maxParent + 1, calls SetEdge() with UPPER, calls SetToMax() and returns 1.</para>
+    /// <para>If the Parent is equal to minParent - 1, calls SetEdge() with LOWER, calls SetToMin() and returns -1.</para>
+    /// 
+    /// <para>Returns 0.</para>
     /// </summary>
     /// <param name="parentDelta"></param>
     /// <param name="childDelta"></param>

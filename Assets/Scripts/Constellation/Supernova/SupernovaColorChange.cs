@@ -83,11 +83,6 @@ public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 
     }
 
-    private void Awake()
-    {
-
-    }
-
 
 
 
@@ -120,7 +115,6 @@ public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 
 
 
-  
 
 
 
@@ -129,6 +123,11 @@ public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 
 
 
+    /// <summary>
+    /// Calls OnlyCenterColorUp with white.
+    /// <para>Over time calls AddColor with all colors from color_mats. </para>
+    /// <para>Invokes OnColorUpFinished. </para>
+    /// </summary>
     void AllColorUp() 
     {
         OnlyCenterColorUp(white);
@@ -138,16 +137,9 @@ public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 
             for (int i = 0; i < color_mats.Count; i++)
             {
-
-
-
                 AddColor(color_mats[i]);
-                
-
-
                 yield return new WaitForSeconds(color_change_delay);
             }
-
 
 
             OnColorUpFinished?.Invoke();
@@ -160,12 +152,6 @@ public class SupernovaColorChange : MonoBehaviour, IEMPDisruptable
 
 
 
-
-    
-    void Update()
-    {
-
-    }
 
 
 

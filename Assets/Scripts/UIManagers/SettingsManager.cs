@@ -80,8 +80,12 @@ public class SettingsManager : MonoBehaviour
 
 
     /// <summary>
-    /// <para>Loads the CURRENT_DATA from UserDataManager.</para>
-    /// <para>TODO</para>
+    /// <para>Loads the CURRENT_DATA from UserDataManager as data.</para>
+    /// <para>Creates LoadSettings and NewSettings as deep copies.</para>
+    /// <para>Sets the volume slider value and calls SetVolume() with the data volumeMultiplier.</para>
+    /// <para>Sets the fullscreen toggle based on data fullscreen value.</para>
+    /// <para>Gets all screen resolutions, clears the dropdown, transforms the resolutions to a W x H string format and adds them to the dropdown.</para>
+    /// <para>Finds the current resolution index from, based on it sets the current dropdown value and calls RefreshShownValue() on it.  </para>
     /// </summary>
     void Load()
     {

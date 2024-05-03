@@ -107,6 +107,10 @@ public class StarEmergence : MonoBehaviour, IEMPDisruptable
 
 
 
+
+    /// <summary>
+    /// LERPs the localScale from original to 0 over a set duration, Destroys the gameObject after.
+    /// </summary>
     public void Shrivel()
     {
 

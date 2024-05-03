@@ -81,7 +81,12 @@ public class TargetBomb : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="Bomb"></param>
+    /// <param name="bombDestructionType"></param>
+    /// <returns></returns>
     public async Task StartTargeting(GameObject Bomb, BombDestructionType bombDestructionType)
     {
         try
@@ -111,7 +116,16 @@ public class TargetBomb : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Gets the bomb's BombColorChange, if it's null returns.
+    /// <para>While color change isn't finished:</para>
+    /// <para>- Increases i by 1.</para>
+    /// <para>- Tries to get the target position as the bomb's position.</para>
+    /// <para>- Calls Track() with the target position and i multiplied by a half.</para>
+    /// <para>Destroys the laser, sets isTargeting to false and invokes OnTargetingEnd. </para>
+    /// </summary>
+    /// <param name="bomb"></param>
+    /// <returns></returns>
     public async Task Target(GameObject bomb)
     {
 
@@ -162,7 +176,12 @@ public class TargetBomb : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Creates the laser as a cylinder.
+    /// <para>Deletes its collider, sets its material as the turret head charge material.</para>
+    /// <para>Sets its localScale and assigns the originVector to the turret head charge position.</para>
+    ///
+    /// </summary>
     public void SetupLaser()
     {
 
@@ -182,6 +201,16 @@ public class TargetBomb : MonoBehaviour
     }
 
 
+
+    /// <summary>
+    /// If the laser is null, sets isTargeting to false and invokes OnTargetingEnd.
+    /// <para>Calculates the distance from origin to target vectors.</para>
+    /// <para>Sets the localScale based on the distance and arg sizeIncrease.</para>
+    /// <para>Calculates the middle vector and sets the laser's position to it.</para>
+    /// <para>Calculates the rotation direction to face the target, assigns the laser's up rotation to it.</para>
+    /// </summary>
+    /// <param name="targetVector"></param>
+    /// <param name="sizeIncrease"></param>
     void Track(Vector3 targetVector, float sizeIncrease)
     {
 
@@ -211,6 +240,12 @@ public class TargetBomb : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Gets the targets based on the arg tag.
+    /// <para>Returns if there are none.</para>
+    /// <para>Invokes OnBarrageStart, awaits Barrage with the targets, invokes OnBarrageEnd.</para>
+    /// </summary>
+    /// <param name="tag"></param>
     public async void BarrageStart(string tag)
     {
 
@@ -222,6 +257,13 @@ public class TargetBomb : MonoBehaviour
         OnBarrageEnd?.Invoke();
     }
 
+
+
+    /// <summary>
+    /// For each target awaits StartTargeting with the AUTO BombDestructionType, calls Raise_ScoreChange with 1 on UICommunication.
+    /// </summary>
+    /// <param name="targets"></param>
+    /// <returns></returns>
     async Task Barrage(GameObject[] targets)
     {
         foreach (var target in targets)
@@ -243,19 +285,21 @@ public class TargetBomb : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Gets all gameObjects that match the arg tag.
+    /// <para>Gets the ChargeColorName, then proceeds to filter the gameObject that have the matching BombColorName and aren't currenty targeted.</para>
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <returns>The filtered gameObjects</returns>
     GameObject[] GetAllPossibleTargets(string tag)
     {
         GameObject[] allTargets = GameObject.FindGameObjectsWithTag(tag);
-        Material mat = transform.GetChild(0).GetComponent<Renderer>().sharedMaterial;
-
 
         COLOR colorName = LaserTurretCommunicationChannels.GetChannelByID(ID).ChargeColorName;
 
 
         var coloredTargets = (
             from bomb in allTargets
-                // where mat.name.Contains(bomb.GetComponent<BombColorChange>().BombMaterial.name) ||  bomb.GetComponent<BombColorChange>().BombMaterial.name.Contains(mat.name)
             where colorName == bomb.GetComponent<BombColorChange>().BombColorName
             where bomb.GetComponent<BombColorChange>().IsNotCurrentlyTargeted()
             select bomb

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+
 
 public class ShieldRecharge : AbstractChargeRecharge
 {
@@ -40,6 +40,8 @@ public class ShieldRecharge : AbstractChargeRecharge
     protected override Func<float, Vector3> FormPlacementVector => (x) => new(0,x,0);
 
     protected override AudioManager.ActivityType CHARGE_SPAWN_SOUND_ACTIVITY_TYPE => AudioManager.ActivityType.SHIELD_CHARGE_SPAWN;
+
+    protected override ParticleSystem GetParticleSystem =>ps;
 
     protected override List<GameObject> GetChargesAsSortedList() => charges.OrderByDescending(x => x.transform.localPosition.y).ToList();
 
@@ -127,45 +129,12 @@ public class ShieldRecharge : AbstractChargeRecharge
 
     }
 
-    protected  override IEnumerator Recharge(int skips_amount)
-    {
-        ARBITRARY_CHARGES_RECHARGED_CAPACITY = 0;
-        recharging = true;
-        ChangeEmitterAndAntennaColor(off_mat);
+  
 
-        foreach (GameObject charge in charges)
-        {
-            try
-            {
-                charge.GetComponent<Renderer>().enabled = false;
-            }
-            catch
-            {
-            }
-        }
-
-
-
-        ps.enableEmission = true;
-        yield return StartCoroutine(RegenerateCharges(skips_amount));
-        ps.enableEmission = false;
-
-
-
-        recharging = false;
-
-        CoreCommunication.Raise_ShieldRecharged();
-
-
-
-
-        ChangeEmitterAndAntennaColor(on_mat);
-
-        ARBITRARY_CHARGES_RECHARGED_CAPACITY = UpgradesManager.SHIELD_MAX_CAPACITY;
-
-    }
-
-
+    /// <summary>
+    /// Changes the emitter and antenna materials at a certain index to arg m.
+    /// </summary>
+    /// <param name="m"></param>
     void ChangeEmitterAndAntennaColor(Material m)
     {
         var e_mats = emitter_rend.materials;
@@ -193,10 +162,14 @@ public class ShieldRecharge : AbstractChargeRecharge
         return (position_unit, scale);
     }
 
-    protected override int GetMaxCapacityToSet()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>UpgradesManager.SHIELD_MAX_CAPACITY</returns>
+    protected override int GetMaxCapacityToSetOnGenerate()
     {
       
-        return UpgradesManager.SHIELD_MAX_CAPACITY; ;
+        return UpgradesManager.SHIELD_MAX_CAPACITY; 
     }
 
     protected override string GetTagForList()
@@ -204,6 +177,10 @@ public class ShieldRecharge : AbstractChargeRecharge
         return Tags.SHIELD_CHARGE;
     }
 
+    /// <summary>
+    /// Calculates based on CORE_INDEX_HOLDER Parent value, returns positive infinity if value is 0.
+    /// </summary>
+    /// <returns></returns>
     protected override float CalculateRechargeDelay()
     {
        return CoreCommunication.CORE_INDEX_HOLDER.Parent switch
@@ -218,7 +195,82 @@ public class ShieldRecharge : AbstractChargeRecharge
         };
     }
 
- 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>UpgradesManager.SHIELD_MAX_CAPACITY, CoreCommunication.SHIELD_CAPACITY</returns>
+    protected override (int MaxCapacity, int CurrentCapacity) GetValuesForUpgrade()
+    {
+        return (UpgradesManager.SHIELD_MAX_CAPACITY, CoreCommunication.SHIELD_CAPACITY);
+    }
+
+    protected override void ExecuteBeforeRecharge()
+    {
+        ChangeEmitterAndAntennaColor(off_mat);
+    }
+
+    protected override void ExecuteAfterRecharge()
+    {
+        CoreCommunication.Raise_ShieldRecharged();
+        ChangeEmitterAndAntennaColor(on_mat);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* protected  override IEnumerator Recharge(int skips_amount)
+   {
+       ARBITRARY_CHARGES_RECHARGED_CAPACITY = 0;
+       recharging = true;
+       ChangeEmitterAndAntennaColor(off_mat);
+
+       foreach (GameObject charge in charges)
+       {
+           try
+           {
+               charge.GetComponent<Renderer>().enabled = false;
+           }
+           catch
+           {
+           }
+       }
+
+
+
+       ps.enableEmission = true;
+       yield return StartCoroutine(RegenerateCharges(skips_amount));
+       ps.enableEmission = false;
+
+
+
+       recharging = false;
+
+       CoreCommunication.Raise_ShieldRecharged();
+
+
+
+
+       ChangeEmitterAndAntennaColor(on_mat);
+
+       ARBITRARY_CHARGES_RECHARGED_CAPACITY = UpgradesManager.SHIELD_MAX_CAPACITY;
+
+   }
+
+   */
 
 
     /*

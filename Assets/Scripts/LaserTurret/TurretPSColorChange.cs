@@ -15,32 +15,10 @@ public class TurretPSColorChange : MonoBehaviour
 
 
 
+        LaserTurretCommunicationChannels.GetChannelByID(ID).OnTurretChargeColorChange += (mat, turn_off) => { ps_rend.material = mat; ps_rend.trailMaterial = mat; };
 
-
-
-
-        switch (ID) 
-        {
-            case 1:
-                LaserTurretCommunicationChannels.Channel1.OnTurretChargeColorChange += (mat, turn_off) => { ps_rend.material = mat; ps_rend.trailMaterial = mat; };
-                break;
-            case 2:
-                LaserTurretCommunicationChannels.Channel2.OnTurretChargeColorChange += (mat, turn_off) => { ps_rend.material = mat; ps_rend.trailMaterial = mat; };
-                break;
-        
-        
-        
-        
-        
-        
-        
-        
-        }
+  
     }
 
-    
-    void Update()
-    {
-        
-    }
+
 }

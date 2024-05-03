@@ -21,7 +21,7 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
     /// <summary>
     /// If not recharging, sets the current_recharge_coroutine to the start of the Recharge coroutine with 0 skips.
     /// </summary>
-   protected void RechargeOnDepletion()
+    protected void RechargeOnDepletion()
     {
         if (!recharging) current_recharge_coroutine = StartCoroutine(Recharge(0));
     }
@@ -44,20 +44,93 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
         yield return current_recharge_coroutine = StartCoroutine(Recharge(ARBITRARY_CHARGES_RECHARGED_CAPACITY));
     }
 
-   protected abstract IEnumerator Recharge(int skips_amount);
+    //protected abstract IEnumerator Recharge(int skips_amount);
+
+
+
+    /// <summary>
+    /// <para>Sets the ARBITRARY_CHARGES_RECHARGED_CAPACITY to 0, calls ExecuteBeforeRecharge() and sets recharging to true.  </para>
+    /// <para>Attempts to disable all charge renderers.</para>
+    /// <para>Enables particle system emission, yields RegenerateCharges coroutine with skips_amount, disables emission. </para>
+    /// <para>Sets recharging to false, calls ExecuteAfterRecharge() and sets the ARBITRARY_CHARGES_RECHARGED_CAPACITY to GetMaxCapacityToSetOnGenerate() call.</para>
+    /// </summary>
+    /// <param name="skips_amount"></param>
+    /// <returns></returns>
+    protected IEnumerator Recharge(int skips_amount)
+    {
+        ARBITRARY_CHARGES_RECHARGED_CAPACITY = 0;
+
+
+        ExecuteBeforeRecharge();
+        recharging = true;
+
+
+        
+
+        foreach (GameObject charge in charges)
+        {
+            try
+            {
+                charge.GetComponent<Renderer>().enabled = false;
+
+
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+
+
+        GetParticleSystem.enableEmission = true;
+
+        yield return StartCoroutine(RegenerateCharges(skips_amount));
+
+        GetParticleSystem.enableEmission = false;
+
+
+        recharging = false;
+
+        ExecuteAfterRecharge();
+
+        ARBITRARY_CHARGES_RECHARGED_CAPACITY = GetMaxCapacityToSetOnGenerate();
+
+    }
+
+    protected abstract ParticleSystem GetParticleSystem { get; }
+
+
+    protected abstract void ExecuteBeforeRecharge();
+    protected abstract void ExecuteAfterRecharge();
+
+
+
+
+
+
+
+
+
+
+
+
 
     /// <summary>
     /// <para>Yields for GenerateCharges coroutine.</para>
-    /// <para>Goes from the current capacity value minus 1 to the current SHIELD_CAPACITY, and disables renderers for charges at those indexes.</para>
+    /// <para>Goes from the MaxCapacity -1 downwards to CurrentCapacity, and disables renderers for charges at those indexes.</para>
     /// </summary>
     /// <returns></returns>
     protected IEnumerator Upgrade()
     {
         yield return StartCoroutine(GenerateCharges());
-        int capacity = CoreCommunication.SHIELD_CAPACITY;
 
 
-        for (int i = UpgradesManager.GetCurrentTurretCapacityValue() - 1; i >= capacity; i--)
+        (int MaxCapacity, int CurrentCapacity) = GetValuesForUpgrade();
+
+        //int capacity = CoreCommunication.SHIELD_CAPACITY;
+
+
+        for (int i = MaxCapacity - 1; i >= CurrentCapacity; i--)
         {
             try
             {
@@ -73,6 +146,8 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
     }
 
 
+    protected abstract (int MaxCapacity, int CurrentCapacity) GetValuesForUpgrade();
+
 
 
     /// <summary>
@@ -85,7 +160,7 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
     protected IEnumerator GenerateCharges()
     {
         yield return StartCoroutine(DestroyCharges());
-        max_capacity = GetMaxCapacityToSet();
+        max_capacity = GetMaxCapacityToSetOnGenerate();
 
         (float position_unit, Vector3 scale) = GetPositionUnitAndScale();
 
@@ -139,10 +214,10 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
     }
 
     protected abstract (float position_unit, Vector3 scale) GetPositionUnitAndScale();
-    protected abstract int GetMaxCapacityToSet();
+    protected abstract int GetMaxCapacityToSetOnGenerate();
 
     /// <summary>
-    /// Creates a charges list, adds all children with the SHIELD_CHARGE tag, then orders it descending based on the localPosition y value.
+    /// Creates a charges list, adds all children with the acquiered tag, then assigns it as a GetChargesAsSortedList() call. 
     /// </summary>
     protected void CreateChargeList()
     {
@@ -197,7 +272,7 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
 
 
     /// <summary>
-    /// Creates a charge gameObject and sets its localPosition to arg pos and localScale to arg scale.
+    /// Creates a charge gameObject and sets its localPosition to arg pos and localScale to arg size.
     /// </summary>
     /// <param name="pos"></param>
     /// <param name="size"></param>
@@ -222,10 +297,11 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
 
 
     /// <summary>
-    /// Goes through all charges, increases i and ARBITRARY_SHIELD_RECHARGED_CAPACITY.
-    /// <para>For each charge, calculates the recharge delay based on ORE_INDEX_HOLDER Parent value. </para>
-    /// <para>Waits the calculated time.</para>
-    /// <para>Plays the SHIELD_CHARGE_SPAWN and enables current charge's renderer.</para>
+    /// Goes through all charges, increases i and ARBITRARY_CHARGES_RECHARGED_CAPACITY.
+    /// <para>For each charge, either skips delay, or calls CalculateRechargeDelay() (Skips if the current iteration is less or equal to the skips amount.) </para>
+    /// <para>Skips iteration if the delay is infinite.</para>
+    /// <para>Waits the delay,</para>
+    /// <para>Plays the CHARGE_SPAWN_SOUND_ACTIVITY_TYPE sound and enables current charge's renderer.</para>
     /// </summary>
     /// <param name="skips_amount"></param>
     /// <returns></returns>
@@ -246,7 +322,7 @@ public abstract class AbstractChargeRecharge : MonoBehaviour
 
             try
             {
-                AudioManager.PlayActivitySound(AudioManager.ActivityType.SHIELD_CHARGE_SPAWN);
+                AudioManager.PlayActivitySound(CHARGE_SPAWN_SOUND_ACTIVITY_TYPE);
                 charge.GetComponent<Renderer>().enabled = true;
 
             }

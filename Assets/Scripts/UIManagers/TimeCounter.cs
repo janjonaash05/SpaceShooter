@@ -33,6 +33,10 @@ public class TimeCounter : MonoBehaviour
     }
 
     
+
+    /// <summary>
+    /// Calculates seconds, minutes, hundredths elapsed since the level loading(float and floored to int), assigns them to UICommunication, formats them in the TMP text in MM:SS:HH format.
+    /// </summary>
     void Update()
     {
         if (OnGameOverScreen) return;
@@ -56,12 +60,4 @@ public class TimeCounter : MonoBehaviour
         txt.text = string.Format("{0:00}:{1:00}:{2:00}" ,Mins, Secs, Hundredths);
     }
 
-
-
-
-
-    private void OnDestroy()
-    {
-        
-    }
 }

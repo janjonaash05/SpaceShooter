@@ -82,7 +82,10 @@ public class TargetBomb : MonoBehaviour
 
 
     /// <summary>
-    /// TODO
+    /// Plays either TURRET_TARGET_BOMB_1 or TURRET_TARGET_BOMB_2 sound, based on ID.
+    /// <para>Invokes OnTargetingStart, calls SetupLaser().</para>
+    /// <para>Starts the Target and StartDamage tasks, waits for them both to finish.</para>
+    /// <para>If anything fails, destroys the laser.</para>
     /// </summary>
     /// <param name="Bomb"></param>
     /// <param name="bombDestructionType"></param>
